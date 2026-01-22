@@ -87,7 +87,7 @@ export function FinalCTA() {
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
-              Ready to Simplify Your{' '}
+              <span style={{ color: '#ffffff' }}>Ready to Simplify Your</span>{' '}
               <span className="text-[var(--color-primary-light)]">Tech Stack?</span>
             </h2>
             <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">

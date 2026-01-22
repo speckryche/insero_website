@@ -92,7 +92,7 @@ export function HowItWorks() {
           </motion.div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
-            How It <span className="text-[var(--color-primary)]">Works</span>
+            <span style={{ color: '#ffffff' }}>How It</span> <span className="text-[var(--color-primary)]">Works</span>
           </h2>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
             Three simple steps to better connectivity and lower costs.

@@ -42,7 +42,7 @@ export function Hero() {
         </video> */}
 
         {/* Overlay gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
       </div>
 
@@ -131,7 +131,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-extrabold text-white mb-6 leading-[1.1] tracking-tight text-balance"
           >
-            Cloud & Connectivity.{' '}
+            <span style={{ color: '#ffffff' }}>Cloud & Connectivity.</span>{' '}
             <span className="relative">
               <span className="text-gradient">Simplified.</span>
               {/* Decorative underline */}
