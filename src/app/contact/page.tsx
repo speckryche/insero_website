@@ -1,0 +1,433 @@
+'use client';
+
+import { useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useForm } from 'react-hook-form';
+import {
+  Phone,
+  EnvelopeSimple,
+  MapPin,
+  Clock,
+  CheckCircle,
+  PaperPlaneRight,
+  Sparkle,
+  CalendarCheck
+} from '@phosphor-icons/react';
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  company: string;
+  service: string;
+  message: string;
+}
+
+const services = [
+  'Voice Connectivity',
+  'Internet Connectivity',
+  'SD-WAN & Redundancy',
+  'Security',
+  'Multiple Services',
+  'Not Sure - Need Consultation',
+];
+
+const expectations = [
+  '15-minute discovery call to understand your needs',
+  'Custom recommendations based on your situation',
+  'No obligation, no pressure sales tactics',
+  'Zero cost to you - carriers pay us directly',
+];
+
+export default function ContactPage() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const heroRef = useRef(null);
+  const formRef = useRef(null);
+  const heroInView = useInView(heroRef, { once: true });
+  const formInView = useInView(formRef, { once: true, margin: '-100px' });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    console.log('Form data:', data);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setIsSubmitted(true);
+  };
+
+  return (
+    <>
+      {/* Hero Section */}
+      <section
+        ref={heroRef}
+        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-br from-[var(--color-secondary)] via-[var(--color-secondary-light)] to-[var(--color-primary-900)] overflow-hidden"
+      >
+        {/* Background decorations */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+          <div className="absolute top-1/4 -right-20 w-96 h-96 bg-[var(--color-primary)]/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 -left-20 w-80 h-80 bg-[var(--color-accent)]/10 rounded-full blur-[100px]" />
+        </div>
+
+        <div className="container-custom relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full mb-8"
+            >
+              <Phone weight="fill" className="w-4 h-4 text-[var(--color-accent)]" />
+              <span className="text-sm font-semibold">Free Consultation</span>
+            </motion.div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
+              Schedule Your <span className="text-[var(--color-primary-light)]">Free</span> Consultation
+            </h1>
+            <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-2xl mx-auto">
+              Ready to simplify your tech stack and save money? Let&apos;s talk. No pressure, no obligation, no cost.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
+      </section>
+
+      {/* Contact Section */}
+      <section ref={formRef} className="relative py-24 lg:py-32 bg-white overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-[120px]" />
+        </div>
+
+        <div className="container-custom relative">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={formInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="lg:col-span-4"
+            >
+              <h2 className="text-2xl lg:text-3xl font-display font-bold text-[var(--color-secondary)] mb-4">
+                Get in Touch
+              </h2>
+              <p className="text-[var(--color-gray-500)] mb-10">
+                Fill out the form and we&apos;ll get back to you within one business day. Or reach out directly.
+              </p>
+
+              <div className="space-y-6">
+                <a
+                  href="tel:+1234567890"
+                  className="group flex items-center gap-4 p-4 rounded-xl hover:bg-[var(--color-gray-50)] transition-colors"
+                >
+                  <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--color-primary)] transition-colors">
+                    <Phone weight="fill" className="w-5 h-5 text-[var(--color-primary)] group-hover:text-white transition-colors" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-[var(--color-gray-400)]">Phone</div>
+                    <div className="font-semibold text-[var(--color-secondary)] group-hover:text-[var(--color-primary)] transition-colors">
+                      (123) 456-7890
+                    </div>
+                  </div>
+                </a>
+
+                <a
+                  href="mailto:info@insero.com"
+                  className="group flex items-center gap-4 p-4 rounded-xl hover:bg-[var(--color-gray-50)] transition-colors"
+                >
+                  <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--color-primary)] transition-colors">
+                    <EnvelopeSimple weight="fill" className="w-5 h-5 text-[var(--color-primary)] group-hover:text-white transition-colors" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-[var(--color-gray-400)]">Email</div>
+                    <div className="font-semibold text-[var(--color-secondary)] group-hover:text-[var(--color-primary)] transition-colors">
+                      info@insero.com
+                    </div>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-4 p-4">
+                  <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <MapPin weight="fill" className="w-5 h-5 text-[var(--color-primary)]" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-[var(--color-gray-400)]">Location</div>
+                    <div className="font-semibold text-[var(--color-secondary)]">Your City, State</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 p-4">
+                  <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Clock weight="fill" className="w-5 h-5 text-[var(--color-primary)]" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-[var(--color-gray-400)]">Hours</div>
+                    <div className="font-semibold text-[var(--color-secondary)]">Mon-Fri: 8am - 6pm</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* What to Expect */}
+              <div className="mt-10 p-6 bg-gradient-to-br from-[var(--color-gray-50)] to-white rounded-2xl border border-gray-100">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkle weight="fill" className="w-5 h-5 text-[var(--color-primary)]" />
+                  <h3 className="font-bold text-[var(--color-secondary)]">What to Expect</h3>
+                </div>
+                <ul className="space-y-3">
+                  {expectations.map((item, index) => (
+                    <li key={index} className="flex items-start gap-3 text-[var(--color-gray-600)] text-sm">
+                      <CheckCircle weight="fill" className="w-5 h-5 text-[var(--color-primary)] flex-shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={formInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, ease: 'easeOut', delay: 0.1 }}
+              className="lg:col-span-8"
+            >
+              <div className="bg-[var(--color-gray-50)] rounded-3xl p-8 lg:p-10 border border-gray-100">
+                {isSubmitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-16"
+                  >
+                    <div className="w-20 h-20 bg-[var(--color-internet)]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <CheckCircle weight="fill" className="w-10 h-10 text-[var(--color-internet)]" />
+                    </div>
+                    <h3 className="text-2xl lg:text-3xl font-bold text-[var(--color-secondary)] mb-3">
+                      Thank You!
+                    </h3>
+                    <p className="text-[var(--color-gray-500)] mb-8 max-w-md mx-auto">
+                      We&apos;ve received your message and will get back to you within one business day.
+                    </p>
+                    <button
+                      onClick={() => setIsSubmitted(false)}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-[var(--color-primary-dark)] transition-colors"
+                    >
+                      Send Another Message
+                    </button>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="firstName" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                          First Name *
+                        </label>
+                        <input
+                          type="text"
+                          id="firstName"
+                          {...register('firstName', { required: 'First name is required' })}
+                          className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${
+                            errors.firstName
+                              ? 'border-red-400 focus:border-red-500'
+                              : 'border-gray-200 focus:border-[var(--color-primary)]'
+                          } focus:outline-none`}
+                          placeholder="John"
+                        />
+                        {errors.firstName && (
+                          <p className="mt-1.5 text-sm text-red-500">{errors.firstName.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <label htmlFor="lastName" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                          Last Name *
+                        </label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          {...register('lastName', { required: 'Last name is required' })}
+                          className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${
+                            errors.lastName
+                              ? 'border-red-400 focus:border-red-500'
+                              : 'border-gray-200 focus:border-[var(--color-primary)]'
+                          } focus:outline-none`}
+                          placeholder="Doe"
+                        />
+                        {errors.lastName && (
+                          <p className="mt-1.5 text-sm text-red-500">{errors.lastName.message}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          {...register('email', {
+                            required: 'Email is required',
+                            pattern: {
+                              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              message: 'Invalid email address',
+                            },
+                          })}
+                          className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${
+                            errors.email
+                              ? 'border-red-400 focus:border-red-500'
+                              : 'border-gray-200 focus:border-[var(--color-primary)]'
+                          } focus:outline-none`}
+                          placeholder="john@company.com"
+                        />
+                        {errors.email && (
+                          <p className="mt-1.5 text-sm text-red-500">{errors.email.message}</p>
+                        )}
+                      </div>
+                      <div>
+                        <label htmlFor="phone" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                          Phone
+                        </label>
+                        <input
+                          type="tel"
+                          id="phone"
+                          {...register('phone')}
+                          className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[var(--color-primary)] focus:outline-none transition-colors"
+                          placeholder="(123) 456-7890"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                        Company Name
+                      </label>
+                      <input
+                        type="text"
+                        id="company"
+                        {...register('company')}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[var(--color-primary)] focus:outline-none transition-colors"
+                        placeholder="Your Company Inc."
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="service" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                        What service are you interested in?
+                      </label>
+                      <select
+                        id="service"
+                        {...register('service')}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[var(--color-primary)] focus:outline-none transition-colors cursor-pointer"
+                      >
+                        <option value="">Select a service...</option>
+                        {services.map((service) => (
+                          <option key={service} value={service}>{service}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
+                        How can we help you?
+                      </label>
+                      <textarea
+                        id="message"
+                        {...register('message')}
+                        rows={4}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[var(--color-primary)] focus:outline-none transition-colors resize-none"
+                        placeholder="Tell us about your current situation and what you're looking to achieve..."
+                      />
+                    </div>
+
+                    <motion.button
+                      type="submit"
+                      disabled={isSubmitting}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.99 }}
+                      className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-xl shadow-lg shadow-[var(--color-accent)]/25 hover:shadow-xl hover:shadow-[var(--color-accent)]/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? (
+                        <span>Sending...</span>
+                      ) : (
+                        <>
+                          <span>Send Message</span>
+                          <PaperPlaneRight weight="fill" className="w-5 h-5" />
+                        </>
+                      )}
+                    </motion.button>
+
+                    <p className="text-sm text-[var(--color-gray-400)] text-center">
+                      By submitting this form, you agree to be contacted about our services.
+                      We respect your privacy and will never share your information.
+                    </p>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Calendly Section Placeholder */}
+      <section className="relative py-24 lg:py-32 bg-[var(--color-gray-50)] overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-[120px]" />
+        </div>
+
+        <div className="container-custom relative">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full mb-6"
+            >
+              <CalendarCheck weight="fill" className="w-4 h-4" />
+              <span className="text-sm font-semibold">Direct Scheduling</span>
+            </motion.div>
+
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-6">
+              Prefer to Schedule <span className="text-gradient">Directly?</span>
+            </h2>
+            <p className="text-lg text-[var(--color-gray-500)] mb-10">
+              Pick a time that works for you and we&apos;ll call you for a 15-minute discovery conversation.
+            </p>
+
+            {/* Calendly Embed Placeholder */}
+            <div className="bg-white rounded-3xl p-10 shadow-xl border border-gray-100 max-w-2xl mx-auto">
+              <div className="aspect-video bg-[var(--color-gray-50)] rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-200">
+                <div className="text-center">
+                  <Clock weight="fill" className="w-16 h-16 text-[var(--color-gray-300)] mx-auto mb-4" />
+                  <p className="text-[var(--color-gray-500)] font-medium">
+                    Calendly scheduling widget
+                  </p>
+                  <p className="text-sm text-[var(--color-gray-400)] mt-2">
+                    Add your Calendly embed code to activate
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </>
+  );
+}
