@@ -7,7 +7,7 @@ import Image from 'next/image';
 // Add your carrier logo files to public/carriers/ and list them here
 // Supported formats: PNG, SVG, JPG, WEBP
 const carrierLogos = [
-  { name: 'AT&T', file: 'AT&T.png' },
+  { name: 'AT&T', file: 'AT&T.webp' },
   { name: 'Comcast', file: 'Comcast.png' },
   { name: 'Spectrum', file: 'Spectrum.webp' },
   { name: 'Lumen', file: 'Lumen.png' },
