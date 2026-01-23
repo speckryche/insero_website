@@ -4,44 +4,18 @@ import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 
-// Add your carrier logo files to public/carriers/ and list them here
-// Supported formats: PNG, SVG, JPG, WEBP
-const carrierLogos = [
-  { name: 'AT&T', file: 'AT&T.webp' },
-  { name: 'Comcast', file: 'Comcast.png' },
-  { name: 'Spectrum', file: 'Spectrum.webp' },
-  { name: 'Lumen', file: 'Lumen.png' },
-  { name: 'Zayo', file: 'Zayo.png' },
-  { name: 'Ziply', file: 'Ziply.svg' },
-  { name: 'RingCentral', file: 'RingCentral.svg' },
-  { name: 'Nextiva', file: 'Nextiva.png' },
-  { name: 'GoTo', file: 'GoTo.png' },
-  { name: 'BigLeaf', file: 'BigLeaf.png' },
-  { name: 'Fatbeam', file: 'Fatbeam.webp' },
-  { name: 'Hunter', file: 'Hunter.png' },
-];
-
 // Logo dimensions and spacing
 const LOGO_WIDTH = 240;
 const LOGO_GAP = 24;
 const VISIBLE_COUNT = 5;
 const PAUSE_DURATION = 3000; // 3 seconds pause between slides
 
-function PlaceholderLogo({ name }: { name: string }) {
-  return (
-    <div className="w-[240px] h-[120px] bg-[var(--color-gray-100)] rounded-xl flex items-center justify-center px-6">
-      <span className="text-[var(--color-gray-400)] font-medium text-base text-center">
-        {name}
-      </span>
-    </div>
-  );
+interface CarrierLogo {
+  name: string;
+  file: string;
 }
 
-function LogoItem({ logo }: { logo: { name: string; file: string } }) {
-  if (logo.file === 'placeholder') {
-    return <PlaceholderLogo name={logo.name} />;
-  }
-
+function LogoItem({ logo }: { logo: CarrierLogo }) {
   return (
     <div className="w-[240px] h-[120px] bg-[var(--color-gray-100)] rounded-xl flex items-center justify-center px-6">
       <Image
@@ -55,21 +29,26 @@ function LogoItem({ logo }: { logo: { name: string; file: string } }) {
   );
 }
 
-export function CarrierLogos() {
+interface CarrierLogosClientProps {
+  logos: CarrierLogo[];
+}
+
+export function CarrierLogosClient({ logos }: CarrierLogosClientProps) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Create extended array for seamless looping
-  const extendedLogos = [...carrierLogos, ...carrierLogos.slice(0, VISIBLE_COUNT)];
+  const extendedLogos = [...logos, ...logos.slice(0, VISIBLE_COUNT)];
 
   // Auto-advance ticker
   useEffect(() => {
+    if (logos.length === 0) return;
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {
         const next = prev + 1;
-        // Reset to beginning when we've gone through all original logos
-        if (next >= carrierLogos.length) {
+        if (next >= logos.length) {
           return 0;
         }
         return next;
@@ -77,9 +56,13 @@ export function CarrierLogos() {
     }, PAUSE_DURATION);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [logos.length]);
 
   const slideWidth = LOGO_WIDTH + LOGO_GAP;
+
+  if (logos.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -163,4 +146,4 @@ export function CarrierLogos() {
   );
 }
 
-export default CarrierLogos;
+export default CarrierLogosClient;
