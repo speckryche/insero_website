@@ -1,62 +1,92 @@
-'use client';
+import type { Metadata } from 'next';
+import { VoicePageClient } from './VoicePageClient';
 
-import { ServicePage } from '@/components/sections/ServicePage';
-import {
-  Microphone,
-  ChatTeardropDots,
-  PhoneCall,
-  Headset,
-  Globe
-} from '@phosphor-icons/react';
+export const metadata: Metadata = {
+  title: 'Voice Connectivity - VoIP, Cloud PBX & Unified Communications',
+  description:
+    'Modern business phone systems that scale with your needs. VoIP, Cloud PBX, unified communications, call center solutions, and SIP trunking. Reduce costs by up to 60%.',
+  keywords: [
+    'VoIP',
+    'Cloud PBX',
+    'business phone systems',
+    'unified communications',
+    'call center solutions',
+    'SIP trunking',
+    'voice over IP',
+    'UCaaS',
+    'hosted PBX',
+  ],
+  openGraph: {
+    title: 'Voice Connectivity Solutions | Insero',
+    description:
+      'Modern VoIP and unified communications solutions. Reduce phone costs by up to 60% with cloud-based phone systems.',
+    url: 'https://insero.cloud/services/voice',
+  },
+  alternates: {
+    canonical: 'https://insero.cloud/services/voice',
+  },
+};
 
-const features = [
-  {
-    icon: ChatTeardropDots,
-    title: 'VoIP & Cloud PBX',
-    description:
-      'Replace expensive on-premise phone systems with flexible cloud-based solutions that scale with your business.',
+// JSON-LD Service Schema
+const voiceServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Voice Connectivity Solutions',
+  provider: {
+    '@type': 'Organization',
+    name: 'Insero',
+    url: 'https://insero.cloud',
   },
-  {
-    icon: PhoneCall,
-    title: 'Unified Communications',
-    description:
-      'Integrate voice, video, messaging, and collaboration tools into a single platform for seamless communication.',
+  description:
+    'Modern phone systems including VoIP, Cloud PBX, unified communications, call center solutions, and SIP trunking.',
+  serviceType: 'Voice Connectivity',
+  areaServed: 'US',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Voice Solutions',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'VoIP & Cloud PBX',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Unified Communications',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Call Center Solutions',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'SIP Trunking',
+        },
+      },
+    ],
   },
-  {
-    icon: Headset,
-    title: 'Call Center Solutions',
-    description:
-      'Professional call center technology with intelligent routing, analytics, and CRM integrations.',
-  },
-  {
-    icon: Globe,
-    title: 'SIP Trunking',
-    description:
-      'Connect your existing PBX to the cloud with SIP trunking for lower costs and greater flexibility.',
-  },
-];
-
-const benefits = [
-  'Reduce phone costs by up to 60%',
-  'Scale instantly without new hardware',
-  'Work from anywhere with mobile apps',
-  'Enterprise features at SMB prices',
-  'No long-term contracts required',
-  '24/7 support and monitoring',
-];
+};
 
 export default function VoicePage() {
   return (
-    <ServicePage
-      title="Voice Connectivity"
-      description="Modern phone systems that scale with your business. From VoIP to unified communications, we help you find the perfect solution at the best price."
-      icon={Microphone}
-      color="var(--color-voice)"
-      gradient="from-[var(--color-secondary)] via-blue-900 to-[var(--color-secondary-dark)]"
-      features={features}
-      benefits={benefits}
-      ctaTitle="Ready to Modernize Your Phone System?"
-      ctaDescription="Get a free assessment and discover how much you could save with modern voice solutions."
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(voiceServiceSchema),
+        }}
+      />
+      <VoicePageClient />
+    </>
   );
 }

@@ -1,61 +1,92 @@
-'use client';
+import type { Metadata } from 'next';
+import { SDWANPageClient } from './SDWANPageClient';
 
-import { ServicePage } from '@/components/sections/ServicePage';
-import {
-  GitBranch,
-  ArrowsClockwise,
-  ChartBar,
-  Stack
-} from '@phosphor-icons/react';
+export const metadata: Metadata = {
+  title: 'SD-WAN & Network Redundancy - Intelligent Network Solutions',
+  description:
+    'Never lose connection with SD-WAN and network redundancy solutions. Automatic failover, traffic prioritization, and multi-site connectivity. Reduce WAN costs by 30-50%.',
+  keywords: [
+    'SD-WAN',
+    'software-defined WAN',
+    'network redundancy',
+    'failover solutions',
+    'load balancing',
+    'WAN optimization',
+    'multi-site connectivity',
+    'network resilience',
+    'business continuity',
+  ],
+  openGraph: {
+    title: 'SD-WAN & Redundancy Solutions | Insero',
+    description:
+      'Intelligent network management with automatic failover. Reduce WAN costs by 30-50% while improving reliability.',
+    url: 'https://insero.cloud/services/sdwan',
+  },
+  alternates: {
+    canonical: 'https://insero.cloud/services/sdwan',
+  },
+};
 
-const features = [
-  {
-    icon: GitBranch,
-    title: 'SD-WAN Implementation',
-    description:
-      'Software-defined networking that intelligently routes traffic across multiple connections for optimal performance.',
+// JSON-LD Service Schema
+const sdwanServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'SD-WAN & Network Redundancy Solutions',
+  provider: {
+    '@type': 'Organization',
+    name: 'Insero',
+    url: 'https://insero.cloud',
   },
-  {
-    icon: ArrowsClockwise,
-    title: 'Automatic Failover',
-    description:
-      'Seamless switching between connections when issues are detected, keeping your business running.',
+  description:
+    'Software-defined WAN and network redundancy solutions with automatic failover, traffic prioritization, and multi-site connectivity.',
+  serviceType: 'SD-WAN & Redundancy',
+  areaServed: 'US',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'SD-WAN Solutions',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'SD-WAN Implementation',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Automatic Failover',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Traffic Prioritization',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Multi-Site Connectivity',
+        },
+      },
+    ],
   },
-  {
-    icon: ChartBar,
-    title: 'Traffic Prioritization',
-    description:
-      'Ensure critical applications get the bandwidth they need with intelligent QoS policies.',
-  },
-  {
-    icon: Stack,
-    title: 'Multi-Site Connectivity',
-    description:
-      'Connect all your locations with a unified network that\'s easy to manage and scale.',
-  },
-];
-
-const benefits = [
-  'Eliminate single points of failure',
-  'Reduce WAN costs by 30-50%',
-  'Improve application performance',
-  'Centralized management for all sites',
-  'Built-in security features',
-  'Simple deployment and scaling',
-];
+};
 
 export default function SDWANPage() {
   return (
-    <ServicePage
-      title="SD-WAN & Redundancy"
-      description="Never lose connection again. Intelligent network management that keeps your business running no matter what happens to any single connection."
-      icon={GitBranch}
-      color="var(--color-sdwan)"
-      gradient="from-[var(--color-secondary)] via-violet-900 to-[var(--color-secondary-dark)]"
-      features={features}
-      benefits={benefits}
-      ctaTitle="Ready for a More Resilient Network?"
-      ctaDescription="Get a free network assessment and discover how SD-WAN can improve your reliability and reduce costs."
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(sdwanServiceSchema),
+        }}
+      />
+      <SDWANPageClient />
+    </>
   );
 }

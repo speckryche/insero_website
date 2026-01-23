@@ -1,62 +1,92 @@
-'use client';
+import type { Metadata } from 'next';
+import { InternetPageClient } from './InternetPageClient';
 
-import { ServicePage } from '@/components/sections/ServicePage';
-import {
-  Globe,
-  Lightning,
-  Buildings,
-  WifiHigh,
-  Broadcast
-} from '@phosphor-icons/react';
+export const metadata: Metadata = {
+  title: 'Internet Connectivity - Fiber, Dedicated & Broadband Solutions',
+  description:
+    'Find the best business internet solution for your needs. Compare fiber, dedicated internet, broadband, and 5G options from 100+ carriers. Free consultation and carrier comparison.',
+  keywords: [
+    'business internet',
+    'fiber internet',
+    'dedicated internet access',
+    'DIA',
+    'broadband',
+    '5G business internet',
+    'enterprise internet',
+    'internet service provider',
+    'ISP comparison',
+  ],
+  openGraph: {
+    title: 'Internet Connectivity Solutions | Insero',
+    description:
+      'Compare internet options from 100+ carriers. Find the best speed, reliability, and price for your business.',
+    url: 'https://insero.cloud/services/internet',
+  },
+  alternates: {
+    canonical: 'https://insero.cloud/services/internet',
+  },
+};
 
-const features = [
-  {
-    icon: Lightning,
-    title: 'Fiber Internet',
-    description:
-      'Symmetric upload and download speeds for businesses that need reliable, high-performance connectivity.',
+// JSON-LD Service Schema
+const internetServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Internet Connectivity Solutions',
+  provider: {
+    '@type': 'Organization',
+    name: 'Insero',
+    url: 'https://insero.cloud',
   },
-  {
-    icon: Buildings,
-    title: 'Dedicated Internet Access',
-    description:
-      'Guaranteed bandwidth with SLA-backed uptime for mission-critical operations.',
+  description:
+    'Business internet solutions including fiber, dedicated internet access, broadband, and 5G connectivity.',
+  serviceType: 'Internet Connectivity',
+  areaServed: 'US',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Internet Solutions',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Fiber Internet',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Dedicated Internet Access',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Broadband Solutions',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Wireless & 5G',
+        },
+      },
+    ],
   },
-  {
-    icon: WifiHigh,
-    title: 'Broadband Solutions',
-    description:
-      'Cost-effective cable and DSL options for smaller offices or backup connectivity.',
-  },
-  {
-    icon: Broadcast,
-    title: 'Wireless & 5G',
-    description:
-      'Fixed wireless and 5G solutions for locations where wired connections aren\'t available.',
-  },
-];
-
-const benefits = [
-  'Compare options from 100+ carriers',
-  'Find the best price for your speed needs',
-  'Professional installation coordination',
-  'Single point of contact for support',
-  'No carrier bias - we recommend what\'s best',
-  'Ongoing account management',
-];
+};
 
 export default function InternetPage() {
   return (
-    <ServicePage
-      title="Internet Connectivity"
-      description="Speed and reliability optimized for your specific needs. We compare options from multiple carriers to find you the perfect connection at the best price."
-      icon={Globe}
-      color="var(--color-internet)"
-      gradient="from-[var(--color-secondary)] via-emerald-900 to-[var(--color-secondary-dark)]"
-      features={features}
-      benefits={benefits}
-      ctaTitle="Ready to Upgrade Your Internet?"
-      ctaDescription="Get a free quote comparison from multiple carriers. See all your options in one place."
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(internetServiceSchema),
+        }}
+      />
+      <InternetPageClient />
+    </>
   );
 }

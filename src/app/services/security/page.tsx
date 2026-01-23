@@ -1,62 +1,92 @@
-'use client';
+import type { Metadata } from 'next';
+import { SecurityPageClient } from './SecurityPageClient';
 
-import { ServicePage } from '@/components/sections/ServicePage';
-import {
-  ShieldCheck,
-  LockKey,
-  Warning,
-  HardDrives,
-  Eye
-} from '@phosphor-icons/react';
+export const metadata: Metadata = {
+  title: 'Network Security - Firewall, Threat Protection & VPN Solutions',
+  description:
+    'Enterprise-grade security made accessible. Firewall solutions, threat protection, VPN services, and 24/7 security monitoring. Protect your business without complexity.',
+  keywords: [
+    'network security',
+    'firewall solutions',
+    'threat protection',
+    'VPN services',
+    'security monitoring',
+    'cybersecurity',
+    'business security',
+    'managed security',
+    'SIEM',
+  ],
+  openGraph: {
+    title: 'Network Security Solutions | Insero',
+    description:
+      'Enterprise-grade security at SMB budgets. Firewall, threat protection, VPN, and 24/7 monitoring.',
+    url: 'https://insero.cloud/services/security',
+  },
+  alternates: {
+    canonical: 'https://insero.cloud/services/security',
+  },
+};
 
-const features = [
-  {
-    icon: LockKey,
-    title: 'Firewall Solutions',
-    description:
-      'Next-generation firewalls that protect your network from modern threats without slowing you down.',
+// JSON-LD Service Schema
+const securityServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Network Security Solutions',
+  provider: {
+    '@type': 'Organization',
+    name: 'Insero',
+    url: 'https://insero.cloud',
   },
-  {
-    icon: Warning,
-    title: 'Threat Protection',
-    description:
-      'Advanced threat detection and prevention to stop malware, ransomware, and phishing attacks.',
+  description:
+    'Enterprise-grade security solutions including firewalls, threat protection, VPN services, and 24/7 security monitoring.',
+  serviceType: 'Network Security',
+  areaServed: 'US',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Security Solutions',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Firewall Solutions',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Threat Protection',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'VPN Services',
+        },
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Security Monitoring',
+        },
+      },
+    ],
   },
-  {
-    icon: HardDrives,
-    title: 'VPN Services',
-    description:
-      'Secure remote access for your team with enterprise-grade VPN solutions.',
-  },
-  {
-    icon: Eye,
-    title: 'Security Monitoring',
-    description:
-      '24/7 monitoring and response to detect and neutralize threats before they cause damage.',
-  },
-];
-
-const benefits = [
-  'Enterprise security at SMB budgets',
-  'Simplified management and reporting',
-  'Compliance-ready solutions',
-  'Expert implementation and support',
-  'Unified threat management',
-  'Regular security assessments',
-];
+};
 
 export default function SecurityPage() {
   return (
-    <ServicePage
-      title="Security"
-      description="Protection without complexity. Enterprise-grade security made accessible for businesses of all sizes. Don't let your business become a statistic."
-      icon={ShieldCheck}
-      color="var(--color-security)"
-      gradient="from-[var(--color-secondary)] via-red-900 to-[var(--color-secondary-dark)]"
-      features={features}
-      benefits={benefits}
-      ctaTitle="Ready to Protect Your Business?"
-      ctaDescription="Get a free security assessment and discover your vulnerabilities before attackers do."
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(securityServiceSchema),
+        }}
+      />
+      <SecurityPageClient />
+    </>
   );
 }
