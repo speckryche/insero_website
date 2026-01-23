@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRef, type ReactNode, type ComponentType } from 'react';
 import {
   ArrowLeft,
@@ -26,6 +27,7 @@ interface ServicePageProps {
   gradient: string;
   features: Feature[];
   benefits: string[];
+  image?: string;
   ctaTitle?: string;
   ctaDescription?: string;
 }
@@ -38,6 +40,7 @@ export function ServicePage({
   gradient,
   features,
   benefits,
+  image,
   ctaTitle = `Ready to Optimize Your ${title}?`,
   ctaDescription = 'Get a free assessment and discover how much you could save.'
 }: ServicePageProps) {
@@ -52,8 +55,8 @@ export function ServicePage({
       <section className={`relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-br ${gradient} overflow-hidden`}>
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-          <div className="absolute top-1/4 -right-20 w-96 h-96 bg-white/10 rounded-full blur-[100px]" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+          <div className="absolute top-1/4 -right-20 w-96 h-96 bg-white/5 rounded-full blur-[100px]" />
           <div className="absolute bottom-0 -left-20 w-80 h-80 bg-white/5 rounded-full blur-[80px]" />
         </div>
 
@@ -67,7 +70,7 @@ export function ServicePage({
             {/* Breadcrumb */}
             <Link
               href="/services"
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors group"
+              className="inline-flex items-center gap-2 text-blue-200/80 hover:text-white mb-8 transition-colors group"
             >
               <ArrowLeft weight="bold" className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Back to Services
@@ -79,18 +82,30 @@ export function ServicePage({
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center shadow-2xl"
-                style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}
+                className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center shadow-2xl backdrop-blur-sm"
+                style={{ backgroundColor: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.1)' }}
               >
-                <Icon weight="fill" className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
+                <Icon weight="fill" className="w-8 h-8 lg:w-10 lg:h-10 text-white drop-shadow-lg" />
               </motion.div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white leading-tight">
+              <h1
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight"
+                style={{
+                  color: '#ffffff',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.3)'
+                }}
+              >
                 {title}
               </h1>
             </div>
 
             {/* Description */}
-            <p className="text-lg md:text-xl lg:text-2xl text-white/80 mb-10 max-w-3xl leading-relaxed">
+            <p
+              className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl leading-relaxed"
+              style={{
+                color: '#e0f2fe',
+                textShadow: '0 1px 3px rgba(0,0,0,0.4)'
+              }}
+            >
               {description}
             </p>
 
@@ -188,90 +203,146 @@ export function ServicePage({
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section ref={benefitsRef} className="relative py-24 lg:py-32 bg-[var(--color-gray-50)] overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full blur-[120px]" style={{ backgroundColor: `${color}08` }} />
-        </div>
-
+      {/* Benefits Section - Immersive Layout */}
+      <section ref={benefitsRef} className="relative py-16 lg:py-24 bg-[var(--color-gray-50)] overflow-hidden">
         <div className="container-custom relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={benefitsInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={benefitsInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-                style={{ backgroundColor: `${color}15`, color }}
-              >
-                <CheckCircle weight="fill" className="w-4 h-4" />
-                <span className="text-sm font-semibold">Benefits</span>
-              </motion.div>
-
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
-                Why Upgrade Your {title}?
-              </h2>
-              <p className="text-lg text-[var(--color-gray-500)] mb-10">
-                Modern solutions offer significant advantages over traditional approaches. Here&apos;s what you can expect.
-              </p>
-
-              <ul className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <motion.li
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={benefitsInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.4, delay: 0.2 + index * 0.08 }}
-                    className="flex items-center gap-4"
-                  >
-                    <div
-                      className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: `${color}15` }}
-                    >
-                      <CheckCircle weight="fill" className="w-4 h-4" style={{ color }} />
-                    </div>
-                    <span className="text-[var(--color-secondary)] font-medium">{benefit}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={benefitsInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.7, ease: 'easeOut', delay: 0.2 }}
-            >
-              <div className="relative bg-white rounded-3xl p-8 lg:p-12 shadow-2xl border border-gray-100 overflow-hidden">
-                {/* Decorative background */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="relative rounded-[2rem] overflow-hidden"
+            style={{
+              background: `linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-light) 50%, var(--color-secondary) 100%)`
+            }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              {/* Content side */}
+              <div className="relative z-10 p-8 lg:p-12 xl:p-16 flex flex-col justify-center min-h-[500px]">
+                {/* Subtle pattern overlay */}
                 <div
-                  className="absolute inset-0 opacity-5"
+                  className="absolute inset-0 opacity-[0.03]"
                   style={{
-                    background: `radial-gradient(circle at top right, ${color}, transparent 70%)`
+                    backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+                    backgroundSize: '24px 24px',
                   }}
                 />
 
-                <div className="relative aspect-square max-w-sm mx-auto flex items-center justify-center">
-                  <div
-                    className="absolute inset-0 rounded-3xl opacity-10"
-                    style={{ backgroundColor: color }}
-                  />
-                  <Icon weight="fill" className="w-32 h-32 lg:w-40 lg:h-40" style={{ color: `${color}30` }} />
+                <div className="relative">
+                  {/* Badge */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={benefitsInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-white/10 backdrop-blur-sm border border-white/10"
+                  >
+                    <CheckCircle weight="fill" className="w-4 h-4 text-white/90" />
+                    <span className="text-sm font-semibold text-white/90">Benefits</span>
+                  </motion.div>
+
+                  {/* Title */}
+                  <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6 leading-tight"
+                    style={{
+                      color: '#ffffff',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                    }}
+                  >
+                    Why Upgrade Your {title}?
+                  </motion.h2>
+
+                  {/* Description */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="text-lg text-white/70 mb-8"
+                  >
+                    Modern solutions offer significant advantages over traditional approaches.
+                  </motion.p>
+
+                  {/* Benefits list */}
+                  <ul className="space-y-3">
+                    {benefits.map((benefit, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={benefitsInView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.4, delay: 0.5 + index * 0.08 }}
+                        className="flex items-center gap-3"
+                      >
+                        <div
+                          className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: `${color}40` }}
+                        >
+                          <CheckCircle weight="fill" className="w-3.5 h-3.5 text-white" />
+                        </div>
+                        <span className="text-white/90 font-medium">{benefit}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-            </motion.div>
-          </div>
+
+              {/* Image side */}
+              <div className="relative min-h-[350px] lg:min-h-[500px]">
+                {image ? (
+                  <>
+                    <div className="absolute inset-0">
+                      <Image
+                        src={image}
+                        alt={title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Left edge gradient to blend with content area */}
+                    <div
+                      className="absolute inset-y-0 left-0 w-32 pointer-events-none"
+                      style={{
+                        background: `linear-gradient(to right, var(--color-secondary-light) 0%, transparent 100%)`
+                      }}
+                    />
+                  </>
+                ) : (
+                  /* Fallback when no image */
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.2, 0.3, 0.2],
+                      }}
+                      transition={{
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                      className="absolute inset-0"
+                      style={{ backgroundColor: color, opacity: 0.1 }}
+                    />
+                    <Icon weight="fill" className="w-32 h-32 lg:w-40 lg:h-40 text-white/10" />
+                    <div
+                      className="absolute inset-y-0 left-0 w-32 pointer-events-none"
+                      style={{
+                        background: `linear-gradient(to right, var(--color-secondary-light) 0%, transparent 100%)`
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className={`relative py-24 lg:py-32 bg-gradient-to-br ${gradient} overflow-hidden`}>
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[120px]" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-white/5 rounded-full blur-[100px]" />
         </div>
 
         <div className="container-custom relative z-10">
@@ -282,17 +353,29 @@ export function ServicePage({
             transition={{ duration: 0.7 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6"
+              style={{
+                color: '#ffffff',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.3)'
+              }}
+            >
               {ctaTitle}
             </h2>
-            <p className="text-lg md:text-xl text-white/80 mb-10">
+            <p
+              className="text-lg md:text-xl mb-10"
+              style={{
+                color: '#e0f2fe',
+                textShadow: '0 1px 3px rgba(0,0,0,0.4)'
+              }}
+            >
               {ctaDescription}
             </p>
             <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-full shadow-2xl shadow-black/20 hover:shadow-black/30 transition-all duration-300"
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-full shadow-2xl shadow-[var(--color-accent)]/30 hover:shadow-[var(--color-accent)]/50 transition-all duration-300"
               >
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Schedule Your Free Consultation</span>

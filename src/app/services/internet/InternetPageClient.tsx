@@ -55,6 +55,7 @@ export function InternetPageClient() {
       gradient="from-[var(--color-secondary)] via-emerald-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      image="/images/services/internet_service_page.png"
       ctaTitle="Ready to Upgrade Your Internet?"
       ctaDescription="Get a free quote comparison from multiple carriers. See all your options in one place."
     />

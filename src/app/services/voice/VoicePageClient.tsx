@@ -55,6 +55,7 @@ export function VoicePageClient() {
       gradient="from-[var(--color-secondary)] via-blue-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      image="/images/services/voice_service_page.png"
       ctaTitle="Ready to Modernize Your Phone System?"
       ctaDescription="Get a free assessment and discover how much you could save with modern voice solutions."
     />

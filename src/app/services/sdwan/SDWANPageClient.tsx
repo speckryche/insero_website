@@ -54,6 +54,7 @@ export function SDWANPageClient() {
       gradient="from-[var(--color-secondary)] via-violet-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      image="/images/services/sdwan_service_page.png"
       ctaTitle="Ready for a More Resilient Network?"
       ctaDescription="Get a free network assessment and discover how SD-WAN can improve your reliability and reduce costs."
     />

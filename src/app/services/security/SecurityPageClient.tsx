@@ -55,6 +55,7 @@ export function SecurityPageClient() {
       gradient="from-[var(--color-secondary)] via-red-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      image="/images/services/security_service_page.png"
       ctaTitle="Ready to Protect Your Business?"
       ctaDescription="Get a free security assessment and discover your vulnerabilities before attackers do."
     />

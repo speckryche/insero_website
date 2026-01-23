@@ -68,9 +68,9 @@ export function ContactPageClient() {
       >
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-          <div className="absolute top-1/4 -right-20 w-96 h-96 bg-[var(--color-primary)]/20 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 -left-20 w-80 h-80 bg-[var(--color-accent)]/10 rounded-full blur-[100px]" />
+          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+          <div className="absolute top-1/4 -right-20 w-96 h-96 bg-[var(--color-primary)]/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 -left-20 w-80 h-80 bg-[var(--color-accent)]/5 rounded-full blur-[100px]" />
         </div>
 
         <div className="container-custom relative z-10">
@@ -80,21 +80,22 @@ export function ContactPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="text-center max-w-4xl mx-auto"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={heroInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full mb-8"
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight"
+              style={{
+                color: '#ffffff',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.3)'
+              }}
             >
-              <Phone weight="fill" className="w-4 h-4 text-[var(--color-accent)]" />
-              <span className="text-sm font-semibold">Free Consultation</span>
-            </motion.div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
-              Schedule Your <span className="text-[var(--color-primary-light)]">Free</span> Consultation
+              Schedule Your <span className="text-[var(--color-primary-light)]" style={{ textShadow: '0 2px 10px rgba(51, 186, 171, 0.5)' }}>Free</span> Consultation
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-white/80 max-w-2xl mx-auto">
+            <p
+              className="text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto"
+              style={{
+                color: '#e0f2fe',
+                textShadow: '0 1px 3px rgba(0,0,0,0.4)'
+              }}
+            >
               Ready to simplify your tech stack and save money? Let&apos;s talk. No pressure, no obligation, no cost.
             </p>
           </motion.div>
@@ -393,17 +394,6 @@ export function ContactPageClient() {
             transition={{ duration: 0.7 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full mb-6"
-            >
-              <CalendarCheck weight="fill" className="w-4 h-4" />
-              <span className="text-sm font-semibold">Direct Scheduling</span>
-            </motion.div>
-
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-6">
               Prefer to Schedule <span className="text-gradient">Directly?</span>
             </h2>

@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRef } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
@@ -10,12 +11,19 @@ import { Phone, Wifi, Network, Shield, ArrowRight, CheckCircle, Sparkles } from 
 const services = [
   {
     icon: Phone,
-    title: 'Voice Connectivity',
+    title: 'Voice',
+    titleAccent: 'Connectivity',
     description:
       'Modern phone systems that scale with your business. From VoIP to unified communications, we find the perfect solution.',
     href: '/services/voice',
     gradient: 'from-blue-500 to-blue-600',
     glowColor: 'rgba(59, 130, 246, 0.4)',
+    image: '/images/services/voice_connectivity.png',
+    bgGradient: 'linear-gradient(135deg, #0a1628 0%, #0d2847 50%, #1a3a5c 100%)',
+    blendColor: '#1a3a5c',
+    accentGradient: 'from-cyan-400 to-blue-500',
+    accentColor: 'cyan',
+    ctaText: 'Explore Voice Solutions',
     features: [
       'VoIP & Cloud PBX',
       'Unified Communications',
@@ -25,12 +33,19 @@ const services = [
   },
   {
     icon: Wifi,
-    title: 'Internet Connectivity',
+    title: 'Internet',
+    titleAccent: 'Connectivity',
     description:
       'Speed and reliability optimized for your specific needs. Compare fiber, cable, and dedicated internet options.',
     href: '/services/internet',
     gradient: 'from-sky-500 to-cyan-500',
     glowColor: 'rgba(14, 165, 233, 0.4)',
+    image: '/images/services/internet_connectivity.png',
+    bgGradient: 'linear-gradient(135deg, #042f2e 0%, #064e3b 50%, #065f46 100%)',
+    blendColor: '#065f46',
+    accentGradient: 'from-emerald-400 to-teal-500',
+    accentColor: 'emerald',
+    ctaText: 'Explore Internet Options',
     features: [
       'Fiber Internet',
       'Dedicated Internet Access',
@@ -40,12 +55,19 @@ const services = [
   },
   {
     icon: Network,
-    title: 'SD-WAN & Redundancy',
+    title: 'SD-WAN',
+    titleAccent: '& Redundancy',
     description:
       'Never lose connection again. Intelligent network management that keeps your business running.',
     href: '/services/sdwan',
     gradient: 'from-indigo-500 to-blue-600',
     glowColor: 'rgba(99, 102, 241, 0.4)',
+    image: '/images/services/sd-wan.png',
+    bgGradient: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #3730a3 100%)',
+    blendColor: '#3730a3',
+    accentGradient: 'from-violet-400 to-indigo-500',
+    accentColor: 'violet',
+    ctaText: 'Explore SD-WAN Solutions',
     features: [
       'SD-WAN Implementation',
       'Network Redundancy',
@@ -56,11 +78,18 @@ const services = [
   {
     icon: Shield,
     title: 'Security',
+    titleAccent: 'Solutions',
     description:
       'Protection without complexity. Enterprise-grade security made accessible for businesses of all sizes.',
     href: '/services/security',
     gradient: 'from-slate-600 to-blue-700',
     glowColor: 'rgba(71, 85, 105, 0.4)',
+    image: '/images/services/security.png',
+    bgGradient: 'linear-gradient(135deg, #18181b 0%, #27272a 50%, #3f3f46 100%)',
+    blendColor: '#3f3f46',
+    accentGradient: 'from-orange-400 to-red-500',
+    accentColor: 'orange',
+    ctaText: 'Explore Security Options',
     features: [
       'Firewall Solutions',
       'Threat Protection',
@@ -170,19 +199,6 @@ export function ServicesPageClient() {
             style={{ y: heroY, opacity: heroOpacity }}
             className="text-center max-w-4xl mx-auto"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-400/20 mb-8"
-            >
-              <Sparkles className="w-4 h-4 text-blue-400" />
-              <span className="text-sm font-medium text-blue-300">
-                Carrier-Agnostic Solutions
-              </span>
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -245,127 +261,221 @@ export function ServicesPageClient() {
         />
 
         <Container className="relative">
-          <div className="space-y-24">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-100px' }}
-                transition={{ duration: 0.7, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center`}
-              >
-                {/* Content side */}
-                <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                  {/* Icon */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, rotate: 5 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                    className={`w-16 h-16 bg-gradient-to-br ${service.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}
-                    style={{ boxShadow: `0 10px 40px ${service.glowColor}` }}
+          <div className="space-y-32">
+            {services.map((service, index) => {
+              // Determine if content should be on left or right (alternating)
+              const contentOnRight = index % 2 === 1;
+
+              // Get accent colors based on service
+              const getAccentClasses = () => {
+                switch (service.accentColor) {
+                  case 'cyan': return { checkBg: 'bg-cyan-400/20', checkIcon: 'text-cyan-400', shadow: 'shadow-cyan-500/25 hover:shadow-cyan-500/40' };
+                  case 'emerald': return { checkBg: 'bg-emerald-400/20', checkIcon: 'text-emerald-400', shadow: 'shadow-emerald-500/25 hover:shadow-emerald-500/40' };
+                  case 'violet': return { checkBg: 'bg-violet-400/20', checkIcon: 'text-violet-400', shadow: 'shadow-violet-500/25 hover:shadow-violet-500/40' };
+                  case 'orange': return { checkBg: 'bg-orange-400/20', checkIcon: 'text-orange-400', shadow: 'shadow-orange-500/25 hover:shadow-orange-500/40' };
+                  default: return { checkBg: 'bg-cyan-400/20', checkIcon: 'text-cyan-400', shadow: 'shadow-cyan-500/25 hover:shadow-cyan-500/40' };
+                }
+              };
+
+              const accentClasses = getAccentClasses();
+
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{ duration: 0.8 }}
+                  className="relative"
+                >
+                  {/* Main container with split layout */}
+                  <div
+                    className="relative rounded-[2rem] overflow-hidden"
+                    style={{ background: service.bgGradient }}
                   >
-                    <service.icon className="w-8 h-8 text-white" />
-                  </motion.div>
+                    <div className={`grid grid-cols-1 lg:grid-cols-2 ${contentOnRight ? 'lg:grid-flow-dense' : ''}`}>
+                      {/* Content side */}
+                      <div className={`relative z-10 p-8 lg:p-12 xl:p-16 flex flex-col justify-center min-h-[500px] ${contentOnRight ? 'lg:col-start-2' : ''}`}>
+                        {/* Subtle pattern overlay */}
+                        <div
+                          className="absolute inset-0 opacity-[0.03]"
+                          style={{
+                            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+                            backgroundSize: '24px 24px',
+                          }}
+                        />
 
-                  <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-secondary)] mb-4">
-                    {service.title}
-                  </h2>
+                        <div className="relative max-w-lg">
+                          {/* Icon badge */}
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className={`w-14 h-14 bg-gradient-to-br ${service.accentGradient} rounded-xl flex items-center justify-center mb-6 shadow-lg ${accentClasses.shadow.split(' ')[0]}`}
+                          >
+                            <service.icon className="w-7 h-7 text-white" />
+                          </motion.div>
 
-                  <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                    {service.description}
-                  </p>
+                          {/* Title - bold and prominent */}
+                          <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold mb-6 leading-[1.1]"
+                            style={{ fontFamily: 'var(--font-display)' }}
+                          >
+                            <span className="text-white">{service.title}</span>
+                            <br />
+                            <span
+                              className={`bg-gradient-to-r ${service.accentGradient} bg-clip-text`}
+                              style={{ WebkitTextFillColor: 'transparent' }}
+                            >
+                              {service.titleAccent}
+                            </span>
+                          </motion.h2>
 
-                  <ul className="space-y-4 mb-8">
-                    {service.features.map((feature, featureIndex) => (
-                      <motion.li
-                        key={featureIndex}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.4, delay: 0.1 + featureIndex * 0.1 }}
-                        className="flex items-center gap-3 text-slate-700"
-                      >
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center">
-                          <CheckCircle className="w-4 h-4 text-blue-500" />
+                          {/* Description */}
+                          <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className="text-lg text-white/70 mb-8 leading-relaxed"
+                          >
+                            {service.description}
+                          </motion.p>
+
+                          {/* Feature list - clean vertical layout */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.5 }}
+                            className="space-y-3 mb-8"
+                          >
+                            {service.features.map((feature, featureIndex) => (
+                              <motion.div
+                                key={featureIndex}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: 0.6 + featureIndex * 0.1 }}
+                                className="flex items-center gap-3"
+                              >
+                                <div className={`w-5 h-5 rounded-full ${accentClasses.checkBg} flex items-center justify-center flex-shrink-0`}>
+                                  <CheckCircle className={`w-3.5 h-3.5 ${accentClasses.checkIcon}`} />
+                                </div>
+                                <span className="text-white/90 font-medium">{feature}</span>
+                              </motion.div>
+                            ))}
+                          </motion.div>
+
+                          {/* CTA Button */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.8 }}
+                          >
+                            <Link href={service.href}>
+                              <motion.button
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.98 }}
+                                className={`group inline-flex items-center gap-3 px-7 py-3.5 bg-gradient-to-r ${service.accentGradient} text-white font-semibold rounded-full shadow-xl ${accentClasses.shadow} transition-all duration-300`}
+                              >
+                                {service.ctaText}
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                              </motion.button>
+                            </Link>
+                          </motion.div>
                         </div>
-                        <span className="font-medium">{feature}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
+                      </div>
 
-                  <Link href={service.href}>
-                    <motion.button
-                      whileHover={{ scale: 1.02, x: 4 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="group inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-full shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-shadow"
-                    >
-                      Learn More
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
-                  </Link>
-                </div>
+                      {/* Visual side - Image or Placeholder */}
+                      <div className={`relative min-h-[400px] lg:min-h-[500px] ${contentOnRight ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+                        {service.image ? (
+                          <>
+                            {/* Image container */}
+                            <div className="absolute inset-0">
+                              <Image
+                                src={service.image}
+                                alt={service.title}
+                                fill
+                                className="object-cover object-center"
+                                priority={index === 0}
+                              />
+                            </div>
+                            {/* Edge gradient to blend with content area */}
+                            <div
+                              className={`absolute inset-y-0 ${contentOnRight ? 'right-0' : 'left-0'} w-32 pointer-events-none`}
+                              style={{
+                                background: contentOnRight
+                                  ? `linear-gradient(to left, ${service.blendColor} 0%, transparent 100%)`
+                                  : `linear-gradient(to right, ${service.blendColor} 0%, transparent 100%)`,
+                              }}
+                            />
+                          </>
+                        ) : (
+                          /* Placeholder visual when no image */
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            {/* Animated gradient background */}
+                            <motion.div
+                              animate={{
+                                scale: [1, 1.1, 1],
+                                opacity: [0.3, 0.5, 0.3],
+                              }}
+                              transition={{
+                                duration: 6,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                              }}
+                              className={`absolute inset-0 bg-gradient-to-br ${service.accentGradient} opacity-20`}
+                            />
 
-                {/* Visual side */}
-                <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    className="relative rounded-3xl p-8 lg:p-12 overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%)',
-                    }}
-                  >
-                    {/* Decorative elements */}
-                    <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-blue-200/50 blur-2xl" />
-                    <div className="absolute bottom-4 left-4 w-32 h-32 rounded-full bg-sky-200/50 blur-3xl" />
+                            {/* Decorative circles */}
+                            <div className="absolute inset-0 overflow-hidden">
+                              <motion.div
+                                animate={{ y: [0, -20, 0], x: [0, 10, 0] }}
+                                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                                className="absolute top-1/4 right-1/4 w-32 h-32 rounded-full bg-white/10 blur-2xl"
+                              />
+                              <motion.div
+                                animate={{ y: [0, 20, 0], x: [0, -15, 0] }}
+                                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                                className="absolute bottom-1/4 left-1/4 w-48 h-48 rounded-full bg-white/5 blur-3xl"
+                              />
+                            </div>
 
-                    {/* Grid pattern overlay */}
-                    <div
-                      className="absolute inset-0 opacity-[0.05]"
-                      style={{
-                        backgroundImage: `
-                          linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px)
-                        `,
-                        backgroundSize: '30px 30px',
-                      }}
-                    />
+                            {/* Large icon */}
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              whileInView={{ opacity: 1, scale: 1 }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.6, delay: 0.4 }}
+                              className="relative"
+                            >
+                              <service.icon className="w-32 h-32 lg:w-40 lg:h-40 text-white/20" strokeWidth={1} />
+                            </motion.div>
 
-                    <div className="relative aspect-video rounded-2xl bg-white/60 backdrop-blur-sm border border-blue-100 flex items-center justify-center shadow-inner">
-                      <motion.div
-                        animate={{
-                          scale: [1, 1.1, 1],
-                          opacity: [0.3, 0.5, 0.3],
-                        }}
-                        transition={{
-                          duration: 4,
-                          repeat: Infinity,
-                          ease: 'easeInOut',
-                        }}
-                        className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${service.gradient} opacity-10`}
-                      />
-                      <service.icon className="w-24 h-24 text-blue-400/40" />
+                            {/* Edge gradient to blend */}
+                            <div
+                              className={`absolute inset-y-0 ${contentOnRight ? 'right-0' : 'left-0'} w-32 pointer-events-none`}
+                              style={{
+                                background: contentOnRight
+                                  ? `linear-gradient(to left, ${service.blendColor} 0%, transparent 100%)`
+                                  : `linear-gradient(to right, ${service.blendColor} 0%, transparent 100%)`,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
-
-                    {/* Floating badge */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.3 }}
-                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 bg-white rounded-full shadow-lg border border-blue-100"
-                    >
-                      <span className="text-sm font-semibold text-blue-600">
-                        {index === 0 && '50+ Voice Providers'}
-                        {index === 1 && '100+ ISP Options'}
-                        {index === 2 && 'Enterprise Grade'}
-                        {index === 3 && '24/7 Protection'}
-                      </span>
-                    </motion.div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </Container>
       </section>
