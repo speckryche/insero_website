@@ -80,18 +80,7 @@ export function HowItWorks() {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="text-center mb-16 lg:mb-24"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-[var(--color-primary)] rounded-full mb-6"
-          >
-            <span className="w-2 h-2 bg-[var(--color-primary)] rounded-full animate-pulse" />
-            <span className="text-sm font-semibold">Simple Process</span>
-          </motion.div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
+<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
             <span style={{ color: '#ffffff' }}>How It</span> <span className="text-[var(--color-primary)]">Works</span>
           </h2>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
@@ -160,15 +149,15 @@ export function HowItWorks() {
                     </p>
 
                     {/* Details */}
-                    <ul className="space-y-2">
+                    <ul className="space-y-3 text-left max-w-[200px] mx-auto">
                       {step.details.map((detail, detailIndex) => (
                         <li
                           key={detailIndex}
-                          className="flex items-center justify-center gap-2 text-sm text-white/50"
+                          className="flex items-center gap-3 text-sm text-white/50"
                         >
                           <CheckCircle
                             weight="fill"
-                            className="w-4 h-4 text-[var(--color-primary)]"
+                            className="w-4 h-4 text-[var(--color-primary)] flex-shrink-0"
                           />
                           <span>{detail}</span>
                         </li>
@@ -205,7 +194,7 @@ export function HowItWorks() {
               className="group inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-full shadow-2xl shadow-[var(--color-accent)]/30 hover:shadow-[var(--color-accent)]/50 transition-all duration-300"
             >
               <Phone weight="fill" className="w-5 h-5" />
-              <span>Start with Step 1</span>
+              <span>Schedule a Call</span>
               <ArrowRight
                 weight="bold"
                 className="w-5 h-5 group-hover:translate-x-1 transition-transform"

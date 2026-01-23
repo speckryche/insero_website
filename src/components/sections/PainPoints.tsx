@@ -5,8 +5,7 @@ import { useRef } from 'react';
 import {
   UsersThree,
   CreditCard,
-  Question,
-  Warning
+  Question
 } from '@phosphor-icons/react';
 
 const painPoints = [
@@ -80,18 +79,7 @@ export function PainPoints() {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="text-center mb-16 lg:mb-20"
         >
-          {/* Warning badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-accent)]/10 text-[var(--color-accent)] rounded-full mb-6"
-          >
-            <Warning weight="fill" className="w-4 h-4" />
-            <span className="text-sm font-semibold">Sound familiar?</span>
-          </motion.div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
+<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
             Tired of Overpaying for Services{' '}
             <br className="hidden md:block" />
             <span className="text-[var(--color-accent)]">You Don&apos;t Understand?</span>
@@ -163,12 +151,12 @@ export function PainPoints() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-4">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--color-gray-300)]" />
-            <span className="text-[var(--color-gray-400)] font-medium">
+          <div className="inline-flex items-center gap-6">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--color-primary)]" />
+            <span className="text-2xl md:text-3xl font-bold text-[var(--color-secondary)]">
               There&apos;s a better way
             </span>
-            <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--color-gray-300)]" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--color-primary)]" />
           </div>
         </motion.div>
       </div>

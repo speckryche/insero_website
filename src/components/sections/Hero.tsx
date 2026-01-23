@@ -113,18 +113,7 @@ export function Hero() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="max-w-5xl mx-auto"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8"
-          >
-            <span className="w-2 h-2 bg-[var(--color-primary)] rounded-full animate-pulse" />
-            <span className="text-sm text-white/90 font-medium">Zero Cost Consulting</span>
-          </motion.div>
-
-          {/* Main headline */}
+{/* Main headline */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

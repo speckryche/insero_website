@@ -8,8 +8,7 @@ import {
   ArrowRight,
   Clock,
   CurrencyDollar,
-  CheckCircle,
-  Sparkle
+  CheckCircle
 } from '@phosphor-icons/react';
 
 const benefits = [
@@ -75,18 +74,7 @@ export function FinalCTA() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="text-center mb-12"
           >
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full mb-8"
-            >
-              <Sparkle weight="fill" className="w-4 h-4 text-[var(--color-accent)]" />
-              <span className="text-sm font-semibold">Take the first step</span>
-            </motion.div>
-
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
+<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 leading-tight">
               <span style={{ color: '#ffffff' }}>Ready to Simplify Your</span>{' '}
               <span className="text-[var(--color-primary-light)]">Tech Stack?</span>
             </h2>
@@ -127,7 +115,7 @@ export function FinalCTA() {
                 className="group flex items-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-full shadow-2xl shadow-[var(--color-accent)]/30 hover:shadow-[var(--color-accent)]/50 transition-all duration-300"
               >
                 <Phone weight="fill" className="w-5 h-5" />
-                <span>Schedule Your Free Call</span>
+                <span>Schedule a Call</span>
                 <ArrowRight
                   weight="bold"
                   className="w-5 h-5 group-hover:translate-x-1 transition-transform"
@@ -151,9 +139,9 @@ export function FinalCTA() {
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-center text-white/40 text-sm"
+            className="text-center text-white/60 text-lg"
           >
-            Join 500+ businesses who simplified their connectivity with Insero
+            Join the many businesses who simplified their connectivity with Insero
           </motion.p>
         </div>
       </div>

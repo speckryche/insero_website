@@ -8,8 +8,7 @@ import {
   Globe,
   GitBranch,
   ShieldCheck,
-  ArrowRight,
-  Sparkle
+  ArrowRight
 } from '@phosphor-icons/react';
 
 const services = [
@@ -95,18 +94,7 @@ export function Services() {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="text-center mb-16 lg:mb-20"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full mb-6"
-          >
-            <Sparkle weight="fill" className="w-4 h-4" />
-            <span className="text-sm font-semibold">Our Services</span>
-          </motion.div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
+<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
             Four Pillars of{' '}
             <span className="text-gradient">Connectivity</span>
           </h2>
@@ -126,7 +114,7 @@ export function Services() {
           {services.map((service, index) => (
             <motion.div key={index} variants={itemVariants}>
               <Link href={service.href} className="block group h-full">
-                <div className="relative bg-white rounded-2xl p-6 lg:p-8 h-full border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group-hover:-translate-y-2">
+                <div className="relative bg-white rounded-2xl p-6 lg:p-8 h-full border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group-hover:-translate-y-2 flex flex-col">
                   {/* Gradient overlay on hover */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500`}
@@ -162,7 +150,7 @@ export function Services() {
                   </p>
 
                   {/* Features list */}
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-2 flex-grow">
                     {service.features.map((feature, featureIndex) => (
                       <li
                         key={featureIndex}
@@ -179,7 +167,7 @@ export function Services() {
 
                   {/* CTA */}
                   <div
-                    className="flex items-center gap-2 text-sm font-semibold transition-all duration-300"
+                    className="flex items-center gap-2 text-sm font-semibold transition-all duration-300 mt-6"
                     style={{ color: service.color }}
                   >
                     <span>Learn More</span>

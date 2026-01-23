@@ -6,8 +6,7 @@ import {
   Quotes,
   Star,
   CaretLeft,
-  CaretRight,
-  ChatTeardropText
+  CaretRight
 } from '@phosphor-icons/react';
 
 const testimonials = [
@@ -72,18 +71,7 @@ export function Testimonials() {
           transition={{ duration: 0.7, ease: 'easeOut' }}
           className="text-center mb-16 lg:mb-20"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)]/10 text-[var(--color-primary)] rounded-full mb-6"
-          >
-            <ChatTeardropText weight="fill" className="w-4 h-4" />
-            <span className="text-sm font-semibold">Client Success Stories</span>
-          </motion.div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
+<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
             What Our <span className="text-gradient">Clients</span> Say
           </h2>
           <p className="text-lg md:text-xl text-[var(--color-gray-500)] max-w-2xl mx-auto">
