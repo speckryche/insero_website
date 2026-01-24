@@ -6,8 +6,8 @@ import Image from 'next/image';
 
 // Configuration
 const VISIBLE_COUNT = 4;
-const PAUSE_DURATION = 3000;
-const TRANSITION_DURATION = 700;
+const PAUSE_DURATION = 1500;
+const TRANSITION_DURATION = 300;
 
 // Hook to detect if page is visible
 function usePageVisibility() {

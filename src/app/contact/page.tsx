@@ -38,16 +38,16 @@ const contactPageSchema = {
     url: 'https://insero.cloud',
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+1-123-456-7890',
+      telephone: '+1-541-951-6990',
       contactType: 'sales',
-      email: 'info@insero.cloud',
+      email: 'sales@insero.cloud',
       availableLanguage: 'English',
-      hoursAvailable: {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '08:00',
-        closes: '18:00',
-      },
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Jacksonville',
+      addressRegion: 'OR',
+      addressCountry: 'US',
     },
   },
 };

@@ -4,6 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Phone, ArrowRight } from '@phosphor-icons/react';
+import { company } from '@/config/company';
 
 export function FinalCTA() {
   const sectionRef = useRef(null);
@@ -51,9 +52,11 @@ export function FinalCTA() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-8 leading-[1.1] tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-8 leading-[1.1] tracking-tight"
           >
-            Ready to Simplify
+            <span style={{ color: '#ffffff', textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.3)' }}>
+              Ready to Simplify
+            </span>
             <br />
             <span className="text-gradient">Your Tech Stack?</span>
           </motion.h2>
@@ -100,12 +103,12 @@ export function FinalCTA() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <a
-              href="tel:+1234567890"
+              href={company.phoneLink}
               className="inline-flex items-center gap-2 text-white/50 hover:text-white/80 transition-colors text-lg"
             >
               <span>or call us at</span>
               <span className="font-semibold text-white/70 hover:text-[var(--color-primary)] transition-colors">
-                (123) 456-7890
+                {company.phoneFormatted}
               </span>
             </a>
           </motion.div>

@@ -11,9 +11,9 @@ import {
   GitBranch,
   ShieldCheck,
   Briefcase,
-  ChartLineUp,
   ChatCircle
 } from '@phosphor-icons/react';
+import { company as companyInfo } from '@/config/company';
 
 const services = [
   { name: 'Voice Connectivity', href: '/services/voice', icon: Microphone },
@@ -22,9 +22,8 @@ const services = [
   { name: 'Security', href: '/services/security', icon: ShieldCheck },
 ];
 
-const company = [
+const companyLinks = [
   { name: 'Services', href: '/services', icon: Briefcase },
-  { name: 'Case Studies', href: '/case-studies', icon: ChartLineUp },
   { name: 'Contact', href: '/contact', icon: ChatCircle },
 ];
 
@@ -89,7 +88,7 @@ export function Footer() {
               Company
             </h3>
             <ul className="space-y-4">
-              {company.map((item) => {
+              {companyLinks.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.name}>
@@ -114,26 +113,26 @@ export function Footer() {
             <ul className="space-y-4">
               <li>
                 <a
-                  href="tel:+1234567890"
+                  href={companyInfo.phoneLink}
                   className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                 >
                   <Phone weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
-                  <span>(123) 456-7890</span>
+                  <span>{companyInfo.phoneFormatted}</span>
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:info@insero.com"
+                  href={companyInfo.emailLink}
                   className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                 >
                   <EnvelopeSimple weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
-                  <span>info@insero.com</span>
+                  <span>{companyInfo.email}</span>
                 </a>
               </li>
               <li>
                 <div className="flex items-center gap-3 text-white/70">
                   <MapPin weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
-                  <span>Your City, State</span>
+                  <span>{companyInfo.location.full}</span>
                 </div>
               </li>
             </ul>

@@ -11,8 +11,10 @@ import {
   CheckCircle,
   PaperPlaneRight,
   Sparkle,
-  CalendarCheck
+  WarningCircle,
 } from '@phosphor-icons/react';
+import { company } from '@/config/company';
+import { submitContactForm, ContactFormData } from './actions';
 
 interface FormData {
   firstName: string;
@@ -20,7 +22,7 @@ interface FormData {
   email: string;
   phone: string;
   company: string;
-  service: string;
+  services: string[];
   message: string;
 }
 
@@ -29,7 +31,6 @@ const services = [
   'Internet Connectivity',
   'SD-WAN & Redundancy',
   'Security',
-  'Multiple Services',
   'Not Sure - Need Consultation',
 ];
 
@@ -42,6 +43,7 @@ const expectations = [
 
 export function ContactPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const heroRef = useRef(null);
   const formRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -50,13 +52,38 @@ export function ContactPageClient() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    console.log('Form data:', data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitted(true);
+    setSubmitError(null);
+
+    const selectedServices = data.services?.filter(Boolean) || [];
+
+    const formData: ContactFormData = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phone: data.phone || undefined,
+      company: data.company || undefined,
+      services: selectedServices.length > 0 ? selectedServices : undefined,
+      message: data.message || undefined,
+    };
+
+    const result = await submitContactForm(formData);
+
+    if (result.success) {
+      setIsSubmitted(true);
+    } else {
+      setSubmitError(result.error || 'An unexpected error occurred. Please try again.');
+    }
+  };
+
+  const handleSendAnother = () => {
+    setIsSubmitted(false);
+    setSubmitError(null);
+    reset();
   };
 
   return (
@@ -129,7 +156,7 @@ export function ContactPageClient() {
 
               <div className="space-y-6">
                 <a
-                  href="tel:+1234567890"
+                  href={company.phoneLink}
                   className="group flex items-center gap-4 p-4 rounded-xl hover:bg-[var(--color-gray-50)] transition-colors"
                 >
                   <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--color-primary)] transition-colors">
@@ -138,13 +165,13 @@ export function ContactPageClient() {
                   <div>
                     <div className="text-sm text-[var(--color-gray-400)]">Phone</div>
                     <div className="font-semibold text-[var(--color-secondary)] group-hover:text-[var(--color-primary)] transition-colors">
-                      (123) 456-7890
+                      {company.phoneFormatted}
                     </div>
                   </div>
                 </a>
 
                 <a
-                  href="mailto:info@insero.com"
+                  href={company.emailLink}
                   className="group flex items-center gap-4 p-4 rounded-xl hover:bg-[var(--color-gray-50)] transition-colors"
                 >
                   <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--color-primary)] transition-colors">
@@ -153,7 +180,7 @@ export function ContactPageClient() {
                   <div>
                     <div className="text-sm text-[var(--color-gray-400)]">Email</div>
                     <div className="font-semibold text-[var(--color-secondary)] group-hover:text-[var(--color-primary)] transition-colors">
-                      info@insero.com
+                      {company.email}
                     </div>
                   </div>
                 </a>
@@ -164,17 +191,7 @@ export function ContactPageClient() {
                   </div>
                   <div>
                     <div className="text-sm text-[var(--color-gray-400)]">Location</div>
-                    <div className="font-semibold text-[var(--color-secondary)]">Your City, State</div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 p-4">
-                  <div className="w-12 h-12 bg-[var(--color-primary)]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Clock weight="fill" className="w-5 h-5 text-[var(--color-primary)]" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-[var(--color-gray-400)]">Hours</div>
-                    <div className="font-semibold text-[var(--color-secondary)]">Mon-Fri: 8am - 6pm</div>
+                    <div className="font-semibold text-[var(--color-secondary)]">{company.location.full}</div>
                   </div>
                 </div>
               </div>
@@ -220,7 +237,7 @@ export function ContactPageClient() {
                       We&apos;ve received your message and will get back to you within one business day.
                     </p>
                     <button
-                      onClick={() => setIsSubmitted(false)}
+                      onClick={handleSendAnother}
                       className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full hover:bg-[var(--color-primary-dark)] transition-colors"
                     >
                       Send Another Message
@@ -323,19 +340,25 @@ export function ContactPageClient() {
                     </div>
 
                     <div>
-                      <label htmlFor="service" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
-                        What service are you interested in?
+                      <label className="block text-sm font-semibold text-[var(--color-secondary)] mb-3">
+                        What services are you interested in? (Select all that apply)
                       </label>
-                      <select
-                        id="service"
-                        {...register('service')}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[var(--color-primary)] focus:outline-none transition-colors cursor-pointer"
-                      >
-                        <option value="">Select a service...</option>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {services.map((service) => (
-                          <option key={service} value={service}>{service}</option>
+                          <label
+                            key={service}
+                            className="flex items-center gap-3 p-3 rounded-xl border-2 border-gray-200 bg-white cursor-pointer hover:border-[var(--color-primary)]/50 has-[:checked]:border-[var(--color-primary)] has-[:checked]:bg-[var(--color-primary)]/5 transition-colors"
+                          >
+                            <input
+                              type="checkbox"
+                              value={service}
+                              {...register('services')}
+                              className="w-5 h-5 rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)] focus:ring-offset-0 cursor-pointer"
+                            />
+                            <span className="text-sm text-[var(--color-secondary)]">{service}</span>
+                          </label>
                         ))}
-                      </select>
+                      </div>
                     </div>
 
                     <div>
@@ -350,6 +373,17 @@ export function ContactPageClient() {
                         placeholder="Tell us about your current situation and what you're looking to achieve..."
                       />
                     </div>
+
+                    {submitError && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl"
+                      >
+                        <WarningCircle weight="fill" className="w-5 h-5 text-red-500 flex-shrink-0" />
+                        <p className="text-red-700 text-sm">{submitError}</p>
+                      </motion.div>
+                    )}
 
                     <motion.button
                       type="submit"
