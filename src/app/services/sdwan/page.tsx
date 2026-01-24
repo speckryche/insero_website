@@ -27,6 +27,32 @@ export const metadata: Metadata = {
   },
 };
 
+// Breadcrumb Schema for better SERP appearance
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://insero.cloud',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Services',
+      item: 'https://insero.cloud/services',
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: 'SD-WAN & Redundancy',
+      item: 'https://insero.cloud/services/sdwan',
+    },
+  ],
+};
+
 // JSON-LD Service Schema
 const sdwanServiceSchema = {
   '@context': 'https://schema.org',
@@ -80,6 +106,12 @@ const sdwanServiceSchema = {
 export default function SDWANPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

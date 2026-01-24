@@ -27,6 +27,32 @@ export const metadata: Metadata = {
   },
 };
 
+// Breadcrumb Schema for better SERP appearance
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://insero.cloud',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Services',
+      item: 'https://insero.cloud/services',
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: 'Network Security',
+      item: 'https://insero.cloud/services/security',
+    },
+  ],
+};
+
 // JSON-LD Service Schema
 const securityServiceSchema = {
   '@context': 'https://schema.org',
@@ -80,6 +106,12 @@ const securityServiceSchema = {
 export default function SecurityPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
