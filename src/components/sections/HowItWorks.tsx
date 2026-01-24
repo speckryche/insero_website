@@ -141,7 +141,7 @@ export function HowItWorks() {
                     </div>
 
                     {/* Content */}
-                    <h3 className="text-xl lg:text-2xl font-bold text-white mb-4">
+                    <h3 className="text-xl lg:text-2xl font-bold mb-4" style={{ color: '#ffffff' }}>
                       {step.title}
                     </h3>
                     <p className="text-white/60 leading-relaxed mb-6">

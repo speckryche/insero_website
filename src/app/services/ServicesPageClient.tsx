@@ -232,7 +232,7 @@ export function ServicesPageClient() {
               className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-8 border-t border-blue-400/10"
             >
               {[
-                { value: '100+', label: 'Carrier Partners' },
+                { value: 'Top', label: 'Carrier Partners' },
                 { value: '25+', label: 'Years Experience' },
                 { value: '$0', label: 'Consulting Cost' },
               ].map((stat, index) => (
@@ -246,7 +246,7 @@ export function ServicesPageClient() {
         </Container>
 
         {/* Bottom gradient fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
       </section>
 
       {/* Services Grid */}

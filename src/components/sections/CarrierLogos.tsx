@@ -139,7 +139,7 @@ export function CarrierLogosClient({ logos }: CarrierLogosClientProps) {
             Trusted Carrier Network
           </h2>
           <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
-            We partner with 100+ carriers to find the perfect solution for your business.
+            We partner with only the best carriers to find the perfect solution for your business.
           </p>
         </motion.div>
 
@@ -204,7 +204,7 @@ export function CarrierLogosClient({ logos }: CarrierLogosClientProps) {
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-20">
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-display font-bold text-white">
-                100+
+                Top
               </div>
               <div className="text-sm text-white/50 mt-1">Carrier Partners</div>
             </div>

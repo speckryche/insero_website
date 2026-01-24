@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Our Services | Insero',
     description:
-      'Voice, Internet, SD-WAN, and Security solutions. We compare 100+ carriers to find the perfect fit for your business.',
+      'Voice, Internet, SD-WAN, and Security solutions. We compare top carriers to find the perfect fit for your business.',
     url: 'https://insero.cloud/services',
   },
   alternates: {
