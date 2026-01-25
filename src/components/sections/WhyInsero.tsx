@@ -28,7 +28,7 @@ const benefits = [
       'We recommend what\'s best for you, not who pays us the most. Your interests come first.',
     highlight: 'Unbiased',
     color: 'var(--color-sdwan)',
-    features: ['100+ carrier partners', 'Objective analysis', 'Your goals first']
+    features: ['Top carrier partners', 'Objective analysis', 'Your goals first']
   },
   {
     icon: Clock,

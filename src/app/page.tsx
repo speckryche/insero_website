@@ -45,7 +45,7 @@ const faqItems = [
   {
     question: 'How do you help my business save money?',
     answer:
-      'We compare solutions from 100+ carriers to find the best fit for your needs. Our carrier-agnostic approach means we recommend based on your requirements, not commission rates, often uncovering savings of 20-50% on voice, internet, and network services.',
+      'We compare solutions from multiple carriers to find the best fit for your needs. Our carrier-agnostic approach means we recommend based on your requirements, not commission rates, often uncovering savings on voice, internet, and network services.',
   },
   {
     question: 'What types of businesses do you work with?',
