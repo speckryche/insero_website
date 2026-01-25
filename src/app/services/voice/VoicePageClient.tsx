@@ -37,7 +37,7 @@ const features = [
 ];
 
 const benefits = [
-  'Reduce phone costs by up to 60%',
+  'Reduce phone and voice service expenses',
   'Scale instantly without new hardware',
   'Work from anywhere with mobile apps',
   'Enterprise features at SMB prices',

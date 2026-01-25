@@ -37,7 +37,7 @@ const features = [
 ];
 
 const benefits = [
-  'Compare options from 100+ carriers',
+  'Compare options from all carriers available to your location',
   'Find the best price for your speed needs',
   'Professional installation coordination',
   'Single point of contact for support',

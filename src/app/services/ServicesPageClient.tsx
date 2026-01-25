@@ -36,7 +36,7 @@ const services = [
     title: 'Internet',
     titleAccent: 'Connectivity',
     description:
-      'Speed and reliability optimized for your specific needs. Compare fiber, cable, and dedicated internet options.',
+      'Speed and reliability optimized for your specific needs. Compare fiber, cable, 5G cellular and other internet options.',
     href: '/services/internet',
     gradient: 'from-sky-500 to-cyan-500',
     glowColor: 'rgba(14, 165, 233, 0.4)',
@@ -48,7 +48,7 @@ const services = [
     ctaText: 'Explore Internet Options',
     features: [
       'Fiber Internet',
-      'Dedicated Internet Access',
+      'Cable Coax Internet',
       'Broadband Solutions',
       'Wireless Backup',
     ],

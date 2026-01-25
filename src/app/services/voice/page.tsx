@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Voice Connectivity Solutions | Insero',
     description:
-      'Modern VoIP and unified communications solutions. Reduce phone costs by up to 60% with cloud-based phone systems.',
+      'Modern VoIP and unified communications solutions. Reduce phone and voice service expenses with cloud-based phone systems.',
     url: 'https://insero.cloud/services/voice',
   },
   alternates: {
