@@ -5,7 +5,6 @@ import { Services } from '@/components/sections/Services';
 import { HowItWorks } from '@/components/sections/HowItWorks';
 import { WhyInsero } from '@/components/sections/WhyInsero';
 import { CarrierLogos } from '@/components/sections/CarrierLogosServer';
-import { Testimonials } from '@/components/sections/Testimonials';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
 
@@ -149,7 +148,12 @@ export default function HomePage() {
       <HowItWorks />
       <WhyInsero />
       <CarrierLogos />
-      <Testimonials />
+      {/* TODO: Add Testimonials section back when real customer testimonials are collected
+          - Component exists at: src/components/sections/Testimonials.tsx
+          - Import: import { Testimonials } from '@/components/sections/Testimonials';
+          - Usage: <Testimonials />
+          - Will need to update testimonial data in the component with real customer quotes
+      */}
       <FAQ items={faqItems} />
       <FinalCTA />
     </>
