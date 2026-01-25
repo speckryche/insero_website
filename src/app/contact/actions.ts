@@ -20,28 +20,32 @@ export type SubmitResult = {
 
 export async function submitContactForm(data: ContactFormData): Promise<SubmitResult> {
   try {
-    // Insert into Supabase
-    const lead: WebsiteLead = {
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      phone: data.phone || null,
-      company: data.company || null,
-      service: data.services?.join(', ') || null,
-      message: data.message || null,
-      status: 'new',
-    };
-
-    const { error: dbError } = await supabase
-      .from('website_leads')
-      .insert([lead]);
-
-    if (dbError) {
-      console.error('Database error:', dbError);
-      return {
-        success: false,
-        error: 'Failed to save your information. Please try again.',
+    // Insert into Supabase (if configured)
+    if (supabase) {
+      const lead: WebsiteLead = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone: data.phone || null,
+        company: data.company || null,
+        service: data.services?.join(', ') || null,
+        message: data.message || null,
+        status: 'new',
       };
+
+      const { error: dbError } = await supabase
+        .from('website_leads')
+        .insert([lead]);
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+        return {
+          success: false,
+          error: 'Failed to save your information. Please try again.',
+        };
+      }
+    } else {
+      console.warn('Supabase not configured - skipping database insert');
     }
 
     // Send email notification

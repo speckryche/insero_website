@@ -1,6 +1,9 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Only create client if API key is available
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 type LeadNotificationData = {
   firstName: string;
@@ -81,6 +84,12 @@ This lead has been automatically added to the CRM.
 </body>
 </html>
   `.trim();
+
+  if (!resend) {
+    console.warn('Resend not configured - skipping email notification');
+    console.log('Lead data:', { firstName, lastName, email, phone, company, services, message });
+    return null;
+  }
 
   const { data: emailData, error } = await resend.emails.send({
     from: 'Insero Website <noreply@insero.cloud>',
