@@ -7,7 +7,6 @@ import {
   Phone,
   EnvelopeSimple,
   MapPin,
-  Clock,
   CheckCircle,
   PaperPlaneRight,
   Sparkle,
@@ -414,44 +413,11 @@ export function ContactPageClient() {
         </div>
       </section>
 
-      {/* Calendly Section Placeholder */}
-      <section className="relative py-24 lg:py-32 bg-[var(--color-gray-50)] overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-[120px]" />
-        </div>
-
-        <div className="container-custom relative">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-6">
-              Prefer to Schedule <span className="text-gradient">Directly?</span>
-            </h2>
-            <p className="text-lg text-[var(--color-gray-500)] mb-10">
-              Pick a time that works for you and we&apos;ll call you for a 15-minute discovery conversation.
-            </p>
-
-            {/* Calendly Embed Placeholder */}
-            <div className="bg-white rounded-3xl p-10 shadow-xl border border-gray-100 max-w-2xl mx-auto">
-              <div className="aspect-video bg-[var(--color-gray-50)] rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-200">
-                <div className="text-center">
-                  <Clock weight="fill" className="w-16 h-16 text-[var(--color-gray-300)] mx-auto mb-4" />
-                  <p className="text-[var(--color-gray-500)] font-medium">
-                    Calendly scheduling widget
-                  </p>
-                  <p className="text-sm text-[var(--color-gray-400)] mt-2">
-                    Add your Calendly embed code to activate
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* TODO: Add Calendly scheduling section here when ready
+          - Section title: "Prefer to Schedule Directly?"
+          - Description: "Pick a time that works for you and we'll call you for a 15-minute discovery conversation."
+          - Embed Calendly widget for scheduling
+      */}
     </>
   );
 }
