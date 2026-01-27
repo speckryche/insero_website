@@ -38,7 +38,7 @@ const contactPageSchema = {
     url: 'https://insero.cloud',
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+1-541-951-6990',
+      telephone: '+1-844-252-3185',
       contactType: 'sales',
       email: 'sales@insero.cloud',
       availableLanguage: 'English',

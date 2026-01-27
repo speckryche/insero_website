@@ -2,9 +2,9 @@
 
 export const company = {
   name: 'Insero',
-  phone: '541-951-6990',
-  phoneFormatted: '(541) 951-6990',
-  phoneLink: 'tel:+15419516990',
+  phone: '844-252-3185',
+  phoneFormatted: '(844) 252-3185',
+  phoneLink: 'tel:+18442523185',
   email: 'sales@insero.cloud',
   emailLink: 'mailto:sales@insero.cloud',
   location: {

@@ -86,7 +86,7 @@ const organizationSchema = {
     'Expert cloud and connectivity consulting. We help businesses find the best voice, internet, SD-WAN, and security solutions at no cost.',
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+1-541-951-6990',
+    telephone: '+1-844-252-3185',
     contactType: 'sales',
     email: 'sales@insero.cloud',
     availableLanguage: 'English',
