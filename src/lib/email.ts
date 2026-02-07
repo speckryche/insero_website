@@ -111,7 +111,7 @@ type AuditLeadNotificationData = {
   fullName: string;
   company: string;
   email: string;
-  phone: string;
+  phone?: string;
   employeeCount: string;
   telecomSpend: string;
   frustration?: string;
