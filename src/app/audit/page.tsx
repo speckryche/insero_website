@@ -1,0 +1,75 @@
+import type { Metadata } from 'next';
+import { AuditPageClient } from './AuditPageClient';
+
+export const metadata: Metadata = {
+  title: 'Free Telecom Assessment | Find Savings on Internet & Phone',
+  description:
+    'Get a free telecom cost & risk assessment for your business. We compare 25+ carriers to find savings on internet, phone, and network services. No cost, no obligation.',
+  keywords: [
+    'free telecom assessment',
+    'telecom cost assessment',
+    'business phone savings',
+    'internet cost review',
+    'carrier comparison',
+    'telecom risk assessment',
+    'business telecom',
+    'telecom savings',
+  ],
+  openGraph: {
+    title: 'Free Telecom Assessment | Insero',
+    description:
+      'Get a free telecom cost & risk assessment. We compare 25+ carriers to find savings on internet, phone, and network services.',
+    url: 'https://insero.cloud/audit',
+  },
+  alternates: {
+    canonical: 'https://insero.cloud/audit',
+  },
+};
+
+const auditPageSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Free Telecom Cost & Risk Assessment',
+    description:
+      'Get a free telecom cost & risk assessment for your business. We compare 25+ carriers to find savings on internet, phone, and network services.',
+    url: 'https://insero.cloud/audit',
+    provider: {
+      '@type': 'Organization',
+      name: 'Insero',
+      url: 'https://insero.cloud',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Telecom Cost & Risk Assessment',
+    description:
+      'Free assessment of your business telecom services including line-by-line bill analysis, price benchmarking against 25+ carriers, and redundancy risk assessment.',
+    provider: {
+      '@type': 'Organization',
+      name: 'Insero',
+      url: 'https://insero.cloud',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: 'Free telecom assessment with no obligation',
+    },
+  },
+];
+
+export default function AuditPage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(auditPageSchema),
+        }}
+      />
+      <AuditPageClient />
+    </>
+  );
+}
