@@ -15,23 +15,23 @@
      Teal-forward palette with warm accent for CTAs
      ═══════════════════════════════════════════════════════════ */
 
-  /* Primary - Insero Teal */
-  --color-primary: #33baab;
-  --color-primary-dark: #2a9d90;
-  --color-primary-light: #4fd1c5;
-  --color-primary-50: #e6f7f5;
-  --color-primary-100: #ccefec;
-  --color-primary-900: #134e48;
+  /* Primary - Bright Blue */
+  --color-primary: #3498db;
+  --color-primary-dark: #2980b9;
+  --color-primary-light: #5dade2;
+  --color-primary-50: #ebf5fb;
+  --color-primary-100: #d6eaf8;
+  --color-primary-900: #1a4971;
 
-  /* Secondary - Deep Navy (for contrast & depth) */
-  --color-secondary: #0f2d3d;
-  --color-secondary-light: #1a4459;
-  --color-secondary-dark: #091c27;
+  /* Secondary - Soft Blue-Gray */
+  --color-secondary: #2c3e50;
+  --color-secondary-light: #34495e;
+  --color-secondary-dark: #1a252f;
 
-  /* Accent - Warm Coral (CTAs that pop) */
-  --color-accent: #ff6b4a;
-  --color-accent-dark: #e55a3a;
-  --color-accent-light: #ff8a70;
+  /* Accent - Teal-Green */
+  --color-accent: #1abc9c;
+  --color-accent-dark: #16a085;
+  --color-accent-light: #48c9b0;
 
   /* Neutrals */
   --color-white: #ffffff;
