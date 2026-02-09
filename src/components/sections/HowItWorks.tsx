@@ -109,11 +109,11 @@ export function HowItWorks() {
                   delay: index * 0.2,
                   ease: [0.22, 1, 0.36, 1]
                 }}
-                className="relative"
+                className="relative h-full"
               >
-                <div className="relative group">
+                <div className="relative group h-full">
                   {/* Card */}
-                  <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 lg:p-10 text-center border border-white/10 hover:border-white/20 transition-all duration-500 hover:bg-white/[0.08]">
+                  <div className="h-full bg-white/5 backdrop-blur-sm rounded-2xl p-8 lg:p-10 text-center border border-white/10 hover:border-white/20 transition-all duration-500 hover:bg-white/[0.08]">
                     {/* Step number */}
                     <motion.div
                       initial={{ scale: 0 }}
