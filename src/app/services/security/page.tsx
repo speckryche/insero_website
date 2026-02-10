@@ -2,24 +2,25 @@ import type { Metadata } from 'next';
 import { SecurityPageClient } from './SecurityPageClient';
 
 export const metadata: Metadata = {
-  title: 'Network Security - Firewall, Threat Protection & VPN Solutions',
+  title: 'Managed Cybersecurity & Firewall Solutions for Business',
   description:
-    'Enterprise-grade security made accessible. Firewall solutions, threat protection, VPN services, and 24/7 security monitoring. Protect your business without complexity.',
+    'Enterprise-grade managed cybersecurity, firewall, and threat protection for your business. Compare security providers and get expert guidance at zero cost.',
   keywords: [
-    'network security',
+    'managed cybersecurity services for business',
+    'managed firewall services',
+    'network security solutions provider',
+    'cybersecurity consulting services',
+    'small business cybersecurity solutions',
     'firewall solutions',
     'threat protection',
     'VPN services',
     'security monitoring',
-    'cybersecurity',
-    'business security',
-    'managed security',
     'SIEM',
   ],
   openGraph: {
-    title: 'Network Security Solutions | Insero',
+    title: 'Managed Cybersecurity & Firewall Solutions | Insero',
     description:
-      'Enterprise-grade security at SMB budgets. Firewall, threat protection, VPN, and 24/7 monitoring.',
+      'Enterprise-grade managed cybersecurity, firewall, and threat protection. Compare security providers at zero cost.',
     url: 'https://insero.cloud/services/security',
   },
   alternates: {

@@ -15,22 +15,23 @@ const baseUrl = 'https://insero.cloud';
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Insero | Cloud & Connectivity Consulting',
+    default: 'Telecom Broker & Connectivity Consultant | Insero',
     template: '%s | Insero',
   },
   description:
-    'Expert cloud and connectivity consulting at zero cost to you. We simplify complexity and help you save money on voice, internet, SD-WAN, and security solutions.',
+    'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
   keywords: [
+    'telecom broker',
+    'telecom consultant',
+    'telecom brokerage services',
+    'vendor agnostic telecom consulting',
+    'compare telecom providers for business',
+    'telecom cost reduction consultant',
     'cloud consulting',
-    'connectivity',
-    'voice solutions',
-    'internet connectivity',
-    'SD-WAN',
-    'network security',
-    'telecom consulting',
     'VoIP',
     'business internet',
-    'network redundancy',
+    'SD-WAN',
+    'network security',
   ],
   authors: [{ name: 'Insero' }],
   creator: 'Insero',
@@ -51,9 +52,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: baseUrl,
     siteName: 'Insero',
-    title: 'Insero | Cloud & Connectivity Consulting',
+    title: 'Telecom Broker & Connectivity Consultant | Insero',
     description:
-      'Expert guidance at zero cost to you. We\'re paid by carriers, not clients.',
+      'Vendor-agnostic telecom broker that compares 100+ carriers. Zero cost to you — we\'re paid by carriers, not clients.',
     images: [
       {
         url: '/og-image.png', // Replace with your 1200x630px PNG image
@@ -65,9 +66,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Insero | Cloud & Connectivity Consulting',
+    title: 'Telecom Broker & Connectivity Consultant | Insero',
     description:
-      'Expert cloud and connectivity consulting at zero cost to you. Voice, internet, SD-WAN, and security solutions.',
+      'Vendor-agnostic telecom broker that compares 100+ carriers. Voice, internet, SD-WAN, and security solutions at zero cost to you.',
     images: ['/og-image.png'], // Replace with your 1200x630px PNG image
   },
   alternates: {

@@ -2,24 +2,25 @@ import type { Metadata } from 'next';
 import { SDWANPageClient } from './SDWANPageClient';
 
 export const metadata: Metadata = {
-  title: 'SD-WAN & Network Redundancy - Intelligent Network Solutions',
+  title: 'SD-WAN Solutions for Business | Network Redundancy & WAN Optimization',
   description:
-    'Never lose connection with SD-WAN and network redundancy solutions. Automatic failover, traffic prioritization, and multi-site connectivity. Reduce WAN costs by 30-50%.',
+    'Find the right SD-WAN solution for your business. Compare providers for automatic failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
   keywords: [
-    'SD-WAN',
+    'SD-WAN solutions for business',
+    'SD-WAN consultant',
+    'SD-WAN cost comparison',
+    'managed SD-WAN provider',
     'software-defined WAN',
     'network redundancy',
     'failover solutions',
-    'load balancing',
     'WAN optimization',
     'multi-site connectivity',
-    'network resilience',
-    'business continuity',
+    'SD-WAN vs MPLS',
   ],
   openGraph: {
-    title: 'SD-WAN & Redundancy Solutions | Insero',
+    title: 'SD-WAN Solutions for Business | Insero',
     description:
-      'Intelligent network management with automatic failover. Reduce WAN costs by 30-50% while improving reliability.',
+      'Compare SD-WAN providers for automatic failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
     url: 'https://insero.cloud/services/sdwan',
   },
   alternates: {

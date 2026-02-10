@@ -9,24 +9,25 @@ import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
 
 export const metadata: Metadata = {
-  title: 'Insero | Cloud & Connectivity Consulting - Zero Cost Expert Guidance',
+  title: 'Telecom Broker & Connectivity Consultant | Free Expert Guidance - Insero',
   description:
-    'Get expert cloud and connectivity consulting at zero cost. Insero helps businesses save money on voice, internet, SD-WAN, and security solutions. Free consultation available.',
+    'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
   keywords: [
+    'telecom broker',
+    'telecom consultant',
+    'vendor agnostic telecom consulting',
+    'compare telecom providers for business',
+    'telecom cost reduction consultant',
     'cloud consulting',
     'connectivity consulting',
-    'telecom broker',
-    'voice solutions',
-    'business internet',
-    'SD-WAN',
-    'network security',
-    'free consultation',
+    'telecom brokerage services',
     'carrier comparison',
+    'free telecom consultation',
   ],
   openGraph: {
-    title: 'Insero | Cloud & Connectivity Consulting',
+    title: 'Telecom Broker & Connectivity Consultant | Insero',
     description:
-      'Expert guidance at zero cost to you. We compare 100+ carriers to find the best solutions for your business.',
+      'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
     url: 'https://insero.cloud',
   },
   alternates: {

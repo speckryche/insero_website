@@ -2,24 +2,25 @@ import type { Metadata } from 'next';
 import { InternetPageClient } from './InternetPageClient';
 
 export const metadata: Metadata = {
-  title: 'Internet Connectivity - Fiber, Dedicated & Broadband Solutions',
+  title: 'Business Internet Provider Comparison | Fiber, DIA & Broadband Solutions',
   description:
-    'Find the best business internet solution for your needs. Compare fiber, dedicated internet, broadband, and 5G options from 100+ carriers. Free consultation and carrier comparison.',
+    'Compare business internet providers across fiber, dedicated internet access, broadband, and 5G. Get the best pricing from 100+ carriers — free consultation.',
   keywords: [
-    'business internet',
-    'fiber internet',
-    'dedicated internet access',
+    'business internet provider comparison',
+    'dedicated internet access for business',
+    'business fiber internet providers',
+    'best business internet service',
     'DIA',
     'broadband',
     '5G business internet',
     'enterprise internet',
-    'internet service provider',
     'ISP comparison',
+    'ethernet dedicated internet vs broadband',
   ],
   openGraph: {
-    title: 'Internet Connectivity Solutions | Insero',
+    title: 'Business Internet Provider Comparison | Insero',
     description:
-      'Compare internet options from 100+ carriers. Find the best speed, reliability, and price for your business.',
+      'Compare business internet providers across fiber, dedicated internet, broadband, and 5G from 100+ carriers. Free consultation.',
     url: 'https://insero.cloud/services/internet',
   },
   alternates: {

@@ -2,23 +2,23 @@ import type { Metadata } from 'next';
 import { AuditPageClient } from './AuditPageClient';
 
 export const metadata: Metadata = {
-  title: 'Free Telecom Assessment | Find Savings on Internet & Phone',
+  title: 'Free Telecom Cost Assessment | Find Savings on Internet & Phone',
   description:
-    'Get a free telecom cost & risk assessment for your business. We compare 25+ carriers to find savings on internet, phone, and network services. No cost, no obligation.',
+    'Free telecom cost and risk assessment for your business. We compare 100+ carriers to find savings on internet, phone, and network services. No cost, no obligation.',
   keywords: [
     'free telecom assessment',
     'telecom cost assessment',
+    'telecom expense management',
+    'telecom cost reduction',
     'business phone savings',
     'internet cost review',
     'carrier comparison',
     'telecom risk assessment',
-    'business telecom',
-    'telecom savings',
   ],
   openGraph: {
-    title: 'Free Telecom Assessment | Insero',
+    title: 'Free Telecom Cost Assessment | Insero',
     description:
-      'Get a free telecom cost & risk assessment. We compare 25+ carriers to find savings on internet, phone, and network services.',
+      'Free telecom cost and risk assessment. We compare 100+ carriers to find savings on internet, phone, and network services.',
     url: 'https://insero.cloud/audit',
   },
   alternates: {

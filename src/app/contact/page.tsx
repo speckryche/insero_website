@@ -2,22 +2,22 @@ import type { Metadata } from 'next';
 import { ContactPageClient } from './ContactPageClient';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Schedule Your Free Consultation',
+  title: 'Schedule a Free Telecom Consultation',
   description:
-    'Schedule a free consultation with Insero. Get expert cloud and connectivity advice at zero cost. No pressure, no obligation. Contact us today.',
+    'Schedule a free consultation with a vendor-agnostic telecom broker. Get expert guidance on voice, internet, SD-WAN, and security at zero cost. No pressure, no obligation.',
   keywords: [
-    'contact',
-    'free consultation',
-    'telecom consulting',
+    'free telecom consultation',
+    'telecom consultant',
+    'telecom broker consultation',
     'cloud consulting',
     'connectivity advice',
     'schedule consultation',
-    'get quote',
+    'telecom cost reduction',
   ],
   openGraph: {
-    title: 'Contact Us | Insero',
+    title: 'Schedule a Free Telecom Consultation | Insero',
     description:
-      'Schedule your free consultation. Expert guidance at zero cost to you.',
+      'Schedule a free consultation with a vendor-agnostic telecom broker. Expert guidance at zero cost to you.',
     url: 'https://insero.cloud/contact',
   },
   alternates: {

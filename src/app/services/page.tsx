@@ -2,23 +2,24 @@ import type { Metadata } from 'next';
 import { ServicesPageClient } from './ServicesPageClient';
 
 export const metadata: Metadata = {
-  title: 'Services - Voice, Internet, SD-WAN & Security Solutions',
+  title: 'Telecom Brokerage Services | Voice, Internet, SD-WAN & Security',
   description:
-    'Explore Insero\'s cloud and connectivity services: Voice/VoIP, Internet connectivity, SD-WAN & redundancy, and network security. Free consultation and carrier comparison.',
+    'Vendor-agnostic telecom brokerage services: compare Voice/VoIP, business internet, SD-WAN, and cybersecurity providers. Free carrier comparison from 100+ providers.',
   keywords: [
+    'telecom brokerage services',
+    'vendor agnostic telecom consulting',
     'voice solutions',
     'VoIP services',
     'business internet',
     'SD-WAN',
-    'network security',
+    'managed cybersecurity',
     'telecom services',
-    'cloud connectivity',
-    'unified communications',
+    'carrier comparison',
   ],
   openGraph: {
-    title: 'Our Services | Insero',
+    title: 'Telecom Brokerage Services | Insero',
     description:
-      'Voice, Internet, SD-WAN, and Security solutions. We compare top carriers to find the perfect fit for your business.',
+      'Vendor-agnostic telecom brokerage: compare Voice, Internet, SD-WAN, and Security providers. Free carrier comparison from 100+ providers.',
     url: 'https://insero.cloud/services',
   },
   alternates: {

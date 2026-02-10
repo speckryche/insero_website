@@ -2,24 +2,25 @@ import type { Metadata } from 'next';
 import { VoicePageClient } from './VoicePageClient';
 
 export const metadata: Metadata = {
-  title: 'Voice Connectivity - VoIP, Cloud PBX & Unified Communications',
+  title: 'Business Phone Systems | Hosted PBX, VoIP & UCaaS Provider Comparison',
   description:
-    'Modern business phone systems that scale with your needs. VoIP, Cloud PBX, unified communications, call center solutions, and SIP trunking. Reduce costs by up to 60%.',
+    'Compare hosted PBX, VoIP, and UCaaS providers to find the best business phone system. Expert guidance, zero cost. Reduce phone costs by up to 60%.',
   keywords: [
+    'business phone system consultant',
+    'hosted PBX for business',
+    'UCaaS providers comparison',
     'VoIP',
     'Cloud PBX',
     'business phone systems',
     'unified communications',
-    'call center solutions',
+    'cloud phone system for business',
     'SIP trunking',
-    'voice over IP',
-    'UCaaS',
-    'hosted PBX',
+    'UCaaS vs hosted PBX',
   ],
   openGraph: {
-    title: 'Voice Connectivity Solutions | Insero',
+    title: 'Business Phone Systems | VoIP & UCaaS Comparison | Insero',
     description:
-      'Modern VoIP and unified communications solutions. Reduce phone and voice service expenses with cloud-based phone systems.',
+      'Compare hosted PBX, VoIP, and UCaaS providers to find the best business phone system. Expert guidance at zero cost.',
     url: 'https://insero.cloud/services/voice',
   },
   alternates: {
