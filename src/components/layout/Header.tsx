@@ -79,7 +79,7 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
         isScrolled
           ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-100/50'
           : 'bg-transparent'
@@ -100,7 +100,7 @@ export function Header() {
               <img
                 src="/insero-logo-white.png"
                 alt="Insero"
-                className={`h-14 lg:h-[70px] w-auto transition-all duration-500 ${
+                className={`h-14 lg:h-[70px] w-auto transition-all duration-200 ${
                   isScrolled ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
                 }`}
               />
@@ -108,7 +108,7 @@ export function Header() {
               <img
                 src="/insero-logo-dark.png"
                 alt="Insero"
-                className={`h-14 lg:h-[70px] w-auto absolute left-0 top-0 transition-all duration-500 ${
+                className={`h-14 lg:h-[70px] w-auto absolute left-0 top-0 transition-all duration-200 ${
                   isScrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
               />
