@@ -84,7 +84,7 @@ export function HeroImage() {
           >
             <span className="whitespace-nowrap" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 4px 24px rgba(0,0,0,0.4)' }}>Cloud &amp; Connectivity.</span>{' '}
             <span className="relative">
-              <span style={{ color: '#16a085' }}>Simplified.</span>
+              <span style={{ color: '#1abc9c' }}>Simplified.</span>
               {/* Decorative underline */}
               <motion.svg
                 initial={{ pathLength: 0, opacity: 0 }}
