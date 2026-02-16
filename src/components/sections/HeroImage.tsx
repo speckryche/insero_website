@@ -30,7 +30,7 @@ export function HeroImage() {
       {/* Hero Image Background */}
       <motion.div className="absolute inset-0" style={{ scale: imageScale }}>
         <Image
-          src="/Test Image 2.jpg"
+          src="/Test Image 3.png"
           alt="Insero Cloud & Connectivity"
           fill
           priority
@@ -40,84 +40,26 @@ export function HeroImage() {
         />
       </motion.div>
 
-      {/* Multi-layer gradient overlays for text readability on B&W image */}
+      {/* Gradient overlays for text readability */}
       <div className="absolute inset-0">
-        {/* Base darkening layer — heavier for B&W contrast */}
-        <div className="absolute inset-0 bg-black/50" />
-        {/* Vertical gradient — strongest at center where text sits */}
+        {/* Base darkening layer — lighter for color image */}
+        <div className="absolute inset-0 bg-black/35" />
+        {/* Vertical gradient — concentrated where text sits */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.65) 35%, rgba(0,0,0,0.55) 65%, rgba(0,0,0,0.7) 100%)',
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.45) 35%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.5) 100%)',
           }}
         />
-        {/* Brand color tint — adds warmth to the B&W image */}
+        {/* Radial vignette — subtle edge darkening */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, rgba(51,186,171,0.08) 0%, transparent 50%, rgba(255,107,74,0.06) 100%)',
-          }}
-        />
-        {/* Radial vignette — darkens edges */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.45) 100%)',
+            background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.3) 100%)',
           }}
         />
       </div>
 
-      {/* Floating orbs — subtle atmospheric accents over the image */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{
-            y: [0, -30, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-1/4 left-[10%] w-[400px] h-[400px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(51, 186, 171, 0.2) 0%, transparent 70%)',
-            filter: 'blur(40px)'
-          }}
-        />
-        <motion.div
-          animate={{
-            y: [0, 40, 0],
-            scale: [1, 0.9, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute bottom-1/4 right-[5%] w-[500px] h-[500px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(255, 107, 74, 0.15) 0%, transparent 70%)',
-            filter: 'blur(60px)'
-          }}
-        />
-        <motion.div
-          animate={{
-            x: [0, 20, 0],
-            y: [0, -20, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-[60%] left-[60%] w-[300px] h-[300px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
-            filter: 'blur(50px)'
-          }}
-        />
-      </div>
 
       {/* Main content */}
       <motion.div
@@ -142,7 +84,7 @@ export function HeroImage() {
           >
             <span className="whitespace-nowrap" style={{ color: '#ffffff', textShadow: '0 2px 8px rgba(0,0,0,0.6), 0 4px 24px rgba(0,0,0,0.4)' }}>Cloud &amp; Connectivity.</span>{' '}
             <span className="relative">
-              <span className="text-gradient">Simplified.</span>
+              <span style={{ color: '#16a085' }}>Simplified.</span>
               {/* Decorative underline */}
               <motion.svg
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -155,7 +97,7 @@ export function HeroImage() {
               >
                 <motion.path
                   d="M2 8C30 4 70 2 100 4C130 6 170 10 198 6"
-                  stroke="var(--color-primary)"
+                  stroke="#16a085"
                   strokeWidth="3"
                   strokeLinecap="round"
                   fill="none"
@@ -187,7 +129,8 @@ export function HeroImage() {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group flex items-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-full shadow-2xl shadow-[var(--color-accent)]/30 hover:shadow-[var(--color-accent)]/50 transition-all duration-300"
+                className="group flex items-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-full shadow-2xl transition-all duration-300"
+                style={{ backgroundColor: '#3498db', boxShadow: '0 25px 50px -12px rgba(52,152,219,0.4)' }}
               >
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Schedule Your Free Consultation</span>
