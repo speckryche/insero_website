@@ -4,7 +4,7 @@ import { AuditPageClient } from './AuditPageClient';
 export const metadata: Metadata = {
   title: 'Free Telecom Cost Assessment | Find Savings on Internet & Phone',
   description:
-    'Free telecom cost and risk assessment for your business. We compare 100+ carriers to find savings on internet, phone, and network services. No cost, no obligation.',
+    'Free telecom cost and risk assessment. We compare 100+ carriers to find savings on internet, phone, and network services.',
   keywords: [
     'free telecom assessment',
     'telecom cost assessment',
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     description:
       'Free telecom cost and risk assessment. We compare 100+ carriers to find savings on internet, phone, and network services.',
     url: 'https://insero.cloud/audit',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud/audit',

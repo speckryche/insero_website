@@ -11,7 +11,7 @@ import { FAQ } from '@/components/sections/FAQ';
 export const metadata: Metadata = {
   title: 'Telecom Broker & Connectivity Consultant | Free Expert Guidance - Insero',
   description:
-    'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
+    'Vendor-agnostic telecom broker comparing 100+ carriers for voice, internet, SD-WAN, and security. Zero cost to you.',
   keywords: [
     'telecom broker',
     'telecom consultant',
@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     description:
       'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
     url: 'https://insero.cloud',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud',

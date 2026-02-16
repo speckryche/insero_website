@@ -4,7 +4,7 @@ import { SecurityPageClient } from './SecurityPageClient';
 export const metadata: Metadata = {
   title: 'Managed Cybersecurity & Firewall Solutions for Business',
   description:
-    'Enterprise-grade managed cybersecurity, firewall, and threat protection for your business. Compare security providers and get expert guidance at zero cost.',
+    'Enterprise-grade managed cybersecurity, firewall, and threat protection. Compare security providers with free expert guidance.',
   keywords: [
     'managed cybersecurity services for business',
     'managed firewall services',
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description:
       'Enterprise-grade managed cybersecurity, firewall, and threat protection. Compare security providers at zero cost.',
     url: 'https://insero.cloud/services/security',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud/services/security',

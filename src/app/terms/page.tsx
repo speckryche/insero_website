@@ -5,6 +5,12 @@ import { company } from '@/config/company';
 export const metadata: Metadata = {
   title: 'Terms of Service | Insero',
   description: 'Terms of Service for Insero - Read our terms and conditions for using our website and services.',
+  openGraph: {
+    title: 'Terms of Service | Insero',
+    description: 'Terms of Service for Insero - Read our terms and conditions for using our website and services.',
+    url: 'https://insero.cloud/terms',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
+  },
   alternates: {
     canonical: 'https://insero.cloud/terms',
   },

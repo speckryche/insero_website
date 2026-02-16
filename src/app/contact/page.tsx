@@ -4,7 +4,7 @@ import { ContactPageClient } from './ContactPageClient';
 export const metadata: Metadata = {
   title: 'Schedule a Free Telecom Consultation',
   description:
-    'Schedule a free consultation with a vendor-agnostic telecom broker. Get expert guidance on voice, internet, SD-WAN, and security at zero cost. No pressure, no obligation.',
+    'Schedule a free consultation with a vendor-agnostic telecom broker. Expert guidance on voice, internet, SD-WAN, and security.',
   keywords: [
     'free telecom consultation',
     'telecom consultant',
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     description:
       'Schedule a free consultation with a vendor-agnostic telecom broker. Expert guidance at zero cost to you.',
     url: 'https://insero.cloud/contact',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud/contact',

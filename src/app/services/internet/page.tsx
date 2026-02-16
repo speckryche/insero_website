@@ -4,7 +4,7 @@ import { InternetPageClient } from './InternetPageClient';
 export const metadata: Metadata = {
   title: 'Business Internet Provider Comparison | Fiber, DIA & Broadband Solutions',
   description:
-    'Compare business internet providers across fiber, dedicated internet access, broadband, and 5G. Get the best pricing from 100+ carriers — free consultation.',
+    'Compare business internet providers across fiber, DIA, broadband, and 5G. Best pricing from 100+ carriers — free consultation.',
   keywords: [
     'business internet provider comparison',
     'dedicated internet access for business',
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description:
       'Compare business internet providers across fiber, dedicated internet, broadband, and 5G from 100+ carriers. Free consultation.',
     url: 'https://insero.cloud/services/internet',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud/services/internet',

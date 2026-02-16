@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description:
       'Compare hosted PBX, VoIP, and UCaaS providers to find the best business phone system. Expert guidance at zero cost.',
     url: 'https://insero.cloud/services/voice',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud/services/voice',

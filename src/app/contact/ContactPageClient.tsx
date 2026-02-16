@@ -338,10 +338,10 @@ export function ContactPageClient() {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-semibold text-[var(--color-secondary)] mb-3">
+                    <fieldset>
+                      <legend className="block text-sm font-semibold text-[var(--color-secondary)] mb-3">
                         What services are you interested in? (Select all that apply)
-                      </label>
+                      </legend>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {services.map((service) => (
                           <label
@@ -351,6 +351,7 @@ export function ContactPageClient() {
                             <input
                               type="checkbox"
                               value={service}
+                              aria-label={service}
                               {...register('services')}
                               className="w-5 h-5 rounded border-gray-300 text-[var(--color-primary)] focus:ring-[var(--color-primary)] focus:ring-offset-0 cursor-pointer"
                             />
@@ -358,7 +359,7 @@ export function ContactPageClient() {
                           </label>
                         ))}
                       </div>
-                    </div>
+                    </fieldset>
 
                     <div>
                       <label htmlFor="message" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">

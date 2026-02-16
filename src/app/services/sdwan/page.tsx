@@ -4,7 +4,7 @@ import { SDWANPageClient } from './SDWANPageClient';
 export const metadata: Metadata = {
   title: 'SD-WAN Solutions for Business | Network Redundancy & WAN Optimization',
   description:
-    'Find the right SD-WAN solution for your business. Compare providers for automatic failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
+    'Compare SD-WAN providers for failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
   keywords: [
     'SD-WAN solutions for business',
     'SD-WAN consultant',
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description:
       'Compare SD-WAN providers for automatic failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
     url: 'https://insero.cloud/services/sdwan',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
   alternates: {
     canonical: 'https://insero.cloud/services/sdwan',

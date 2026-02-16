@@ -1,0 +1,39 @@
+# Insero
+
+> Vendor-agnostic telecom broker comparing 100+ carriers for voice, internet, SD-WAN, and security solutions. Zero cost to businesses.
+
+## About
+
+Insero is a telecom brokerage that helps businesses find the best connectivity and communication solutions. We compare offerings from over 100 carriers and providers to match each client with the right solution — at no cost to them. Carriers pay us directly, so our advice is unbiased.
+
+## Services
+
+- **Voice Connectivity**: Hosted PBX, VoIP, UCaaS, SIP trunking, and cloud phone systems
+- **Internet Connectivity**: Fiber, dedicated internet access (DIA), broadband, and 5G for business
+- **SD-WAN & Redundancy**: Software-defined WAN, automatic failover, traffic prioritization, and multi-site connectivity
+- **Network Security**: Managed cybersecurity, firewalls, threat protection, VPN, and security monitoring
+
+## How It Works
+
+1. Discovery call to understand your needs
+2. We compare solutions from 100+ carriers
+3. Present unbiased recommendations
+4. Handle procurement and implementation support
+5. Ongoing support at no cost
+
+## Key Pages
+
+- Homepage: https://insero.cloud
+- Services Overview: https://insero.cloud/services
+- Voice Solutions: https://insero.cloud/services/voice
+- Internet Solutions: https://insero.cloud/services/internet
+- SD-WAN Solutions: https://insero.cloud/services/sdwan
+- Security Solutions: https://insero.cloud/services/security
+- Free Assessment: https://insero.cloud/audit
+- Contact: https://insero.cloud/contact
+
+## Contact
+
+- Phone: (844) 252-3185
+- Email: sales@insero.cloud
+- Location: Jacksonville, OR

@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: '%s | Insero',
   },
   description:
-    'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
+    'Vendor-agnostic telecom broker comparing 100+ carriers for voice, internet, SD-WAN, and security. Zero cost to you.',
   keywords: [
     'telecom broker',
     'telecom consultant',
@@ -82,15 +82,23 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Insero',
   url: baseUrl,
-  logo: `${baseUrl}/logo.png`,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${baseUrl}/insero-logo-dark.png`,
+    width: 200,
+    height: 60,
+  },
+  image: `${baseUrl}/og-image.png`,
   description:
-    'Expert cloud and connectivity consulting. We help businesses find the best voice, internet, SD-WAN, and security solutions at no cost.',
+    'Vendor-agnostic telecom broker comparing 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for businesses at zero cost.',
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+1-844-252-3185',
     contactType: 'sales',
     email: 'sales@insero.cloud',
     availableLanguage: 'English',
+    areaServed: 'US',
+    contactOption: 'TollFree',
   },
   address: {
     '@type': 'PostalAddress',
@@ -98,8 +106,19 @@ const organizationSchema = {
     addressRegion: 'OR',
     addressCountry: 'US',
   },
-  sameAs: [],
-  areaServed: 'US',
+  areaServed: {
+    '@type': 'Country',
+    name: 'US',
+  },
+  knowsAbout: [
+    'Telecom Brokerage',
+    'Voice Connectivity',
+    'Business Internet',
+    'SD-WAN',
+    'Network Security',
+    'UCaaS',
+    'VoIP',
+  ],
   serviceType: [
     'Cloud Consulting',
     'Voice Connectivity',

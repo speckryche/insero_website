@@ -5,6 +5,12 @@ import { company } from '@/config/company';
 export const metadata: Metadata = {
   title: 'Privacy Policy | Insero',
   description: 'Privacy Policy for Insero - Learn how we collect, use, and protect your personal information.',
+  openGraph: {
+    title: 'Privacy Policy | Insero',
+    description: 'Privacy Policy for Insero - Learn how we collect, use, and protect your personal information.',
+    url: 'https://insero.cloud/privacy',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
+  },
   alternates: {
     canonical: 'https://insero.cloud/privacy',
   },
