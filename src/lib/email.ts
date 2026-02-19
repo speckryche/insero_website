@@ -212,3 +212,116 @@ This lead has been automatically added to the CRM.
 
   return emailData;
 }
+
+type EcentialLeadNotificationData = {
+  fullName: string;
+  centerName: string;
+  email: string;
+  phone: string;
+  locationCount: string;
+  staffCount: string;
+  challenge?: string;
+};
+
+export async function sendEcentialLeadNotification(data: EcentialLeadNotificationData) {
+  const { fullName, centerName, email, phone, locationCount, staffCount, challenge } = data;
+
+  const emailContent = `
+New Ecential Partner Lead
+
+[PARTNER:ECENTIAL] - Lead from Ecential childcare newsletter partnership
+
+Contact Information:
+- Name: ${fullName}
+- Center Name: ${centerName}
+- Email: ${email}
+- Phone: ${phone}
+
+Center Details:
+- Number of Locations: ${locationCount}
+- Number of Staff: ${staffCount}
+
+Biggest Phone Challenge:
+${challenge || 'Not provided'}
+
+---
+Lead source: Ecential Partnership (childcare newsletter - 25k+ subscribers)
+This lead has been automatically added to the CRM.
+  `.trim();
+
+  const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #1E293B; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+    .content { background: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; }
+    .section { margin-bottom: 20px; }
+    .label { font-weight: bold; color: #1E293B; }
+    .value { margin-top: 4px; }
+    .footer { background: #f3f4f6; padding: 15px; border-radius: 0 0 8px 8px; font-size: 12px; color: #6b7280; }
+    .badge { display: inline-block; background: #4A9FD9; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .source-note { background: #EBF5FC; border: 1px solid #D1E9F7; border-radius: 6px; padding: 12px; margin-bottom: 20px; font-size: 13px; color: #1E293B; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="margin: 0; font-size: 20px;">New Ecential Partner Lead <span class="badge">PARTNER:ECENTIAL</span></h1>
+    </div>
+    <div class="content">
+      <div class="source-note">
+        This lead came from the <strong>Ecential partnership</strong> — childcare newsletter with 25k+ subscribers.
+      </div>
+      <div class="section">
+        <div class="label">Contact Information</div>
+        <div class="value">
+          <strong>Name:</strong> ${fullName}<br>
+          <strong>Center Name:</strong> ${centerName}<br>
+          <strong>Email:</strong> <a href="mailto:${email}">${email}</a><br>
+          <strong>Phone:</strong> ${phone}
+        </div>
+      </div>
+      <div class="section">
+        <div class="label">Center Details</div>
+        <div class="value">
+          <strong>Locations:</strong> ${locationCount}<br>
+          <strong>Staff:</strong> ${staffCount}
+        </div>
+      </div>
+      <div class="section">
+        <div class="label">Biggest Phone Challenge</div>
+        <div class="value">${challenge || 'Not provided'}</div>
+      </div>
+    </div>
+    <div class="footer">
+      Lead source: Ecential Partnership | This lead has been automatically added to the CRM.
+    </div>
+  </div>
+</body>
+</html>
+  `.trim();
+
+  if (!resend) {
+    console.warn('Resend not configured - skipping Ecential email notification');
+    console.log('Ecential lead data:', data);
+    return null;
+  }
+
+  const { data: emailData, error } = await resend.emails.send({
+    from: 'Insero Website <noreply@insero.cloud>',
+    to: ['sales@insero.cloud'],
+    subject: `New Ecential Partner Lead: ${fullName} from ${centerName}`,
+    text: emailContent,
+    html: htmlContent,
+  });
+
+  if (error) {
+    console.error('Failed to send Ecential email notification:', error);
+    throw error;
+  }
+
+  return emailData;
+}
