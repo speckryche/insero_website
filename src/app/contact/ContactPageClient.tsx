@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import {
@@ -23,6 +23,7 @@ interface FormData {
   company: string;
   services: string[];
   message: string;
+  _hp?: string;
 }
 
 const services = [
@@ -56,7 +57,7 @@ export function ContactPageClient() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData & { _hp?: string }) => {
+  const onSubmit = async (data: FormData) => {
     setSubmitError(null);
 
     const selectedServices = data.services?.filter(Boolean) || [];
@@ -255,7 +256,7 @@ export function ContactPageClient() {
                         id="website"
                         tabIndex={-1}
                         autoComplete="off"
-                        {...register('_hp' as keyof FormData)}
+                        {...register('_hp')}
                       />
                     </div>
 

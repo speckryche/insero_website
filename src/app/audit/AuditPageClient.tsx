@@ -162,6 +162,7 @@ interface FormData {
   employeeCount: string;
   telecomSpend: string;
   frustration: string;
+  _hp?: string;
 }
 
 export function AuditPageClient() {
@@ -191,7 +192,7 @@ export function AuditPageClient() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData & { _hp?: string }) => {
+  const onSubmit = async (data: FormData) => {
     setSubmitError(null);
     const payload: AuditFormData = {
       fullName: data.fullName,
@@ -602,7 +603,7 @@ export function AuditPageClient() {
                       id="website"
                       tabIndex={-1}
                       autoComplete="off"
-                      {...register('_hp' as keyof FormData)}
+                      {...register('_hp')}
                     />
                   </div>
 

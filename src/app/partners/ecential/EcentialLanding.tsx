@@ -197,6 +197,7 @@ interface FormData {
   locationCount: string;
   staffCount: string;
   challenge: string;
+  _hp?: string;
 }
 
 export function EcentialLanding() {
@@ -238,7 +239,7 @@ export function EcentialLanding() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData & { _hp?: string }) => {
+  const onSubmit = async (data: FormData) => {
     setSubmitError(null);
     const payload: EcentialFormData = {
       fullName: data.fullName,
@@ -633,7 +634,7 @@ export function EcentialLanding() {
                       id="website"
                       tabIndex={-1}
                       autoComplete="off"
-                      {...register('_hp' as keyof FormData)}
+                      {...register('_hp')}
                     />
                   </div>
 
