@@ -2,6 +2,7 @@
 
 import { supabase, WebsiteLead } from '@/lib/supabase';
 import { sendLeadNotification } from '@/lib/email';
+import { checkForSpam } from '@/lib/spam';
 
 export type ContactFormData = {
   firstName: string;
@@ -11,6 +12,10 @@ export type ContactFormData = {
   company?: string;
   services?: string[];
   message?: string;
+  /** Hidden honeypot field — should be empty for real users */
+  _hp?: string;
+  /** Timestamp when the form was rendered (ms) */
+  _t?: number;
 };
 
 export type SubmitResult = {
@@ -20,6 +25,24 @@ export type SubmitResult = {
 
 export async function submitContactForm(data: ContactFormData): Promise<SubmitResult> {
   try {
+    // Spam detection
+    const spamCheck = checkForSpam({
+      honeypot: data._hp,
+      formLoadedAt: data._t,
+      textFields: [
+        data.firstName,
+        data.lastName,
+        data.company || '',
+      ],
+      email: data.email,
+    });
+
+    if (spamCheck.isSpam) {
+      console.warn('Spam submission blocked:', spamCheck.reasons);
+      // Return success to not tip off bots that they were caught
+      return { success: true };
+    }
+
     // Insert into Supabase (if configured)
     if (supabase) {
       const lead: WebsiteLead = {

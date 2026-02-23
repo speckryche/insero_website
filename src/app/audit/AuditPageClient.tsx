@@ -167,6 +167,7 @@ interface FormData {
 export function AuditPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formLoadedAt] = useState(() => Date.now());
 
   const heroRef = useRef(null);
   const painRef = useRef(null);
@@ -190,7 +191,7 @@ export function AuditPageClient() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FormData & { _hp?: string }) => {
     setSubmitError(null);
     const payload: AuditFormData = {
       fullName: data.fullName,
@@ -200,6 +201,8 @@ export function AuditPageClient() {
       employeeCount: data.employeeCount,
       telecomSpend: data.telecomSpend,
       frustration: data.frustration || undefined,
+      _hp: data._hp,
+      _t: formLoadedAt,
     };
     const result = await submitAuditForm(payload);
     if (result.success) {
@@ -591,6 +594,18 @@ export function AuditPageClient() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Honeypot field — hidden from humans, visible to bots */}
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+                    <label htmlFor="website">Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      {...register('_hp' as keyof FormData)}
+                    />
+                  </div>
+
                   {/* Full Name */}
                   <div>
                     <label

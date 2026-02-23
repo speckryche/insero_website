@@ -203,6 +203,7 @@ export function EcentialLanding() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [headerScrolled, setHeaderScrolled] = useState(false);
+  const [formLoadedAt] = useState(() => Date.now());
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const heroRef = useRef(null);
@@ -237,7 +238,7 @@ export function EcentialLanding() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FormData & { _hp?: string }) => {
     setSubmitError(null);
     const payload: EcentialFormData = {
       fullName: data.fullName,
@@ -247,6 +248,8 @@ export function EcentialLanding() {
       locationCount: data.locationCount,
       staffCount: data.staffCount,
       challenge: data.challenge || undefined,
+      _hp: data._hp,
+      _t: formLoadedAt,
     };
     const result = await submitEcentialForm(payload);
     if (result.success) {
@@ -622,6 +625,18 @@ export function EcentialLanding() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                  {/* Honeypot field — hidden from humans, visible to bots */}
+                  <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+                    <label htmlFor="website">Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      {...register('_hp' as keyof FormData)}
+                    />
+                  </div>
+
                   {/* Full Name */}
                   <div>
                     <label htmlFor="fullName" className="block text-base font-semibold text-[var(--ec-navy)] mb-2">

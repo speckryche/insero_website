@@ -2,6 +2,7 @@
 
 import { supabase, WebsiteLead } from '@/lib/supabase';
 import { sendAuditLeadNotification } from '@/lib/email';
+import { checkForSpam } from '@/lib/spam';
 
 export type AuditFormData = {
   fullName: string;
@@ -11,6 +12,10 @@ export type AuditFormData = {
   employeeCount: string;
   telecomSpend: string;
   frustration?: string;
+  /** Hidden honeypot field — should be empty for real users */
+  _hp?: string;
+  /** Timestamp when the form was rendered (ms) */
+  _t?: number;
 };
 
 export type SubmitResult = {
@@ -20,6 +25,19 @@ export type SubmitResult = {
 
 export async function submitAuditForm(data: AuditFormData): Promise<SubmitResult> {
   try {
+    // Spam detection
+    const spamCheck = checkForSpam({
+      honeypot: data._hp,
+      formLoadedAt: data._t,
+      textFields: [data.fullName, data.company],
+      email: data.email,
+    });
+
+    if (spamCheck.isSpam) {
+      console.warn('Spam audit submission blocked:', spamCheck.reasons);
+      return { success: true };
+    }
+
     // Split fullName into first_name / last_name
     const spaceIndex = data.fullName.indexOf(' ');
     const firstName = spaceIndex === -1 ? data.fullName : data.fullName.slice(0, spaceIndex);

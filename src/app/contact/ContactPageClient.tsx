@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import {
@@ -43,6 +43,7 @@ const expectations = [
 export function ContactPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formLoadedAt] = useState(() => Date.now());
   const heroRef = useRef(null);
   const formRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -55,7 +56,7 @@ export function ContactPageClient() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FormData & { _hp?: string }) => {
     setSubmitError(null);
 
     const selectedServices = data.services?.filter(Boolean) || [];
@@ -68,6 +69,8 @@ export function ContactPageClient() {
       company: data.company || undefined,
       services: selectedServices.length > 0 ? selectedServices : undefined,
       message: data.message || undefined,
+      _hp: data._hp,
+      _t: formLoadedAt,
     };
 
     const result = await submitContactForm(formData);
@@ -244,6 +247,18 @@ export function ContactPageClient() {
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Honeypot field — hidden from humans, visible to bots */}
+                    <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+                      <label htmlFor="website">Website</label>
+                      <input
+                        type="text"
+                        id="website"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        {...register('_hp' as keyof FormData)}
+                      />
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="firstName" className="block text-sm font-semibold text-[var(--color-secondary)] mb-2">
