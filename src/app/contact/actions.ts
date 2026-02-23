@@ -1,6 +1,7 @@
 'use server';
 
-import { supabase, WebsiteLead } from '@/lib/supabase';
+import { supabaseServer } from '@/lib/supabase-server';
+import { WebsiteLead } from '@/lib/supabase';
 import { sendLeadNotification } from '@/lib/email';
 import { checkForSpam } from '@/lib/spam';
 
@@ -44,7 +45,7 @@ export async function submitContactForm(data: ContactFormData): Promise<SubmitRe
     }
 
     // Insert into Supabase (if configured)
-    if (supabase) {
+    if (supabaseServer) {
       const lead: WebsiteLead = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -56,7 +57,7 @@ export async function submitContactForm(data: ContactFormData): Promise<SubmitRe
         status: 'new',
       };
 
-      const { error: dbError } = await supabase
+      const { error: dbError } = await supabaseServer
         .from('website_leads')
         .insert([lead]);
 
