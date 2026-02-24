@@ -110,6 +110,30 @@ function isSuspiciousEmail(email: string): boolean {
   return false;
 }
 
+export type SpamLogEntry = {
+  form_source: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  company?: string;
+  reasons: string[];
+};
+
+/**
+ * Log a blocked spam submission to the spam_submissions table.
+ */
+export async function logSpamSubmission(
+  supabase: import('@supabase/supabase-js').SupabaseClient | null,
+  entry: SpamLogEntry,
+): Promise<void> {
+  if (!supabase) return;
+  try {
+    await supabase.from('spam_submissions').insert([entry]);
+  } catch (err) {
+    console.error('Failed to log spam submission:', err);
+  }
+}
+
 /**
  * Run all spam checks against a form submission.
  * Returns { isSpam: false } for legitimate submissions.

@@ -3,7 +3,7 @@
 import { supabaseServer } from '@/lib/supabase-server';
 import { WebsiteLead } from '@/lib/supabase';
 import { sendEcentialLeadNotification } from '@/lib/email';
-import { checkForSpam } from '@/lib/spam';
+import { checkForSpam, logSpamSubmission } from '@/lib/spam';
 
 export type EcentialFormData = {
   fullName: string;
@@ -36,6 +36,15 @@ export async function submitEcentialForm(data: EcentialFormData): Promise<Submit
 
     if (spamCheck.isSpam) {
       console.warn('Spam ecential submission blocked:', spamCheck.reasons);
+      const spaceIdx = data.fullName.indexOf(' ');
+      await logSpamSubmission(supabaseServer, {
+        form_source: 'ecential',
+        first_name: spaceIdx === -1 ? data.fullName : data.fullName.slice(0, spaceIdx),
+        last_name: spaceIdx === -1 ? undefined : data.fullName.slice(spaceIdx + 1),
+        email: data.email,
+        company: data.centerName,
+        reasons: spamCheck.reasons,
+      });
       return { success: true };
     }
 

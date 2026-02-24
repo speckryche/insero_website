@@ -3,7 +3,7 @@
 import { supabaseServer } from '@/lib/supabase-server';
 import { WebsiteLead } from '@/lib/supabase';
 import { sendLeadNotification } from '@/lib/email';
-import { checkForSpam } from '@/lib/spam';
+import { checkForSpam, logSpamSubmission } from '@/lib/spam';
 
 export type ContactFormData = {
   firstName: string;
@@ -40,7 +40,14 @@ export async function submitContactForm(data: ContactFormData): Promise<SubmitRe
 
     if (spamCheck.isSpam) {
       console.warn('Spam submission blocked:', spamCheck.reasons);
-      // Return success to not tip off bots that they were caught
+      await logSpamSubmission(supabaseServer, {
+        form_source: 'contact',
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        company: data.company,
+        reasons: spamCheck.reasons,
+      });
       return { success: true };
     }
 

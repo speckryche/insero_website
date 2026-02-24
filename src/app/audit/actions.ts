@@ -3,7 +3,7 @@
 import { supabaseServer } from '@/lib/supabase-server';
 import { WebsiteLead } from '@/lib/supabase';
 import { sendAuditLeadNotification } from '@/lib/email';
-import { checkForSpam } from '@/lib/spam';
+import { checkForSpam, logSpamSubmission } from '@/lib/spam';
 
 export type AuditFormData = {
   fullName: string;
@@ -36,6 +36,15 @@ export async function submitAuditForm(data: AuditFormData): Promise<SubmitResult
 
     if (spamCheck.isSpam) {
       console.warn('Spam audit submission blocked:', spamCheck.reasons);
+      const spaceIdx = data.fullName.indexOf(' ');
+      await logSpamSubmission(supabaseServer, {
+        form_source: 'audit',
+        first_name: spaceIdx === -1 ? data.fullName : data.fullName.slice(0, spaceIdx),
+        last_name: spaceIdx === -1 ? undefined : data.fullName.slice(spaceIdx + 1),
+        email: data.email,
+        company: data.company,
+        reasons: spamCheck.reasons,
+      });
       return { success: true };
     }
 
