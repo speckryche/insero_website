@@ -37,6 +37,18 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Redirect www to non-www for canonical consistency
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.insero.cloud',
+          },
+        ],
+        destination: 'https://insero.cloud/:path*',
+        permanent: true,
+      },
       {
         source: '/solutions',
         destination: '/services',

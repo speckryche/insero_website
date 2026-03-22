@@ -14,7 +14,7 @@ export const company = {
   },
   // Social media links - add when ready
   social: {
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/insero-llc/',
     twitter: '',
     facebook: '',
   },

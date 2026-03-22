@@ -36,7 +36,7 @@
   /* Neutrals */
   --color-white: #ffffff;
   --color-off-white: #fafcfc;
-  --color-gray-50: #f7f9fa;
+  --color-gray-50: #e2e8ec;
   --color-gray-100: #eef2f4;
   --color-gray-200: #dde4e8;
   --color-gray-300: #b8c4cc;
@@ -299,6 +299,11 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes draw-line {
   from { stroke-dashoffset: 1000; }
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .animate-float {

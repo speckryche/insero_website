@@ -71,9 +71,6 @@ export const metadata: Metadata = {
       'Vendor-agnostic telecom broker that compares 100+ carriers. Voice, internet, SD-WAN, and security solutions at zero cost to you.',
     images: ['/og-image.png'], // Replace with your 1200x630px PNG image
   },
-  alternates: {
-    canonical: baseUrl,
-  },
 };
 
 // JSON-LD Organization Schema

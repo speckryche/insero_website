@@ -17,8 +17,8 @@ export const metadata: Metadata = {
     'cloud phone system daycare',
   ],
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
   openGraph: {
     type: 'website',

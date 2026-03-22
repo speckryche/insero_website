@@ -4,9 +4,10 @@ import { PainPoints } from '@/components/sections/PainPoints';
 import { Services } from '@/components/sections/Services';
 import { HowItWorks } from '@/components/sections/HowItWorks';
 import { WhyInsero } from '@/components/sections/WhyInsero';
-import { CarrierLogos } from '@/components/sections/CarrierLogosServer';
+import { CarrierLogosContinuous } from '@/components/sections/CarrierLogosContinuousServer';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
+import { WaveDivider } from '@/components/ui/WaveDivider';
 
 export const metadata: Metadata = {
   title: 'Telecom Broker & Connectivity Consultant | Free Expert Guidance - Insero',
@@ -144,19 +145,33 @@ export default function HomePage() {
           __html: JSON.stringify(faqSchema),
         }}
       />
-      <Hero />
+      {/* Hero with dark overlay for seamless flow into CarrierLogos */}
+      <div className="relative">
+        <Hero />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#2c3e50] via-[#2c3e50]/70 to-transparent z-[6]" />
+      </div>
+
+      <CarrierLogosContinuous />
+
       <PainPoints />
+
+      <WaveDivider topColor="#e2e8ec" bottomColor="#ffffff" variant="gentle" />
+
       <Services />
       <HowItWorks />
       <WhyInsero />
-      <CarrierLogos />
+
+      <WaveDivider topColor="#ffffff" bottomColor="#e2e8ec" variant="scurve" />
+
+      <div className="[&>section]:!bg-[var(--color-gray-50)]">
+        <FAQ items={faqItems} />
+      </div>
       {/* TODO: Add Testimonials section back when real customer testimonials are collected
           - Component exists at: src/components/sections/Testimonials.tsx
           - Import: import { Testimonials } from '@/components/sections/Testimonials';
           - Usage: <Testimonials />
           - Will need to update testimonial data in the component with real customer quotes
       */}
-      <FAQ items={faqItems} />
       <FinalCTA />
     </>
   );
