@@ -12,26 +12,26 @@
 :root {
   /* ═══════════════════════════════════════════════════════════
      COLOR SYSTEM
-     Teal-forward palette with warm accent for CTAs
+     Forest green primary with tangerine accent
      ═══════════════════════════════════════════════════════════ */
 
-  /* Primary - Bright Blue */
-  --color-primary: #3498db;
-  --color-primary-dark: #2980b9;
-  --color-primary-light: #5dade2;
-  --color-primary-50: #ebf5fb;
-  --color-primary-100: #d6eaf8;
-  --color-primary-900: #1a4971;
+  /* Primary - Forest Green */
+  --color-primary: #008838;
+  --color-primary-dark: #005C28;
+  --color-primary-light: #1FA855;
+  --color-primary-50: #E6F5EC;
+  --color-primary-100: #C6E8D3;
+  --color-primary-900: #001A0A;
 
-  /* Secondary - Soft Blue-Gray */
-  --color-secondary: #2c3e50;
-  --color-secondary-light: #34495e;
-  --color-secondary-dark: #1a252f;
+  /* Secondary - Charcoal */
+  --color-secondary: #1a2530;
+  --color-secondary-light: #2D3B47;
+  --color-secondary-dark: #0D1419;
 
-  /* Accent - Teal-Green */
-  --color-accent: #1abc9c;
-  --color-accent-dark: #16a085;
-  --color-accent-light: #48c9b0;
+  /* Accent - Tangerine */
+  --color-accent: #F97316;
+  --color-accent-dark: #C4590C;
+  --color-accent-light: #FFB02C;
 
   /* Neutrals */
   --color-white: #ffffff;
@@ -49,7 +49,7 @@
 
   /* Service Colors */
   --color-voice: #3b82f6;
-  --color-internet: #10b981;
+  --color-internet: #0B9182;
   --color-sdwan: #8b5cf6;
   --color-security: #ef4444;
 
@@ -93,8 +93,8 @@
   --shadow-md: 0 4px 12px rgba(15, 45, 61, 0.08);
   --shadow-lg: 0 8px 24px rgba(15, 45, 61, 0.12);
   --shadow-xl: 0 16px 48px rgba(15, 45, 61, 0.16);
-  --shadow-glow: 0 0 40px rgba(51, 186, 171, 0.3);
-  --shadow-glow-accent: 0 0 40px rgba(255, 107, 74, 0.3);
+  --shadow-glow: 0 0 40px rgba(0, 136, 56, 0.3);
+  --shadow-glow-accent: 0 0 40px rgba(249, 115, 22, 0.3);
 
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
@@ -174,10 +174,10 @@ h1, h2, h3, h4, h5, h6 {
 .bg-mesh {
   background-color: var(--color-off-white);
   background-image:
-    radial-gradient(at 0% 0%, rgba(51, 186, 171, 0.08) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(59, 130, 246, 0.06) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(0, 136, 56, 0.06) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(31, 168, 85, 0.04) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.04) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(11, 145, 130, 0.04) 0px, transparent 50%);
 }
 
 /* Hero gradient overlay */
@@ -193,8 +193,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Animated background pattern */
 .bg-grid-pattern {
   background-image:
-    linear-gradient(rgba(51, 186, 171, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(51, 186, 171, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 136, 56, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 136, 56, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
@@ -259,8 +259,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(51, 186, 171, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(51, 186, 171, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 136, 56, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(0, 136, 56, 0.5); }
 }
 
 @keyframes slide-up {

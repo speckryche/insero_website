@@ -1,241 +1,157 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
-import { useRef } from 'react';
-import {
-  ArrowDown,
-  Play,
-  Phone,
-  CaretRight
-} from '@phosphor-icons/react';
+import Image from 'next/image';
+import { ArrowRight } from '@phosphor-icons/react';
+
+const rotatingWords = ['Voice', 'Internet', 'Redundancy'];
+const HOLD_DURATION = 2500;
+const SWIPE_DURATION = 400;
+
+type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
 export function Hero() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start']
-  });
+  const [wordIndex, setWordIndex] = useState(0);
+  const [phase, setPhase] = useState<Phase>('visible');
+  const [wordWidths, setWordWidths] = useState<number[]>([]);
+  const measureRef = useRef<HTMLSpanElement>(null);
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  // Measure all word widths on mount
+  useEffect(() => {
+    if (!measureRef.current) return;
+    const container = measureRef.current;
+    const spans = container.querySelectorAll('span');
+    const widths = Array.from(spans).map((span) => span.offsetWidth);
+    setWordWidths(widths);
+  }, []);
+
+  const startTransition = useCallback(() => {
+    setPhase('swipe-left');
+    setTimeout(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+      setPhase('swipe-right');
+      setTimeout(() => {
+        setPhase('visible');
+      }, SWIPE_DURATION);
+    }, SWIPE_DURATION);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(startTransition, HOLD_DURATION + SWIPE_DURATION * 2);
+    return () => clearInterval(interval);
+  }, [startTransition]);
+
+  const currentWidth = wordWidths[wordIndex] || 0;
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-    >
-      {/* Video Background (with gradient fallback) */}
-      <div className="absolute inset-0">
-        {/* Gradient fallback - shown when no video */}
-        <div className="absolute inset-0 hero-gradient" />
-
-        {/* Video placeholder - uncomment and add video src when ready */}
-        {/* <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video> */}
-
-        {/* Overlay gradient for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+    <section className="relative bg-white pt-32 pb-0 lg:pt-36 lg:pb-0 overflow-hidden min-h-[90vh] flex items-center">
+      {/* Right half — background image */}
+      <div className="absolute top-0 right-0 w-full lg:w-[40%] h-full">
+        <Image
+          src="/hero-image.jpg"
+          alt="Modern office with city skyline view"
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Gradient overlay: fades image into white on the left edge */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent lg:via-white/40" />
+        {/* Bottom fade to white for clean transition to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
       </div>
 
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+      <div className="relative z-10 w-full">
+        <div className="flex justify-center px-6">
+          {/* Hidden measurement container */}
+          <span
+            ref={measureRef}
+            aria-hidden="true"
+            className="absolute opacity-0 pointer-events-none text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-extrabold whitespace-nowrap"
+          >
+            {rotatingWords.map((word) => (
+              <span key={word} className="inline-block">{word}</span>
+            ))}
+          </span>
 
-        {/* Floating orbs */}
-        <motion.div
-          animate={{
-            y: [0, -30, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-1/4 left-[10%] w-[400px] h-[400px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(51, 186, 171, 0.15) 0%, transparent 70%)',
-            filter: 'blur(40px)'
-          }}
-        />
-        <motion.div
-          animate={{
-            y: [0, 40, 0],
-            scale: [1, 0.9, 1],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute bottom-1/4 right-[5%] w-[500px] h-[500px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(255, 107, 74, 0.1) 0%, transparent 70%)',
-            filter: 'blur(60px)'
-          }}
-        />
-        <motion.div
-          animate={{
-            x: [0, 20, 0],
-            y: [0, -20, 0],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          className="absolute top-[60%] left-[60%] w-[300px] h-[300px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
-            filter: 'blur(50px)'
-          }}
-        />
-      </div>
-
-      {/* Main content */}
-      <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 container-custom text-center px-4"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="max-w-5xl mx-auto"
-        >
-{/* Main headline */}
+          {/* Headline with accordion rotating word — inline-block so it shrinks to content, then centered with flex */}
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-extrabold text-white mb-6 leading-[1.1] tracking-tight text-balance"
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-extrabold text-[#1e293b] mb-8 leading-[1.1] tracking-tight whitespace-nowrap inline-block"
           >
-            <span style={{ color: '#ffffff' }}>Cloud & Connectivity.</span>{' '}
-            <span className="relative">
-              <span className="text-gradient">Simplified.</span>
-              {/* Decorative underline */}
-              <motion.svg
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 1, delay: 1.2 }}
-                className="absolute -bottom-2 left-0 w-full h-4"
-                viewBox="0 0 200 12"
-                fill="none"
-                preserveAspectRatio="none"
-              >
-                <motion.path
-                  d="M2 8C30 4 70 2 100 4C130 6 170 10 198 6"
-                  stroke="var(--color-primary)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </motion.svg>
+            Your{' '}
+            <span
+              className="inline-flex items-baseline overflow-hidden"
+              style={{
+                width: phase === 'swipe-left'
+                  ? '0px'
+                  : currentWidth > 0 ? `${currentWidth}px` : 'auto',
+                transition: `width ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+                verticalAlign: 'baseline',
+                lineHeight: 'inherit',
+              }}
+            >
+              <span className="text-[#008838] whitespace-nowrap leading-[inherit]">
+                {rotatingWords[wordIndex]}
+              </span>
             </span>
+            <span
+              className="inline-block w-[3px] relative"
+              style={{
+                height: '1.2em',
+                backgroundColor: '#1e293b',
+                verticalAlign: 'middle',
+                marginLeft: '4px',
+                marginRight: '4px',
+              }}
+            />{' '}
+            Sourcing Experts
           </motion.h1>
+        </div>
 
-          {/* Subheadline */}
+        {/* Body text + button — centered on full page */}
+        <div className="text-center max-w-2xl mx-auto px-6">
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-lg sm:text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto leading-relaxed font-light"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium"
           >
-            Expert guidance at <span className="text-white font-medium">zero cost</span> to you.
+            Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
             We&apos;re paid by carriers, not clients.
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="text-lg md:text-xl text-[#475569] mb-12"
+          >
+            Insero is your technology broker, advising you on solutions, services,
+            and the right vendors to meet all your technology needs.
+          </motion.p>
+
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex items-center gap-3 px-8 py-4 bg-[var(--color-accent)] text-white font-semibold text-lg rounded-full shadow-2xl shadow-[var(--color-accent)]/30 hover:shadow-[var(--color-accent)]/50 transition-all duration-300"
-              >
-                <Phone weight="fill" className="w-5 h-5" />
+              <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
                 <span>Schedule Your Free Consultation</span>
-                <CaretRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
-            </Link>
-
-            <Link href="#how-it-works">
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold text-lg rounded-full border border-white/30 hover:bg-white/20 hover:border-white/50 transition-all duration-300"
-              >
-                <Play weight="fill" className="w-5 h-5" />
-                <span>See How It Works</span>
-              </motion.button>
+                <ArrowRight
+                  weight="bold"
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"
+                />
+              </button>
             </Link>
           </motion.div>
-
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            className="mt-16 pt-8 border-t border-white/10"
-          >
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-white/50 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-[var(--color-primary)] rounded-full" />
-                <span>Carrier Agnostic</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-[var(--color-primary)] rounded-full" />
-                <span>25+ Years Experience</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 bg-[var(--color-primary)] rounded-full" />
-                <span>No Hidden Costs</span>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 12, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="text-white/40 text-xs uppercase tracking-widest">Scroll</span>
-          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1.5">
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              className="w-1.5 h-3 bg-white/40 rounded-full"
-            />
-          </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-[5]" />
+        </div>
+      </div>
     </section>
   );
 }

@@ -35,106 +35,62 @@ const painPoints = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1] as const
-    },
-  },
-};
-
 export function PainPoints() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-[var(--color-gray-50)] overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--color-accent)]/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[var(--color-primary)]/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="container-custom relative">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-white">
+      <div className="container-custom">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16 lg:mb-20"
         >
-<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6 leading-tight">
             Tired of Overpaying for Services{' '}
             <br className="hidden md:block" />
-            <span className="text-[var(--color-accent)]">You Don&apos;t Understand?</span>
+            <span className="text-[#008838]">You Don&apos;t Understand?</span>
           </h2>
-          <p className="text-lg md:text-xl text-[var(--color-gray-500)] max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto">
             You&apos;re not alone. Most businesses face these exact challenges—and we&apos;re here to help solve them.
           </p>
         </motion.div>
 
         {/* Pain points grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"
-        >
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {painPoints.map((point, index) => (
             <motion.div
               key={index}
-              variants={itemVariants}
-              className="group relative"
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
             >
-              <div className="relative bg-white rounded-2xl p-8 lg:p-10 shadow-lg border border-gray-100 h-full overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
-                {/* Decorative accent line */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-primary)] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-
+              <div className="bg-white rounded-2xl p-8 lg:p-10 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
                 {/* Icon */}
-                <div className="relative mb-6">
-                  <div className="w-16 h-16 bg-[var(--color-accent)]/10 rounded-2xl flex items-center justify-center group-hover:bg-[var(--color-accent)] transition-colors duration-300">
-                    <point.icon
-                      weight="fill"
-                      className="w-8 h-8 text-[var(--color-accent)] group-hover:text-white transition-colors duration-300"
-                    />
-                  </div>
-                  {/* Number badge */}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-[var(--color-gray-100)] rounded-full flex items-center justify-center text-sm font-bold text-[var(--color-gray-400)]">
-                    {index + 1}
+                <div className="mb-6">
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 136, 56, 0.1)' }}>
+                    <point.icon weight="fill" className="w-7 h-7 text-[#008838]" />
                   </div>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl lg:text-2xl font-bold text-[var(--color-secondary)] mb-4 leading-tight">
+                <h3 className="text-xl font-bold text-[#1e293b] mb-3 leading-tight">
                   {point.title}
                 </h3>
-                <p className="text-[var(--color-gray-500)] leading-relaxed mb-6">
+                <p className="text-[#64748b] leading-relaxed mb-6">
                   {point.description}
                 </p>
 
-                {/* Stat highlight */}
+                {/* Stat */}
                 <div className="pt-6 border-t border-gray-100">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-[var(--color-primary)]">
+                    <span className="text-3xl font-bold text-[#008838]">
                       {point.stat}
                     </span>
-                    <span className="text-sm text-[var(--color-gray-400)]">
+                    <span className="text-sm text-[#94a3b8]">
                       {point.statLabel}
                     </span>
                   </div>
@@ -142,21 +98,21 @@ export function PainPoints() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Bottom connector */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
           className="mt-16 text-center"
         >
           <div className="inline-flex items-center gap-6">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--color-primary)]" />
-            <span className="text-2xl md:text-3xl font-bold text-[var(--color-secondary)]">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#008838]" />
+            <span className="text-2xl md:text-3xl font-bold text-[#1e293b]">
               There&apos;s a better way
             </span>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--color-primary)]" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#008838]" />
           </div>
         </motion.div>
       </div>

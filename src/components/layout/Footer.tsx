@@ -10,7 +10,8 @@ import {
   GitBranch,
   ShieldCheck,
   Briefcase,
-  ChatCircle
+  ChatCircle,
+  ArrowRight
 } from '@phosphor-icons/react';
 import { company as companyInfo } from '@/config/company';
 
@@ -28,21 +29,24 @@ const companyLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-[var(--color-secondary)] text-white">
+    <footer className="concept-footer bg-[#1a2530] text-white">
+      {/* Green accent bar at top */}
+      <div className="h-1 bg-gradient-to-r from-[#008838] via-[#1FA855] to-[#008838]" />
+
       {/* Main Footer Content */}
-      <div className="container-custom py-16 lg:py-20">
+      <div className="container-custom pt-16 lg:pt-20 pb-12 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div>
-            <Link href="/" className="inline-block mb-8">
+            <Link href="/" className="inline-block mb-6">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/insero-logo-dark-with-tagline-retina.png"
                 alt="Insero"
-                className="h-14 w-auto"
+                className="h-16 w-auto"
               />
             </Link>
-            <p className="text-white/70 leading-relaxed mb-8">
+            <p className="text-white/60 leading-relaxed mb-8 text-sm">
               Expert cloud and connectivity consulting at zero cost to you. We simplify complexity.
             </p>
             {/* Social Links */}
@@ -51,7 +55,7 @@ export function Footer() {
                 href={companyInfo.social.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-11 h-11 rounded-xl bg-white/10 text-white hover:bg-[var(--color-primary)] transition-all"
+                className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#008838] text-white hover:bg-[#005C28] transition-all"
                 aria-label="LinkedIn"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -64,20 +68,21 @@ export function Footer() {
 
           {/* Services Column */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/40 mb-6">
+            <h3 className="text-base font-extrabold uppercase tracking-wider mb-6" style={{ color: '#ffffff' }}>
               Services
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {services.map((service) => {
                 const Icon = service.icon;
                 return (
                   <li key={service.name}>
                     <Link
                       href={service.href}
-                      className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
+                      className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group"
                     >
-                      <Icon weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
+                      <Icon weight="fill" className="w-4 h-4 text-[#1FA855]" />
                       <span>{service.name}</span>
+                      <ArrowRight weight="bold" className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                     </Link>
                   </li>
                 );
@@ -87,20 +92,21 @@ export function Footer() {
 
           {/* Company Column */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/40 mb-6">
+            <h3 className="text-base font-extrabold uppercase tracking-wider mb-6" style={{ color: '#ffffff' }}>
               Company
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {companyLinks.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
+                      className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group"
                     >
-                      <Icon weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
+                      <Icon weight="fill" className="w-4 h-4 text-[#1FA855]" />
                       <span>{item.name}</span>
+                      <ArrowRight weight="bold" className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                     </Link>
                   </li>
                 );
@@ -110,7 +116,7 @@ export function Footer() {
 
           {/* Contact Column */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white/40 mb-6">
+            <h3 className="text-base font-extrabold uppercase tracking-wider mb-6" style={{ color: '#ffffff' }}>
               Contact
             </h3>
             <ul className="space-y-4">
@@ -119,8 +125,10 @@ export function Footer() {
                   href={companyInfo.phoneLink}
                   className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                 >
-                  <Phone weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
-                  <span>{companyInfo.phoneFormatted}</span>
+                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
+                    <Phone weight="fill" className="w-4 h-4 text-[#1FA855]" />
+                  </div>
+                  <span className="font-semibold">{companyInfo.phoneFormatted}</span>
                 </a>
               </li>
               <li>
@@ -128,13 +136,17 @@ export function Footer() {
                   href={companyInfo.emailLink}
                   className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                 >
-                  <EnvelopeSimple weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
+                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
+                    <EnvelopeSimple weight="fill" className="w-4 h-4 text-[#1FA855]" />
+                  </div>
                   <span>{companyInfo.email}</span>
                 </a>
               </li>
               <li>
                 <div className="flex items-center gap-3 text-white/70">
-                  <MapPin weight="fill" className="w-4 h-4 text-[var(--color-primary)]" />
+                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
+                    <MapPin weight="fill" className="w-4 h-4 text-[#1FA855]" />
+                  </div>
                   <span>{companyInfo.location.full}</span>
                 </div>
               </li>

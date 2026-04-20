@@ -18,7 +18,7 @@ const benefits = [
     description:
       'Carriers compensate us directly. You get expert guidance without paying a dime.',
     highlight: 'Free',
-    color: 'var(--color-internet)',
+    color: '#10b981',
     features: ['No consulting fees', 'No hidden costs', 'No obligations']
   },
   {
@@ -27,16 +27,16 @@ const benefits = [
     description:
       'We recommend what\'s best for you, not who pays us the most. Your interests come first.',
     highlight: 'Unbiased',
-    color: 'var(--color-sdwan)',
+    color: '#8b5cf6',
     features: ['Top carrier partners', 'Objective analysis', 'Your goals first']
   },
   {
     icon: Clock,
     title: '25+ Years Experience',
+    highlight: 'Trusted',
     description:
       'Deep industry relationships mean better pricing and service levels for your business.',
-    highlight: 'Trusted',
-    color: 'var(--color-primary)',
+    color: '#008838',
     features: ['Industry veterans', 'Proven track record', 'Dedicated support']
   },
 ];
@@ -49,95 +49,67 @@ const stats = [
 
 export function WhyInsero() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[var(--color-primary)]/5 rounded-full blur-[100px]" />
-      </div>
-
-      <div className="container-custom relative">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#f8fafb]">
+      <div className="container-custom">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16 lg:mb-20"
         >
-<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
-            Why <span className="text-gradient">Insero</span>?
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6 leading-tight">
+            Why <span className="text-[#008838]">Insero</span>?
           </h2>
-          <p className="text-lg md:text-xl text-[var(--color-gray-500)] max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto">
             We&apos;re not just consultants. We&apos;re your advocates in a complex market.
           </p>
         </motion.div>
 
         {/* Benefits grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.15,
-                ease: [0.22, 1, 0.36, 1]
-              }}
-              className="group relative"
+              transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
             >
-              <div className="relative h-full bg-[var(--color-gray-50)] rounded-2xl p-8 lg:p-10 border border-gray-100 hover:border-[var(--color-primary)]/30 hover:shadow-xl transition-all duration-500 overflow-hidden">
-                {/* Hover gradient */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: `linear-gradient(135deg, ${benefit.color}08 0%, transparent 100%)`
-                  }}
-                />
-
+              <div className="relative bg-white rounded-2xl p-8 lg:p-10 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full overflow-hidden">
                 {/* Highlight badge */}
                 <div
-                  className="absolute -top-0 right-6 text-white text-xs font-bold px-4 py-1.5 rounded-b-lg shadow-lg"
+                  className="absolute -top-0 right-6 text-white text-xs font-bold px-4 py-1.5 rounded-b-lg shadow-md"
                   style={{ backgroundColor: benefit.color }}
                 >
                   {benefit.highlight}
                 </div>
 
                 {/* Icon */}
-                <div className="relative mb-6">
+                <div className="mb-6">
                   <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-300"
-                    style={{
-                      backgroundColor: `${benefit.color}15`,
-                      color: benefit.color
-                    }}
+                    className="w-14 h-14 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: `${benefit.color}12`, color: benefit.color }}
                   >
-                    <benefit.icon weight="fill" className="w-8 h-8" />
+                    <benefit.icon weight="fill" className="w-7 h-7" />
                   </div>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-2xl font-bold text-[var(--color-secondary)] mb-4">
+                <h3 className="text-xl font-bold text-[#1e293b] mb-3">
                   {benefit.title}
                 </h3>
-                <p className="text-[var(--color-gray-500)] leading-relaxed mb-6">
+                <p className="text-[#64748b] leading-relaxed mb-6">
                   {benefit.description}
                 </p>
 
                 {/* Features */}
-                <ul className="space-y-3">
-                  {benefit.features.map((feature, featureIndex) => (
-                    <li
-                      key={featureIndex}
-                      className="flex items-center gap-3 text-sm text-[var(--color-gray-600)]"
-                    >
-                      <CheckCircle
-                        weight="fill"
-                        className="w-5 h-5 flex-shrink-0"
-                        style={{ color: benefit.color }}
-                      />
+                <ul className="space-y-2.5">
+                  {benefit.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2.5 text-sm text-[#64748b]">
+                      <CheckCircle weight="fill" className="w-4 h-4 text-[#008838] flex-shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -149,37 +121,24 @@ export function WhyInsero() {
 
         {/* Stats bar */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="relative"
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <div className="bg-gradient-to-r from-[var(--color-secondary)] to-[var(--color-secondary-light)] rounded-2xl p-8 lg:p-12">
-            {/* Background decoration */}
-            <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-              <div className="absolute -top-20 -right-20 w-80 h-80 bg-[var(--color-primary)]/20 rounded-full blur-3xl" />
-              <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-[var(--color-accent)]/10 rounded-full blur-3xl" />
-            </div>
-
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="rounded-2xl p-8 lg:p-12 shadow-lg" style={{ background: 'linear-gradient(135deg, #008838 0%, #005C28 100%)' }}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
               {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="inline-flex items-center justify-center w-14 h-14 bg-white/10 rounded-xl mb-4">
-                    <stat.icon weight="fill" className="w-7 h-7 text-[var(--color-primary)]" />
+                <div key={index} className="text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 bg-white/15">
+                    <stat.icon weight="fill" className="w-6 h-6 text-white" />
                   </div>
-                  <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
+                  <div className="text-4xl lg:text-5xl font-bold text-white mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-white/60 font-medium">
+                  <div className="text-white/70 font-medium text-sm">
                     {stat.label}
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

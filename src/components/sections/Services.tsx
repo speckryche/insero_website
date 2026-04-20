@@ -18,8 +18,7 @@ const services = [
     description: 'Modern phone systems that scale with your business and reduce costs.',
     features: ['VoIP Solutions', 'Unified Communications', 'Call Analytics'],
     href: '/services/voice',
-    color: 'var(--color-voice)',
-    gradient: 'from-blue-500 to-blue-600'
+    color: '#3b82f6',
   },
   {
     icon: Globe,
@@ -27,8 +26,7 @@ const services = [
     description: 'Speed and reliability optimized for your specific needs and budget.',
     features: ['Fiber & Broadband', 'Dedicated Internet', 'Multi-carrier Options'],
     href: '/services/internet',
-    color: 'var(--color-internet)',
-    gradient: 'from-emerald-500 to-emerald-600'
+    color: '#10b981',
   },
   {
     icon: GitBranch,
@@ -36,8 +34,7 @@ const services = [
     description: 'Never lose connection again with intelligent network management.',
     features: ['Failover Protection', 'Traffic Optimization', 'Multi-site Connectivity'],
     href: '/services/sdwan',
-    color: 'var(--color-sdwan)',
-    gradient: 'from-violet-500 to-violet-600'
+    color: '#8b5cf6',
   },
   {
     icon: ShieldCheck,
@@ -45,153 +42,93 @@ const services = [
     description: 'Protection without complexity. Enterprise security made accessible.',
     features: ['Firewall Solutions', 'Threat Detection', 'Compliance Support'],
     href: '/services/security',
-    color: 'var(--color-security)',
-    gradient: 'from-red-500 to-red-600'
+    color: '#ef4444',
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: [0.22, 1, 0.36, 1] as const
-    },
-  },
-};
-
 export function Services() {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section ref={sectionRef} className="relative py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-[var(--color-primary)]/3 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[var(--color-accent)]/3 rounded-full blur-[100px]" />
-      </div>
-
-      <div className="container-custom relative">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#f8fafb]">
+      <div className="container-custom">
         {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16 lg:mb-20"
         >
-<h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-[var(--color-secondary)] mb-6 leading-tight">
-            Four Pillars of{' '}
-            <span className="text-gradient">Connectivity</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6 leading-tight">
+            Four Pillars of <span className="text-[#008838]">Connectivity</span>
           </h2>
-          <p className="text-lg md:text-xl text-[var(--color-gray-500)] max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-[#64748b] max-w-3xl mx-auto">
             We help you navigate the complex world of cloud and connectivity services
             to find the perfect fit for your business.
           </p>
         </motion.div>
 
         {/* Services grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
-            <motion.div key={index} variants={itemVariants}>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 + index * 0.08 }}
+            >
               <Link href={service.href} className="block group h-full">
-                <div className="relative bg-white rounded-2xl p-6 lg:p-8 h-full border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group-hover:-translate-y-2 flex flex-col">
-                  {/* Gradient overlay on hover */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500`}
-                  />
-
-                  {/* Top accent */}
-                  <div
-                    className="absolute top-0 left-6 right-6 h-1 rounded-full transform -translate-y-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: `linear-gradient(90deg, ${service.color}, ${service.color}80)` }}
-                  />
-
+                <div className="bg-white rounded-2xl p-6 lg:p-8 h-full border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col">
                   {/* Icon */}
-                  <div className="relative mb-6">
+                  <div className="mb-6">
                     <div
-                      className="w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
-                      style={{
-                        backgroundColor: `${service.color}15`,
-                        color: service.color
-                      }}
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${service.color}12`, color: service.color }}
                     >
-                      <service.icon weight="fill" className="w-7 h-7" />
+                      <service.icon weight="fill" className="w-6 h-6" />
                     </div>
                   </div>
 
                   {/* Content */}
-                  <h3
-                    className="text-xl font-bold text-[var(--color-secondary)] mb-3 group-hover:text-[var(--color-primary)] transition-colors"
-                  >
+                  <h3 className="text-lg font-bold text-[#1e293b] mb-2 group-hover:text-[#008838] transition-colors duration-200">
                     {service.title}
                   </h3>
-                  <p className="text-[var(--color-gray-500)] text-sm leading-relaxed mb-5">
+                  <p className="text-sm text-[#64748b] leading-relaxed mb-5">
                     {service.description}
                   </p>
 
-                  {/* Features list */}
+                  {/* Features */}
                   <ul className="space-y-2 flex-grow">
-                    {service.features.map((feature, featureIndex) => (
-                      <li
-                        key={featureIndex}
-                        className="flex items-center gap-2 text-sm text-[var(--color-gray-400)]"
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: service.color }}
-                        />
+                    {service.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-[#94a3b8]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gray-300" />
                         {feature}
                       </li>
                     ))}
                   </ul>
 
                   {/* CTA */}
-                  <div
-                    className="flex items-center gap-2 text-sm font-semibold transition-all duration-300 mt-6"
-                    style={{ color: service.color }}
-                  >
+                  <div className="flex items-center gap-2 text-sm font-semibold text-[#008838] mt-6">
                     <span>Learn More</span>
-                    <ArrowRight
-                      weight="bold"
-                      className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-                    />
+                    <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
                   </div>
                 </div>
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-16 text-center"
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-14 text-center"
         >
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-gray-100)] hover:bg-[var(--color-gray-200)] text-[var(--color-secondary)] font-semibold rounded-full transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#008838] text-[#008838] font-semibold rounded-xl hover:bg-[#008838] hover:text-white transition-colors duration-200"
           >
             <span>View All Services</span>
             <ArrowRight weight="bold" className="w-4 h-4" />

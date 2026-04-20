@@ -79,9 +79,9 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-gray-100/50'
+          ? 'bg-[#1a2530] shadow-[0_4px_20px_rgba(0,0,0,0.3)]'
           : 'bg-transparent'
       }`}
     >
@@ -98,17 +98,17 @@ export function Header() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/insero-logo-dark-with-tagline-retina.png"
+                src="/insero-logo-light-with-tagline-retina.png"
                 alt="Insero"
-                className={`h-14 lg:h-[70px] w-auto transition-all duration-200 ${
+                className={`h-16 lg:h-[80px] w-auto transition-all duration-300 ${
                   isScrolled ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
                 }`}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/insero-logo-light-with-tagline-retina.png"
+                src="/insero-logo-dark-with-tagline-retina.png"
                 alt="Insero"
-                className={`h-14 lg:h-[70px] w-auto absolute left-0 top-0 transition-all duration-200 ${
+                className={`h-16 lg:h-[80px] w-auto absolute left-0 top-0 transition-all duration-300 ${
                   isScrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
               />
@@ -126,10 +126,10 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`group flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium text-[15px] transition-all duration-300 ${
+                  className={`group flex items-center gap-1.5 px-4 py-2 rounded-lg font-extrabold text-[20px] transition-all duration-300 ${
                     isScrolled
-                      ? 'text-[var(--color-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-50)]'
-                      : 'text-white/90 hover:text-white hover:bg-white/10'
+                      ? 'text-white hover:text-[#1FA855]'
+                      : 'text-[#1e293b] hover:text-[#008838]'
                   }`}
                 >
                   <span className="relative">
@@ -221,10 +221,10 @@ export function Header() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`group flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-[15px] transition-all duration-300 ${
+                className={`group flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[16px] transition-all duration-300 ${
                   isScrolled
-                    ? 'bg-[var(--color-accent)] text-white shadow-lg shadow-[var(--color-accent)]/25 hover:shadow-xl hover:shadow-[var(--color-accent)]/30'
-                    : 'bg-white text-[var(--color-secondary)] hover:bg-[var(--color-accent)] hover:text-white'
+                    ? 'bg-[#008838] text-white shadow-lg shadow-[#008838]/25 hover:bg-[#005C28]'
+                    : 'bg-[#F97316] text-white shadow-lg shadow-[#F97316]/25 hover:bg-[#C4590C]'
                 }`}
               >
                 <Phone weight="fill" className="w-4 h-4" />
@@ -238,8 +238,8 @@ export function Header() {
             whileTap={{ scale: 0.95 }}
             className={`lg:hidden p-2.5 rounded-xl transition-colors duration-300 ${
               isScrolled
-                ? 'text-[var(--color-secondary)] hover:bg-[var(--color-gray-100)]'
-                : 'text-white hover:bg-white/10'
+                ? 'text-white hover:bg-white/10'
+                : 'text-[#1e293b] hover:bg-gray-100'
             }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"

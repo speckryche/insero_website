@@ -9,13 +9,11 @@ interface CarrierLogo {
   file: string;
 }
 
-// Special adjustments for specific logos
 const logoAdjustments: Record<string, { scale?: string; translateY?: string }> = {
   'Fatbeam': { scale: 'scale-125' },
   'Nextiva': { translateY: '-translate-y-1' },
 };
 
-// Duration in seconds for one full cycle of all logos
 const SCROLL_DURATION = 30;
 
 function LogoItem({ logo }: { logo: CarrierLogo }) {
@@ -46,63 +44,49 @@ interface CarrierLogosContinuousClientProps {
 
 export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousClientProps) {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const isInView = useInView(sectionRef, { once: true, margin: '-50px' });
 
   if (logos.length === 0) return null;
 
-  // Duplicate logos enough times to fill the track for seamless looping
   const repeatedLogos = [...logos, ...logos];
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative py-20 lg:py-28 overflow-hidden"
-    >
-      {/* Dark gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-secondary)] via-[var(--color-secondary-light)] to-[var(--color-secondary)]" />
-
-      {/* Subtle grid pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
-
-      {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-primary)]/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="container-custom relative">
-        {/* Section header */}
+    <section ref={sectionRef} className="pt-20 lg:pt-28 pb-0 bg-[#f8fafb]">
+      {/* Section header — inside container */}
+      <div className="container-custom">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="text-center mb-12 lg:mb-16"
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
         >
           {/* Eyebrow */}
           <div className="mb-5">
-            <span className="inline-flex items-center gap-3 text-[var(--color-primary)] text-sm font-semibold tracking-widest uppercase">
-              <span className="w-8 h-px bg-[var(--color-primary)]" />
+            <span className="inline-flex items-center gap-3 text-[#008838] text-sm font-semibold tracking-widest uppercase">
+              <span className="w-8 h-px bg-[#008838]" />
               Our Partners
-              <span className="w-8 h-px bg-[var(--color-primary)]" />
+              <span className="w-8 h-px bg-[#008838]" />
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5 leading-tight" style={{ color: '#ffffff' }}>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5 leading-tight">
             Trusted Carrier Network
           </h2>
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto">
             We partner with only the best carriers to find the perfect solution for your business.
           </p>
         </motion.div>
+      </div>
 
-        {/* Logos carousel — continuous scroll */}
+      {/* Logos carousel — outside container, full width */}
+      <div className="max-w-[1400px] mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative max-w-5xl mx-auto"
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="relative"
         >
-          {/* White card container */}
-          <div className="relative bg-white rounded-2xl py-8 shadow-2xl overflow-hidden">
+          <div className="relative bg-white rounded-2xl py-8 shadow-sm border border-gray-100 overflow-hidden">
             {/* Left fade */}
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none rounded-l-2xl" />
             {/* Right fade */}
@@ -111,9 +95,7 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
             {/* Continuous scrolling track */}
             <div
               className="flex w-max animate-[scroll_var(--scroll-duration)_linear_infinite]"
-              style={{
-                '--scroll-duration': `${SCROLL_DURATION}s`,
-              } as React.CSSProperties}
+              style={{ '--scroll-duration': `${SCROLL_DURATION}s` } as React.CSSProperties}
             >
               {repeatedLogos.map((logo, index) => (
                 <LogoItem key={`${logo.name}-${index}`} logo={logo} />
@@ -122,37 +104,34 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
           </div>
         </motion.div>
 
-        {/* Trust stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-14 pt-10 border-t border-white/10 max-w-4xl mx-auto"
-        >
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-20">
+      </div>
+
+      {/* Trust stats — full-width green bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mt-14 bg-[#008838] py-5 lg:py-6"
+      >
+        <div className="container-custom">
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16 lg:gap-x-24">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-white">
-                Top
-              </div>
-              <div className="text-sm text-white/50 mt-1">Carrier Partners</div>
+              <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Top</div>
+              <div className="text-sm md:text-base text-white/80 mt-1">Carrier Partners</div>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-white/20" />
+            <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-white">
-                Zero
-              </div>
-              <div className="text-sm text-white/50 mt-1">Carrier Bias</div>
+              <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Best Pricing</div>
+              <div className="text-sm md:text-base text-white/80 mt-1">Guaranteed</div>
             </div>
-            <div className="hidden sm:block w-px h-10 bg-white/20" />
+            <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-display font-bold text-white">
-                Best Fit
-              </div>
-              <div className="text-sm text-white/50 mt-1">Guaranteed</div>
+              <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Zero</div>
+              <div className="text-sm md:text-base text-white/80 mt-1">Carrier Bias</div>
             </div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

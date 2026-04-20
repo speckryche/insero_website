@@ -51,8 +51,7 @@ export function InternetPageClient() {
       title="Internet Connectivity"
       description="Speed and reliability optimized for your specific needs. We compare options from multiple carriers to find you the perfect connection at the best price."
       icon={Globe}
-      color="var(--color-internet)"
-      gradient="from-[var(--color-secondary)] via-emerald-900 to-[var(--color-secondary-dark)]"
+      color="#0B9182"
       features={features}
       benefits={benefits}
       image="/images/services/internet_service_page.png"

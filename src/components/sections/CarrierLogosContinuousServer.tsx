@@ -6,18 +6,10 @@ const IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.svg'];
 
 function getCarrierLogos() {
   const carriersDir = path.join(process.cwd(), 'public', 'carriers');
+  if (!fs.existsSync(carriersDir)) return [];
 
-  if (!fs.existsSync(carriersDir)) {
-    return [];
-  }
-
-  const files = fs.readdirSync(carriersDir);
-
-  return files
-    .filter((file) => {
-      const ext = path.extname(file).toLowerCase();
-      return IMAGE_EXTENSIONS.includes(ext);
-    })
+  return fs.readdirSync(carriersDir)
+    .filter((file) => IMAGE_EXTENSIONS.includes(path.extname(file).toLowerCase()))
     .map((file) => ({
       name: path.basename(file, path.extname(file)),
       file,
