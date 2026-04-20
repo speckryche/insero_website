@@ -98,7 +98,7 @@ export function Header() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/insero-logo-white.png"
+                src="/insero-logo-dark-with-tagline-retina.png"
                 alt="Insero"
                 className={`h-14 lg:h-[70px] w-auto transition-all duration-200 ${
                   isScrolled ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
@@ -106,7 +106,7 @@ export function Header() {
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/insero-logo-dark.png"
+                src="/insero-logo-light-with-tagline-retina.png"
                 alt="Insero"
                 className={`h-14 lg:h-[70px] w-auto absolute left-0 top-0 transition-all duration-200 ${
                   isScrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
