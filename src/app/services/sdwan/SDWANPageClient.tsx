@@ -50,7 +50,8 @@ export function SDWANPageClient() {
       title="SD-WAN & Redundancy"
       description="Never lose connection again. Intelligent network management that keeps your business running no matter what happens to any single connection."
       icon={GitBranch}
-      color="#8b5cf6"
+      color="var(--color-sdwan)"
+      gradient="from-[var(--color-secondary)] via-violet-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
       image="/images/services/sdwan_service_page.png"

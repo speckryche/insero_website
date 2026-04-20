@@ -52,7 +52,7 @@ export function WhyInsero() {
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#f8fafb]">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#e2e8ec]">
       <div className="container-custom">
         {/* Section header */}
         <motion.div
@@ -64,7 +64,7 @@ export function WhyInsero() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6 leading-tight">
             Why <span className="text-[#008838]">Insero</span>?
           </h2>
-          <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto">
             We&apos;re not just consultants. We&apos;re your advocates in a complex market.
           </p>
         </motion.div>
@@ -101,14 +101,14 @@ export function WhyInsero() {
                 <h3 className="text-xl font-bold text-[#1e293b] mb-3">
                   {benefit.title}
                 </h3>
-                <p className="text-[#64748b] leading-relaxed mb-6">
+                <p className="text-[#475569] leading-relaxed mb-6">
                   {benefit.description}
                 </p>
 
                 {/* Features */}
                 <ul className="space-y-2.5">
                   {benefit.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2.5 text-sm text-[#64748b]">
+                    <li key={i} className="flex items-center gap-2.5 text-sm text-[#475569]">
                       <CheckCircle weight="fill" className="w-4 h-4 text-[#008838] flex-shrink-0" />
                       <span>{feature}</span>
                     </li>

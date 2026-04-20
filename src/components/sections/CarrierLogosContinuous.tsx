@@ -51,7 +51,7 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
   const repeatedLogos = [...logos, ...logos];
 
   return (
-    <section ref={sectionRef} className="pt-20 lg:pt-28 pb-0 bg-[#f8fafb]">
+    <section ref={sectionRef} className="pt-20 lg:pt-28 pb-0 bg-[#e2e8ec]">
       {/* Section header — inside container */}
       <div className="container-custom">
         <motion.div
@@ -72,7 +72,7 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5 leading-tight">
             Trusted Carrier Network
           </h2>
-          <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto">
             We partner with only the best carriers to find the perfect solution for your business.
           </p>
         </motion.div>

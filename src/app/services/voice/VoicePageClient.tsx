@@ -51,7 +51,8 @@ export function VoicePageClient() {
       title="Voice Connectivity"
       description="Modern phone systems that scale with your business. From VoIP to unified communications, we help you find the perfect solution at the best price."
       icon={Microphone}
-      color="#3b82f6"
+      color="var(--color-voice)"
+      gradient="from-[var(--color-secondary)] via-blue-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
       image="/images/services/voice_service_page.png"

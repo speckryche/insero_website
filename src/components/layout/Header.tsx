@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -54,6 +55,9 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [hasDarkHero, setHasDarkHero] = useState(false);
+  const [headerCtaColor, setHeaderCtaColor] = useState<string | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,6 +66,29 @@ export function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Detect if the page has a dark hero background
+  // Re-runs on every route change via pathname dependency
+  const checkDarkHero = useCallback(() => {
+    const darkHero = document.querySelector('[data-dark-hero="true"]');
+    setHasDarkHero(!!darkHero);
+    const ctaColor = darkHero?.getAttribute('data-header-cta-color') || null;
+    setHeaderCtaColor(ctaColor);
+  }, []);
+
+  useEffect(() => {
+    // Check immediately
+    checkDarkHero();
+    // Also check after a short delay to handle async rendering
+    const timer = setTimeout(checkDarkHero, 100);
+    // Watch for DOM changes in case content renders after mount
+    const observer = new MutationObserver(checkDarkHero);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [pathname, checkDarkHero]);
 
   // Close mobile menu on resize
   useEffect(() => {
@@ -99,17 +126,17 @@ export function Header() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/insero-logo-light-with-tagline-retina.png"
-                alt="Insero"
+                alt="Insero - light bg"
                 className={`h-16 lg:h-[80px] w-auto transition-all duration-300 ${
-                  isScrolled ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                  !isScrolled && !hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/insero-logo-dark-with-tagline-retina.png"
-                alt="Insero"
+                alt="Insero - dark bg"
                 className={`h-16 lg:h-[80px] w-auto absolute left-0 top-0 transition-all duration-300 ${
-                  isScrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  isScrolled || hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
               />
             </motion.div>
@@ -129,7 +156,9 @@ export function Header() {
                   className={`group flex items-center gap-1.5 px-4 py-2 rounded-lg font-extrabold text-[20px] transition-all duration-300 ${
                     isScrolled
                       ? 'text-white hover:text-[#1FA855]'
-                      : 'text-[#1e293b] hover:text-[#008838]'
+                      : hasDarkHero
+                        ? 'text-white/90 hover:text-white'
+                        : 'text-[#1e293b] hover:text-[#008838]'
                   }`}
                 >
                   <span className="relative">
@@ -221,11 +250,11 @@ export function Header() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`group flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[16px] transition-all duration-300 ${
-                  isScrolled
-                    ? 'bg-[#008838] text-white shadow-lg shadow-[#008838]/25 hover:bg-[#005C28]'
-                    : 'bg-[#F97316] text-white shadow-lg shadow-[#F97316]/25 hover:bg-[#C4590C]'
-                }`}
+                className="group flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[16px] transition-all duration-300 text-white shadow-lg"
+                style={{
+                  backgroundColor: headerCtaColor || '#008838',
+                  boxShadow: `0 10px 15px -3px ${headerCtaColor || '#008838'}40`,
+                }}
               >
                 <Phone weight="fill" className="w-4 h-4" />
                 <span>Schedule a Call</span>
@@ -239,7 +268,9 @@ export function Header() {
             className={`lg:hidden p-2.5 rounded-xl transition-colors duration-300 ${
               isScrolled
                 ? 'text-white hover:bg-white/10'
-                : 'text-[#1e293b] hover:bg-gray-100'
+                : hasDarkHero
+                  ? 'text-white hover:bg-white/10'
+                  : 'text-[#1e293b] hover:bg-gray-100'
             }`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"

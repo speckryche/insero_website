@@ -51,7 +51,7 @@ export function Services() {
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#f8fafb]">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-[#e2e8ec]">
       <div className="container-custom">
         {/* Section header */}
         <motion.div
@@ -63,7 +63,7 @@ export function Services() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6 leading-tight">
             Four Pillars of <span className="text-[#008838]">Connectivity</span>
           </h2>
-          <p className="text-lg md:text-xl text-[#64748b] max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-[#475569] max-w-3xl mx-auto">
             We help you navigate the complex world of cloud and connectivity services
             to find the perfect fit for your business.
           </p>
@@ -94,14 +94,14 @@ export function Services() {
                   <h3 className="text-lg font-bold text-[#1e293b] mb-2 group-hover:text-[#008838] transition-colors duration-200">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-[#64748b] leading-relaxed mb-5">
+                  <p className="text-sm text-[#475569] leading-relaxed mb-5">
                     {service.description}
                   </p>
 
                   {/* Features */}
                   <ul className="space-y-2 flex-grow">
                     {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-[#94a3b8]">
+                      <li key={i} className="flex items-center gap-2 text-sm text-[#64748b]">
                         <span className="w-1.5 h-1.5 rounded-full bg-gray-300" />
                         {feature}
                       </li>
