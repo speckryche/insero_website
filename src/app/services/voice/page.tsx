@@ -4,7 +4,7 @@ import { VoicePageClient } from './VoicePageClient';
 export const metadata: Metadata = {
   title: 'Business Phone Systems | Hosted PBX, VoIP & UCaaS Provider Comparison',
   description:
-    'Compare hosted PBX, VoIP, and UCaaS providers to find the best business phone system. Expert guidance, zero cost. Reduce phone costs by up to 60%.',
+    'Compare hosted PBX, VoIP, and UCaaS providers to find the best business phone system. Expert guidance, zero cost. Often significant savings vs. going direct.',
   keywords: [
     'business phone system consultant',
     'hosted PBX for business',

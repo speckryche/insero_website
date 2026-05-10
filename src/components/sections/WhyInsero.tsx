@@ -8,6 +8,7 @@ import {
   Clock,
   Trophy,
   Handshake,
+  ShieldCheck,
   CheckCircle
 } from '@phosphor-icons/react';
 
@@ -42,9 +43,10 @@ const benefits = [
 ];
 
 const stats = [
-  { value: '500+', label: 'Clients Served', icon: Handshake },
-  { value: '$2M+', label: 'Client Savings', icon: CurrencyDollar },
-  { value: '25+', label: 'Years Experience', icon: Trophy },
+  { value: '100+', label: 'Carriers and providers accessed', icon: Handshake },
+  { value: '25+ Years', label: 'Founder telecom experience', icon: Trophy },
+  { value: 'Vendor-Neutral', label: 'Independent, not owned by any carrier', icon: ShieldCheck },
+  { value: '$0', label: 'Cost to customers — providers pay us', icon: CurrencyDollar },
 ];
 
 export function WhyInsero() {
@@ -126,16 +128,16 @@ export function WhyInsero() {
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           <div className="rounded-2xl p-8 lg:p-12 shadow-lg" style={{ background: 'linear-gradient(135deg, #008838 0%, #005C28 100%)' }}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-4 bg-white/15">
                     <stat.icon weight="fill" className="w-6 h-6 text-white" />
                   </div>
-                  <div className="text-4xl lg:text-5xl font-bold text-white mb-1">
+                  <div className="text-3xl lg:text-4xl font-bold text-white mb-2 leading-tight">
                     {stat.value}
                   </div>
-                  <div className="text-white/70 font-medium text-sm">
+                  <div className="text-white/75 font-medium text-sm leading-snug">
                     {stat.label}
                   </div>
                 </div>

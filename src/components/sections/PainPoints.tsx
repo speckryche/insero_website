@@ -14,24 +14,21 @@ const painPoints = [
     title: 'Too many vendors, too much confusion',
     description:
       'Juggling multiple carriers and providers creates complexity that wastes your time and money.',
-    stat: '73%',
-    statLabel: 'of businesses overpay due to vendor complexity'
+    insight: 'Most businesses overpay because they don\'t have time to compare options.'
   },
   {
     icon: CreditCard,
     title: 'Paying for features you don\'t need',
     description:
       'Complex pricing structures and unnecessary add-ons mean you\'re likely overpaying every month.',
-    stat: '40%',
-    statLabel: 'average savings when optimized'
+    insight: 'Independent comparison usually finds meaningful savings.'
   },
   {
     icon: Question,
     title: 'No one explains what\'s best for YOUR business',
     description:
       'Generic solutions don\'t fit unique needs. You deserve advice tailored to your specific situation.',
-    stat: '2x',
-    statLabel: 'faster implementation with expert guidance'
+    insight: 'Working with a TA usually shortens implementation.'
   },
 ];
 
@@ -84,16 +81,11 @@ export function PainPoints() {
                   {point.description}
                 </p>
 
-                {/* Stat */}
+                {/* Insight */}
                 <div className="pt-6 border-t border-gray-100">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-[#008838]">
-                      {point.stat}
-                    </span>
-                    <span className="text-sm text-[#94a3b8]">
-                      {point.statLabel}
-                    </span>
-                  </div>
+                  <p className="text-base font-semibold text-[#008838] leading-relaxed">
+                    {point.insight}
+                  </p>
                 </div>
               </div>
             </motion.div>

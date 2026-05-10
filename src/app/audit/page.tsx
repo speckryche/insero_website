@@ -33,7 +33,7 @@ const auditPageSchema = [
     '@type': 'WebPage',
     name: 'Free Telecom Cost & Risk Assessment',
     description:
-      'Get a free telecom cost & risk assessment for your business. We compare 25+ carriers to find savings on internet, phone, and network services.',
+      'Get a free telecom cost & risk assessment for your business. We compare 100+ carriers to find savings on internet, phone, and network services.',
     url: 'https://insero.cloud/audit',
     provider: {
       '@type': 'Organization',
@@ -46,7 +46,7 @@ const auditPageSchema = [
     '@type': 'Service',
     name: 'Telecom Cost & Risk Assessment',
     description:
-      'Free assessment of your business telecom services including line-by-line bill analysis, price benchmarking against 25+ carriers, and redundancy risk assessment.',
+      'Free assessment of your business telecom services including line-by-line bill analysis, price benchmarking against 100+ carriers, and redundancy risk assessment.',
     provider: {
       '@type': 'Organization',
       name: 'Insero',

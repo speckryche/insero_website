@@ -95,15 +95,15 @@ export function FinalCTA() {
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
-                <span>500+ Businesses Served</span>
+                <span>100+ Carriers Compared</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
-                <span>38% Average Savings</span>
+                <span>25+ Years Founder Experience</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
-                <span>25+ Years Experience</span>
+                <span>Independent &mdash; Vendor-Neutral</span>
               </div>
             </div>
           </motion.div>
