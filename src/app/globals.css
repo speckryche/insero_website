@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /*
  * INSERO DESIGN SYSTEM
@@ -143,13 +144,19 @@ body {
   background-color: var(--color-white);
 }
 
-/* Headings */
+/* Headings (not inside prose — prose handles its own spacing) */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-secondary);
 }
+
+/* Let prose typography plugin control spacing inside articles */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  font-family: var(--font-display);
+}
+
 
 /* ═══════════════════════════════════════════════════════════
    CUSTOM CLASSES

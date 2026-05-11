@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { ArrowLeft, CalendarBlank, Clock, User } from '@phosphor-icons/react/dist/ssr';
@@ -138,6 +139,7 @@ export default async function ArticlePage({ params }: PageProps) {
               components={mdxComponents}
               options={{
                 mdxOptions: {
+                  remarkPlugins: [remarkGfm],
                   rehypePlugins: [
                     rehypeSlug,
                     [rehypeAutolinkHeadings, { behavior: 'wrap' }],
