@@ -1,0 +1,181 @@
+---
+title: "UCaaS Explained (and Why It's the Same Thing as Hosted PBX)"
+slug: "ucaas-explained"
+excerpt: "The cloud phone system category goes by a dozen names — UCaaS, hosted PBX, hosted voice, cloud PBX, business VoIP. They all mean roughly the same thing. Here's what it actually is, what it does, and whether you need it."
+date: "2026-05-11"
+category: "Voice"
+author: "Speck Hansen"
+---
+
+If you've shopped for a business phone system in the last few years, you've heard a confusing pile of acronyms: UCaaS, hosted PBX, cloud PBX, hosted voice, business VoIP, cloud calling. Vendors use them interchangeably, inconsistently, or both. Some of them mean exactly the same thing.
+
+Here's a plain-English explanation of what this category actually is, what it does, and how to decide if it's what you need.
+
+## The short version
+
+UCaaS stands for **Unified Communications as a Service**. It's a cloud-hosted phone system, plus chat, plus video meetings, plus mobile apps, all delivered as a monthly subscription per user.
+
+"Hosted PBX" is the older name for the same product. So is "cloud PBX." They all describe the same architecture — your phone system lives in the provider's data center instead of in a closet at your office.
+
+<Callout type="note">
+For practical purposes, UCaaS and Hosted PBX are the same thing. The terms have largely converged. If a vendor distinguishes between them, ask them to explain why — most distinctions are marketing, not technical.
+</Callout>
+
+## What it actually replaces
+
+Traditional business phone systems used to require physical hardware on-site — a PBX (Private Branch Exchange) box in a wiring closet, copper or PRI lines coming in from the carrier, and phones connected by their own dedicated cabling.
+
+UCaaS replaces all of that with internet-delivered service. No PBX in your closet. No PRI lines. Phones plug into your regular network ports. New users get added in a web admin panel.
+
+The whole system runs from the provider's data centers. You're effectively renting phone service the same way you rent email service.
+
+## What you get
+
+A typical UCaaS subscription includes most or all of:
+
+- **Calling** — inbound and outbound, with the usual auto-attendant, call routing, voicemail, hunt groups, ring groups, queues, call recording
+- **Mobile apps** — your business number rings your cell phone, your work calls show as work calls, voicemails route to the same inbox
+- **Desktop softphone** — make and take calls from your computer without a desk phone
+- **Video meetings** — Zoom-style video conferencing, often built in
+- **Team chat** — Slack-style messaging, often built in
+- **SMS** — text messaging from your business number
+- **Integrations** — Salesforce, HubSpot, Microsoft 365, Google Workspace, Outlook, etc.
+- **Analytics** — call volume reports, queue stats, agent activity
+
+What you're really buying is "all the business communication tools in one place, accessed from any device, managed in one admin panel."
+
+## How it's priced
+
+UCaaS is priced per user per month. Typical 2026 ranges:
+
+- **Entry tier** (basic calling + voicemail + mobile app): $15–$25 per user/month
+- **Standard tier** (adds video, chat, integrations, SMS): $25–$40 per user/month
+- **Premium tier** (adds advanced analytics, call recording, single sign-on, more integrations): $35–$60 per user/month
+
+Contact center and call recording add-ons increase pricing. So do desk phones (you can buy them outright or rent them, ~$5–$15/month).
+
+For most SMBs, all-in cost runs around $30–$40 per user per month including phones, fees, and taxes.
+
+## How it compares to what you have now
+
+<Comparison
+  left={{
+    title: "Traditional on-premise PBX",
+    points: [
+      "Big upfront cost for hardware",
+      "Maintenance, repairs, end-of-life replacement on you",
+      "Adding a user means more hardware",
+      "Tied to one physical location",
+      "PRI or POTS lines from the carrier",
+      "Calls go down when power or hardware fails"
+    ]
+  }}
+  right={{
+    title: "UCaaS / Hosted PBX",
+    points: [
+      "No upfront cost, monthly subscription",
+      "Updates, security, hardware are the provider's problem",
+      "Add a user in the web admin",
+      "Works from any location with internet",
+      "Service delivered over your internet connection",
+      "Mobile and desktop apps work even if office is down"
+    ]
+  }}
+/>
+
+## When UCaaS is the right call
+
+There's no single trigger, but here's when it tends to be obvious:
+
+- **Your phone system is on a Windows server that's now 8 years old**
+- **You have remote or hybrid staff who need real business phone numbers, not just personal cells**
+- **You have multiple locations and want everyone on one system**
+- **You want to replace POTS lines and the carrier's quote is alarming**
+- **You're paying for separate phone, video, and chat tools and could consolidate**
+- **Your call center or sales team needs analytics your current system can't provide**
+- **You're moving offices and don't want to bring the old PBX**
+
+## When UCaaS isn't necessarily the right call
+
+A few cases where SIP trunks or other approaches fit better:
+
+- **You have a recent on-prem PBX that works well.** If your existing system isn't end-of-life and meets your needs, swapping the underlying trunks from POTS/PRI to SIP can cut costs without replacing the whole system.
+- **Specialty equipment dependencies.** Some industries have phone-system integrations (paging, intercoms, courtroom systems, etc.) that work better with on-premise gear.
+- **No reliable internet.** UCaaS requires solid internet. If your connection is unreliable and a fiber upgrade isn't realistic, an on-premise PBX with redundant analog lines might serve you better.
+
+## The internet requirement
+
+UCaaS depends entirely on your internet connection. This is worth stating clearly because it surprises people.
+
+Two practical implications:
+
+- **Bandwidth.** Voice doesn't need much — about 100 Kbps per concurrent call. But it shares bandwidth with everything else. A small office can run UCaaS on cable internet. A larger office should have business-class bandwidth with QoS.
+- **Reliability.** If internet goes down, calls don't ring at desk phones. But mobile and desktop apps still work over cell data. And most UCaaS providers auto-forward to mobile during outages. Solid backup internet (or SD-WAN with two connections) eliminates this concern.
+
+If your office internet is a hobbyist-grade single connection, that's worth fixing before or alongside a UCaaS migration.
+
+## The migration reality
+
+UCaaS migrations are not usually one-day swaps. A typical small-to-mid SMB migration looks like:
+
+- **Discovery and design** — 1–2 weeks
+- **Number porting** — usually 2–4 weeks from carrier to provider (this is the longest part, not negotiable)
+- **Configuration and training** — 1–2 weeks alongside porting
+- **Cutover** — 1 day, scheduled
+- **Tuning and support** — 2–4 weeks post-cutover
+
+Total: 30–60 days for most SMB-sized deployments. Larger or multi-location deployments take longer.
+
+The single biggest source of migration pain is poor number porting — the carrier has to release your numbers to the new provider, and they're not incentivized to make it easy. This is one of the main places brokers add value.
+
+## How to evaluate providers
+
+The market is consolidated around a handful of major UCaaS providers. The differences between them matter less than the marketing suggests — most of them check the same boxes.
+
+What actually varies:
+
+- **Pricing and contract structure** — promotions move constantly
+- **Implementation quality** — some providers' implementation teams are reliably good, others reliably aren't
+- **Mobile app polish** — varies more than you'd expect; if your team is mobile-heavy, test the apps
+- **Integration depth** — generic Salesforce integration vs. real Salesforce integration is a real distinction
+- **Voice quality in real-world conditions** — most are similar, some are noticeably better
+- **Support responsiveness** — varies dramatically; this is where horror stories come from
+
+We work with most major UCaaS providers. We have direct visibility into pricing, current promotions, and which provider's implementation team is actually delivering in each market right now.
+
+## Common questions
+
+<FAQ items={[
+  {
+    q: "Will I lose my phone numbers?",
+    a: "No. Phone numbers port (transfer) from your current carrier to the new UCaaS provider. The process takes a few weeks but the numbers stay yours."
+  },
+  {
+    q: "Do I need desk phones, or can everyone just use their computer or cell?",
+    a: "Up to you. Desk phones still make sense for reception, conference rooms, and team members who prefer them. Most other users do fine with desktop and mobile apps."
+  },
+  {
+    q: "What happens to my existing PBX hardware?",
+    a: "It gets retired. Some businesses sell it (limited market), most recycle it. The savings from not maintaining it usually offset the loss within a year."
+  },
+  {
+    q: "Can I keep my conference room phones and intercoms?",
+    a: "Often yes, with an ATA (analog terminal adapter) or by buying compatible IP versions. Specialty gear like paging systems and intercoms is worth surveying before migration — we help with that."
+  },
+  {
+    q: "Is UCaaS secure enough for our business?",
+    a: "Yes, for nearly all SMBs and enterprises. Major providers offer encryption in transit, single sign-on, compliance certifications (HIPAA, SOC 2, etc.), and granular admin controls. Healthcare, legal, and financial customers run on UCaaS routinely."
+  },
+  {
+    q: "What if I outgrow it?",
+    a: "UCaaS scales easily — adding users is a few clicks. Adding contact center features, more locations, or international numbers happens within the same platform. The 'outgrow it' problem rarely applies."
+  }
+]} />
+
+## The takeaway
+
+UCaaS is the modern default for business phone systems. Same product as "hosted PBX," just newer branding. Per-user monthly pricing, no on-site hardware, works from anywhere, replaces calling and chat and video and SMS in one tool.
+
+For most businesses currently on aging PBX hardware or paying for POTS lines, UCaaS is significantly cheaper and significantly more capable. The hard parts are picking the right provider, structuring the contract, and managing the number port — which is exactly where we help.
+
+If you want help comparing providers and pricing at no cost, that's what we do.
