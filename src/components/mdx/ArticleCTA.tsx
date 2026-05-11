@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import { Phone, ArrowRight } from '@phosphor-icons/react/dist/ssr';
+import { Phone, ArrowRight } from '@phosphor-icons/react';
 
 export function ArticleCTA() {
   return (

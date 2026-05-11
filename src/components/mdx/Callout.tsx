@@ -1,4 +1,6 @@
-import { Info, Lightbulb, Warning } from '@phosphor-icons/react/dist/ssr';
+'use client';
+
+import { Info, Lightbulb, Warning } from '@phosphor-icons/react';
 
 const styles = {
   tip: { bg: 'bg-[#E6F5EC]', border: 'border-[#008838]', icon: Lightbulb, iconColor: 'text-[#008838]' },

@@ -8,12 +8,25 @@ interface FAQItem {
   a: string;
 }
 
-export function ArticleFAQ({ items }: { items: FAQItem[] }) {
+interface ArticleFAQProps {
+  items: FAQItem[] | string;
+}
+
+export function ArticleFAQ({ items }: ArticleFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  let parsed: FAQItem[];
+  if (typeof items === 'string') {
+    try { parsed = JSON.parse(items); } catch { return null; }
+  } else if (Array.isArray(items)) {
+    parsed = items;
+  } else {
+    return null;
+  }
 
   return (
     <div className="my-8 border border-gray-200 rounded-xl overflow-hidden">
-      {items.map((item, index) => (
+      {parsed.map((item, index) => (
         <div key={index} className={index > 0 ? 'border-t border-gray-200' : ''}>
           <button
             onClick={() => setOpenIndex(openIndex === index ? null : index)}

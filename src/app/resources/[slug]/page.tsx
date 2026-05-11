@@ -55,6 +55,7 @@ export default async function ArticlePage({ params }: PageProps) {
   const { frontmatter, content, readingTime } = article;
   const related = getRelatedArticles(slug, frontmatter.category, 3);
 
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
