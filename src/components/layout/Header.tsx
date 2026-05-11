@@ -48,6 +48,7 @@ const services = [
 
 const navLinks = [
   { name: 'Services', href: '/services', hasDropdown: true },
+  { name: 'Resources', href: '/resources' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];

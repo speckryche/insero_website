@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Briefcase,
   ChatCircle,
+  BookOpen,
   ArrowRight
 } from '@phosphor-icons/react';
 import { company as companyInfo } from '@/config/company';
@@ -24,6 +25,7 @@ const services = [
 
 const companyLinks = [
   { name: 'Services', href: '/services', icon: Briefcase },
+  { name: 'Resources', href: '/resources', icon: BookOpen },
   { name: 'Contact', href: '/contact', icon: ChatCircle },
 ];
 
