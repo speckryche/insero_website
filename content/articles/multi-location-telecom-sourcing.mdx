@@ -1,0 +1,163 @@
+---
+title: "Multi-Location Telecom: How to Source Without Going Crazy"
+slug: "multi-location-telecom-sourcing"
+excerpt: "If you're running phones and internet across multiple offices, the problems compound fast. Vendor sprawl, inconsistent service, no negotiating leverage. Here's how to actually source telecom across multiple sites — and what to demand from carriers."
+date: "2026-05-11"
+category: "How We Work"
+author: "Speck Hansen"
+---
+
+Sourcing telecom for one office is annoying. Sourcing it for ten is a job.
+
+Different carriers serve different addresses. Each location has its own contract, its own renewal date, its own rate card, its own SLA. Some sites have fiber, others are stuck on cable. Phone systems vary. Failover varies. Pricing is inconsistent. When something breaks at one site, you're navigating a different carrier's support line than the last time.
+
+This guide is for the people running point on that — IT directors, office managers, COOs, anyone juggling multiple sites and wondering why this is so much harder than it should be.
+
+## The problems you're already living
+
+Pattern recognition first. If you've been doing this a while, you know these:
+
+- **Vendor sprawl.** Five locations, four different ISPs, two different phone systems, three different cellular providers. Nobody understands the whole picture.
+- **Inconsistent service quality.** One site has fiber and screams. Another has DSL and crawls. Users at the slow site are constantly frustrated and your tickets reflect that.
+- **No negotiating leverage.** Each location's contract is too small to matter to the carrier. You're a tiny account at five different carriers instead of a meaningful account at one or two.
+- **Renewal chaos.** Contracts auto-renew at non-promotional rates because nobody calendars them centrally. You discover the price hike on the bill.
+- **Different support experiences per site.** A ticket at the LA office means calling AT&T. A ticket at the Atlanta office means calling Comcast. Nobody has dedicated reps because none of the individual sites are big enough to earn one.
+- **No unified billing or visibility.** Reconciling telecom spend across all sites takes a week and isn't accurate.
+- **Painful expansion.** Opening a new location means starting from scratch — researching what's available, getting quotes, signing yet another contract.
+
+If half of these describe you, you have a sourcing problem, not just an operational problem.
+
+## What multi-location done well looks like
+
+For comparison, here's the state to aim for:
+
+- **One sourcing function** (internal team or partner) that knows every site's situation
+- **Consistent SLA tiers** across all sites, matched to each site's criticality
+- **Centralized renewal calendar** with proactive re-quoting 90 days before each renewal
+- **Standardized phone system** (typically UCaaS) across all sites
+- **Failover and redundancy** at sites where downtime hurts
+- **Unified billing** or at least normalized cost reporting
+- **One escalation contact** when something breaks anywhere
+
+This isn't a fantasy. It's what well-run multi-location operations look like. Getting there from where you are is the project.
+
+## Strategy 1: Standardize where you can, vary where you must
+
+Different sites need different things. A small satellite office doesn't need the same SLA as headquarters. A retail location doesn't need the same voice setup as a call center.
+
+The mistake is either extreme:
+
+- **Forcing the same setup everywhere** wastes money on small sites and underbuilds critical ones
+- **Letting every site do its own thing** creates the vendor sprawl problem in the first place
+
+Middle path: standardize the platform, vary the size.
+
+- **Phone system: standardize.** One UCaaS provider across all sites. Different user counts and feature tiers per site as needed, but one platform.
+- **Internet: standardize the SLA tier per site type.** "Headquarters and call centers get fiber + redundancy. Satellite offices get cable. Retail gets cable with cellular backup."
+- **Networking: standardize where it matters.** SD-WAN policy and security posture should be consistent. Specific carrier per site can vary.
+- **Support: standardize the escalation path.** Whether it's an internal IT person, a managed service provider, or a TA partner — every site goes through the same path.
+
+## Strategy 2: Use carrier coverage to your advantage
+
+No single carrier serves every address. You're going to need multiple carriers no matter what. Accept that and design around it.
+
+The good news: working through a TA or master agent gives you access to every carrier through one relationship. You can have AT&T at one site, Lumen at another, Hunter at a third, and a regional fiber provider at a fourth — and all of it goes through the same sourcing and support contact.
+
+That's what eliminates the "one carrier per location, no relationship anywhere" problem. The agent has the relationships even when you don't.
+
+## Strategy 3: Centralize the renewal calendar
+
+Single biggest cost leak in multi-location telecom: contracts auto-renewing at non-promotional rates because nobody's tracking renewal dates centrally.
+
+Build a sheet. List every site, every service, every carrier, every contract end date, every term length, and the current MRC.
+
+Sort by renewal date. Set calendar reminders 90 days before each one. Re-quote every renewal — at minimum, ask the existing carrier for a renewal pricing offer; ideally, get competing quotes.
+
+If we're doing this for you, this is part of what we maintain on your behalf. If you're doing it yourself, the spreadsheet is the foundation.
+
+## Strategy 4: Aggregate where carriers will let you
+
+Some carriers will treat multi-location accounts as one account — meaning unified billing, one rep, sometimes better pricing because the total volume across sites earns volume discounts.
+
+Not all carriers do this well. Not all sites within one carrier can be aggregated (different markets sometimes mean different account teams). But where it's possible, it's worth doing.
+
+What to ask for:
+
+- **Master agreement** that covers all current and future sites
+- **Single point of contact** for the entire account
+- **Consolidated billing** or at minimum standardized reporting
+- **Volume-tier pricing** that applies across all sites
+- **Provisions for adding new sites** without renegotiating everything
+
+This is where TAs and master agents earn their keep — we have these aggregated relationships already, which means the leverage applies to your account from day one.
+
+## Strategy 5: Build redundancy where it matters
+
+Multi-location adds an interesting redundancy question: which sites can afford to be offline?
+
+- **Customer-facing locations** (retail, restaurants, clinics) typically need failover. Lost connectivity equals lost transactions.
+- **Operational locations** (warehouses, dispatch, call centers) usually need failover. Lost connectivity equals lost productivity.
+- **Back-office sites** sometimes don't. People can wait an hour.
+
+The honest framing is: which sites cost real money per hour of downtime, and which don't?
+
+SD-WAN is often the right tool when multi-site failover matters at scale. For smaller multi-location setups, a cellular backup router per critical site is much simpler and cheaper than full SD-WAN.
+
+## Opening a new location: the checklist
+
+When you add a new site, here's the order of operations that prevents pain:
+
+- **Confirm address with the leasing team before signing the lease.** Find out if business internet is even available at that building before you commit.
+- **Run serviceability across every carrier in the market.** Don't accept the first quote. Most addresses have multiple options.
+- **Quote 30 days before move-in, install 14 days before move-in.** Carriers slip timelines. Plan for it.
+- **Standardize the phone setup.** Add the new site to your existing UCaaS account. Same platform, same admin panel, same user experience.
+- **Plan failover from day one.** Cellular backup router is the cheapest insurance against day-one disasters.
+- **Add to the renewal calendar immediately.** Day one of the contract is when you set the reminder for day 270.
+
+## What we do for multi-location customers
+
+Since this is what we specialize in, the honest pitch:
+
+- **Inventory and audit.** We pull every site's current situation and identify cost-leak, vendor-sprawl, and renewal-cliff issues.
+- **Sourcing across all locations.** One contact for every carrier in every market.
+- **Standardization recommendations.** Where you can consolidate, where you shouldn't.
+- **Renewal management.** Proactive re-quoting 90 days before every contract ends, so renewals never auto-roll at non-promo rates.
+- **Single escalation point.** When something breaks at any site, you call us. We call the carrier.
+- **New location onboarding.** New site? We'll have quotes within days and install plan within weeks.
+
+Same pricing as going direct. Carriers compensate us, you don't.
+
+## Common questions
+
+<FAQ items={[
+  {
+    q: "Should I use one carrier for every location to keep things simple?",
+    a: "Usually no. No single carrier serves every market well, and concentrating all sites with one carrier eliminates your leverage when something goes wrong. Better to have a sourcing approach that handles multiple carriers cleanly than to constrain yourself to one."
+  },
+  {
+    q: "How much can we actually save by consolidating?",
+    a: "Varies widely. We typically find 15–30% cost reduction across multi-location accounts once renewal cliffs, redundant services, and unused features are addressed. Bigger accounts and more vendor sprawl yield bigger savings."
+  },
+  {
+    q: "What if my contracts all have different end dates?",
+    a: "Common situation. You don't have to wait for every contract to expire to start standardizing. We typically address sites as their contracts come up for renewal, while building toward the unified platform vision."
+  },
+  {
+    q: "Can we standardize phones across sites if we have a mix of legacy systems?",
+    a: "Yes. UCaaS migrations across multiple sites are routine — we typically run them site-by-site over several months. Number porting is usually the longest single step."
+  },
+  {
+    q: "What about international locations?",
+    a: "International adds complexity (different carriers, different regulations, different number portability rules). It's doable through TSDs that have international reach, but the timelines and pricing structures are different. Worth a separate conversation if you have international sites."
+  },
+  {
+    q: "Do you charge extra for multi-location work?",
+    a: "No. Our compensation is the same residual structure from carriers regardless of account size. Multi-location work takes more of our time, but it's also where we add the most value — so we're aligned with you on doing it right."
+  }
+]} />
+
+## The takeaway
+
+Multi-location telecom is harder than single-location for predictable reasons. The fix isn't doing it faster — it's doing it differently. Standardize where you can, vary where you must, centralize the renewal calendar, build redundancy where it matters, and get a single sourcing function so you're not negotiating against yourself.
+
+If you want help running that across your sites, that's what we do every day. Same pricing as going direct, one contact for every carrier you'd otherwise be juggling separately.
