@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { MDXRemote } from 'next-mdx-remote/rsc';
+import { serialize } from 'next-mdx-remote/serialize';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { ArrowLeft, CalendarBlank, Clock, User } from '@phosphor-icons/react/dist/ssr';
 import { getArticleBySlug, getArticleSlugs, getRelatedArticles } from '@/lib/articles';
-import { mdxComponents } from '@/components/mdx';
+import { MDXRenderer } from '@/components/mdx/MDXRenderer';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 
 interface PageProps {
@@ -55,6 +55,16 @@ export default async function ArticlePage({ params }: PageProps) {
 
   const { frontmatter, content, readingTime } = article;
   const related = getRelatedArticles(slug, frontmatter.category, 3);
+
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+      ],
+    },
+  });
 
 
   const articleSchema = {
@@ -133,20 +143,8 @@ export default async function ArticlePage({ params }: PageProps) {
       {/* Article Content */}
       <section className="pb-20 bg-white">
         <div className="container-custom">
-          <article className="max-w-3xl mx-auto prose prose-lg prose-slate prose-headings:font-display prose-headings:text-[#1e293b] prose-headings:font-bold prose-a:text-[#008838] prose-a:no-underline hover:prose-a:underline prose-strong:text-[#1e293b] prose-code:text-[#008838] prose-code:bg-[#E6F5EC] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none">
-            <MDXRemote
-              source={content}
-              components={mdxComponents}
-              options={{
-                mdxOptions: {
-                  remarkPlugins: [remarkGfm],
-                  rehypePlugins: [
-                    rehypeSlug,
-                    [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-                  ],
-                },
-              }}
-            />
+          <article className="max-w-3xl mx-auto article-body">
+            <MDXRenderer source={mdxSource} />
           </article>
         </div>
       </section>
