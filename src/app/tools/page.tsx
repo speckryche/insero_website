@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { WifiHigh, ArrowRight } from '@phosphor-icons/react/dist/ssr';
+import { WifiHigh, ArrowRight, PhoneDisconnect } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata: Metadata = {
   title: 'Free Business Tools | Insero',
@@ -16,6 +16,13 @@ const tools = [
       'Figure out how much internet bandwidth your business actually needs based on headcount, usage patterns, and reliability requirements.',
     href: '/tools/bandwidth-calculator',
     icon: WifiHigh,
+  },
+  {
+    title: 'POTS Replacement Cost Estimator',
+    description:
+      'Find out what you\'re really paying for POTS lines, what replacement would cost across realistic options, and how much you could save by migrating.',
+    href: '/tools/pots-cost-estimator',
+    icon: PhoneDisconnect,
   },
 ];
 
