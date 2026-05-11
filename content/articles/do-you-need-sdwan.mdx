@@ -1,0 +1,169 @@
+---
+title: "Do You Actually Need SD-WAN? A Decision Framework"
+slug: "do-you-need-sdwan"
+excerpt: "SD-WAN is one of the most over-pitched products in business networking. Here's what it really does, when it earns its cost, and when you're better off with simpler solutions."
+date: "2026-05-11"
+category: "SD-WAN"
+author: "Speck Hansen"
+---
+
+If you've talked to a network vendor in the last few years, you've been pitched SD-WAN. Sometimes it's the right answer. Often it's overkill — sold to businesses whose actual problems would be solved by simpler, cheaper tools.
+
+Here's the honest framework for figuring out which side of that line you're on.
+
+## What SD-WAN actually does
+
+SD-WAN stands for **Software-Defined Wide Area Network**. The name is technical and unhelpful. Here's the plain version.
+
+A typical business has one internet connection per location. If it goes down, the location is offline. If it gets congested, everything slows. If you have multiple locations, you typically need a VPN to connect them, which adds latency and complexity.
+
+SD-WAN sits between your internet connections and your network. It does four things:
+
+- **Combines multiple connections into one logical network.** You can have fiber primary + cable secondary, or fiber + cellular, or two fibers from different carriers — and SD-WAN treats them as one resource pool.
+- **Fails over automatically when something breaks.** When your primary connection drops, traffic shifts to the secondary in seconds, often without users noticing. No manual intervention.
+- **Steers traffic intelligently based on what it is.** Voice and video go on the best-quality path. Bulk file transfers go on whichever connection has capacity. Latency-sensitive apps get priority.
+- **Connects multiple locations as one network.** Sites talk to each other directly without going through a central hub. Centralized policy and visibility across the whole network.
+
+The marketing pitch makes it sound revolutionary. The reality is that the value is concentrated in specific situations.
+
+## When SD-WAN clearly pays off
+
+Some scenarios where SD-WAN is worth the cost almost every time:
+
+- **Multi-location businesses.** Five, ten, fifty sites. The connectivity, policy, and visibility benefits scale with the number of sites. Below 3–4 locations, the math gets thinner.
+- **Voice or video that must not drop.** If your phone system or constant video calls go through your internet, automatic failover is the difference between "internet hiccup" and "we lost the customer call." For revenue-critical voice, SD-WAN earns its cost.
+- **Cloud-heavy operations across locations.** If every site is constantly hitting Salesforce, Microsoft 365, Adobe Cloud, AWS, then traffic optimization across sites matters.
+- **Healthcare, legal, or financial with strict uptime requirements.** Compliance often requires the kind of redundancy SD-WAN delivers cleanly.
+- **Replacing MPLS.** If you have an aging MPLS network, SD-WAN typically replaces it at 30–60% lower cost with more capability. This is the most common business case in 2026.
+- **Real-time logistics, dispatch, or operations.** Where minutes of downtime cost real money.
+
+## When SD-WAN is probably overkill
+
+Equally important to be honest about: situations where SD-WAN doesn't pay off.
+
+- **Single-location small office.** Less than 25 people, one location, light cloud usage. A solid fiber connection with a cellular backup router (much simpler than SD-WAN) is usually enough.
+- **Tolerable downtime.** If your business can absorb a couple hours of internet outage per year without measurable damage, the failover sophistication isn't earning much.
+- **Most work doesn't depend on the internet.** Light email, occasional Zoom, basic browsing. SD-WAN's traffic optimization adds little.
+- **Budget pressure with simpler problems.** Sometimes "we just need better internet" is the real answer. SD-WAN on top of bad connections doesn't fix bad connections.
+
+<Callout type="warning">
+SD-WAN amplifies the value of good connections. It does not rescue you from bad ones. If your primary connection is unreliable, fix that first — don't layer software on top of underlying network problems.
+</Callout>
+
+## SD-WAN vs the alternatives
+
+A clear comparison helps:
+
+<Comparison
+  left={{
+    title: "Without SD-WAN",
+    points: [
+      "One internet connection per site",
+      "Manual or no failover when something breaks",
+      "Static routing — same path for all traffic",
+      "Site-to-site VPNs for multi-location",
+      "Limited visibility across locations",
+      "Lower upfront cost"
+    ]
+  }}
+  right={{
+    title: "With SD-WAN",
+    points: [
+      "Multiple connections combined per site",
+      "Automatic failover in seconds",
+      "Traffic intelligently steered by app type",
+      "Sites connected directly, no central hub needed",
+      "Unified visibility and policy across all sites",
+      "Higher cost, but recovered when outages would otherwise hurt"
+    ]
+  }}
+/>
+
+For businesses with just one or two locations and modest reliability needs, the row "manual or no failover" is acceptable. Use a cellular backup router. Done.
+
+For businesses where the row "automatic failover in seconds" is the difference between operating and not operating, SD-WAN is genuinely the right tool.
+
+## How it's priced
+
+SD-WAN pricing varies more than other categories. Rough mid-2026 ranges:
+
+- **Small site** (one user-to-50 users): $150–$400/month per site, plus internet connections
+- **Mid-size site** (50–250 users): $400–$1,200/month per site
+- **Large or HQ site**: $1,000–$5,000+/month
+- **Cellular failover circuit** add-on: typically $50–$150/month
+
+The total is usually structured as a per-site monthly fee plus the underlying internet connections plus optional features like security add-ons (firewall, IDS/IPS).
+
+For a 5-location SMB the all-in monthly SD-WAN cost is typically $1,500–$3,000 plus the underlying connectivity. For a 25-location enterprise, $8,000–$15,000.
+
+## Single-vendor SD-WAN vs multi-vendor
+
+Some SD-WAN products are sold by the same carrier that provides your internet ("managed SD-WAN"). Others are sold independently and ride over whatever internet you bring.
+
+Tradeoffs:
+
+- **Carrier-managed SD-WAN** is simpler — one bill, one support number, often bundled pricing. The downside is you're locked into their internet and their SD-WAN. Switching either means switching both.
+- **Independent SD-WAN** is more flexible — you can use whatever internet you want, change carriers without changing SD-WAN. The downside is more vendors to coordinate.
+
+Most SMBs do well with independent SD-WAN because it preserves flexibility. Larger enterprises often go carrier-managed because the simplicity matters at scale.
+
+## The decision framework
+
+Six questions, in order:
+
+- **How many locations do you have?** One: SD-WAN is probably overkill. Two to three: maybe. Four-plus: probably worth it.
+- **What happens when internet goes down?** If the answer is "we lose money, customers, or compliance posture," SD-WAN pays. If it's "we send people to lunch early," it doesn't.
+- **Is voice or video business-critical?** If yes, automatic failover matters a lot. If no, it matters less.
+- **Are your internet connections solid?** SD-WAN works on top of good connections. Fix bad ones first.
+- **Are you replacing MPLS?** If yes, SD-WAN is almost certainly the right move.
+- **Do you have IT staff or a partner to manage it?** SD-WAN is more complex than basic networking. Either you need internal expertise or a managed service.
+
+If you answered "no" or "doesn't matter" to most of these, you probably don't need SD-WAN. A solid primary internet connection plus a cellular failover router is much cheaper and handles the most common outage scenarios for single sites.
+
+If you answered "yes" to most of these, SD-WAN is likely the right tool.
+
+## What we recommend
+
+We work with the major SD-WAN platforms and primarily deploy VeloCloud and BigLeaf for SMB customers. The reasons:
+
+- **VeloCloud** is mature, broadly supported, and reliable. Good fit for businesses with serious uptime requirements and IT support.
+- **BigLeaf** is built specifically for SMB simplicity. Less granular control than VeloCloud, easier to deploy and manage, particularly good for voice-quality optimization.
+
+Other strong platforms exist (Fortinet Secure SD-WAN, Cato, Versa, Cisco Meraki, etc.). The right one depends on your environment.
+
+## Common questions
+
+<FAQ items={[
+  {
+    q: "Is SD-WAN the same as a firewall or VPN?",
+    a: "No, but they overlap. SD-WAN handles traffic routing and failover; firewalls handle security; VPNs handle encrypted site-to-site connections. Many SD-WAN products include firewall and VPN functionality, but they're separate concepts. Buying SD-WAN doesn't automatically replace a security product."
+  },
+  {
+    q: "Can I use SD-WAN with just one internet connection?",
+    a: "Technically yes, but you'd lose most of the value. SD-WAN's main benefit is intelligent failover and traffic balancing across multiple connections. With one connection, you're paying for software that has nothing to optimize against."
+  },
+  {
+    q: "How long does SD-WAN deployment take?",
+    a: "Single-site deployment: 2–4 weeks. Multi-site rollout: typically 2–6 months depending on scope, with sites going live in batches. Larger or complex environments take longer."
+  },
+  {
+    q: "Does SD-WAN replace my existing routers?",
+    a: "Usually yes. SD-WAN appliances handle the routing functions. Some deployments keep existing firewalls or specialty equipment in place behind the SD-WAN device."
+  },
+  {
+    q: "What about SASE? Is that different from SD-WAN?",
+    a: "SASE (Secure Access Service Edge) is SD-WAN + cloud-delivered security combined. It's the direction the industry is heading. Most SD-WAN products are evolving toward SASE. For now, SD-WAN and SASE are often discussed together but procured separately."
+  },
+  {
+    q: "Can I add SD-WAN to my current network without changing carriers?",
+    a: "Yes. Independent SD-WAN sits on top of whatever internet you have. You don't need to switch carriers to deploy it."
+  }
+]} />
+
+## The takeaway
+
+SD-WAN is genuinely valuable for the right business. For multi-location, voice-critical, or cloud-heavy operations, it does work that simpler tools can't replicate.
+
+It's also one of the most over-pitched products in business networking. Many businesses being sold SD-WAN would be better served by better internet or a basic failover router at a fraction of the cost.
+
+The honest answer for any specific business depends on the questions above. If you're trying to figure out whether SD-WAN is right for you, we can run through the framework together and give you a real recommendation — including "you don't need it" when that's the right answer. Same pricing as going direct, with no incentive to upsell.
