@@ -9,7 +9,7 @@ interface FAQItem {
 }
 
 export function ArticleFAQ({ items }: { items: FAQItem[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <div className="my-8 border border-gray-200 rounded-xl overflow-hidden">

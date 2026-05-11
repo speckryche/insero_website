@@ -25,7 +25,9 @@ export function Comparison({ left, right }: ComparisonProps) {
               : 'bg-[#E6F5EC] border-[#008838]/20'
           }`}
         >
-          <h4 className="font-display font-bold text-[#1e293b] mb-4 text-lg">{side.title}</h4>
+          <h4 className={`font-display text-[#1e293b] mb-4 ${
+            i === 0 ? 'font-semibold text-lg' : 'font-bold text-xl'
+          }`}>{side.title}</h4>
           {side.points && (
             <ul className="space-y-3">
               {side.points.map((point, j) => (
