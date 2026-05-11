@@ -1,0 +1,160 @@
+---
+title: "Fiber vs Cable for Business: An Honest Comparison"
+slug: "fiber-vs-cable-business-internet"
+excerpt: "Fiber is usually the right answer — but not always. Here's how the two actually differ, when cable still wins, and how to figure out what's available at your address."
+date: "2026-05-11"
+category: "Internet"
+author: "Speck Hansen"
+---
+
+The short answer most people want: fiber is usually the better choice for business. Faster, more reliable, symmetric speeds, lower latency, longer-lasting infrastructure.
+
+But "usually" isn't "always." Cable has gotten a lot better, costs less, and is available in more places. Whether fiber is worth the premium depends on what your business actually does on the connection.
+
+Here's the honest breakdown.
+
+## How they actually work
+
+The mechanical difference matters because it explains every performance difference downstream.
+
+**Cable internet** runs over coaxial copper — the same cable infrastructure that delivers TV. The line you pay for is shared with neighboring businesses and homes in your service area. Your speed depends on how many other people are using the same segment at the same time.
+
+**Fiber internet** runs over fiber-optic glass strands. Data travels as pulses of light. The line to your building is typically dedicated (or much less shared than cable), and the medium itself doesn't slow down with distance or temperature the way copper does.
+
+That's the whole story. Everything below follows from this.
+
+## The honest comparison
+
+<Comparison
+  left={{
+    title: "Cable",
+    points: [
+      "Asymmetric speeds (e.g. 1Gbps down, 50Mbps up)",
+      "Shared infrastructure — performance varies by time of day",
+      "Available almost everywhere",
+      "Lower price for similar download speeds",
+      "Install in days, not months",
+      "Higher latency, more jitter"
+    ]
+  }}
+  right={{
+    title: "Fiber",
+    points: [
+      "Symmetric speeds (1Gbps up AND down)",
+      "Dedicated or near-dedicated line — consistent performance",
+      "Available where fiber has been built",
+      "Higher price, but worth it for many use cases",
+      "Install often takes 30–120 days",
+      "Lower latency, more stable"
+    ]
+  }}
+/>
+
+## When fiber clearly wins
+
+There are specific things businesses do that fiber handles meaningfully better than cable.
+
+- **Video conferencing all day.** Zoom, Teams, RingCentral. Cable's asymmetric upload (slow up) means multiple HD video streams choke the upstream. Fiber's symmetric speeds handle dozens of concurrent video calls without breaking a sweat.
+- **VoIP at scale.** Same logic. Upstream bandwidth and low jitter matter for voice quality. Cable can work for VoIP at small scale, but past 10–15 concurrent calls you start hearing artifacts. Fiber doesn't have the ceiling.
+- **Cloud-heavy workflows.** Frequent uploads to Google Drive, Dropbox, AWS, GitHub, Adobe Cloud. If your team pushes files all day, upload speed is your bottleneck — and cable upload is its weak point.
+- **Hosting anything.** On-premise servers, security cameras with remote viewing, VPN endpoints. Upload bandwidth and uptime matter.
+- **Remote desktop / virtual workstations.** Citrix, RDP, AWS WorkSpaces. Latency matters, and fiber latency is reliably lower.
+- **Multi-location replication.** If sites need to sync data, the slowest upload link sets the pace.
+
+If most of your team does most of their work in cloud apps with video on, fiber is usually the right call even at a price premium.
+
+## When cable is still fine
+
+Cable isn't a downgrade in every scenario. Where it's perfectly reasonable:
+
+- **Small office, light usage.** A few people, mostly email and web browsing, occasional video call. Cable handles this for a fraction of the cost.
+- **Backup/secondary connection.** Even fiber-primary sites benefit from a cable secondary as failover. Different infrastructure, different failure modes.
+- **Locations where fiber isn't available.** Rural offices, older industrial parks, recently leased space in a building that wasn't built for it. Cable might be your only realistic option.
+- **Budget-constrained sites.** A satellite office that doesn't justify the fiber MRC.
+
+## The "is it actually available" problem
+
+Here's the catch: whether fiber is even an option at your address is more variable than carriers admit on their coverage maps.
+
+Three scenarios we see constantly:
+
+- **"Lit fiber"** — fiber is already installed in your building or on your block. Install is fast and pricing is normal. Best case.
+- **"Near-net"** — fiber is on the street but not in your building yet. Install might take 60–120 days and may include construction costs ($5K–$50K+ depending on distance and difficulty).
+- **"Off-net"** — fiber would have to be built to your address. Could be reasonable or could be a six-figure construction quote. Sometimes the carrier won't quote it at all.
+
+Carrier coverage maps frequently show "fiber available" when the reality is option 2 or option 3. The only way to know for sure is to actually quote it.
+
+<Callout type="tip">
+Always quote both fiber and cable at your address before deciding. We'll get serviceability checks done across every carrier that serves your area, so you can see the real options and real prices side-by-side.
+</Callout>
+
+## What about "fiber-to-the-node" and other half-fiber options?
+
+Some cable providers advertise "fiber" products that are really fiber-to-a-neighborhood-node-then-coax-to-your-building. The marketing is fuzzy. Some practical guidance:
+
+- If the price looks like cable pricing and the upload speed is asymmetric, it's effectively cable
+- If the price looks like fiber pricing and the upload speed matches the download speed, it's real fiber
+- Ask for the technical product name. "Fiber Internet 1 Gig" can mean very different things across carriers
+
+It's not always a bad product — just know what you're actually buying.
+
+## The pricing reality
+
+Rough ranges in mid-2026 for business connections:
+
+- **Cable business**, 500 Mbps–1 Gbps down: $80–$200/month MRC depending on market
+- **Fiber business**, 500 Mbps symmetric: $300–$600/month
+- **Fiber business**, 1 Gbps symmetric: $500–$1,200/month
+- **Fiber business**, 10 Gbps symmetric: $1,500–$5,000+/month
+
+These are real numbers we see, not rate-card list prices. Promotional pricing, contract terms, and bundled services move them significantly.
+
+Construction costs for off-net fiber installs aren't included above. Those are separate and can be substantial.
+
+## The real question to ask
+
+Don't ask "should we get fiber?" That's the wrong frame.
+
+Ask: "What's our internet doing for us, and where is it falling short?"
+
+- If team calls keep dropping or video freezes, you have an upload bandwidth or latency problem. Fiber fixes it.
+- If you're paying for 1 Gbps cable and the team complains everything's slow at 2pm, your line is congested. Fiber fixes it.
+- If you're hosting infrastructure or uploading large files daily, cable is structurally the wrong tool. Fiber fixes it.
+- If none of those are problems, cable is fine and the fiber premium isn't necessarily worth it for you.
+
+## Common questions
+
+<FAQ items={[
+  {
+    q: "Will fiber make my Wi-Fi faster?",
+    a: "Maybe — if your internet connection was the bottleneck. Often it's your Wi-Fi gear that's actually limiting speeds, not the connection itself. We can help diagnose which it is before you spend money on the wrong fix."
+  },
+  {
+    q: "How long does fiber installation actually take?",
+    a: "Lit fiber: 2–4 weeks. Near-net fiber requiring some construction: 60–120 days. Off-net builds: anywhere from 4 months to a year, depending on permits and complexity. We'll set realistic expectations based on your actual address."
+  },
+  {
+    q: "Should I keep my cable connection as a backup if I switch to fiber?",
+    a: "Often yes, especially for businesses that can't tolerate downtime. Different infrastructure means different failure modes — when fiber goes down, cable usually doesn't, and vice versa. SD-WAN can manage both connections so failover is automatic."
+  },
+  {
+    q: "Why is business fiber so much more expensive than residential fiber?",
+    a: "Business fiber typically comes with a real SLA, faster repair response, a dedicated or near-dedicated line, and symmetric upload. Residential fiber is best-effort with no SLA. For most businesses the SLA alone is worth the premium when something breaks."
+  },
+  {
+    q: "Can I negotiate fiber pricing?",
+    a: "Usually yes. List prices have room. Promotional pricing comes and goes. Term length, install costs, and equipment fees are all negotiable. This is one of the main things we do for customers."
+  },
+  {
+    q: "What if I'm currently on cable and want to test fiber without commitment?",
+    a: "Some fiber providers offer 30-day trials or short-term contracts; many don't. A common approach: install fiber alongside existing cable, run them in parallel for a month, then cut cable. We can structure this so you're not paying for both indefinitely."
+  }
+]} />
+
+## The takeaway
+
+For most growing businesses, fiber is the right answer when it's available at a sane price. Symmetric speeds, lower latency, and consistent performance pay back the premium quickly when your team actually uses the connection.
+
+But the right answer for your address depends on what's actually available, what your team does, and what you're spending now. The honest path is to quote both and compare real numbers — not assume fiber is universally worth the upgrade.
+
+If you want help running the comparison at your address, that's what we do. We pull serviceability for every carrier in your area, quote fiber and cable side-by-side, and tell you the truth about which makes sense.
