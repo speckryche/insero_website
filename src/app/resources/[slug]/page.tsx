@@ -1,13 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { serialize } from 'next-mdx-remote/serialize';
-import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { ArrowLeft, CalendarBlank, Clock, User } from '@phosphor-icons/react/dist/ssr';
 import { getArticleBySlug, getArticleSlugs, getRelatedArticles } from '@/lib/articles';
-import { MDXRenderer } from '@/components/mdx/MDXRenderer';
+import { renderMDX } from '@/lib/mdx';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 
 interface PageProps {
@@ -55,17 +51,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
   const { frontmatter, content, readingTime } = article;
   const related = getRelatedArticles(slug, frontmatter.category, 3);
-
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-      ],
-    },
-  });
-
+  const mdxContent = await renderMDX(content);
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -144,7 +130,7 @@ export default async function ArticlePage({ params }: PageProps) {
       <section className="pb-20 bg-white">
         <div className="container-custom">
           <article className="max-w-3xl mx-auto article-body">
-            <MDXRenderer source={mdxSource} />
+            {mdxContent}
           </article>
         </div>
       </section>
