@@ -105,7 +105,9 @@ const WarningCallout = ({ children }: { children: React.ReactNode }) => (
 
 const Check = ({ text }: { text: string }) => (
   <View style={s.checkRow}>
-    <Text style={s.checkIcon}>✓</Text>
+    <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: C.green, justifyContent: 'center', alignItems: 'center', marginTop: 1, marginRight: 6 }}>
+      <Text style={{ fontSize: 7, color: C.white, fontFamily: 'Helvetica-Bold' }}>{'✓'}</Text>
+    </View>
     <View style={s.checkTextWrap}>
       <Text style={s.checkTitle}>{text}</Text>
     </View>
@@ -114,7 +116,9 @@ const Check = ({ text }: { text: string }) => (
 
 const XMark = ({ text, detail }: { text: string; detail?: string }) => (
   <View style={[s.checkRow, { marginBottom: detail ? 12 : 5 }]}>
-    <Text style={s.xIcon}>✗</Text>
+    <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: C.red, justifyContent: 'center', alignItems: 'center', marginTop: 1, marginRight: 6 }}>
+      <Text style={{ fontSize: 7, color: C.white, fontFamily: 'Helvetica-Bold' }}>X</Text>
+    </View>
     <View style={s.checkTextWrap}>
       <Text style={s.checkTitleBold}>{text}</Text>
       {detail && <Text style={s.checkDetail}>{detail}</Text>}
@@ -307,8 +311,11 @@ export function PotsReplacementPlaybook() {
         <XMark text="Choosing the cheapest option for compliance-critical lines" detail="Non-UL-listed equipment for fire alarm circuits can void insurance." />
         <XMark text="Forgetting number portability" detail="If you want to keep the phone numbers, port them with the migration — don't wait." />
         <XMark text="Underestimating timeline" detail="POTS replacement projects routinely take 2–3x longer than initial estimates. Plan accordingly." />
+        <Footer num={6} />
+      </Page>
 
-        <View style={{ marginTop: 14 }} />
+      {/* ── Page 7: Solution Spotlight ─────────────────── */}
+      <Page size="LETTER" style={s.page}>
         <SectionBar title="Solution Spotlight: Ooma AirDial" />
         <Text style={[s.p, { marginTop: 4 }]}>After working through dozens of POTS replacement projects, the solution Insero recommends most often is Ooma AirDial. Here's the honest case for it.</Text>
 
@@ -322,15 +329,15 @@ export function PotsReplacementPlaybook() {
         <Check text="Predictable flat pricing — no surprise hardware costs" />
         <Check text="Compatible with the equipment you already have" />
 
-        <Text style={[s.h2, { marginTop: 6 }]}>Where It Might Not Be the Fit</Text>
+        <Text style={[s.h2, { marginTop: 8 }]}>Where It Might Not Be the Fit</Text>
         <XMark text="Locations with weak cellular signal" detail="We check signal strength as part of every quote." />
         <XMark text="Very high-volume voice operations" detail="UCaaS is usually a better fit for desk phones at scale." />
 
         <Callout>We've deployed Ooma AirDial for dozens of customers and the experience has been consistently solid. If your situation needs a different solution, we'll tell you that too — we work with multiple providers.</Callout>
-        <Footer num={6} />
+        <Footer num={7} />
       </Page>
 
-      {/* ── Page 7: CTA ──────────────────────────────── */}
+      {/* ── Page 8: CTA ──────────────────────────────── */}
       <Page size="LETTER" style={{ padding: 0, fontFamily: 'Helvetica', position: 'relative' }}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 60 }}>
           <Image src={LOGO_SRC} style={{ width: 140, marginBottom: 36 }} />
