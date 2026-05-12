@@ -50,6 +50,7 @@ const navLinks = [
   { name: 'Services', href: '/services', hasDropdown: true },
   { name: 'Resources', href: '/resources' },
   { name: 'Tools', href: '/tools' },
+  { name: 'Guides', href: '/guides' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
 ];

@@ -7,12 +7,14 @@ import { Callout } from '@/components/mdx/Callout';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleCTA } from '@/components/mdx/ArticleCTA';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
+import { GuideDownload } from '@/components/mdx/GuideDownload';
 
 const components = {
   Callout,
   Comparison,
   CTA: ArticleCTA,
   FAQ: ArticleFAQ,
+  GuideDownload,
 };
 
 export async function renderMDX(source: string) {
