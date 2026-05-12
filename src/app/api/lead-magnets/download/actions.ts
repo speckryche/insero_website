@@ -23,6 +23,21 @@ export type LeadMagnetFormData = {
   sourceUrl?: string;
 };
 
+async function getEmailSignature(): Promise<string> {
+  if (!supabaseServer) return '';
+  try {
+    const { data } = await supabaseServer
+      .from('user_settings')
+      .select('email_signature')
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .single();
+    return data?.email_signature || '';
+  } catch {
+    return '';
+  }
+}
+
 export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promise<{
   success: boolean;
   downloadUrl?: string;
@@ -55,13 +70,15 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
     });
   } catch (err) {
     console.error('Failed to insert lead magnet download:', err);
-    // Don't block the download on DB failure
   }
 
   // Generate download token
   const token = generateToken(email, guideSlug);
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://insero.cloud';
   const downloadUrl = `${baseUrl}/api/lead-magnets/${guideSlug}?token=${token}&email=${encodeURIComponent(email)}`;
+
+  // Fetch Speck's email signature from user_settings
+  const signatureHtml = await getEmailSignature();
 
   // Send email
   try {
@@ -81,7 +98,7 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
             <p>This link expires in 7 days. If you need it again, just reply to this email.</p>
             <hr style="border: none; border-top: 1px solid #e2e8ec; margin: 24px 0;" />
             <p>If you'd like help with your POTS replacement project — or just want a second opinion on what you're being quoted — reply to this email or call us at <strong>(844) 252-3185</strong>. We do this every day, and it costs you nothing.</p>
-            <p>— Speck Hansen<br/>Insero</p>
+            ${signatureHtml ? `<div style="margin-top: 24px;">${signatureHtml}</div>` : '<p>— Speck Hansen<br/>Insero</p>'}
             <p style="font-size: 12px; color: #94a3b8; margin-top: 24px;">
               Insero, LLC · insero.cloud · (844) 252-3185<br/>
               You're receiving this because you requested a guide download. <a href="mailto:sales@insero.cloud?subject=Unsubscribe" style="color: #94a3b8;">Unsubscribe</a>
@@ -92,7 +109,6 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
     }
   } catch (err) {
     console.error('Failed to send lead magnet email:', err);
-    // Don't block download on email failure
   }
 
   return { success: true, downloadUrl };
