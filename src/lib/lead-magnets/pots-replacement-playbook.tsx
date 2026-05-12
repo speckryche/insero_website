@@ -1,4 +1,6 @@
 import React from 'react';
+import fs from 'fs';
+import path from 'path';
 import { Document, Page, Text, View, Image, StyleSheet } from '@react-pdf/renderer';
 
 /* ═══════════════════════════════════════════════════════
@@ -19,7 +21,11 @@ const C = {
   red: '#dc2626',
 };
 
-const LOGO_PATH = process.cwd() + '/public/insero-logo-light-with-tagline-retina.png';
+// Read logo as base64 data URI so react-pdf Image can reliably render it
+const logoFilePath = path.join(process.cwd(), 'public', 'insero-logo-light-with-tagline-retina.png');
+const LOGO_SRC = fs.existsSync(logoFilePath)
+  ? `data:image/png;base64,${fs.readFileSync(logoFilePath).toString('base64')}`
+  : '';
 
 /* ═══════════════════════════════════════════════════════
    STYLES
@@ -31,7 +37,7 @@ const s = StyleSheet.create({
   footer: { position: 'absolute', bottom: 28, left: 44, right: 44 },
   footerLine: { borderTopWidth: 0.5, borderTopColor: C.grayBorder, marginBottom: 6 },
   footerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  footerLogo: { width: 60, height: 'auto' },
+  footerLogo: { width: 60 },
   footerText: { fontSize: 7, color: '#94a3b8' },
 
   /* Section header bar */
@@ -57,10 +63,13 @@ const s = StyleSheet.create({
   numberedItem: { fontSize: 9.5, lineHeight: 1.5, marginBottom: 3, color: C.gray, paddingLeft: 6 },
 
   /* Check / X items */
-  checkRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 4 },
-  checkIcon: { fontSize: 10, color: C.green, marginRight: 6, marginTop: 1 },
-  xIcon: { fontSize: 10, color: C.red, marginRight: 6, marginTop: 1 },
-  checkText: { fontSize: 9, lineHeight: 1.5, color: C.gray, flex: 1 },
+  checkRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 5 },
+  checkIcon: { fontSize: 10, color: C.green, width: 14, marginTop: 1 },
+  xIcon: { fontSize: 10, color: C.red, width: 14, marginTop: 1 },
+  checkTextWrap: { flexDirection: 'column', flex: 1 },
+  checkTitle: { fontSize: 9, lineHeight: 1.5, color: C.gray },
+  checkTitleBold: { fontSize: 9, lineHeight: 1.5, fontFamily: 'Helvetica-Bold', color: C.charcoal },
+  checkDetail: { fontSize: 8.5, lineHeight: 1.5, color: C.gray, marginTop: 1 },
 
   /* Comparison table */
   tableRow: { flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: C.grayBorder },
@@ -95,15 +104,20 @@ const WarningCallout = ({ children }: { children: React.ReactNode }) => (
 );
 
 const Check = ({ text }: { text: string }) => (
-  <View style={s.checkRow}><Text style={s.checkIcon}>✓</Text><Text style={s.checkText}>{text}</Text></View>
+  <View style={s.checkRow}>
+    <Text style={s.checkIcon}>✓</Text>
+    <View style={s.checkTextWrap}>
+      <Text style={s.checkTitle}>{text}</Text>
+    </View>
+  </View>
 );
 
 const XMark = ({ text, detail }: { text: string; detail?: string }) => (
-  <View style={[s.checkRow, { marginBottom: detail ? 6 : 4 }]}>
+  <View style={[s.checkRow, { marginBottom: detail ? 12 : 5 }]}>
     <Text style={s.xIcon}>✗</Text>
-    <View style={{ flex: 1 }}>
-      <Text style={[s.checkText, { fontFamily: 'Helvetica-Bold', color: C.charcoal }]}>{text}</Text>
-      {detail && <Text style={[s.checkText, { marginTop: 2 }]}>{detail}</Text>}
+    <View style={s.checkTextWrap}>
+      <Text style={s.checkTitleBold}>{text}</Text>
+      {detail && <Text style={s.checkDetail}>{detail}</Text>}
     </View>
   </View>
 );
@@ -112,7 +126,7 @@ const Footer = ({ num }: { num: number }) => (
   <View style={s.footer} fixed>
     <View style={s.footerLine} />
     <View style={s.footerRow}>
-      <Image src={LOGO_PATH} style={s.footerLogo} />
+      <Image src={LOGO_SRC} style={s.footerLogo} />
       <Text style={s.footerText}>{num}</Text>
     </View>
   </View>
@@ -128,7 +142,7 @@ export function PotsReplacementPlaybook() {
       {/* ── Page 1: Cover ─────────────────────────────── */}
       <Page size="LETTER" style={{ padding: 0, fontFamily: 'Helvetica', position: 'relative' }}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 60 }}>
-          <Image src={LOGO_PATH} style={{ width: 160, marginBottom: 40 }} />
+          <Image src={LOGO_SRC} style={{ width: 160, marginBottom: 40 }} />
           <Text style={{ fontSize: 32, fontFamily: 'Helvetica-Bold', color: C.charcoal, textAlign: 'center', marginBottom: 12 }}>
             The POTS Replacement{'\n'}Playbook
           </Text>
@@ -319,7 +333,7 @@ export function PotsReplacementPlaybook() {
       {/* ── Page 7: CTA ──────────────────────────────── */}
       <Page size="LETTER" style={{ padding: 0, fontFamily: 'Helvetica', position: 'relative' }}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 60 }}>
-          <Image src={LOGO_PATH} style={{ width: 140, marginBottom: 36 }} />
+          <Image src={LOGO_SRC} style={{ width: 140, marginBottom: 36 }} />
           <Text style={{ fontSize: 24, fontFamily: 'Helvetica-Bold', color: C.charcoal, textAlign: 'center', marginBottom: 8 }}>
             Get a Free POTS Inventory{'\n'}and Replacement Quote
           </Text>
