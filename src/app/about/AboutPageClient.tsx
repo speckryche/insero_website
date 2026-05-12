@@ -52,7 +52,8 @@ function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.05 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-8 leading-[1.1] tracking-tight text-balance"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-8 leading-[1.1] tracking-tight text-balance"
+            style={{ color: '#ffffff' }}
           >
             Built by people who&apos;ve actually run a phone company.
           </motion.h1>
