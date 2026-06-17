@@ -75,6 +75,49 @@ const nextConfig: NextConfig = {
         destination: '/services',
         permanent: true,
       },
+      // Old WordPress URLs confirmed 404ing in Google Search Console
+      {
+        source: '/what-we-do',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/blog',
+        destination: '/resources',
+        permanent: true,
+      },
+      {
+        source: '/category/blog',
+        destination: '/resources',
+        permanent: true,
+      },
+      {
+        source: '/2023/09/01/this-is-the-second-blog-post',
+        destination: '/resources',
+        permanent: true,
+      },
+      // Broad catch-alls for common WordPress URL structures
+      {
+        source: '/category/:slug*',
+        destination: '/resources',
+        permanent: true,
+      },
+      {
+        source: '/tag/:slug*',
+        destination: '/resources',
+        permanent: true,
+      },
+      {
+        source: '/author/:slug*',
+        destination: '/resources',
+        permanent: true,
+      },
+      // Old dated permalink pattern (e.g. /2023/09/01/some-post)
+      {
+        source: '/:year(\\d{4})/:month(\\d{2})/:slug*',
+        destination: '/resources',
+        permanent: true,
+      },
     ];
   },
 };
