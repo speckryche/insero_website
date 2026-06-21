@@ -45,6 +45,23 @@ const benefits = [
   'Regular security assessments',
 ];
 
+const relatedReading = [
+  {
+    href: '/resources/do-you-need-sdwan',
+    label: 'SD-WAN & SASE',
+    title: 'Do You Actually Need SD-WAN? A Decision Framework',
+    description:
+      'How SD-WAN, firewalls, and SASE relate — and where security fits into a modern network design.',
+  },
+  {
+    href: '/resources/how-a-telecom-broker-works',
+    label: 'How We Work',
+    title: 'How a Telecom Broker Actually Works (And Why It’s Free)',
+    description:
+      'Why a vendor-neutral advocate helps you source the right security solution without the upsell.',
+  },
+];
+
 export function SecurityPageClient() {
   return (
     <ServicePage
@@ -55,6 +72,7 @@ export function SecurityPageClient() {
       gradient="from-[var(--color-secondary)] via-red-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      relatedReading={relatedReading}
       image="/images/services/security_service_page.png"
       ctaTitle="Ready to Protect Your Business?"
       ctaDescription="Get a free security assessment and discover your vulnerabilities before attackers do."

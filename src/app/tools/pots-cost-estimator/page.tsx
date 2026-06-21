@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { PotsCostEstimator } from '@/components/tools/PotsCostEstimator';
 import { PlaybookPromo } from '@/components/lead-magnets/PlaybookPromo';
+import { RelatedArticles } from '@/components/tools/RelatedArticles';
 
 export const metadata: Metadata = {
   title: 'POTS Replacement Cost Estimator | Insero',
@@ -60,6 +61,24 @@ export default function PotsCostEstimatorPage() {
         <div className="container-custom">
           <PotsCostEstimator />
           <PlaybookPromo />
+          <RelatedArticles
+            articles={[
+              {
+                href: '/resources/pots-line-replacement-options',
+                category: 'POTS Replacement',
+                title: 'POTS Lines Are Going Away. Here Are Your Replacement Options.',
+                description:
+                  'The four real replacement paths, the fire-alarm compliance gotchas, and how to plan the migration.',
+              },
+              {
+                href: '/resources/ucaas-explained',
+                category: 'Voice',
+                title: 'UCaaS Explained (and Why It’s the Same Thing as Hosted PBX)',
+                description:
+                  'If you’re replacing desk-phone POTS lines, a cloud phone system is often the cheaper answer.',
+              },
+            ]}
+          />
         </div>
       </section>
     </>

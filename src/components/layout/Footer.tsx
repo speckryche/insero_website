@@ -12,6 +12,9 @@ import {
   Briefcase,
   ChatCircle,
   BookOpen,
+  Wrench,
+  DownloadSimple,
+  Article,
   ArrowRight
 } from '@phosphor-icons/react';
 import { company as companyInfo } from '@/config/company';
@@ -23,9 +26,17 @@ const services = [
   { name: 'Security', href: '/services/security', icon: ShieldCheck },
 ];
 
+const resourceLinks = [
+  { name: 'All Resources', href: '/resources', icon: BookOpen },
+  { name: 'Free Tools', href: '/tools', icon: Wrench },
+  { name: 'Free Guides', href: '/guides', icon: DownloadSimple },
+  { name: 'POTS Replacement Options', href: '/resources/pots-line-replacement-options', icon: Article },
+  { name: 'Fiber vs Cable for Business', href: '/resources/fiber-vs-cable-business-internet', icon: Article },
+  { name: 'How a Telecom Broker Works', href: '/resources/how-a-telecom-broker-works', icon: Article },
+];
+
 const companyLinks = [
   { name: 'Services', href: '/services', icon: Briefcase },
-  { name: 'Resources', href: '/resources', icon: BookOpen },
   { name: 'Contact', href: '/contact', icon: ChatCircle },
 ];
 
@@ -37,7 +48,7 @@ export function Footer() {
 
       {/* Main Footer Content */}
       <div className="container-custom pt-16 lg:pt-20 pb-12 lg:pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div>
             <Link href="/" className="inline-block mb-6">
@@ -85,6 +96,30 @@ export function Footer() {
                       <Icon weight="fill" className="w-4 h-4 text-[#1FA855]" />
                       <span>{service.name}</span>
                       <ArrowRight weight="bold" className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Resources Column */}
+          <div>
+            <h3 className="text-base font-extrabold uppercase tracking-wider mb-6" style={{ color: '#ffffff' }}>
+              Resources
+            </h3>
+            <ul className="space-y-3">
+              {resourceLinks.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li key={item.name}>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group"
+                    >
+                      <Icon weight="fill" className="w-4 h-4 text-[#1FA855] flex-shrink-0" />
+                      <span>{item.name}</span>
+                      <ArrowRight weight="bold" className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all flex-shrink-0" />
                     </Link>
                   </li>
                 );

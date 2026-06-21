@@ -9,12 +9,20 @@ import {
   ArrowRight,
   Phone,
   CheckCircle,
-  Sparkle
+  Sparkle,
+  BookOpen
 } from '@phosphor-icons/react';
 import type { IconProps } from '@phosphor-icons/react';
 
 interface Feature {
   icon: ComponentType<IconProps>;
+  title: string;
+  description: string;
+}
+
+interface RelatedLink {
+  href: string;
+  label: string;
   title: string;
   description: string;
 }
@@ -32,6 +40,7 @@ interface ServicePageProps {
   ctaDescription?: string;
   ctaColor?: string;
   headerCtaColor?: string;
+  relatedReading?: RelatedLink[];
 }
 
 export function ServicePage({
@@ -45,6 +54,7 @@ export function ServicePage({
   image,
   ctaColor,
   headerCtaColor,
+  relatedReading,
   ctaTitle = `Ready to Optimize Your ${title}?`,
   ctaDescription = 'Get a free assessment and discover how much you could save.'
 }: ServicePageProps) {
@@ -340,6 +350,44 @@ export function ServicePage({
           </motion.div>
         </div>
       </section>
+
+      {/* Related Reading Section */}
+      {relatedReading && relatedReading.length > 0 && (
+        <section className="py-16 lg:py-24 bg-white">
+          <div className="container-custom">
+            <div className="flex items-center gap-2 mb-3" style={{ color }}>
+              <BookOpen weight="fill" className="w-5 h-5" />
+              <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-[var(--color-secondary)] mb-10">
+              Go deeper on {title.toLowerCase()}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedReading.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group bg-[var(--color-gray-50)] rounded-2xl p-6 border border-gray-100 hover:shadow-xl hover:border-transparent transition-all duration-300 flex flex-col"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color }}>
+                    {item.label}
+                  </span>
+                  <h3 className="font-display font-bold text-lg text-[var(--color-secondary)] mt-2 mb-2 leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-[var(--color-gray-500)] leading-relaxed flex-grow">
+                    {item.description}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color }}>
+                    Read more
+                    <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className={`relative py-24 lg:py-32 bg-gradient-to-br ${gradient} overflow-hidden`}>

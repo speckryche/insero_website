@@ -45,6 +45,30 @@ const benefits = [
   'Ongoing account management',
 ];
 
+const relatedReading = [
+  {
+    href: '/resources/fiber-vs-cable-business-internet',
+    label: 'Internet',
+    title: 'Fiber vs Cable for Business: An Honest Comparison',
+    description:
+      'When fiber is worth the premium, when cable still wins, and how to find what’s available at your address.',
+  },
+  {
+    href: '/resources/business-internet-buyers-guide',
+    label: 'Internet',
+    title: 'The Business Internet Buyer’s Guide: What Actually Matters',
+    description:
+      'SLA, install timeline, redundancy, contract terms — and the carrier tactics to watch out for.',
+  },
+  {
+    href: '/tools/bandwidth-calculator',
+    label: 'Free Tool',
+    title: 'Business Internet Bandwidth Calculator',
+    description:
+      'Figure out how much bandwidth your team actually needs in under a minute.',
+  },
+];
+
 export function InternetPageClient() {
   return (
     <ServicePage
@@ -57,6 +81,7 @@ export function InternetPageClient() {
       gradient="from-[var(--color-secondary)] via-emerald-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      relatedReading={relatedReading}
       image="/images/services/internet_service_page.png"
       ctaTitle="Ready to Upgrade Your Internet?"
       ctaDescription="Get a free quote comparison from multiple carriers. See all your options in one place."

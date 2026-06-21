@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { BandwidthCalculator } from '@/components/tools/BandwidthCalculator';
+import { RelatedArticles } from '@/components/tools/RelatedArticles';
 
 export const metadata: Metadata = {
   title: 'Business Internet Bandwidth Calculator | Insero',
@@ -58,6 +59,24 @@ export default function BandwidthCalculatorPage() {
       <section className="pb-20 bg-white">
         <div className="container-custom">
           <BandwidthCalculator />
+          <RelatedArticles
+            articles={[
+              {
+                href: '/resources/fiber-vs-cable-business-internet',
+                category: 'Internet',
+                title: 'Fiber vs Cable for Business: An Honest Comparison',
+                description:
+                  'Once you know your bandwidth target, here’s how to choose the right connection type for it.',
+              },
+              {
+                href: '/resources/business-internet-buyers-guide',
+                category: 'Internet',
+                title: 'The Business Internet Buyer’s Guide: What Actually Matters',
+                description:
+                  'Beyond speed — SLA, redundancy, install timeline, and the contract terms to watch for.',
+              },
+            ]}
+          />
         </div>
       </section>
     </>

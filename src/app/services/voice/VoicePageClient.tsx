@@ -45,6 +45,30 @@ const benefits = [
   '24/7 support and monitoring',
 ];
 
+const relatedReading = [
+  {
+    href: '/resources/ucaas-explained',
+    label: 'Voice',
+    title: 'UCaaS Explained (and Why It’s the Same Thing as Hosted PBX)',
+    description:
+      'What cloud phone systems actually are, what they cost, and how to decide if you need one.',
+  },
+  {
+    href: '/resources/pots-line-replacement-options',
+    label: 'POTS Replacement',
+    title: 'POTS Lines Are Going Away. Here Are Your Replacement Options.',
+    description:
+      'Copper is being decommissioned and priced off. Plan your migration for phones, alarms, and fax.',
+  },
+  {
+    href: '/tools/pots-cost-estimator',
+    label: 'Free Tool',
+    title: 'POTS Replacement Cost Estimator',
+    description:
+      'See what you’re really paying for POTS lines and how much you could save by migrating.',
+  },
+];
+
 export function VoicePageClient() {
   return (
     <ServicePage
@@ -55,6 +79,7 @@ export function VoicePageClient() {
       gradient="from-[var(--color-secondary)] via-blue-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      relatedReading={relatedReading}
       image="/images/services/voice_service_page.png"
       ctaTitle="Ready to Modernize Your Phone System?"
       ctaDescription="Get a free assessment and discover how much you could save with modern voice solutions."

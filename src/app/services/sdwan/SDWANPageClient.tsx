@@ -44,6 +44,30 @@ const benefits = [
   'Simple deployment and scaling',
 ];
 
+const relatedReading = [
+  {
+    href: '/resources/do-you-need-sdwan',
+    label: 'SD-WAN',
+    title: 'Do You Actually Need SD-WAN? A Decision Framework',
+    description:
+      'A vendor-neutral framework for when SD-WAN earns its cost — and when a simpler failover setup is enough.',
+  },
+  {
+    href: '/resources/business-internet-buyers-guide',
+    label: 'Internet',
+    title: 'The Business Internet Buyer’s Guide: What Actually Matters',
+    description:
+      'How redundancy, SLA, and failover fit into sourcing the right connections for an SD-WAN deployment.',
+  },
+  {
+    href: '/resources/fiber-vs-cable-business-internet',
+    label: 'Internet',
+    title: 'Fiber vs Cable for Business: An Honest Comparison',
+    description:
+      'Why pairing different infrastructure types makes the strongest backup for automatic failover.',
+  },
+];
+
 export function SDWANPageClient() {
   return (
     <ServicePage
@@ -54,6 +78,7 @@ export function SDWANPageClient() {
       gradient="from-[var(--color-secondary)] via-violet-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}
+      relatedReading={relatedReading}
       image="/images/services/sdwan_service_page.png"
       ctaTitle="Ready for a More Resilient Network?"
       ctaDescription="Get a free network assessment and discover how SD-WAN can improve your reliability and reduce costs."

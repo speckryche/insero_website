@@ -5,6 +5,7 @@ import { Services } from '@/components/sections/Services';
 import { HowItWorks } from '@/components/sections/HowItWorks';
 import { WhyInsero } from '@/components/sections/WhyInsero';
 import { CarrierLogosContinuous } from '@/components/sections/CarrierLogosContinuousServer';
+import { ResourcesHighlight } from '@/components/sections/ResourcesHighlight';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
 
@@ -154,6 +155,8 @@ export default function HomePage() {
       <div className="[&>section]:!bg-[#f8fafb] [&>section]:!pt-12 [&>section]:lg:!pt-16">
         <FAQ items={faqItems} />
       </div>
+
+      <ResourcesHighlight />
 
       <FinalCTA />
     </>
