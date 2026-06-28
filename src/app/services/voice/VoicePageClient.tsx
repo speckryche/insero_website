@@ -54,6 +54,13 @@ const relatedReading = [
       'RingCentral’s AI phone, contact center, and agentic voice AI — explained honestly, sourced at zero cost.',
   },
   {
+    href: '/zoom',
+    label: 'Provider',
+    title: 'Zoom for Business — AI-First Phone, Built In',
+    description:
+      'Zoom Phone with AI Companion included free — explained honestly, sourced through Insero at zero cost.',
+  },
+  {
     href: '/resources/ucaas-explained',
     label: 'Voice',
     title: 'UCaaS Explained (and Why It’s the Same Thing as Hosted PBX)',

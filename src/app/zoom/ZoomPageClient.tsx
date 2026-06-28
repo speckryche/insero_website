@@ -27,79 +27,79 @@ import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
-import { ringCentralFaq } from './faq';
+import { zoomFaq } from './faq';
 
 // --- Section data ---------------------------------------------------------
 
 const aiCapabilities = [
   {
-    stage: 'Before the call',
-    name: 'AI Receptionist (AIR)',
-    icon: Robot,
+    stage: 'Included free',
+    name: 'AI Companion',
+    icon: Sparkle,
     description:
-      'Answers every call 24/7, understands what the caller wants, routes them to the right place, books appointments, and captures lead details — so nothing slips to voicemail at 2am.',
+      "Included with eligible paid plans at no extra cost: call and meeting summaries, voicemail prioritization, and task extraction that auto-creates Zoom Tasks with owners and deadlines — plus 'ask AI Companion' for instant answers during and after calls.",
   },
   {
-    stage: 'During the call',
-    name: 'AI Virtual Assistant (AVA)',
-    icon: Lightning,
-    description:
-      'Works alongside your team in the moment — real-time prompts, answers, and automation so reps get help while the customer is still on the line, not after.',
-  },
-  {
-    stage: 'After the call',
-    name: 'AI Conversation Expert (ACE)',
+    stage: 'Agentic',
+    name: 'AI Companion 3.0',
     icon: Brain,
     description:
-      'Formerly RingSense. Summarizes calls and meetings, scores conversations for coaching, tracks topics and sentiment, and updates your CRM automatically — turning every conversation into usable insight.',
+      'The agentic evolution: a cross-platform work surface that pulls context from your files and apps and drives conversation-to-action workflows, instead of just summarizing after the fact.',
+  },
+  {
+    stage: 'Voice AI (add-on)',
+    name: 'AI Receptionist & Concierge',
+    icon: Robot,
+    description:
+      'A 24/7 natural-voice agent that answers, routes, books appointments, and covers after-hours. AI Concierge is a paid add-on, but it plugs straight into the same Zoom Phone platform.',
   },
 ];
 
 const aiAlsoIncluded = [
   {
-    name: 'AI Call Notes & personal assistant',
-    icon: Sparkle,
+    name: 'Revenue Accelerator',
+    icon: Lightning,
     description:
-      'Included with RingEX plans: automatic call summaries, action items, and a personal AI assistant that drafts follow-ups — genuinely useful AI you get without an upgrade.',
+      "Sales conversation intelligence: deal insights, risk flags, automatic CRM updates, and coaching built from real calls — so your pipeline reflects what's actually happening, not what got typed in.",
   },
   {
-    name: 'RingCX — AI contact center',
-    icon: Headset,
+    name: 'Custom AI Companion (add-on)',
+    icon: PuzzlePiece,
     description:
-      'A full AI-powered contact center: real-time agent assist, automated CSAT scoring, live sentiment, and churn-risk detection so supervisors can step in before a customer walks.',
+      'Vertical- and role-tuned AI agents you can shape to your own workflows — a paid add-on for teams that want AI specialized to how they actually work.',
   },
 ];
 
 const coreProducts = [
   {
-    name: 'Business Phone (RingEX)',
+    name: 'Business Phone (Zoom Phone)',
     icon: PhoneCall,
-    description: 'Cloud calling with auto-attendant, routing, voicemail, and desk, desktop, and mobile apps.',
+    description: 'Cloud calling with routing, voicemail, and apps for desk, desktop, and mobile — built on the platform you already know.',
   },
   {
-    name: 'Video Meetings',
+    name: 'Meetings & Video',
     icon: VideoCamera,
-    description: 'Built-in HD video conferencing with AI summaries and recording.',
+    description: 'The flagship: reliable HD video and webinars teams actually enjoy using, with AI summaries built in.',
   },
   {
-    name: 'Team Messaging',
+    name: 'Team Chat',
     icon: ChatsCircle,
-    description: 'Persistent team chat, file sharing, and tasks in one place.',
+    description: 'Persistent messaging, channels, and file sharing that tie directly into meetings and calls.',
   },
   {
-    name: 'SMS & Business Texting',
+    name: 'SMS & MMS',
     icon: DeviceMobile,
-    description: 'Send and receive texts from your business numbers, with compliance built in.',
+    description: 'Send and receive business texts and media from your Zoom numbers.',
   },
   {
-    name: 'Contact Center (RingCX)',
+    name: 'Contact Center (Zoom Contact Center)',
     icon: Headset,
-    description: 'Omnichannel, AI-powered contact center licensed separately from RingEX.',
+    description: 'An omnichannel, AI-powered contact center that lives in the same Zoom Workplace experience.',
   },
   {
     name: 'Integrations',
     icon: PuzzlePiece,
-    description: 'Microsoft Teams, Salesforce, and a deep catalog of CRM and productivity integrations.',
+    description: 'Microsoft Teams via Operator Connect, Salesforce, and a broad catalog of CRM and productivity integrations.',
   },
 ];
 
@@ -114,13 +114,13 @@ const inseroValue = [
     icon: Scales,
     title: 'Genuinely independent',
     description:
-      "We're not RingCentral's sales team. If it's not the right fit for your business, we'll tell you and point you somewhere better.",
+      "We're not Zoom's sales team. If it's not the right fit for your business, we'll tell you and point you somewhere better.",
   },
   {
     icon: CheckCircle,
     title: 'We price your real configuration',
     description:
-      'Seats, the add-ons that matter, and contact center if you need it — so the quote you see is the bill you get.',
+      'Seats, license bundling, the add-ons that matter, and contact center if you need it — so the quote you see is the bill you get.',
   },
   {
     icon: ShieldCheck,
@@ -139,7 +139,7 @@ const fadeUp = {
 
 // --- Page -----------------------------------------------------------------
 
-export function RingCentralPageClient() {
+export function ZoomPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
@@ -151,21 +151,28 @@ export function RingCentralPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="max-w-4xl"
           >
-            {/* Logo (directly on the white hero) */}
+            {/* Logo — once public/carriers/Zoom.svg exists, replace this wordmark with:
+                {/* eslint-disable-next-line @next/next/no-img-element *\/}
+                <img src="/carriers/Zoom.svg" alt="Zoom" className="h-9 w-auto" />
+                Until then a text wordmark stands in so there's no broken image on the hero. */}
             <div className="mb-8">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-9 w-auto" />
+              <span
+                aria-label="Zoom"
+                className="text-3xl font-display font-extrabold tracking-tight text-[#0B5CFF]"
+              >
+                Zoom
+              </span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-[#1e293b] leading-[1.1] tracking-tight mb-6">
-              RingCentral for Business —{' '}
-              <span className="text-[#008838]">AI-Powered Phone, Done Right</span>
+              Zoom for Business —{' '}
+              <span className="text-[#008838]">AI-First Phone, Built In</span>
             </h1>
 
             <p className="text-lg md:text-xl lg:text-2xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
-              RingCentral is one of the leading AI business communications platforms — phone, video, messaging,
-              and a deep agentic AI layer. Insero is the independent advisor who sources it for you at zero cost,
-              with honest guidance on whether it&apos;s actually the right fit.
+              Zoom Phone is a leading AI-first cloud phone platform — best known for video, but now a full
+              business communications suite with capable AI included by default. Insero is the independent
+              advisor who sources it for you at zero cost, with honest guidance on whether it actually fits.
             </p>
 
             <Link href="/contact">
@@ -179,36 +186,35 @@ export function RingCentralPageClient() {
         </Container>
       </section>
 
-      {/* ===================== WHAT RINGCENTRAL IS ===================== */}
+      {/* ===================== WHAT ZOOM IS ===================== */}
       <section className="py-20 lg:py-28 bg-white">
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
-              What RingCentral actually is
+              What Zoom actually is
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
               <p>
-                At its core, RingCentral is a cloud business communications platform: your phone system, video
-                meetings, team messaging, and business texting, all delivered as a subscription and managed from
-                one place. There&apos;s no PBX in a closet and no carrier lines to babysit — it&apos;s the modern{' '}
+                Most people know Zoom as the video app. The fuller picture is Zoom Workplace — a cloud business
+                communications platform that brings phone, meetings, team chat, and a contact center into one
+                place. Zoom Phone is the piece that turns the video tool you already use into a complete{' '}
                 <Link href="/resources/ucaas-explained" className="text-[var(--color-primary)] font-semibold hover:underline">
                   hosted UCaaS
                 </Link>{' '}
-                model, and RingCentral is one of the most established names in it.
+                system: real business calling, one familiar app, no PBX in a closet.
               </p>
               <p>
-                It has a long-standing reputation for reliability — the kind of uptime and call quality that
-                businesses build their day around. But what increasingly sets RingCentral apart is the depth of
-                its AI layer. Where many providers bolt a summary feature onto calls and call it &quot;AI,&quot;
-                RingCentral has built an agentic stack that does real work before, during, and after a
-                conversation.
+                It&apos;s built to be relied on at scale — a 99.999% uptime SLA, availability across 49+
+                countries, a bring-your-own-carrier (BYOC) option if you want to keep existing carrier
+                relationships, and compliance built in (HIPAA, GDPR, FedRAMP). For a lot of teams the biggest
+                advantage is simply familiarity: adoption is fast because people already know the interface.
               </p>
               <p>
-                That makes it a strong choice for teams that live on the phone — sales, support, and any
-                business where the contact center is the front door. The catch, which we&apos;re upfront about
-                below, is that the most powerful pieces are priced as add-ons rather than bundled into the base
-                seat. Knowing which ones you actually need is most of the battle.
+                But what increasingly sets Zoom apart is its approach to AI. Where many providers treat capable
+                AI as a paid upgrade, Zoom includes its AI Companion with eligible paid plans at no extra cost.
+                That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
+                most advanced agentic pieces still available as add-ons when you need them.
               </p>
             </div>
           </motion.div>
@@ -224,16 +230,17 @@ export function RingCentralPageClient() {
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6">
-              One of the deepest agentic voice-AI stacks in the market
+              Capable AI that&apos;s included, not billed as an add-on
             </h2>
             <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
-              RingCentral&apos;s agentic Voice AI suite spans the entire call — an AI that greets and routes
-              callers, assists your reps live, and turns finished conversations into coaching and CRM updates.
-              Here&apos;s the honest breakdown of what each piece does.
+              Zoom&apos;s standout is that useful AI comes with the seat. AI Companion is included at no extra
+              cost on eligible paid plans — which makes Zoom the simplest, most cost-effective way to put real AI
+              in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
+              add-on.
             </p>
           </motion.div>
 
-          {/* Before / During / After */}
+          {/* Primary AI capabilities */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             {aiCapabilities.map((cap, index) => {
               const Icon = cap.icon;
@@ -259,7 +266,7 @@ export function RingCentralPageClient() {
             })}
           </div>
 
-          {/* Also included / contact center */}
+          {/* Also notable */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {aiAlsoIncluded.map((item, index) => {
               const Icon = item.icon;
@@ -292,7 +299,7 @@ export function RingCentralPageClient() {
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
             <SectionEyebrow centered>The Platform</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
-              Everything in the RingCentral platform
+              Everything in the Zoom platform
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
               The building blocks, in plain terms — so you know what&apos;s standard and what&apos;s a separate
@@ -332,19 +339,20 @@ export function RingCentralPageClient() {
           <motion.div {...fadeUp}>
             <SectionEyebrow>Honest Pricing</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
-              The sticker price isn&apos;t the all-in price
+              The sticker price isn&apos;t always the all-in price
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-10">
               <p>
-                RingCentral is priced per user, per month, with tiered plans — and committing to annual billing
-                is typically meaningfully cheaper than paying month to month. That part is straightforward.
+                Zoom Phone is priced per user, per month, with competitive entry pricing and month-to-month
+                options, and it bundles neatly with Zoom Workplace licenses if you&apos;re already paying for
+                meetings. The standout advantage is that AI Companion is included rather than billed separately —
+                so a lot of genuinely useful AI is already in the price.
               </p>
               <p>
-                What trips people up is everything that sits outside the base seat. The most powerful AI
-                features are paid add-ons, not all included — conversation intelligence (ACE / RingSense) and the
-                AI Receptionist are add-ons, and the RingCX contact center is a separate license entirely. A
-                price you see advertised for a base plan can look very different once the capabilities you came
-                for are added in.
+                Where the number moves is the advanced tier. The most powerful pieces — AI Concierge, Custom AI
+                Companion, the deeper Revenue Accelerator tiers, and the Power Pack / Customer Engagement Pack —
+                are paid add-ons. So even with Zoom&apos;s strong included baseline, the base sticker isn&apos;t
+                always the all-in number once you add the advanced capabilities you came for.
               </p>
             </div>
 
@@ -358,12 +366,12 @@ export function RingCentralPageClient() {
                     Why this is exactly where an advisor earns their keep
                   </h3>
                   <p className="text-[#475569] leading-relaxed">
-                    Because the all-in number depends entirely on your configuration, the honest answer to
-                    &quot;what does RingCentral cost?&quot; is &quot;it depends — let&apos;s price your real
-                    setup.&quot; We don&apos;t publish figures here that would be stale next quarter or read as
-                    a promise we can&apos;t keep. Instead, we&apos;ll build your actual configuration — seats,
-                    the add-ons that matter, and contact center if you need it — and put a real, current number
-                    in front of you. Curious what you&apos;re overpaying for elsewhere?{' '}
+                    Because the all-in number depends on your plan mix and add-ons, the honest answer to
+                    &quot;what does Zoom cost?&quot; is &quot;it depends — let&apos;s price your real setup.&quot;
+                    We don&apos;t publish figures here that would be stale next quarter or read as a promise we
+                    can&apos;t keep. Instead, we&apos;ll build your actual configuration — seats, license
+                    bundling, the add-ons that matter, and contact center if you need it — and put a real,
+                    current number in front of you. Curious what you&apos;re overpaying for elsewhere?{' '}
                     <Link href="/tools/pots-cost-estimator" className="text-[var(--color-primary)] font-semibold hover:underline">
                       Try our cost estimator
                     </Link>{' '}
@@ -382,11 +390,11 @@ export function RingCentralPageClient() {
           <motion.div {...fadeUp} className="max-w-2xl mb-14">
             <SectionEyebrow>The Difference</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
-              Why source RingCentral through Insero
+              Why source Zoom through Insero
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
-              You can buy RingCentral directly. Here&apos;s why most businesses are better off having an
-              independent advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
+              You can buy Zoom directly. Here&apos;s why most businesses are better off having an independent
+              advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
               <Link href="/services/voice" className="text-[var(--color-primary)] font-semibold hover:underline">
                 every voice project
               </Link>
@@ -428,7 +436,7 @@ export function RingCentralPageClient() {
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
-              Is RingCentral right for you?
+              Is Zoom right for you?
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
               We&apos;d rather you land on the right platform than the one we&apos;re talking about. Here&apos;s
@@ -441,19 +449,19 @@ export function RingCentralPageClient() {
               left={{
                 title: 'Great fit if…',
                 points: [
-                  'You want deep AI and contact-center capability, not just call summaries',
-                  'Agentic voice AI — an AI receptionist, live agent assist, conversation intelligence — would genuinely move the needle',
-                  'You value a mature, reliable platform with a long track record',
-                  'Sales or support teams live on the phone and coaching matters',
+                  'You already use Zoom for meetings and want one familiar app for calls too',
+                  'You want capable AI included without assembling and paying for add-ons',
+                  'You want simple, fast deployment your team adopts on day one',
+                  'Your team is video-heavy and collaboration-first',
                 ],
               }}
               right={{
                 title: 'Maybe not if…',
                 points: [
-                  'You want all the AI included in the base price rather than as add-ons',
-                  'You’re very price-sensitive at the entry tier',
-                  'A simpler, lighter phone system would cover everything you need',
-                  'You’d rather a provider bundle AI in by default',
+                  'You need the deepest contact-center and conversation-intelligence stack — RingCentral tends to pull ahead there',
+                  'You want the most advanced agentic voice AI as the core of the system, not as an add-on',
+                  'You rely on heavy, specialized contact-center customization out of the box',
+                  'You’d rather assemble best-of-breed point tools than run one unified suite',
                 ],
               }}
             />
@@ -466,17 +474,18 @@ export function RingCentralPageClient() {
               </div>
               <div>
                 <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
-                  A quick word on RingCentral vs Zoom
+                  A quick word on Zoom vs RingCentral
                 </h3>
                 <p className="text-[#475569] leading-relaxed">
-                  If &quot;all the AI included&quot; is your priority, it&apos;s worth comparing.{' '}
-                  <Link href="/zoom" className="text-[var(--color-primary)] font-semibold hover:underline">
-                    Zoom
+                  If you&apos;re weighing the two: Zoom&apos;s advantage is value and simplicity — capable AI is
+                  included and the platform is famously easy to adopt, especially if your team already lives in
+                  Zoom meetings. RingCentral&apos;s advantage is the depth of its contact-center and
+                  conversation-intelligence stack, though its most powerful AI comes as add-ons. Read our honest
+                  take on{' '}
+                  <Link href="/ringcentral" className="text-[var(--color-primary)] font-semibold hover:underline">
+                    RingCentral
                   </Link>
-                  , for example, includes its AI Companion features at no extra charge, which can be more
-                  cost-effective when you want capable AI without assembling add-ons. RingCentral tends to pull
-                  ahead when you need deep contact-center and conversation intelligence. We&apos;ll compare both
-                  against your actual needs — no thumb on the scale.
+                  , and we&apos;ll compare both against your actual needs — no thumb on the scale.
                 </p>
               </div>
             </div>
@@ -490,11 +499,11 @@ export function RingCentralPageClient() {
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b]">
-              RingCentral FAQ
+              Zoom FAQ
             </h2>
           </motion.div>
           <motion.div {...fadeUp}>
-            <ArticleFAQ items={ringCentralFaq} />
+            <ArticleFAQ items={zoomFaq} />
           </motion.div>
 
           {/* Related reading */}
@@ -537,7 +546,7 @@ export function RingCentralPageClient() {
               <span className="w-8 h-px bg-[#008838]" />
             </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-[#1e293b] mb-6 leading-[1.1] tracking-tight">
-              Get a free RingCentral quote
+              Get a free Zoom quote
             </h2>
             <p className="text-xl text-[#64748b] mb-10 max-w-xl mx-auto leading-relaxed">
               Zero cost, honest advice. We&apos;ll price your real configuration — and tell you straight if

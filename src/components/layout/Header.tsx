@@ -51,6 +51,13 @@ const services = [
     icon: Phone,
     color: 'var(--color-voice)'
   },
+  {
+    name: 'Zoom',
+    href: '/zoom',
+    description: 'AI-first business phone',
+    icon: Phone,
+    color: 'var(--color-voice)'
+  },
 ];
 
 const navLinks = [
