@@ -24,6 +24,7 @@ const services = [
   { name: 'Internet Connectivity', href: '/services/internet', icon: Globe },
   { name: 'SD-WAN & Redundancy', href: '/services/sdwan', icon: GitBranch },
   { name: 'Security', href: '/services/security', icon: ShieldCheck },
+  { name: 'RingCentral', href: '/ringcentral', icon: Phone },
 ];
 
 const resourceLinks = [

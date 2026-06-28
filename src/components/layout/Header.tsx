@@ -44,6 +44,13 @@ const services = [
     icon: ShieldCheck,
     color: 'var(--color-security)'
   },
+  {
+    name: 'RingCentral',
+    href: '/ringcentral',
+    description: 'AI-powered business phone',
+    icon: Phone,
+    color: 'var(--color-voice)'
+  },
 ];
 
 const navLinks = [
