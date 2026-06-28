@@ -143,16 +143,7 @@ export function RingCentralPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      <section
-        data-dark-hero="true"
-        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-br from-[var(--color-secondary)] via-[#13283f] to-[var(--color-secondary-dark)] overflow-hidden"
-      >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-          <div className="absolute top-1/4 -right-20 w-96 h-96 bg-[var(--color-accent)]/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 -left-20 w-80 h-80 bg-white/5 rounded-full blur-[80px]" />
-        </div>
-
+      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
         <Container className="relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -160,45 +151,32 @@ export function RingCentralPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="max-w-4xl"
           >
-            {/* Logo (white pill for nominative use on any background) */}
-            <div className="inline-flex items-center bg-white rounded-xl px-5 py-3 shadow-lg mb-8">
+            {/* Logo (directly on the white hero) */}
+            <div className="mb-8">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-7 w-auto" />
+              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-9 w-auto" />
             </div>
 
-            <h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6"
-              style={{ color: '#ffffff', textShadow: '0 2px 4px rgba(0,0,0,0.5), 0 4px 20px rgba(0,0,0,0.3)' }}
-            >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-[#1e293b] leading-[1.1] tracking-tight mb-6">
               RingCentral for Business —{' '}
-              <span className="text-[var(--color-accent-light)]">AI-Powered Phone, Done Right</span>
+              <span className="text-[#008838]">AI-Powered Phone, Done Right</span>
             </h1>
 
-            <p
-              className="text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl leading-relaxed"
-              style={{ color: '#e0f2fe', textShadow: '0 1px 3px rgba(0,0,0,0.4)' }}
-            >
+            <p className="text-lg md:text-xl lg:text-2xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
               RingCentral is one of the leading AI business communications platforms — phone, video, messaging,
               and a deep agentic AI layer. Insero is the independent advisor who sources it for you at zero cost,
               with honest guidance on whether it&apos;s actually the right fit.
             </p>
 
             <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="group inline-flex items-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-xl shadow-2xl transition-all duration-300"
-                style={{ backgroundColor: 'var(--color-primary)' }}
-              >
+              <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Get a Free Quote</span>
-                <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+                <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              </button>
             </Link>
           </motion.div>
         </Container>
-
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </section>
 
       {/* ===================== WHAT RINGCENTRAL IS ===================== */}
@@ -206,10 +184,10 @@ export function RingCentralPageClient() {
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
               What RingCentral actually is
             </h2>
-            <div className="space-y-5 text-lg text-[var(--color-gray-600)] leading-relaxed">
+            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
               <p>
                 At its core, RingCentral is a cloud business communications platform: your phone system, video
                 meetings, team messaging, and business texting, all delivered as a subscription and managed from
@@ -238,21 +216,17 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== AI CAPABILITIES (hook) ===================== */}
-      <section className="py-20 lg:py-28 bg-[var(--color-secondary)] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[var(--color-accent)]/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-[var(--color-primary)]/10 rounded-full blur-[100px]" />
-        </div>
-        <Container className="relative z-10">
+      <section className="py-20 lg:py-28 bg-[#e2e8ec]">
+        <Container>
           <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[var(--color-accent)]/20 text-[var(--color-accent-light)]">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#008838]/10 text-[#008838]">
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6">
               One of the deepest agentic voice-AI stacks in the market
             </h2>
-            <p className="text-lg text-white/70 leading-relaxed">
+            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
               RingCentral&apos;s agentic Voice AI suite spans the entire call — an AI that greets and routes
               callers, assists your reps live, and turns finished conversations into coaching and CRM updates.
               Here&apos;s the honest breakdown of what each piece does.
@@ -260,7 +234,7 @@ export function RingCentralPageClient() {
           </motion.div>
 
           {/* Before / During / After */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             {aiCapabilities.map((cap, index) => {
               const Icon = cap.icon;
               return (
@@ -270,16 +244,16 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="rounded-2xl p-7 bg-white/[0.04] border border-white/10 backdrop-blur-sm hover:bg-white/[0.07] transition-colors"
+                  className="rounded-2xl p-7 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-accent)]/15 text-[var(--color-accent-light)] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#008838]/10 text-[#008838] mb-5">
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-accent-light)]">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#008838]">
                     {cap.stage}
                   </span>
-                  <h3 className="text-xl font-display font-bold text-white mt-1 mb-3">{cap.name}</h3>
-                  <p className="text-white/70 leading-relaxed text-[15px]">{cap.description}</p>
+                  <h3 className="text-xl font-display font-bold text-[#1e293b] mt-1 mb-3">{cap.name}</h3>
+                  <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
                 </motion.div>
               );
             })}
@@ -296,14 +270,14 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex gap-4 rounded-2xl p-7 bg-white/[0.04] border border-white/10"
+                  className="flex gap-4 rounded-2xl p-7 bg-white border border-gray-200 shadow-sm"
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-primary)]/20 text-[#1FA855]">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#008838]/10 text-[#008838]">
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-white mb-2">{item.name}</h3>
-                    <p className="text-white/70 leading-relaxed text-[15px]">{item.description}</p>
+                    <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">{item.name}</h3>
+                    <p className="text-[#64748b] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -317,10 +291,10 @@ export function RingCentralPageClient() {
         <Container>
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
             <SectionEyebrow centered>The Platform</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
               Everything in the RingCentral platform
             </h2>
-            <p className="text-lg text-[var(--color-gray-500)]">
+            <p className="text-lg md:text-xl text-[#64748b]">
               The building blocks, in plain terms — so you know what&apos;s standard and what&apos;s a separate
               license.
             </p>
@@ -341,10 +315,10 @@ export function RingCentralPageClient() {
                   <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-voice)]/10 text-[var(--color-voice)] mb-5">
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-display font-bold text-[var(--color-secondary)] mb-2">
+                  <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
                     {product.name}
                   </h3>
-                  <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{product.description}</p>
+                  <p className="text-[#64748b] leading-relaxed text-[15px]">{product.description}</p>
                 </motion.div>
               );
             })}
@@ -357,10 +331,10 @@ export function RingCentralPageClient() {
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>Honest Pricing</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
               The sticker price isn&apos;t the all-in price
             </h2>
-            <div className="space-y-5 text-lg text-[var(--color-gray-600)] leading-relaxed mb-10">
+            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-10">
               <p>
                 RingCentral is priced per user, per month, with tiered plans — and committing to annual billing
                 is typically meaningfully cheaper than paying month to month. That part is straightforward.
@@ -380,10 +354,10 @@ export function RingCentralPageClient() {
                   <CurrencyDollar weight="fill" className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold text-[var(--color-secondary)] mb-2">
+                  <h3 className="text-xl font-display font-bold text-[#1e293b] mb-2">
                     Why this is exactly where an advisor earns their keep
                   </h3>
-                  <p className="text-[var(--color-gray-600)] leading-relaxed">
+                  <p className="text-[#475569] leading-relaxed">
                     Because the all-in number depends entirely on your configuration, the honest answer to
                     &quot;what does RingCentral cost?&quot; is &quot;it depends — let&apos;s price your real
                     setup.&quot; We don&apos;t publish figures here that would be stale next quarter or read as
@@ -407,10 +381,10 @@ export function RingCentralPageClient() {
         <Container>
           <motion.div {...fadeUp} className="max-w-2xl mb-14">
             <SectionEyebrow>The Difference</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
               Why source RingCentral through Insero
             </h2>
-            <p className="text-lg text-[var(--color-gray-500)]">
+            <p className="text-lg md:text-xl text-[#64748b]">
               You can buy RingCentral directly. Here&apos;s why most businesses are better off having an
               independent advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
               <Link href="/services/voice" className="text-[var(--color-primary)] font-semibold hover:underline">
@@ -436,10 +410,10 @@ export function RingCentralPageClient() {
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-[var(--color-secondary)] mb-2">
+                    <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-[var(--color-gray-600)] leading-relaxed">{item.description}</p>
+                    <p className="text-[#475569] leading-relaxed">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -453,10 +427,10 @@ export function RingCentralPageClient() {
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
               Is RingCentral right for you?
             </h2>
-            <p className="text-lg text-[var(--color-gray-500)]">
+            <p className="text-lg md:text-xl text-[#64748b]">
               We&apos;d rather you land on the right platform than the one we&apos;re talking about. Here&apos;s
               the straight version.
             </p>
@@ -491,10 +465,10 @@ export function RingCentralPageClient() {
                 <Scales weight="fill" className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-display font-bold text-[var(--color-secondary)] mb-2">
+                <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
                   A quick word on RingCentral vs Zoom
                 </h3>
-                <p className="text-[var(--color-gray-600)] leading-relaxed">
+                <p className="text-[#475569] leading-relaxed">
                   If &quot;all the AI included&quot; is your priority, it&apos;s worth comparing. Zoom, for
                   example, includes its AI Companion features at no extra charge, which can be more
                   cost-effective when you want capable AI without assembling add-ons. RingCentral tends to pull
@@ -513,7 +487,7 @@ export function RingCentralPageClient() {
         <Container size="md">
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[var(--color-secondary)]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b]">
               RingCentral FAQ
             </h2>
           </motion.div>
@@ -629,10 +603,10 @@ function RelatedCard({
       className="group bg-[var(--color-gray-50)] rounded-2xl p-6 border border-gray-100 hover:shadow-xl hover:border-transparent transition-all duration-300 flex flex-col"
     >
       <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">{label}</span>
-      <h3 className="font-display font-bold text-base text-[var(--color-secondary)] mt-2 mb-2 leading-snug">
+      <h3 className="font-display font-bold text-base text-[#1e293b] mt-2 mb-2 leading-snug">
         {title}
       </h3>
-      <p className="text-sm text-[var(--color-gray-500)] leading-relaxed flex-grow">{description}</p>
+      <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
       <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-[var(--color-primary)]">
         Read more
         <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
