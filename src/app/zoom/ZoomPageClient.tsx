@@ -151,17 +151,10 @@ export function ZoomPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="max-w-4xl"
           >
-            {/* Logo — once public/carriers/Zoom.svg exists, replace this wordmark with:
-                {/* eslint-disable-next-line @next/next/no-img-element *\/}
-                <img src="/carriers/Zoom.svg" alt="Zoom" className="h-9 w-auto" />
-                Until then a text wordmark stands in so there's no broken image on the hero. */}
+            {/* Logo (directly on the white hero) */}
             <div className="mb-8">
-              <span
-                aria-label="Zoom"
-                className="text-3xl font-display font-extrabold tracking-tight text-[#0B5CFF]"
-              >
-                Zoom
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/carriers/Zoom.png" alt="Zoom" className="h-9 w-auto" />
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-[#1e293b] leading-[1.1] tracking-tight mb-6">
