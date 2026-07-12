@@ -377,7 +377,7 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== PRODUCT PILLARS ===================== */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
+      <section className="py-20 lg:py-28 bg-white">
         <Container>
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
             <SectionEyebrow centered>The Platform</SectionEyebrow>
@@ -425,7 +425,8 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="flex gap-4 rounded-2xl p-6 bg-white/70 border border-gray-100"
+                  className="flex gap-4 rounded-2xl p-6 border border-gray-100"
+                  style={{ backgroundColor: TINT }}
                 >
                   <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
                     <Icon weight="fill" className="w-5 h-5" />
