@@ -143,7 +143,10 @@ export function RingCentralPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
+      <section
+        data-dark-hero="true"
+        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-b from-[#0684BC] to-[#056399] overflow-hidden"
+      >
         <Container className="relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -151,18 +154,18 @@ export function RingCentralPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="max-w-4xl"
           >
-            {/* Logo (directly on the white hero) */}
-            <div className="mb-8">
+            {/* Logo (white pill for legibility on the colored band) */}
+            <div className="inline-flex items-center bg-white rounded-xl px-5 py-3 shadow-lg mb-8">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-9 w-auto" />
+              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-7 w-auto" />
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-[#1e293b] leading-[1.1] tracking-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-white leading-[1.1] tracking-tight mb-6">
               RingCentral for Business —{' '}
-              <span className="text-[#008838]">AI-Powered Phone, Done Right</span>
+              <span className="text-[#FF7A00]">AI-Powered Phone, Done Right</span>
             </h1>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-white/85 mb-10 max-w-3xl leading-relaxed">
               RingCentral is one of the leading AI business communications platforms — phone, video, messaging,
               and a deep agentic AI layer. Insero is the independent advisor who sources it for you at zero cost,
               with honest guidance on whether it&apos;s actually the right fit.
@@ -219,7 +222,7 @@ export function RingCentralPageClient() {
       <section className="py-20 lg:py-28 bg-[#e2e8ec]">
         <Container>
           <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#008838]/10 text-[#008838]">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0684BC]/10 text-[#0684BC]">
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
@@ -246,10 +249,10 @@ export function RingCentralPageClient() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="rounded-2xl p-7 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#008838]/10 text-[#008838] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 text-[#0684BC] mb-5">
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#008838]">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0684BC]">
                     {cap.stage}
                   </span>
                   <h3 className="text-xl font-display font-bold text-[#1e293b] mt-1 mb-3">{cap.name}</h3>
@@ -272,7 +275,7 @@ export function RingCentralPageClient() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex gap-4 rounded-2xl p-7 bg-white border border-gray-200 shadow-sm"
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#008838]/10 text-[#008838]">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 text-[#0684BC]">
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
@@ -310,9 +313,9 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.07 }}
-                  className="rounded-2xl p-7 bg-[var(--color-gray-50)] border border-gray-100 hover:shadow-xl hover:border-transparent transition-all duration-300"
+                  className="rounded-2xl p-7 bg-[var(--color-gray-50)] border border-gray-100 hover:shadow-xl hover:border-[#0684BC] transition-all duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-voice)]/10 text-[var(--color-voice)] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 text-[#0684BC] mb-5">
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
@@ -350,7 +353,7 @@ export function RingCentralPageClient() {
 
             <div className="rounded-2xl bg-white border border-gray-200 p-7 lg:p-8 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)]">
+                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10 text-[#0684BC]">
                   <CurrencyDollar weight="fill" className="w-6 h-6" />
                 </div>
                 <div>
@@ -380,7 +383,7 @@ export function RingCentralPageClient() {
       <section className="py-20 lg:py-28 bg-white">
         <Container>
           <motion.div {...fadeUp} className="max-w-2xl mb-14">
-            <SectionEyebrow>The Difference</SectionEyebrow>
+            <SectionEyebrow color="#008838">The Difference</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
               Why source RingCentral through Insero
             </h2>
@@ -461,7 +464,7 @@ export function RingCentralPageClient() {
 
           <motion.div {...fadeUp} className="mt-8 rounded-2xl bg-white border border-gray-200 p-7 lg:p-8 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[var(--color-voice)]/10 text-[var(--color-voice)]">
+              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10 text-[#0684BC]">
                 <Scales weight="fill" className="w-6 h-6" />
               </div>
               <div>
@@ -577,12 +580,21 @@ export function RingCentralPageClient() {
 
 // --- Small presentational helpers ----------------------------------------
 
-function SectionEyebrow({ children, centered = false }: { children: React.ReactNode; centered?: boolean }) {
+function SectionEyebrow({
+  children,
+  centered = false,
+  color = '#0684BC',
+}: {
+  children: React.ReactNode;
+  centered?: boolean;
+  color?: string;
+}) {
   return (
     <div
-      className={`flex items-center gap-2 mb-3 text-[var(--color-primary)] ${centered ? 'justify-center' : ''}`}
+      className={`flex items-center gap-2 mb-3 ${centered ? 'justify-center' : ''}`}
+      style={{ color }}
     >
-      <span className="w-6 h-px bg-[var(--color-primary)]" />
+      <span className="w-6 h-px" style={{ backgroundColor: color }} />
       <span className="text-sm font-semibold tracking-widest uppercase">{children}</span>
     </div>
   );
