@@ -10,9 +10,9 @@ import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
 
 export const metadata: Metadata = {
-  title: 'Telecom Broker & Connectivity Consultant | Free Expert Guidance - Insero',
+  title: 'Insero — Independent Telecom & Technology Advisors | Zero Cost',
   description:
-    'Vendor-agnostic telecom broker comparing 100+ carriers for voice, internet, SD-WAN, and security. Zero cost to you.',
+    'Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, 100+ carriers, honest guidance. Based in Oregon, serving the US.',
   keywords: [
     'telecom broker',
     'telecom consultant',
