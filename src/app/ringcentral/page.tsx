@@ -3,7 +3,7 @@ import { RingCentralPageClient } from './RingCentralPageClient';
 import { ringCentralFaq } from './faq';
 
 export const metadata: Metadata = {
-  title: 'RingCentral for Business: AI Phone, Contact Center & Pricing | Insero',
+  title: 'RingCentral for Business: AI Phone, Contact Center & Pricing',
   description:
     "RingCentral's AI-powered business phone, contact center, and agentic voice AI — explained honestly. Source it through Insero, an independent advisor, at zero cost. Get a free quote.",
   keywords: [

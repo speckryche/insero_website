@@ -3,7 +3,7 @@ import { ZoomPageClient } from './ZoomPageClient';
 import { zoomFaq } from './faq';
 
 export const metadata: Metadata = {
-  title: 'Zoom for Business: AI Phone, Contact Center & Pricing | Insero',
+  title: 'Zoom for Business: AI Phone, Contact Center & Pricing',
   description:
     "Zoom's AI-first business phone and contact center — with AI Companion included at no extra cost. Sourced through Insero, an independent advisor, at zero cost to you. Get a free quote.",
   keywords: [
