@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const ogImage = frontmatter.ogImage || '/og-default.png';
 
   return {
-    title: `${frontmatter.title} | Insero Resources`,
+    title: frontmatter.title,
     description: frontmatter.excerpt,
     alternates: { canonical: `https://insero.cloud/resources/${frontmatter.slug}` },
     openGraph: {

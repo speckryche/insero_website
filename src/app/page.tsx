@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     'free telecom consultation',
   ],
   openGraph: {
-    title: 'Telecom Broker & Connectivity Consultant | Insero',
+    title: 'Insero — Independent Telecom & Technology Advisors',
     description:
-      'Vendor-agnostic telecom broker that compares 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for your business. Zero cost to you.',
+      'Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, 100+ carriers, honest guidance. Based in Oregon, serving the US.',
     url: 'https://insero.cloud',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
