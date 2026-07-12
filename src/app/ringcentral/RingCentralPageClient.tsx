@@ -29,6 +29,16 @@ import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
 import { ringCentralFaq } from './faq';
 
+// --- RingCentral brand palette -------------------------------------------
+// RC's real design language: white pages, deep ink-navy headlines, bright
+// azure accents, and signature orange pill CTAs. Insero lives only in the
+// header, footer, and the words — never in the page's color system.
+const INK = '#032B44'; // headlines, near-navy
+const AZURE = '#0684BC'; // accents, eyebrows, icons, links
+const ORANGE = '#F26B00'; // primary CTA (FF7A00 darkened for white-text contrast)
+const ORANGE_HOVER = '#D95F00';
+const TINT = '#EFF7FB'; // light azure section background
+
 // --- Section data ---------------------------------------------------------
 
 const aiCapabilities = [
@@ -137,16 +147,19 @@ const fadeUp = {
   transition: { duration: 0.6, ease: 'easeOut' as const },
 };
 
+// Shared RC orange pill CTA
+const rcButtonClass =
+  'group inline-flex items-center gap-3 px-10 py-5 bg-[#F26B00] text-white font-semibold text-lg rounded-full hover:bg-[#D95F00] transition-colors duration-200 shadow-lg shadow-[#F26B00]/25';
+
 // --- Page -----------------------------------------------------------------
 
 export function RingCentralPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      <section
-        data-dark-hero="true"
-        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-b from-[#0684BC] to-[#056399] overflow-hidden"
-      >
+      {/* WHITE page. The standard Insero light header sits above; the RC
+          treatment begins here. No dark-hero attribute. */}
+      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
         <Container className="relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -154,25 +167,26 @@ export function RingCentralPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="max-w-4xl"
           >
-            {/* Logo (white pill for legibility on the colored band) */}
-            <div className="inline-flex items-center bg-white rounded-xl px-5 py-3 shadow-lg mb-8">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-7 w-auto" />
-            </div>
+            {/* Logo sits directly on white — no pill needed */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-8 w-auto mb-10" />
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-white leading-[1.1] tracking-tight mb-6">
+            <h1
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
+              style={{ color: INK }}
+            >
               RingCentral for Business —{' '}
-              <span className="text-[#FF7A00]">AI-Powered Phone, Done Right</span>
+              <span style={{ color: AZURE }}>AI-Powered Phone, Done Right</span>
             </h1>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-white/85 mb-10 max-w-3xl leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
               RingCentral is one of the leading AI business communications platforms — phone, video, messaging,
               and a deep agentic AI layer. Insero is the independent advisor who sources it for you at zero cost,
               with honest guidance on whether it&apos;s actually the right fit.
             </p>
 
             <Link href="/contact">
-              <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
+              <button className={rcButtonClass}>
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Get a Free Quote</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -187,7 +201,7 @@ export function RingCentralPageClient() {
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
               What RingCentral actually is
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
@@ -195,7 +209,7 @@ export function RingCentralPageClient() {
                 At its core, RingCentral is a cloud business communications platform: your phone system, video
                 meetings, team messaging, and business texting, all delivered as a subscription and managed from
                 one place. There&apos;s no PBX in a closet and no carrier lines to babysit — it&apos;s the modern{' '}
-                <Link href="/resources/ucaas-explained" className="text-[var(--color-primary)] font-semibold hover:underline">
+                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: AZURE }}>
                   hosted UCaaS
                 </Link>{' '}
                 model, and RingCentral is one of the most established names in it.
@@ -219,14 +233,14 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== AI CAPABILITIES (hook) ===================== */}
-      <section className="py-20 lg:py-28 bg-[#e2e8ec]">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container>
           <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0684BC]/10 text-[#0684BC]">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0684BC]/10" style={{ color: AZURE }}>
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: INK }}>
               One of the deepest agentic voice-AI stacks in the market
             </h2>
             <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
@@ -247,15 +261,15 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="rounded-2xl p-7 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="rounded-2xl p-7 bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 text-[#0684BC] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 mb-5" style={{ color: AZURE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0684BC]">
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: AZURE }}>
                     {cap.stage}
                   </span>
-                  <h3 className="text-xl font-display font-bold text-[#1e293b] mt-1 mb-3">{cap.name}</h3>
+                  <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: INK }}>{cap.name}</h3>
                   <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
                 </motion.div>
               );
@@ -273,13 +287,13 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex gap-4 rounded-2xl p-7 bg-white border border-gray-200 shadow-sm"
+                  className="flex gap-4 rounded-2xl p-7 bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm"
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 text-[#0684BC]">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">{item.name}</h3>
+                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>{item.name}</h3>
                     <p className="text-[#64748b] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
@@ -294,7 +308,7 @@ export function RingCentralPageClient() {
         <Container>
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
             <SectionEyebrow centered>The Platform</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Everything in the RingCentral platform
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
@@ -313,12 +327,12 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.07 }}
-                  className="rounded-2xl p-7 bg-[var(--color-gray-50)] border border-gray-100 hover:shadow-xl hover:border-[#0684BC] transition-all duration-300"
+                  className="rounded-2xl p-7 bg-white border border-gray-100 border-t-2 border-t-[#0684BC] hover:shadow-xl transition-all duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 text-[#0684BC] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 mb-5" style={{ color: AZURE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
+                  <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>
                     {product.name}
                   </h3>
                   <p className="text-[#64748b] leading-relaxed text-[15px]">{product.description}</p>
@@ -330,11 +344,11 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== HONEST PRICING ===================== */}
-      <section className="py-20 lg:py-28 bg-[var(--color-gray-50)]">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>Honest Pricing</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
               The sticker price isn&apos;t the all-in price
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-10">
@@ -351,13 +365,13 @@ export function RingCentralPageClient() {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-white border border-gray-200 p-7 lg:p-8 shadow-sm">
+            <div className="rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10 text-[#0684BC]">
+                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
                   <CurrencyDollar weight="fill" className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold text-[#1e293b] mb-2">
+                  <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
                     Why this is exactly where an advisor earns their keep
                   </h3>
                   <p className="text-[#475569] leading-relaxed">
@@ -367,7 +381,7 @@ export function RingCentralPageClient() {
                     a promise we can&apos;t keep. Instead, we&apos;ll build your actual configuration — seats,
                     the add-ons that matter, and contact center if you need it — and put a real, current number
                     in front of you. Curious what you&apos;re overpaying for elsewhere?{' '}
-                    <Link href="/tools/pots-cost-estimator" className="text-[var(--color-primary)] font-semibold hover:underline">
+                    <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: AZURE }}>
                       Try our cost estimator
                     </Link>{' '}
                     or just ask for a quote.
@@ -383,14 +397,14 @@ export function RingCentralPageClient() {
       <section className="py-20 lg:py-28 bg-white">
         <Container>
           <motion.div {...fadeUp} className="max-w-2xl mb-14">
-            <SectionEyebrow color="#008838">The Difference</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
+            <SectionEyebrow>The Difference</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Why source RingCentral through Insero
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
               You can buy RingCentral directly. Here&apos;s why most businesses are better off having an
               independent advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
-              <Link href="/services/voice" className="text-[var(--color-primary)] font-semibold hover:underline">
+              <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: AZURE }}>
                 every voice project
               </Link>
               .
@@ -407,13 +421,14 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
-                  className="flex gap-5 rounded-2xl p-7 bg-[var(--color-gray-50)] border border-gray-100"
+                  className="flex gap-5 rounded-2xl p-7 border border-gray-100"
+                  style={{ backgroundColor: TINT }}
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
+                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>
                       {item.title}
                     </h3>
                     <p className="text-[#475569] leading-relaxed">{item.description}</p>
@@ -426,11 +441,11 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== IS IT RIGHT FOR YOU ===================== */}
-      <section className="py-20 lg:py-28 bg-[var(--color-gray-50)]">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Is RingCentral right for you?
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
@@ -462,18 +477,18 @@ export function RingCentralPageClient() {
             />
           </motion.div>
 
-          <motion.div {...fadeUp} className="mt-8 rounded-2xl bg-white border border-gray-200 p-7 lg:p-8 shadow-sm">
+          <motion.div {...fadeUp} className="mt-8 rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10 text-[#0684BC]">
+              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
                 <Scales weight="fill" className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
+                <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>
                   A quick word on RingCentral vs Zoom
                 </h3>
                 <p className="text-[#475569] leading-relaxed">
                   If &quot;all the AI included&quot; is your priority, it&apos;s worth comparing.{' '}
-                  <Link href="/zoom" className="text-[var(--color-primary)] font-semibold hover:underline">
+                  <Link href="/zoom" className="font-semibold hover:underline" style={{ color: AZURE }}>
                     Zoom
                   </Link>
                   , for example, includes its AI Companion features at no extra charge, which can be more
@@ -492,7 +507,7 @@ export function RingCentralPageClient() {
         <Container size="md">
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold" style={{ color: INK }}>
               RingCentral FAQ
             </h2>
           </motion.div>
@@ -502,7 +517,7 @@ export function RingCentralPageClient() {
 
           {/* Related reading */}
           <motion.div {...fadeUp} className="mt-14">
-            <div className="flex items-center gap-2 mb-5 text-[var(--color-primary)]">
+            <div className="flex items-center gap-2 mb-5" style={{ color: AZURE }}>
               <BookOpen weight="fill" className="w-5 h-5" />
               <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
             </div>
@@ -531,15 +546,15 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="pt-24 lg:pt-28 pb-20 lg:pb-24 bg-[#E6F5EC]">
+      <section className="pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
         <Container size="sm" className="text-center">
           <motion.div {...fadeUp}>
-            <span className="inline-flex items-center gap-2 text-[#008838] text-sm font-semibold tracking-widest uppercase mb-8">
-              <span className="w-8 h-px bg-[#008838]" />
+            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: AZURE }}>
+              <span className="w-8 h-px" style={{ backgroundColor: AZURE }} />
               Let&apos;s Talk
-              <span className="w-8 h-px bg-[#008838]" />
+              <span className="w-8 h-px" style={{ backgroundColor: AZURE }} />
             </span>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-[#1e293b] mb-6 leading-[1.1] tracking-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: INK }}>
               Get a free RingCentral quote
             </h2>
             <p className="text-xl text-[#64748b] mb-10 max-w-xl mx-auto leading-relaxed">
@@ -547,7 +562,7 @@ export function RingCentralPageClient() {
               something else fits you better.
             </p>
             <Link href="/contact">
-              <button className="group inline-flex items-center gap-4 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
+              <button className={rcButtonClass}>
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Get a Free Quote</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -557,14 +572,14 @@ export function RingCentralPageClient() {
             <div className="mt-6">
               <a
                 href={company.phoneLink}
-                className="inline-flex flex-col items-center text-[#64748b] hover:text-[#1e293b] transition-colors"
+                className="inline-flex flex-col items-center text-[#64748b] transition-colors hover:text-[#032B44]"
               >
                 <span className="text-lg">or call us at</span>
-                <span className="font-bold text-[#1e293b] text-2xl md:text-3xl mt-1">{company.phoneFormatted}</span>
+                <span className="font-bold text-2xl md:text-3xl mt-1" style={{ color: INK }}>{company.phoneFormatted}</span>
               </a>
             </div>
 
-            <div className="mt-16 pt-10 border-t-2 border-[#008838]/30">
+            <div className="mt-16 pt-10 border-t border-[#0684BC]/20">
               <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
                 <TrustItem icon={Handshake}>Independent &mdash; Vendor-Neutral</TrustItem>
                 <TrustItem icon={CurrencyDollar}>Same price as going direct</TrustItem>
@@ -583,7 +598,7 @@ export function RingCentralPageClient() {
 function SectionEyebrow({
   children,
   centered = false,
-  color = '#0684BC',
+  color = AZURE,
 }: {
   children: React.ReactNode;
   centered?: boolean;
@@ -614,14 +629,14 @@ function RelatedCard({
   return (
     <Link
       href={href}
-      className="group bg-[var(--color-gray-50)] rounded-2xl p-6 border border-gray-100 hover:shadow-xl hover:border-transparent transition-all duration-300 flex flex-col"
+      className="group bg-white rounded-2xl p-6 border border-gray-100 border-t-2 border-t-[#0684BC] hover:shadow-xl transition-all duration-300 flex flex-col"
     >
-      <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">{label}</span>
-      <h3 className="font-display font-bold text-base text-[#1e293b] mt-2 mb-2 leading-snug">
+      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: AZURE }}>{label}</span>
+      <h3 className="font-display font-bold text-base mt-2 mb-2 leading-snug" style={{ color: INK }}>
         {title}
       </h3>
       <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
-      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-[var(--color-primary)]">
+      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: AZURE }}>
         Read more
         <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </span>
@@ -632,7 +647,7 @@ function RelatedCard({
 function TrustItem({ icon: Icon, children }: { icon: typeof Handshake; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <Icon weight="fill" className="w-4 h-4 text-[#008838]" />
+      <Icon weight="fill" className="w-4 h-4" style={{ color: AZURE }} />
       <span>{children}</span>
     </div>
   );

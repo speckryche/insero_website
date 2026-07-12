@@ -29,6 +29,16 @@ import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
 import { zoomFaq } from './faq';
 
+// --- Zoom brand palette ---------------------------------------------------
+// Zoom's real design language: white pages, huge near-black "midnight"
+// headlines, Zoom Blue for CTAs and accents, soft blue tints, and heavily
+// rounded corners — airy and friendly. Insero lives only in the header,
+// footer, and the words — never in the page's color system.
+const MIDNIGHT = '#00053D'; // headlines, near-black navy
+const BLUE = '#0B5CFF'; // CTAs, accents, links
+const BLUE_HOVER = '#0847C4';
+const TINT = '#EDF3FF'; // light blue section background
+
 // --- Section data ---------------------------------------------------------
 
 const aiCapabilities = [
@@ -137,16 +147,19 @@ const fadeUp = {
   transition: { duration: 0.6, ease: 'easeOut' as const },
 };
 
+// Shared Zoom blue pill CTA
+const zoomButtonClass =
+  'group inline-flex items-center gap-3 px-10 py-5 bg-[#0B5CFF] text-white font-semibold text-lg rounded-full hover:bg-[#0847C4] transition-colors duration-200 shadow-lg shadow-[#0B5CFF]/25';
+
 // --- Page -----------------------------------------------------------------
 
 export function ZoomPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      <section
-        data-dark-hero="true"
-        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-b from-[#0B5CFF] to-[#0847C4] overflow-hidden"
-      >
+      {/* WHITE page. The standard Insero light header sits above; the Zoom
+          treatment begins here. No dark-hero attribute. */}
+      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
         <Container className="relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -154,25 +167,26 @@ export function ZoomPageClient() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="max-w-4xl"
           >
-            {/* Logo (white pill for legibility on the colored band) */}
-            <div className="inline-flex items-center bg-white rounded-xl px-5 py-3 shadow-lg mb-8">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/carriers/Zoom.png" alt="Zoom" className="h-7 w-auto" />
-            </div>
+            {/* Logo sits directly on white — no pill needed */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/carriers/Zoom.png" alt="Zoom" className="h-8 w-auto mb-10" />
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold text-white leading-[1.1] tracking-tight mb-6">
+            <h1
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
+              style={{ color: MIDNIGHT }}
+            >
               Zoom for Business —{' '}
-              <span className="text-white underline decoration-white/50 decoration-[3px] underline-offset-8">AI-First Phone, Built In</span>
+              <span style={{ color: BLUE }}>AI-First Phone, Built In</span>
             </h1>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-white/85 mb-10 max-w-3xl leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
               Zoom Phone is a leading AI-first cloud phone platform — best known for video, but now a full
               business communications suite with capable AI included by default. Insero is the independent
               advisor who sources it for you at zero cost, with honest guidance on whether it actually fits.
             </p>
 
             <Link href="/contact">
-              <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
+              <button className={zoomButtonClass}>
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Get a Free Quote</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -187,7 +201,7 @@ export function ZoomPageClient() {
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
               What Zoom actually is
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
@@ -195,7 +209,7 @@ export function ZoomPageClient() {
                 Most people know Zoom as the video app. The fuller picture is Zoom Workplace — a cloud business
                 communications platform that brings phone, meetings, team chat, and a contact center into one
                 place. Zoom Phone is the piece that turns the video tool you already use into a complete{' '}
-                <Link href="/resources/ucaas-explained" className="text-[var(--color-primary)] font-semibold hover:underline">
+                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: BLUE }}>
                   hosted UCaaS
                 </Link>{' '}
                 system: real business calling, one familiar app, no PBX in a closet.
@@ -218,14 +232,14 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== AI CAPABILITIES (hook) ===================== */}
-      <section className="py-20 lg:py-28 bg-[#e2e8ec]">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container>
           <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0B5CFF]/10 text-[#0B5CFF]">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0B5CFF]/10" style={{ color: BLUE }}>
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: MIDNIGHT }}>
               Capable AI that&apos;s included, not billed as an add-on
             </h2>
             <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
@@ -247,15 +261,15 @@ export function ZoomPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="rounded-2xl p-7 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className="rounded-3xl p-7 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0B5CFF]/10 text-[#0B5CFF] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#0B5CFF]/10 mb-5" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0B5CFF]">
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>
                     {cap.stage}
                   </span>
-                  <h3 className="text-xl font-display font-bold text-[#1e293b] mt-1 mb-3">{cap.name}</h3>
+                  <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: MIDNIGHT }}>{cap.name}</h3>
                   <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
                 </motion.div>
               );
@@ -273,13 +287,13 @@ export function ZoomPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex gap-4 rounded-2xl p-7 bg-white border border-gray-200 shadow-sm"
+                  className="flex gap-4 rounded-3xl p-7 bg-white shadow-sm"
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0B5CFF]/10 text-[#0B5CFF]">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-[#0B5CFF]/10" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">{item.name}</h3>
+                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>{item.name}</h3>
                     <p className="text-[#64748b] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
@@ -294,7 +308,7 @@ export function ZoomPageClient() {
         <Container>
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
             <SectionEyebrow centered>The Platform</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Everything in the Zoom platform
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
@@ -313,12 +327,13 @@ export function ZoomPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.07 }}
-                  className="rounded-2xl p-7 bg-[var(--color-gray-50)] border border-gray-100 hover:shadow-xl hover:border-[#0B5CFF] transition-all duration-300"
+                  className="rounded-3xl p-7 shadow-sm hover:shadow-lg transition-all duration-300"
+                  style={{ backgroundColor: TINT }}
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0B5CFF]/10 text-[#0B5CFF] mb-5">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white mb-5" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
+                  <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                     {product.name}
                   </h3>
                   <p className="text-[#64748b] leading-relaxed text-[15px]">{product.description}</p>
@@ -330,11 +345,11 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== HONEST PRICING ===================== */}
-      <section className="py-20 lg:py-28 bg-[var(--color-gray-50)]">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>Honest Pricing</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
               The sticker price isn&apos;t always the all-in price
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-10">
@@ -352,13 +367,13 @@ export function ZoomPageClient() {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-white border border-gray-200 p-7 lg:p-8 shadow-sm">
+            <div className="rounded-3xl bg-white p-7 lg:p-8 shadow-sm">
               <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0B5CFF]/10 text-[#0B5CFF]">
+                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-[#0B5CFF]/10" style={{ color: BLUE }}>
                   <CurrencyDollar weight="fill" className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-display font-bold text-[#1e293b] mb-2">
+                  <h3 className="text-xl font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                     Why this is exactly where an advisor earns their keep
                   </h3>
                   <p className="text-[#475569] leading-relaxed">
@@ -368,7 +383,7 @@ export function ZoomPageClient() {
                     can&apos;t keep. Instead, we&apos;ll build your actual configuration — seats, license
                     bundling, the add-ons that matter, and contact center if you need it — and put a real,
                     current number in front of you. Curious what you&apos;re overpaying for elsewhere?{' '}
-                    <Link href="/tools/pots-cost-estimator" className="text-[var(--color-primary)] font-semibold hover:underline">
+                    <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: BLUE }}>
                       Try our cost estimator
                     </Link>{' '}
                     or just ask for a quote.
@@ -384,14 +399,14 @@ export function ZoomPageClient() {
       <section className="py-20 lg:py-28 bg-white">
         <Container>
           <motion.div {...fadeUp} className="max-w-2xl mb-14">
-            <SectionEyebrow color="#008838">The Difference</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
+            <SectionEyebrow>The Difference</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Why source Zoom through Insero
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
               You can buy Zoom directly. Here&apos;s why most businesses are better off having an independent
               advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
-              <Link href="/services/voice" className="text-[var(--color-primary)] font-semibold hover:underline">
+              <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: BLUE }}>
                 every voice project
               </Link>
               .
@@ -408,13 +423,14 @@ export function ZoomPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
-                  className="flex gap-5 rounded-2xl p-7 bg-[var(--color-gray-50)] border border-gray-100"
+                  className="flex gap-5 rounded-3xl p-7"
+                  style={{ backgroundColor: TINT }}
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)]">
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-white" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
+                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                       {item.title}
                     </h3>
                     <p className="text-[#475569] leading-relaxed">{item.description}</p>
@@ -427,11 +443,11 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== IS IT RIGHT FOR YOU ===================== */}
-      <section className="py-20 lg:py-28 bg-[var(--color-gray-50)]">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Is Zoom right for you?
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
@@ -463,13 +479,13 @@ export function ZoomPageClient() {
             />
           </motion.div>
 
-          <motion.div {...fadeUp} className="mt-8 rounded-2xl bg-white border border-gray-200 p-7 lg:p-8 shadow-sm">
+          <motion.div {...fadeUp} className="mt-8 rounded-3xl bg-white p-7 lg:p-8 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0B5CFF]/10 text-[#0B5CFF]">
+              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-[#0B5CFF]/10" style={{ color: BLUE }}>
                 <Scales weight="fill" className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-display font-bold text-[#1e293b] mb-2">
+                <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                   A quick word on Zoom vs RingCentral
                 </h3>
                 <p className="text-[#475569] leading-relaxed">
@@ -478,7 +494,7 @@ export function ZoomPageClient() {
                   Zoom meetings. RingCentral&apos;s advantage is the depth of its contact-center and
                   conversation-intelligence stack, though its most powerful AI comes as add-ons. Read our honest
                   take on{' '}
-                  <Link href="/ringcentral" className="text-[var(--color-primary)] font-semibold hover:underline">
+                  <Link href="/ringcentral" className="font-semibold hover:underline" style={{ color: BLUE }}>
                     RingCentral
                   </Link>
                   , and we&apos;ll compare both against your actual needs — no thumb on the scale.
@@ -494,7 +510,7 @@ export function ZoomPageClient() {
         <Container size="md">
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold" style={{ color: MIDNIGHT }}>
               Zoom FAQ
             </h2>
           </motion.div>
@@ -504,7 +520,7 @@ export function ZoomPageClient() {
 
           {/* Related reading */}
           <motion.div {...fadeUp} className="mt-14">
-            <div className="flex items-center gap-2 mb-5 text-[var(--color-primary)]">
+            <div className="flex items-center gap-2 mb-5" style={{ color: BLUE }}>
               <BookOpen weight="fill" className="w-5 h-5" />
               <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
             </div>
@@ -533,15 +549,15 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="pt-24 lg:pt-28 pb-20 lg:pb-24 bg-[#E6F5EC]">
+      <section className="pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
         <Container size="sm" className="text-center">
           <motion.div {...fadeUp}>
-            <span className="inline-flex items-center gap-2 text-[#008838] text-sm font-semibold tracking-widest uppercase mb-8">
-              <span className="w-8 h-px bg-[#008838]" />
+            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: BLUE }}>
+              <span className="w-8 h-px" style={{ backgroundColor: BLUE }} />
               Let&apos;s Talk
-              <span className="w-8 h-px bg-[#008838]" />
+              <span className="w-8 h-px" style={{ backgroundColor: BLUE }} />
             </span>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-[#1e293b] mb-6 leading-[1.1] tracking-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: MIDNIGHT }}>
               Get a free Zoom quote
             </h2>
             <p className="text-xl text-[#64748b] mb-10 max-w-xl mx-auto leading-relaxed">
@@ -549,7 +565,7 @@ export function ZoomPageClient() {
               something else fits you better.
             </p>
             <Link href="/contact">
-              <button className="group inline-flex items-center gap-4 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
+              <button className={zoomButtonClass}>
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Get a Free Quote</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -559,14 +575,14 @@ export function ZoomPageClient() {
             <div className="mt-6">
               <a
                 href={company.phoneLink}
-                className="inline-flex flex-col items-center text-[#64748b] hover:text-[#1e293b] transition-colors"
+                className="inline-flex flex-col items-center text-[#64748b] transition-colors hover:text-[#00053D]"
               >
                 <span className="text-lg">or call us at</span>
-                <span className="font-bold text-[#1e293b] text-2xl md:text-3xl mt-1">{company.phoneFormatted}</span>
+                <span className="font-bold text-2xl md:text-3xl mt-1" style={{ color: MIDNIGHT }}>{company.phoneFormatted}</span>
               </a>
             </div>
 
-            <div className="mt-16 pt-10 border-t-2 border-[#008838]/30">
+            <div className="mt-16 pt-10 border-t border-[#0B5CFF]/20">
               <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
                 <TrustItem icon={Handshake}>Independent &mdash; Vendor-Neutral</TrustItem>
                 <TrustItem icon={CurrencyDollar}>Same price as going direct</TrustItem>
@@ -585,7 +601,7 @@ export function ZoomPageClient() {
 function SectionEyebrow({
   children,
   centered = false,
-  color = '#0B5CFF',
+  color = BLUE,
 }: {
   children: React.ReactNode;
   centered?: boolean;
@@ -616,14 +632,15 @@ function RelatedCard({
   return (
     <Link
       href={href}
-      className="group bg-[var(--color-gray-50)] rounded-2xl p-6 border border-gray-100 hover:shadow-xl hover:border-transparent transition-all duration-300 flex flex-col"
+      className="group rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
+      style={{ backgroundColor: TINT }}
     >
-      <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-primary)]">{label}</span>
-      <h3 className="font-display font-bold text-base text-[#1e293b] mt-2 mb-2 leading-snug">
+      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>{label}</span>
+      <h3 className="font-display font-bold text-base mt-2 mb-2 leading-snug" style={{ color: MIDNIGHT }}>
         {title}
       </h3>
       <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
-      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-[var(--color-primary)]">
+      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: BLUE }}>
         Read more
         <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </span>
@@ -634,7 +651,7 @@ function RelatedCard({
 function TrustItem({ icon: Icon, children }: { icon: typeof Handshake; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <Icon weight="fill" className="w-4 h-4 text-[#008838]" />
+      <Icon weight="fill" className="w-4 h-4" style={{ color: BLUE }} />
       <span>{children}</span>
     </div>
   );
