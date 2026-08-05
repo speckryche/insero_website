@@ -353,7 +353,7 @@ export function RingCentralPageClient() {
           </motion.div>
 
           {/* Before / During / After */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 ${cardGridRows}`}>
             {aiCapabilities.map((cap, index) => {
               const Icon = cap.icon;
               return (
@@ -363,23 +363,19 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="rounded-2xl p-7 bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm hover:shadow-md transition-shadow duration-300"
+                  className={`${subgridCard} hover:shadow-md transition-shadow duration-300`}
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 mb-5" style={{ color: AZURE }}>
-                    <Icon weight="fill" className="w-6 h-6" />
+                  <CardHeader eyebrow={cap.stage} icon={Icon} title={cap.name} />
+                  <div className={cardBodyClass}>
+                    <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: AZURE }}>
-                    {cap.stage}
-                  </span>
-                  <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: INK }}>{cap.name}</h3>
-                  <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
                 </motion.div>
               );
             })}
           </div>
 
           {/* Also included / contact center */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${cardGridRows}`}>
             {aiAlsoIncluded.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -389,13 +385,10 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex gap-4 rounded-2xl p-7 bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm"
+                  className={subgridCard}
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-                    <Icon weight="fill" className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>{item.name}</h3>
+                  <CardHeader icon={Icon} title={item.name} titleClassName="text-lg" />
+                  <div className={cardBodyClass}>
                     <p className="text-[#64748b] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
@@ -419,7 +412,7 @@ export function RingCentralPageClient() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 ${cardGridRows}`}>
             {productPillars.map((pillar, index) => {
               const Icon = pillar.icon;
               return (
@@ -429,22 +422,22 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="rounded-2xl p-8 lg:p-10 bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm hover:shadow-xl transition-all duration-300"
+                  className={`${subgridCard} hover:shadow-xl transition-all duration-300`}
                 >
-                  <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-[#0684BC]/10 mb-6" style={{ color: AZURE }}>
-                    <Icon weight="fill" className="w-7 h-7" />
+                  <CardHeader icon={Icon} title={pillar.name} titleClassName="text-xl lg:text-2xl" />
+                  <div className={cardBodyClass}>
+                    <p className="text-[#64748b] leading-relaxed">{pillar.description}</p>
                   </div>
-                  <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: INK }}>
-                    {pillar.name}
-                  </h3>
-                  <p className="text-[#64748b] leading-relaxed">{pillar.description}</p>
                 </motion.div>
               );
             })}
           </div>
 
           {/* The full building-block breakdown stays available below the pillars. */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 lg:mt-8">
+          {/* These were tinted cards on a white section. As banded cards they'd
+              be tint-on-tint, so the body takes the white fill and the band
+              carries the tint — matching the pillars directly above. */}
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 lg:mt-8 ${cardGridRows}`}>
             {coreProducts.map((product, index) => {
               const Icon = product.icon;
               return (
@@ -454,16 +447,10 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className="flex gap-4 rounded-2xl p-6 border border-gray-100"
-                  style={{ backgroundColor: TINT }}
+                  className={subgridCard}
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-                    <Icon weight="fill" className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-display font-bold mb-1" style={{ color: INK }}>
-                      {product.name}
-                    </h3>
+                  <CardHeader icon={Icon} title={product.name} level={4} />
+                  <div className={cardBodyClass}>
                     <p className="text-[#64748b] leading-relaxed text-sm">{product.description}</p>
                   </div>
                 </motion.div>
@@ -519,19 +506,15 @@ export function RingCentralPageClient() {
           {/* --- Advisor close --- */}
           <motion.div
             {...fadeUp}
-            className="max-w-5xl mx-auto mt-12 rounded-2xl bg-white border border-slate-200 p-8 lg:p-10 shadow-sm"
+            className={`max-w-5xl mx-auto mt-12 ${cardClass}`}
           >
-            <div className="flex items-start gap-5">
-              <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-                <CurrencyDollar weight="fill" className="w-6 h-6" />
-              </div>
+            <CardHeader icon={CurrencyDollar} title="Where an advisor actually earns their keep" />
+            <div className="p-8 lg:p-10">
               <div>
-                <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: INK }}>
-                  Where an advisor actually earns their keep
-                </h3>
                 <p className="text-[#475569] leading-relaxed text-lg">
                   We publish RingCentral&apos;s list pricing because you should be able to see it before you
-                  talk to anyone. What we add is the fit: requesting pricing on your behalf, structuring the
+                  talk to anyone. Those rates are RingCentral&apos;s to set. What we add is the fit: requesting
+                  pricing on your behalf, structuring the
                   contract term and plan mix around how you actually use the system, and matching each tier to
                   what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
                   {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
@@ -565,7 +548,9 @@ export function RingCentralPageClient() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Also formerly tinted cards on a white section — white body, tinted
+              band, same reasoning as the building blocks above. */}
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${cardGridRows}`}>
             {inseroValue.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -575,16 +560,10 @@ export function RingCentralPageClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
-                  className="flex gap-5 rounded-2xl p-7 border border-gray-100"
-                  style={{ backgroundColor: TINT }}
+                  className={subgridCard}
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-                    <Icon weight="fill" className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>
-                      {item.title}
-                    </h3>
+                  <CardHeader icon={Icon} title={item.title} titleClassName="text-lg" />
+                  <div className={cardBodyClass}>
                     <p className="text-[#475569] leading-relaxed">{item.description}</p>
                   </div>
                 </motion.div>
@@ -631,15 +610,10 @@ export function RingCentralPageClient() {
             />
           </motion.div>
 
-          <motion.div {...fadeUp} className="mt-8 rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm">
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-                <Scales weight="fill" className="w-6 h-6" />
-              </div>
+          <motion.div {...fadeUp} className={`mt-8 ${cardClass}`}>
+            <CardHeader icon={Scales} title="A quick word on RingCentral vs Zoom" titleClassName="text-lg" />
+            <div className={cardBodyClass}>
               <div>
-                <h3 className="text-lg font-display font-bold mb-2" style={{ color: INK }}>
-                  A quick word on RingCentral vs Zoom
-                </h3>
                 <p className="text-[#475569] leading-relaxed">
                   If &quot;all the AI included&quot; is your priority, it&apos;s worth comparing.{' '}
                   <Link href="/zoom" className="font-semibold hover:underline" style={{ color: AZURE }}>
@@ -675,7 +649,7 @@ export function RingCentralPageClient() {
               <BookOpen weight="fill" className="w-5 h-5" />
               <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-5 ${cardGridRows}`}>
               <RelatedCard
                 href="/resources/ucaas-explained"
                 label="Voice"
@@ -775,18 +749,32 @@ function CardHeader({
   title,
   description,
   badge,
+  eyebrow,
   icon: Icon,
   level = 3,
+  titleClassName,
 }: {
   title: string;
   description?: string;
   badge?: React.ReactNode;
+  /** Small uppercase label above the title (a stage, a category). */
+  eyebrow?: string;
   icon?: PhosphorIcon;
   level?: 3 | 4;
+  /** Overrides the default title size where a card needs a different scale. */
+  titleClassName?: string;
 }) {
   const Heading = level === 4 ? 'h4' : 'h3';
   return (
     <div className="px-7 lg:px-8 py-6 border-b border-slate-200" style={{ backgroundColor: TINT }}>
+      {eyebrow && (
+        <span
+          className="block text-xs font-semibold uppercase tracking-wider mb-2"
+          style={{ color: AZURE }}
+        >
+          {eyebrow}
+        </span>
+      )}
       {/* min-h pins the row to the heading's line box so a badge can't make one
           card's band taller than its neighbours' and misalign the dividers. */}
       <div className="flex items-center justify-between gap-3 min-h-7">
@@ -800,7 +788,7 @@ function CardHeader({
             </span>
           )}
           <Heading
-            className={`font-display font-bold ${level === 4 ? 'text-base' : 'text-xl'}`}
+            className={`font-display font-bold ${titleClassName ?? (level === 4 ? 'text-base' : 'text-xl')}`}
             style={{ color: INK }}
           >
             {title}
@@ -1626,7 +1614,7 @@ function QuoteForm() {
 
   if (isSubmitted) {
     return (
-      <div className="rounded-3xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-8 lg:p-12 shadow-sm text-center">
+      <div className="rounded-xl bg-white border border-slate-200 p-8 lg:p-12 shadow-sm text-center">
         <div className="w-20 h-20 rounded-full bg-[#0684BC]/10 flex items-center justify-center mx-auto mb-6" style={{ color: AZURE }}>
           <CheckCircle weight="fill" className="w-10 h-10" />
         </div>
@@ -1652,7 +1640,7 @@ function QuoteForm() {
   }
 
   return (
-    <div className="rounded-3xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-8 lg:p-10 shadow-sm">
+    <div className="rounded-xl bg-white border border-slate-200 p-8 lg:p-10 shadow-sm">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Honeypot — hidden from real users */}
         <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
@@ -1775,19 +1763,15 @@ function RelatedCard({
   description: string;
 }) {
   return (
-    <Link
-      href={href}
-      className="group bg-white rounded-2xl p-6 border border-gray-100 border-t-2 border-t-[#0684BC] hover:shadow-xl transition-all duration-300 flex flex-col"
-    >
-      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: AZURE }}>{label}</span>
-      <h3 className="font-display font-bold text-base mt-2 mb-2 leading-snug" style={{ color: INK }}>
-        {title}
-      </h3>
-      <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
-      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: AZURE }}>
-        Read more
-        <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-      </span>
+    <Link href={href} className={`group ${subgridCard} hover:shadow-xl transition-all duration-300`}>
+      <CardHeader eyebrow={label} title={title} titleClassName="text-base leading-snug" />
+      <div className={`flex flex-col ${cardBodyClass}`}>
+        <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
+        <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: AZURE }}>
+          Read more
+          <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </span>
+      </div>
     </Link>
   );
 }
