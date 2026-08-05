@@ -136,10 +136,10 @@ const aiAlsoIncluded = [
     name: 'AI Call Notes & personal assistant',
     icon: Sparkle,
     description:
-      'Included with RingEX plans: automatic call summaries, action items, and a personal AI assistant that drafts follow-ups — genuinely useful AI you get without an upgrade.',
+      'Included with RingEX™ plans: automatic call summaries, action items, and a personal AI assistant that drafts follow-ups — genuinely useful AI you get without an upgrade.',
   },
   {
-    name: 'RingCX — AI contact center',
+    name: 'RingCX™ — AI contact center',
     icon: Headset,
     description:
       'A full AI-powered contact center: real-time agent assist, automated CSAT scoring, live sentiment, and churn-risk detection so supervisors can step in before a customer walks.',
@@ -233,15 +233,24 @@ export function RingCentralPageClient() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}
             >
-              {/* Logo sits directly on white — no pill needed */}
+              {/* Official RingCentral logo, unmodified — no recolour, crop, effect,
+                  or change of proportion. Sized so it stays smaller than the Insero
+                  mark in the site header on BOTH axes at every breakpoint:
+                    Insero header  155x64 (mobile) / 194x80 (lg)
+                    this logo      132x20 (mobile) / 158x24 (lg)
+                  h-8 rendered 211px wide, which was wider than the Insero mark. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/carriers/RingCentral.svg" alt="RingCentral" className="h-8 w-auto mb-10" />
+              <img
+                src="/carriers/RingCentral_Logo_%28Color%29.svg"
+                alt="RingCentral"
+                className="h-5 lg:h-6 w-auto mb-10"
+              />
 
               <h1
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
                 style={{ color: INK }}
               >
-                RingCentral for Business —{' '}
+                RingCentral<sup className="text-[0.5em] align-super">&reg;</sup> for Business —{' '}
                 <span style={{ color: AZURE }}>AI-Powered Phone, Done Right</span>
               </h1>
 
@@ -712,6 +721,17 @@ export function RingCentralPageClient() {
               <TrustItem icon={Clock}>25+ Years Founder Experience</TrustItem>
             </div>
           </div>
+        </Container>
+      </section>
+
+      {/* ===================== TRADEMARK CREDIT ===================== */}
+      {/* Last block of page content, above the site footer. */}
+      <section className="pb-10" style={{ backgroundColor: TINT }}>
+        <Container size="md">
+          <p className="text-xs text-slate-500 leading-relaxed text-center">
+            RingCentral is a registered trademark of RingCentral, Inc. Other third-party marks referenced
+            herein are trademarks of their respective owners.
+          </p>
         </Container>
       </section>
     </>
@@ -1570,8 +1590,12 @@ function EquationTotal({
 }
 
 // --- Hero product video ---------------------------------------------------
-// RingCentral's public product loop, the same asset RC partners embed. If the
-// asset ever moves, onError hides the whole frame so the hero stays clean.
+// Hot-links a product video from RingCentral's own CDN. If the asset ever
+// moves, onError hides the whole frame so the hero stays clean.
+//
+// COMPLIANCE: serving a third party's asset from their CDN is a licensing and
+// bandwidth question, not just a technical one. Flagged for review — left in
+// place because removing it would be a layout change.
 
 function HeroVideo() {
   const [failed, setFailed] = useState(false);

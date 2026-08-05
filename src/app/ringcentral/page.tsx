@@ -58,34 +58,39 @@ const breadcrumbSchema = {
   ],
 };
 
-// Service schema: RingCentral platform, offered through Insero
+// Service schema: Insero's OWN advisory and sourcing service.
+//
+// This deliberately does not declare `brand: RingCentral`. Pairing a
+// RingCentral brand with Insero as `provider` asserts, in machine-readable
+// form, that Insero provides a RingCentral-branded service — which reads as an
+// authorized or endorsed relationship. The service described here is the one
+// Insero actually performs: independent advisory and sourcing. RingCentral is
+// named as subject matter in the description, not as the brand of the service,
+// and the offer catalog lists Insero's services rather than RingCentral's
+// products. No trademark symbols in schema values.
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'RingCentral Business Communications',
-  serviceType: 'Cloud Business Phone & Contact Center',
-  brand: {
-    '@type': 'Brand',
-    name: 'RingCentral',
-  },
+  name: 'Independent Business Communications Advisory & Sourcing',
+  serviceType: 'Telecom Advisory & Sourcing',
   provider: {
     '@type': 'Organization',
     name: 'Insero',
     url: 'https://insero.cloud',
     description:
-      'Independent telecom advisor that sources RingCentral and other providers at zero cost to the customer.',
+      'Independent telecom advisor. Insero is not affiliated with, endorsed by, sponsored by, or authorized by RingCentral, Inc.',
   },
   description:
-    "RingCentral's AI-powered business phone (RingEX), video, messaging, and contact center (RingCX), sourced and supported through Insero — an independent advisor — at no added cost.",
+    'Independent advisory and sourcing for cloud business phone and contact center services, including RingCentral products such as RingEX and RingCX. Insero is an independent advisor and is not affiliated with or endorsed by RingCentral, Inc.',
   areaServed: 'US',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'RingCentral Solutions',
+    name: 'Advisory & Sourcing Services',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RingEX Business Phone' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Agentic Voice AI (AI Receptionist, AVA, ACE)' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'RingCX AI Contact Center' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Video Meetings & Team Messaging' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Business phone sourcing and advisory' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Voice AI evaluation and advisory' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Contact center sourcing and advisory' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Quoting, contract, and implementation support' } },
     ],
   },
 };
