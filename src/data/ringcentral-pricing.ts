@@ -49,6 +49,29 @@ export interface AddOnGroup {
   items: AddOn[];
 }
 
+/** One AI capability as RingCentral lists it inside a tier. */
+export interface AiFeature {
+  name: string;
+  /** True when RingCentral lists it as a paid add-on rather than included. */
+  addOn?: boolean;
+}
+
+/** The published contents of a plan tier. */
+export interface TierFeatures {
+  /**
+   * The tier this one builds on. RingCentral presents its tiers cumulatively
+   * ("Everything in Core PLUS…"), and the cards read the same way — so `base`
+   * holds ONLY what this tier adds, never a repeat of the inherited items.
+   */
+  inheritsFrom?: string;
+  /** Plan contents, transcribed from RingCentral's published tier list. */
+  base: string[];
+  /** AI capabilities, kept separate the way RingCentral groups them. */
+  ai: AiFeature[];
+  /** Provenance — see publishedTierNote. */
+  sourceNote: string;
+}
+
 // --- RingEX (business phone) ---------------------------------------------
 
 export const ringEx = {
@@ -71,6 +94,73 @@ export const ringEx = {
     },
   ] satisfies QuotedPlan[],
 } as const;
+
+// --- RingEX published tier contents --------------------------------------
+//
+// READ BEFORE EDITING. Every line below is transcribed from RingCentral's own
+// plans-and-pricing page. Nothing here is inferred, summarized, or filled in
+// from product knowledge, and nothing should be. If RingCentral doesn't list
+// an item on a tier, it does not go on that tier — an invented inclusion is a
+// false claim about a real product's contract.
+//
+// To update: re-read the source page, replace these lists wholesale, and move
+// `lastVerified` in the same edit.
+
+const publishedTierNote = `RingCentral's published tier contents as of ${lastVerified}. Transcribed from ${pricingSourceUrl} — do not add, infer, or reword items.`;
+
+export const ringExTierFeatures: Record<string, TierFeatures> = {
+  Core: {
+    base: [
+      'Unlimited domestic calling',
+      'On-demand call recording',
+      '100 toll-free minutes',
+      '25 SMS user/month',
+      'HD meetings (200 participants)',
+    ],
+    ai: [
+      { name: 'AI Receptionist (AIR)', addOn: true },
+      { name: 'AI Virtual Assistant — captions & transcriptions, notes & summaries' },
+    ],
+    sourceNote: publishedTierNote,
+  },
+  Advanced: {
+    inheritsFrom: 'Core',
+    base: [
+      'CRM integrations',
+      'Connect multiple sites',
+      'Core reporting and insights',
+      '1,000 toll-free minutes',
+      '100 SMS user/month',
+    ],
+    ai: [{ name: 'AI Virtual Assistant — adds AI Writer' }],
+    sourceNote: publishedTierNote,
+  },
+  Ultra: {
+    inheritsFrom: 'Advanced',
+    base: [
+      '10,000 toll-free minutes',
+      '200 SMS user/month',
+      'RingCentral Webinar',
+      'Historical and real-time insights',
+      'Unlimited storage',
+      'Device analytics & alerts',
+    ],
+    ai: [
+      { name: 'AI Receptionist (AIR)', addOn: true },
+      { name: 'All AI Virtual Assistant features' },
+    ],
+    sourceNote: publishedTierNote,
+  },
+  'Customer Engagement Bundle': {
+    inheritsFrom: 'Ultra',
+    base: [
+      'Business SMS Booster — shared SMS inbox, company reply templates, SMS compliance management',
+      'Call Queues Booster — call back from queue, wait time and place alerts, live reports',
+    ],
+    ai: [],
+    sourceNote: publishedTierNote,
+  },
+};
 
 // --- RingCX (contact center) ---------------------------------------------
 

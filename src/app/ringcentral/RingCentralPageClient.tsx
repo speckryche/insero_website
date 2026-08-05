@@ -49,6 +49,7 @@ import {
   lastVerified,
   pricingSourceUrl,
   ringEx,
+  ringExTierFeatures,
   ringCx,
   aiReceptionist,
   addOnGroups,
@@ -57,6 +58,7 @@ import {
   formatUsd,
   type PlanTier,
   type QuotedPlan,
+  type TierFeatures,
 } from '@/data/ringcentral-pricing';
 import { submitContactForm, type ContactFormData } from '../contact/actions';
 import { ringCentralFaq } from './faq';
@@ -834,13 +836,14 @@ function PricingTabs() {
             tiers={ringEx.tiers}
             quoted={ringEx.quoted}
             descriptions={ringExDescriptions}
-            features={() => ringExIncludes}
-            featuresHeading={`Every ${ringEx.name} plan includes`}
+            features={(name) => {
+              const tierFeatures = ringExTierFeatures[name];
+              return tierFeatures ? <TierFeatureList features={tierFeatures} /> : null;
+            }}
             savingsNote={ringEx.annualSavingsNote}
             annual={annual}
             onToggle={setAnnual}
             footnote={`${ringEx.seatBandNote} ${ringEx.aboveBandNote}`}
-            tierDiffNote={`Core, Advanced, and Ultra differ in call-handling depth, limits, and how much of the platform is switched on — we'll map those differences to what your team actually uses.`}
           />
         </TabPanel>
 
@@ -849,7 +852,10 @@ function PricingTabs() {
             tiers={ringCx.tiers}
             quoted={ringCx.quoted}
             descriptions={ringCxDescriptions}
-            features={ringCxFeatures}
+            features={(name) => {
+              const items = ringCxFeatures(name);
+              return <FeatureList items={items.length > 0 ? items : quotedFeatures} />;
+            }}
             savingsNote={ringCx.annualSavingsNote}
             annual={annual}
             onToggle={setAnnual}
@@ -903,14 +909,6 @@ const ringExDescriptions: Record<string, string> = {
   'Customer Engagement Bundle': 'Packaged pricing RingCentral quotes case by case.',
 };
 
-const ringExIncludes = [
-  'Cloud calling with auto-attendant and routing',
-  'Desk phone, desktop, and mobile apps',
-  'HD video meetings, included',
-  'Team messaging and file sharing',
-  'AI Call Notes and a personal AI assistant',
-];
-
 const ringCxDescriptions: Record<string, string> = {
   Standard: 'Omnichannel contact center, with the AI licensed as add-ons.',
   Professional: 'Standard, with two of the AI capabilities folded in.',
@@ -945,23 +943,19 @@ function PlanPanel({
   quoted,
   descriptions,
   features,
-  featuresHeading,
   savingsNote,
   annual,
   onToggle,
   footnote,
-  tierDiffNote,
 }: {
   tiers: readonly PlanTier[];
   quoted: readonly QuotedPlan[];
   descriptions: Record<string, string>;
-  features: (tierName: string) => string[];
-  featuresHeading?: string;
+  features: (tierName: string) => React.ReactNode;
   savingsNote: string;
   annual: boolean;
   onToggle: (next: boolean) => void;
   footnote: string;
-  tierDiffNote?: string;
 }) {
   // The middle priced tier carries the badge, the way RC flags a plan.
   const popularIndex = Math.floor((tiers.length - 1) / 2);
@@ -979,7 +973,6 @@ function PlanPanel({
             popular={index === popularIndex}
             description={descriptions[tier.name]}
             features={features(tier.name)}
-            featuresHeading={featuresHeading}
           />
         ))}
         {quoted.map((plan) => (
@@ -987,7 +980,7 @@ function PlanPanel({
             key={plan.name}
             plan={plan}
             description={descriptions[plan.name]}
-            features={quotedFeatures}
+            features={features(plan.name)}
           />
         ))}
       </div>
@@ -995,11 +988,6 @@ function PlanPanel({
       <p className="mt-10 text-center text-[15px] text-[#64748b] max-w-3xl mx-auto leading-relaxed">
         {footnote}
       </p>
-      {tierDiffNote && (
-        <p className="mt-3 text-center text-[15px] text-[#64748b] max-w-3xl mx-auto leading-relaxed">
-          {tierDiffNote}
-        </p>
-      )}
     </div>
   );
 }
@@ -1049,14 +1037,12 @@ function PlanCard({
   popular,
   description,
   features,
-  featuresHeading,
 }: {
   tier: PlanTier;
   annual: boolean;
   popular: boolean;
   description?: string;
-  features: string[];
-  featuresHeading?: string;
+  features: React.ReactNode;
 }) {
   return (
     <div className={`relative flex flex-col p-8 lg:p-9 ${cardClass} ${popular ? 'ring-1 ring-[#F26B00]/30' : ''}`}>
@@ -1083,7 +1069,7 @@ function PlanCard({
         </p>
       </div>
 
-      <FeatureList items={features} heading={featuresHeading} />
+      {features}
     </div>
   );
 }
@@ -1095,7 +1081,7 @@ function QuotePlanCard({
 }: {
   plan: QuotedPlan;
   description?: string;
-  features: string[];
+  features: React.ReactNode;
 }) {
   return (
     <div className={`relative flex flex-col p-8 lg:p-9 ${cardClass}`}>
@@ -1109,20 +1095,15 @@ function QuotePlanCard({
         <p className="mt-2 text-sm text-[#64748b]">{plan.note}</p>
       </div>
 
-      <FeatureList items={features} />
+      {features}
     </div>
   );
 }
 
-function FeatureList({ items, heading }: { items: string[]; heading?: string }) {
+function FeatureList({ items }: { items: string[] }) {
   if (items.length === 0) return null;
   return (
     <div className="mt-8 pt-7 border-t border-slate-100">
-      {heading && (
-        <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: AZURE }}>
-          {heading}
-        </p>
-      )}
       <ul className="space-y-3">
         {items.map((item) => (
           <li key={item} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
@@ -1131,6 +1112,75 @@ function FeatureList({ items, heading }: { items: string[]; heading?: string }) 
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+// RingEX tier contents. RingCentral presents its tiers cumulatively, so each
+// card leads with what it inherits and lists only what the tier adds. The AI
+// group is kept visually separate the way RC separates it.
+//
+// Display cap only — if a tier's transcribed list ever outgrows the card, the
+// overflow is linked rather than silently dropped. Nothing truncates today
+// (Ultra is the longest at exactly this many items).
+const MAX_BASE_FEATURES = 6;
+
+function TierFeatureList({ features }: { features: TierFeatures }) {
+  const shown = features.base.slice(0, MAX_BASE_FEATURES);
+  const overflow = features.base.length - shown.length;
+
+  return (
+    <div className="mt-8 pt-7 border-t border-slate-100">
+      {features.inheritsFrom && (
+        <p className="text-[15px] font-semibold mb-4 leading-snug" style={{ color: INK }}>
+          Everything in {features.inheritsFrom}{' '}
+          <span style={{ color: AZURE }}>PLUS:</span>
+        </p>
+      )}
+
+      <ul className="space-y-3">
+        {shown.map((item) => (
+          <li key={item} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
+            <Check weight="bold" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: AZURE }} />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      {overflow > 0 && (
+        <a
+          href={pricingSourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-3 text-sm font-semibold hover:underline"
+          style={{ color: AZURE }}
+        >
+          +{overflow} more on RingCentral&apos;s pricing page
+        </a>
+      )}
+
+      {features.ai.length > 0 && (
+        <div className="mt-6 pt-5 border-t border-slate-100">
+          <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: AZURE }}>
+            AI
+          </p>
+          <ul className="space-y-3">
+            {features.ai.map((item) => (
+              <li key={item.name} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
+                <Sparkle weight="fill" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: AZURE }} />
+                <span>
+                  {item.name}
+                  {item.addOn && (
+                    <span className="ml-2 inline-block px-2 py-0.5 rounded-full bg-[#F26B00]/10 text-[#C25400] text-[11px] font-semibold uppercase tracking-wide align-middle">
+                      Add-on
+                    </span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
