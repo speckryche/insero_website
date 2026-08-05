@@ -80,7 +80,7 @@ export const ringEx = {
   publishedSeatCap: 100,
   /** RingCentral publishes one rate band for 1–100 users; 1–5 and 6–100 match. */
   seatBandNote: 'Same published rate for 1–5 and 6–100 users.',
-  aboveBandNote: 'Above 100 users, RingCentral does not publish a rate — quote only.',
+  aboveBandNote: 'Above 100 users, pricing is quote-based.',
   annualSavingsNote: 'Annual billing saves up to 33%.',
   tiers: [
     { name: 'Core', annual: 20, monthly: 30 },
@@ -90,7 +90,7 @@ export const ringEx = {
   quoted: [
     {
       name: 'Customer Engagement Bundle',
-      note: 'Quote only — no published rate.',
+      note: 'Quote-based pricing.',
     },
   ] satisfies QuotedPlan[],
 } as const;
@@ -185,7 +185,7 @@ export const ringCx = {
   quoted: [
     {
       name: 'Enterprise Contact Center',
-      note: 'Quote only — no published rate.',
+      note: 'Quote-based pricing.',
     },
   ] satisfies QuotedPlan[],
 } as const;

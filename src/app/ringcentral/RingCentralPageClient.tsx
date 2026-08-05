@@ -484,10 +484,10 @@ export function RingCentralPageClient() {
               What RingCentral actually costs — all of it, in one place
             </h2>
             <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
-              RingCentral publishes its pricing across six separate pages. Working out what a real deployment
-              costs — seats, contact center, the AI you actually want, and the numbers and rooms that come with
-              it — means visiting four of them and doing the arithmetic yourself. This is that arithmetic, on
-              one page.
+              RingCentral publishes its pricing across six pages, one for each product family. A real
+              deployment usually spans several of them — seats, contact center, the AI you want, and the
+              numbers and rooms that go with it. We&apos;ve brought the published rates together here so you
+              can price the whole thing in one place.
             </p>
           </motion.div>
 
@@ -531,11 +531,11 @@ export function RingCentralPageClient() {
                 </h3>
                 <p className="text-[#475569] leading-relaxed text-lg">
                   We publish RingCentral&apos;s list pricing because you should be able to see it before you
-                  talk to anyone. We can&apos;t change their published rates. What we can do is request better
-                  pricing on your behalf, structure the contract term and plan mix around how you actually use
-                  the system, and make sure you&apos;re not buying à la carte what a tier already includes. And
-                  past {ringEx.publishedSeatCap} seats there&apos;s no published rate at all — a quote is the
-                  only way to know what you&apos;d pay. Curious what you&apos;re overpaying for elsewhere?{' '}
+                  talk to anyone. What we add is the fit: requesting pricing on your behalf, structuring the
+                  contract term and plan mix around how you actually use the system, and matching each tier to
+                  what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
+                  {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
+                  your number. Curious what you&apos;re overpaying for elsewhere?{' '}
                   <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: AZURE }}>
                     Try our cost estimator
                   </Link>{' '}
@@ -757,7 +757,79 @@ export function RingCentralPageClient() {
 
 type PhosphorIcon = typeof Handshake;
 
-const cardClass = 'rounded-2xl bg-white border border-slate-200 shadow-sm';
+// Every card in the pricing section is built the same way: a 1px slate border
+// on all four sides, a tinted header band clipped by overflow-hidden, and a
+// white body. No card carries a colored rule on a single edge.
+const cardClass = 'rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden';
+const cardBodyClass = 'p-7 lg:p-8';
+
+// Cards sit on a subgrid so every header band in a row shares the same bottom
+// edge, no matter how many lines each tier description wraps to. The grid
+// declares the two rows; each card spans and inherits them.
+const cardGridRows = 'grid-rows-[auto_1fr]';
+const subgridCard = `row-span-2 grid grid-rows-subgrid ${cardClass}`;
+
+/** Tinted band at the top of every card: optional icon, title, optional badge
+ *  opposite it, and an optional one-line description beneath. */
+function CardHeader({
+  title,
+  description,
+  badge,
+  icon: Icon,
+  level = 3,
+}: {
+  title: string;
+  description?: string;
+  badge?: React.ReactNode;
+  icon?: PhosphorIcon;
+  level?: 3 | 4;
+}) {
+  const Heading = level === 4 ? 'h4' : 'h3';
+  return (
+    <div className="px-7 lg:px-8 py-6 border-b border-slate-200" style={{ backgroundColor: TINT }}>
+      {/* min-h pins the row to the heading's line box so a badge can't make one
+          card's band taller than its neighbours' and misalign the dividers. */}
+      <div className="flex items-center justify-between gap-3 min-h-7">
+        <div className="flex items-center gap-3 min-w-0">
+          {Icon && (
+            <span
+              className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-white"
+              style={{ color: AZURE }}
+            >
+              <Icon weight="fill" className="w-5 h-5" />
+            </span>
+          )}
+          <Heading
+            className={`font-display font-bold ${level === 4 ? 'text-base' : 'text-xl'}`}
+            style={{ color: INK }}
+          >
+            {title}
+          </Heading>
+        </div>
+        {badge}
+      </div>
+      {description && (
+        <p className="mt-3 text-[15px] text-[#64748b] leading-relaxed">{description}</p>
+      )}
+    </div>
+  );
+}
+
+function PopularBadge() {
+  return (
+    <span className="flex-shrink-0 px-3 py-1 rounded-full bg-[#F26B00] text-white text-[11px] font-semibold uppercase tracking-wider">
+      Most popular
+    </span>
+  );
+}
+
+function PricedDifferentlyBadge() {
+  return (
+    <span className="flex-shrink-0 px-3 py-1 rounded-full bg-[#F26B00]/10 text-[#C25400] text-[11px] font-semibold uppercase tracking-wider">
+      Priced differently
+    </span>
+  );
+}
 
 const TABS = [
   { id: 'ringex', label: `Business Phone (${ringEx.name})` },
@@ -913,7 +985,7 @@ const ringCxDescriptions: Record<string, string> = {
   Standard: 'Omnichannel contact center, with the AI licensed as add-ons.',
   Professional: 'Standard, with two of the AI capabilities folded in.',
   Elite: 'Professional, with the remaining AI capabilities included.',
-  'Enterprise Contact Center': 'Quote only — scoped to the deployment.',
+  'Enterprise Contact Center': 'Quote-based, scoped to the deployment.',
 };
 
 const ringCxBaseFeatures: Record<string, string[]> = {
@@ -936,7 +1008,7 @@ function ringCxFeatures(tierName: string): string[] {
   return [...(ringCxBaseFeatures[tierName] ?? []), ...bundled];
 }
 
-const quotedFeatures = ['No published list rate', 'We scope and quote it with you'];
+const quotedFeatures = ['Quote-based pricing', 'We scope and quote it with you'];
 
 function PlanPanel({
   tiers,
@@ -964,7 +1036,7 @@ function PlanPanel({
     <div>
       <BillingToggle annual={annual} onToggle={onToggle} savingsNote={savingsNote} />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7 pt-4">
+      <div className={`grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7 ${cardGridRows}`}>
         {tiers.map((tier, index) => (
           <PlanCard
             key={tier.name}
@@ -1045,17 +1117,14 @@ function PlanCard({
   features: React.ReactNode;
 }) {
   return (
-    <div className={`relative flex flex-col p-8 lg:p-9 ${cardClass} ${popular ? 'ring-1 ring-[#F26B00]/30' : ''}`}>
-      {popular && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1.5 rounded-full bg-[#F26B00] text-white text-xs font-semibold uppercase tracking-wider shadow-sm">
-          Most popular
-        </span>
-      )}
+    <div className={subgridCard}>
+      <CardHeader
+        title={tier.name}
+        description={description}
+        badge={popular ? <PopularBadge /> : undefined}
+      />
 
-      <h3 className="text-xl font-display font-bold" style={{ color: INK }}>{tier.name}</h3>
-      {description && <p className="mt-2 text-[15px] text-[#64748b] leading-relaxed">{description}</p>}
-
-      <div className="mt-7">
+      <div className={`flex flex-col flex-grow ${cardBodyClass}`}>
         <div className="flex items-baseline gap-3 flex-wrap">
           <span className="font-display font-bold text-5xl tracking-tight" style={{ color: INK }}>
             {formatUsd(annual ? tier.annual : tier.monthly)}
@@ -1067,9 +1136,9 @@ function PlanCard({
         <p className="mt-2 text-sm text-[#64748b]">
           /user/month {annual ? 'paid annually' : 'billed monthly'}
         </p>
-      </div>
 
-      {features}
+        {features}
+      </div>
     </div>
   );
 }
@@ -1084,18 +1153,17 @@ function QuotePlanCard({
   features: React.ReactNode;
 }) {
   return (
-    <div className={`relative flex flex-col p-8 lg:p-9 ${cardClass}`}>
-      <h3 className="text-xl font-display font-bold" style={{ color: INK }}>{plan.name}</h3>
-      {description && <p className="mt-2 text-[15px] text-[#64748b] leading-relaxed">{description}</p>}
+    <div className={subgridCard}>
+      <CardHeader title={plan.name} description={description} />
 
-      <div className="mt-7">
+      <div className={`flex flex-col flex-grow ${cardBodyClass}`}>
         <span className="font-display font-bold text-3xl tracking-tight leading-tight block" style={{ color: INK }}>
           Contact us for pricing
         </span>
         <p className="mt-2 text-sm text-[#64748b]">{plan.note}</p>
-      </div>
 
-      {features}
+        {features}
+      </div>
     </div>
   );
 }
@@ -1193,9 +1261,6 @@ function AIReceptionistPanel() {
   return (
     <div className="max-w-5xl mx-auto">
       <div className="text-center mb-10">
-        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#F26B00]/10 text-[#C25400] mb-5">
-          Priced differently
-        </span>
         <h3 className="text-2xl sm:text-3xl font-display font-bold" style={{ color: INK }}>
           {aiReceptionist.name} ({aiReceptionist.abbreviation}) is not a per-user add-on
         </h3>
@@ -1219,15 +1284,10 @@ function AIReceptionistPanel() {
         />
       </div>
 
-      <div className={`mt-7 p-8 lg:p-10 ${cardClass} border-t-2 border-t-[#F26B00]`}>
-        <div className="flex items-start gap-5">
-          <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#F26B00]/10 text-[#F26B00]">
-            <Robot weight="fill" className="w-6 h-6" />
-          </div>
+      <div className={`mt-7 ${cardClass}`}>
+        <CardHeader title="How the usage model works" icon={Robot} />
+        <div className={cardBodyClass}>
           <div>
-            <h4 className="text-xl font-display font-bold mb-5" style={{ color: INK }}>
-              How the usage model works
-            </h4>
             <ul className="space-y-3 mb-7">
               <li className="flex gap-3 text-[#475569] leading-relaxed">
                 <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
@@ -1269,18 +1329,20 @@ function AirPriceCard({
   description: string;
 }) {
   return (
-    <div className={`p-8 lg:p-10 text-center ${cardClass} border-t-2 border-t-[#F26B00]`}>
-      <h4 className="text-xl font-display font-bold" style={{ color: INK }}>{title}</h4>
-      <div className="mt-6">
-        <span className="font-display font-bold text-5xl tracking-tight" style={{ color: INK }}>
-          {formatUsd(amount)}
-        </span>
-        <span className="text-lg text-[#64748b] ml-1">/mo</span>
+    <div className={`flex flex-col ${cardClass}`}>
+      <CardHeader title={title} badge={<PricedDifferentlyBadge />} />
+      <div className={cardBodyClass}>
+        <div>
+          <span className="font-display font-bold text-5xl tracking-tight" style={{ color: INK }}>
+            {formatUsd(amount)}
+          </span>
+          <span className="text-lg text-[#64748b] ml-1">/mo</span>
+        </div>
+        <p className="mt-3 text-[15px] text-[#64748b] leading-relaxed">{description}</p>
+        <p className="mt-1 text-sm font-semibold" style={{ color: AZURE }}>
+          {aiReceptionist.billingUnit}
+        </p>
       </div>
-      <p className="mt-3 text-[15px] text-[#64748b] leading-relaxed">{description}</p>
-      <p className="mt-1 text-sm font-semibold" style={{ color: AZURE }}>
-        {aiReceptionist.billingUnit}
-      </p>
     </div>
   );
 }
@@ -1314,7 +1376,7 @@ function EverythingElsePanel() {
       {addOnGroups.map((group) => (
         <div key={group.group}>
           <LineItemGroupHeading title={group.group} subtitle={`Licensed on top of a base plan · ${group.unit}`} />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ${cardGridRows}`}>
             {group.items.map((item) => (
               <LineItemCard
                 key={item.name}
@@ -1330,7 +1392,7 @@ function EverythingElsePanel() {
 
       <div>
         <LineItemGroupHeading title="Other line items" subtitle="Metered as noted on each card" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ${cardGridRows}`}>
           {otherLineItems.map((item) => (
             <LineItemCard
               key={item.name}
@@ -1367,19 +1429,16 @@ function LineItemCard({
 }) {
   const Icon = lineItemIcons[name] ?? PuzzlePiece;
   return (
-    <div className={`flex flex-col p-7 lg:p-8 ${cardClass}`}>
-      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 mb-5" style={{ color: AZURE }}>
-        <Icon weight="fill" className="w-6 h-6" />
-      </div>
-      <div className="mb-6">
-        <h4 className="text-base font-display font-bold" style={{ color: INK }}>{name}</h4>
-        {description && <p className="mt-2 text-[15px] text-[#64748b] leading-relaxed">{description}</p>}
-      </div>
-      {/* mt-auto keeps prices on one baseline across a row even when only
-          some cards in that row carry a description. */}
-      <div className="mt-auto pt-5 border-t border-slate-100">
-        <span className="font-display font-bold text-2xl" style={{ color: INK }}>{price}</span>
-        {priceNote && <span className="block mt-1 text-sm text-[#64748b]">{priceNote}</span>}
+    <div className={subgridCard}>
+      <CardHeader title={name} icon={Icon} level={4} />
+      <div className={`flex flex-col flex-grow ${cardBodyClass}`}>
+        {description && <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">{description}</p>}
+        {/* mt-auto keeps prices on one baseline across a row even when only
+            some cards in that row carry a description. */}
+        <div className="mt-auto">
+          <span className="font-display font-bold text-2xl" style={{ color: INK }}>{price}</span>
+          {priceNote && <span className="block mt-1 text-sm text-[#64748b]">{priceNote}</span>}
+        </div>
       </div>
     </div>
   );
@@ -1391,24 +1450,16 @@ function LineItemCard({
 
 function TierMathCard() {
   return (
-    <div className={`${cardClass} border-l-4 border-l-[#0684BC] p-8 lg:p-12`}>
-      <div className="flex items-start gap-5 mb-8">
-        <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-          <Calculator weight="fill" className="w-6 h-6" />
-        </div>
-        <div>
-          <h3 className="text-2xl sm:text-3xl font-display font-bold mb-3" style={{ color: INK }}>
-            The math RingCentral doesn&apos;t show you
-          </h3>
-          <p className="text-lg text-[#475569] leading-relaxed">
-            Because tiers and add-ons live on different pages, it&apos;s easy to build up a plan à la carte
-            that costs more than the tier which already includes the same features. Both of these come straight
-            from the published rates above.
-          </p>
-        </div>
-      </div>
+    <div className={cardClass}>
+      <CardHeader title="Sometimes the higher tier costs less" icon={Calculator} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+      <div className="p-8 lg:p-10">
+        <p className="text-lg text-[#475569] leading-relaxed mb-8">
+          RingCentral bundles several AI features into the higher {ringCx.name} tiers. That means the tier you
+          need sometimes costs less than building up from a lower one. Here&apos;s where that happens.
+        </p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {tierComparisons.map((comparison) => (
           <div
             key={`${comparison.baseTier}-${comparison.targetTier}`}
@@ -1423,7 +1474,7 @@ function TierMathCard() {
               ))}
             </ul>
 
-            <div className="mt-5 pt-5 border-t border-[#0684BC]/20 space-y-4">
+            <div className="mt-5 pt-5 border-t border-slate-200 space-y-4">
               <EquationTotal
                 label="Built up à la carte"
                 value={`${formatUsd(comparison.buildUpTotal)}/agent/mo`}
@@ -1442,13 +1493,14 @@ function TierMathCard() {
               features onto {comparison.baseTier}.
             </p>
           </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <p className="text-lg text-[#475569] leading-relaxed mt-8">
-        Neither of these is a trick — they&apos;re just what happens when the tier sheet and the add-on sheet
-        are two different pages. This is the kind of thing we catch when we price your configuration.
-      </p>
+        <p className="text-lg text-[#475569] leading-relaxed mt-8">
+          Both examples use the published rates above. Matching the tier to what you&apos;ll actually use is
+          part of every quote we put together — it&apos;s usually the quickest place to find savings.
+        </p>
+      </div>
     </div>
   );
 }
