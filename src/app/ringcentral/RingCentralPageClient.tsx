@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -27,6 +27,19 @@ import {
   PaperPlaneRight,
   WarningCircle,
   Calculator,
+  Check,
+  Monitor,
+  Presentation,
+  Ticket,
+  Megaphone,
+  Hash,
+  Star,
+  Globe,
+  GlobeHemisphereWest,
+  ChatCircleText,
+  ChartLineUp,
+  SealCheck,
+  UsersThree,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
@@ -461,61 +474,33 @@ export function RingCentralPageClient() {
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated all-in reference. Every figure renders from
           @/data/ringcentral-pricing — nothing here is hardcoded. */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
-        <Container size="md">
-          <motion.div {...fadeUp}>
-            <SectionEyebrow>Honest Pricing</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
+      <section className="py-20 lg:py-32" style={{ backgroundColor: TINT }}>
+        <Container>
+          <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-14 lg:mb-16">
+            <SectionEyebrow centered>Honest Pricing</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: INK }}>
               What RingCentral actually costs — all of it, in one place
             </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-12">
-              <p>
-                RingCentral publishes its pricing across six separate pages. Working out what a real deployment
-                costs — seats, contact center, the AI you actually want, and the numbers and rooms that come
-                with it — means visiting four of them and doing the arithmetic yourself. This is that
-                arithmetic, on one page.
-              </p>
-            </div>
+            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
+              RingCentral publishes its pricing across six separate pages. Working out what a real deployment
+              costs — seats, contact center, the AI you actually want, and the numbers and rooms that come with
+              it — means visiting four of them and doing the arithmetic yourself. This is that arithmetic, on
+              one page.
+            </p>
           </motion.div>
 
-          {/* --- RingEX --- */}
-          <motion.div {...fadeUp} className="mb-6">
-            <PlanTable
-              title={`${ringEx.name} — business phone`}
-              subtitle="Per user, per month."
-              tiers={ringEx.tiers}
-              quoted={ringEx.quoted}
-              footnotes={[ringEx.seatBandNote, ringEx.aboveBandNote, ringEx.annualSavingsNote]}
-            />
-          </motion.div>
-
-          {/* --- RingCX --- */}
-          <motion.div {...fadeUp} className="mb-6">
-            <PlanTable
-              title={`${ringCx.name} — contact center`}
-              subtitle="Per user, per month. Licensed separately from RingEX."
-              tiers={ringCx.tiers}
-              quoted={ringCx.quoted}
-              footnotes={[ringCx.annualSavingsNote]}
-            />
-          </motion.div>
-
-          {/* --- Add-ons and everything else --- */}
-          <motion.div {...fadeUp} className="mb-6">
-            <AddOnTable />
-          </motion.div>
-
-          {/* --- AI Receptionist: different pricing model, its own card --- */}
-          <motion.div {...fadeUp} className="mb-6">
-            <AIReceptionistCard />
-          </motion.div>
-
-          {/* --- The advisor math --- */}
+          {/* Tabs. All four panels stay mounted; only CSS hides the inactive
+              ones, so every published rate is present in the prerendered HTML. */}
           <motion.div {...fadeUp}>
+            <PricingTabs />
+          </motion.div>
+
+          {/* The advisor math sits outside the tab system — always visible. */}
+          <motion.div {...fadeUp} className="max-w-5xl mx-auto mt-16 lg:mt-20">
             <TierMathCard />
           </motion.div>
 
-          <motion.p {...fadeUp} className="mt-6 text-sm text-[#64748b] text-center leading-relaxed">
+          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[#64748b] text-center leading-relaxed">
             RingCentral&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
             <a
               href={pricingSourceUrl}
@@ -532,17 +517,17 @@ export function RingCentralPageClient() {
           {/* --- Advisor close --- */}
           <motion.div
             {...fadeUp}
-            className="mt-10 rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm"
+            className="max-w-5xl mx-auto mt-12 rounded-2xl bg-white border border-slate-200 p-8 lg:p-10 shadow-sm"
           >
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
+            <div className="flex items-start gap-5">
+              <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
                 <CurrencyDollar weight="fill" className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
+                <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: INK }}>
                   Where an advisor actually earns their keep
                 </h3>
-                <p className="text-[#475569] leading-relaxed">
+                <p className="text-[#475569] leading-relaxed text-lg">
                   We publish RingCentral&apos;s list pricing because you should be able to see it before you
                   talk to anyone. We can&apos;t change their published rates. What we can do is request better
                   pricing on your behalf, structure the contract term and plan mix around how you actually use
@@ -757,81 +742,392 @@ export function RingCentralPageClient() {
   );
 }
 
-// --- Pricing tables -------------------------------------------------------
-// Every figure comes from @/data/ringcentral-pricing. Tables scroll
-// horizontally rather than wrapping, so a narrow phone never mangles a rate.
+// --- Pricing UI -----------------------------------------------------------
+// A tabbed card layout mirroring RingCentral's own plans-and-pricing page.
+//
+// Two rules this file follows strictly:
+//  1. No rate is written here. Every figure renders from
+//     @/data/ringcentral-pricing, including the savings percentages, which are
+//     read out of the published savings notes rather than restated.
+//  2. All four panels stay mounted at all times and are hidden with CSS, so a
+//     crawler sees RingCX and add-on pricing even though RingEX is the tab
+//     that opens by default.
 
-const tableCardClass =
-  'rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm overflow-hidden';
-const thClass = 'px-5 sm:px-8 py-3 text-xs font-semibold uppercase tracking-wider text-[#64748b]';
+type PhosphorIcon = typeof Handshake;
 
-function PlanTable({
-  title,
-  subtitle,
-  tiers,
-  quoted,
-  footnotes,
+const cardClass = 'rounded-2xl bg-white border border-slate-200 shadow-sm';
+
+const TABS = [
+  { id: 'ringex', label: `Business Phone (${ringEx.name})` },
+  { id: 'ringcx', label: `Contact Center (${ringCx.name})` },
+  { id: 'air', label: aiReceptionist.name },
+  { id: 'other', label: 'Everything Else' },
+] as const;
+
+type TabId = (typeof TABS)[number]['id'];
+
+/** Pull "33%" out of a published savings note so the toggle label never
+ *  restates a number the data file already owns. */
+function savingsPercent(note: string): string | null {
+  return note.match(/\d+%/)?.[0] ?? null;
+}
+
+function PricingTabs() {
+  const [active, setActive] = useState<TabId>('ringex');
+  // Billing choice is shared across the two plan tabs, so switching tabs
+  // doesn't silently reset what the visitor picked.
+  const [annual, setAnnual] = useState(true);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const last = TABS.length - 1;
+    let next = -1;
+    if (event.key === 'ArrowRight') next = index === last ? 0 : index + 1;
+    else if (event.key === 'ArrowLeft') next = index === 0 ? last : index - 1;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = last;
+    if (next < 0) return;
+    event.preventDefault();
+    setActive(TABS[next].id);
+    tabRefs.current[next]?.focus();
+  };
+
+  return (
+    <div>
+      {/* Segmented pill selector */}
+      <div className="flex justify-center">
+        <div
+          role="tablist"
+          aria-label="RingCentral pricing categories"
+          className="inline-flex flex-wrap justify-center gap-1 p-1.5 rounded-full bg-white border border-slate-200 shadow-sm"
+        >
+          {TABS.map((tab, index) => {
+            const selected = active === tab.id;
+            return (
+              <button
+                key={tab.id}
+                ref={(node) => {
+                  tabRefs.current[index] = node;
+                }}
+                type="button"
+                role="tab"
+                id={`rc-tab-${tab.id}`}
+                aria-selected={selected}
+                aria-controls={`rc-panel-${tab.id}`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setActive(tab.id)}
+                onKeyDown={(event) => handleKeyDown(event, index)}
+                className={`px-5 sm:px-7 py-3 rounded-full text-sm sm:text-base font-semibold transition-colors duration-200 ${
+                  selected ? 'bg-[#F26B00] text-white shadow-sm' : 'text-[#64748b] hover:text-[#032B44]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-12 lg:mt-14">
+        <TabPanel id="ringex" active={active}>
+          <PlanPanel
+            tiers={ringEx.tiers}
+            quoted={ringEx.quoted}
+            descriptions={ringExDescriptions}
+            features={() => ringExIncludes}
+            featuresHeading={`Every ${ringEx.name} plan includes`}
+            savingsNote={ringEx.annualSavingsNote}
+            annual={annual}
+            onToggle={setAnnual}
+            footnote={`${ringEx.seatBandNote} ${ringEx.aboveBandNote}`}
+            tierDiffNote={`Core, Advanced, and Ultra differ in call-handling depth, limits, and how much of the platform is switched on — we'll map those differences to what your team actually uses.`}
+          />
+        </TabPanel>
+
+        <TabPanel id="ringcx" active={active}>
+          <PlanPanel
+            tiers={ringCx.tiers}
+            quoted={ringCx.quoted}
+            descriptions={ringCxDescriptions}
+            features={ringCxFeatures}
+            savingsNote={ringCx.annualSavingsNote}
+            annual={annual}
+            onToggle={setAnnual}
+            footnote={`${ringCx.name} is licensed separately from ${ringEx.name}.`}
+          />
+        </TabPanel>
+
+        <TabPanel id="air" active={active}>
+          <AIReceptionistPanel />
+        </TabPanel>
+
+        <TabPanel id="other" active={active}>
+          <EverythingElsePanel />
+        </TabPanel>
+      </div>
+    </div>
+  );
+}
+
+function TabPanel({
+  id,
+  active,
+  children,
 }: {
-  title: string;
-  subtitle: string;
-  tiers: readonly PlanTier[];
-  quoted: readonly QuotedPlan[];
-  footnotes: readonly string[];
+  id: TabId;
+  active: TabId;
+  children: React.ReactNode;
 }) {
   return (
-    <div className={tableCardClass}>
-      <div className="px-5 sm:px-8 pt-6 pb-4">
-        <h3 className="text-xl font-display font-bold" style={{ color: INK }}>{title}</h3>
-        <p className="text-sm text-[#64748b] mt-1">{subtitle}</p>
+    <div
+      role="tabpanel"
+      id={`rc-panel-${id}`}
+      aria-labelledby={`rc-tab-${id}`}
+      className={active === id ? '' : 'hidden'}
+    >
+      {children}
+    </div>
+  );
+}
+
+// --- Plan tabs (RingEX, RingCX) -------------------------------------------
+
+// Card copy below is descriptive only. Nothing here asserts a capability that
+// this page doesn't already state elsewhere, and the RingCX inclusions are
+// derived from the data file rather than retyped — see ringCxFeatures.
+
+const ringExDescriptions: Record<string, string> = {
+  Core: 'Cloud phone, video, and messaging for teams coming off legacy lines.',
+  Advanced: 'More depth for teams that spend the whole day on the phone.',
+  Ultra: 'The top of the platform, for the most demanding deployments.',
+  'Customer Engagement Bundle': 'Packaged pricing RingCentral quotes case by case.',
+};
+
+const ringExIncludes = [
+  'Cloud calling with auto-attendant and routing',
+  'Desk phone, desktop, and mobile apps',
+  'HD video meetings, included',
+  'Team messaging and file sharing',
+  'AI Call Notes and a personal AI assistant',
+];
+
+const ringCxDescriptions: Record<string, string> = {
+  Standard: 'Omnichannel contact center, with the AI licensed as add-ons.',
+  Professional: 'Standard, with two of the AI capabilities folded in.',
+  Elite: 'Professional, with the remaining AI capabilities included.',
+  'Enterprise Contact Center': 'Quote only — scoped to the deployment.',
+};
+
+const ringCxBaseFeatures: Record<string, string[]> = {
+  Standard: [
+    'Omnichannel voice and digital contact center',
+    'Live dashboards and reporting for supervisors',
+    'AI capabilities available as add-ons',
+  ],
+  Professional: ['Everything in Standard'],
+  Elite: ['Everything in Professional'],
+};
+
+/** Base copy plus the add-ons the tier bundles — read from tierComparisons so
+ *  the card and the math callout can never disagree about what's included. */
+function ringCxFeatures(tierName: string): string[] {
+  const bundled =
+    tierComparisons
+      .find((comparison) => comparison.targetTier === tierName)
+      ?.addOns.map((addOn) => `${addOn.name} included`) ?? [];
+  return [...(ringCxBaseFeatures[tierName] ?? []), ...bundled];
+}
+
+const quotedFeatures = ['No published list rate', 'We scope and quote it with you'];
+
+function PlanPanel({
+  tiers,
+  quoted,
+  descriptions,
+  features,
+  featuresHeading,
+  savingsNote,
+  annual,
+  onToggle,
+  footnote,
+  tierDiffNote,
+}: {
+  tiers: readonly PlanTier[];
+  quoted: readonly QuotedPlan[];
+  descriptions: Record<string, string>;
+  features: (tierName: string) => string[];
+  featuresHeading?: string;
+  savingsNote: string;
+  annual: boolean;
+  onToggle: (next: boolean) => void;
+  footnote: string;
+  tierDiffNote?: string;
+}) {
+  // The middle priced tier carries the badge, the way RC flags a plan.
+  const popularIndex = Math.floor((tiers.length - 1) / 2);
+
+  return (
+    <div>
+      <BillingToggle annual={annual} onToggle={onToggle} savingsNote={savingsNote} />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7 pt-4">
+        {tiers.map((tier, index) => (
+          <PlanCard
+            key={tier.name}
+            tier={tier}
+            annual={annual}
+            popular={index === popularIndex}
+            description={descriptions[tier.name]}
+            features={features(tier.name)}
+            featuresHeading={featuresHeading}
+          />
+        ))}
+        {quoted.map((plan) => (
+          <QuotePlanCard
+            key={plan.name}
+            plan={plan}
+            description={descriptions[plan.name]}
+            features={quotedFeatures}
+          />
+        ))}
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[30rem] border-collapse">
-          <thead>
-            <tr style={{ backgroundColor: TINT }}>
-              <th scope="col" className={`${thClass} text-left`}>Plan</th>
-              <th scope="col" className={`${thClass} text-right whitespace-nowrap`}>Annual</th>
-              <th scope="col" className={`${thClass} text-right whitespace-nowrap`}>Monthly</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tiers.map((tier) => (
-              <tr key={tier.name} className="border-t border-gray-100 align-top">
-                <th scope="row" className="px-5 sm:px-8 py-4 text-left font-normal">
-                  <span className="font-display font-bold text-base" style={{ color: INK }}>{tier.name}</span>
-                  {tier.note && (
-                    <p className="text-sm text-[#64748b] mt-1 max-w-xs leading-snug">{tier.note}</p>
-                  )}
-                </th>
-                <td className="px-5 sm:px-8 py-4 text-right whitespace-nowrap">
-                  <span className="font-display font-bold text-2xl" style={{ color: INK }}>
-                    {formatUsd(tier.annual)}
-                  </span>
-                </td>
-                <td className="px-5 sm:px-8 py-4 text-right whitespace-nowrap text-[#64748b]">
-                  {formatUsd(tier.monthly)}
-                </td>
-              </tr>
-            ))}
-            {quoted.map((plan) => (
-              <tr key={plan.name} className="border-t border-gray-100">
-                <th scope="row" className="px-5 sm:px-8 py-4 text-left">
-                  <span className="font-display font-bold text-base" style={{ color: INK }}>{plan.name}</span>
-                </th>
-                <td colSpan={2} className="px-5 sm:px-8 py-4 text-right text-sm text-[#64748b]">
-                  {plan.note}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <p className="mt-10 text-center text-[15px] text-[#64748b] max-w-3xl mx-auto leading-relaxed">
+        {footnote}
+      </p>
+      {tierDiffNote && (
+        <p className="mt-3 text-center text-[15px] text-[#64748b] max-w-3xl mx-auto leading-relaxed">
+          {tierDiffNote}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function BillingToggle({
+  annual,
+  onToggle,
+  savingsNote,
+}: {
+  annual: boolean;
+  onToggle: (next: boolean) => void;
+  savingsNote: string;
+}) {
+  const percent = savingsPercent(savingsNote);
+  return (
+    <div className="flex justify-center sm:justify-end mb-8">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={annual}
+        onClick={() => onToggle(!annual)}
+        className="group inline-flex items-center gap-3 rounded-full px-2 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0684BC] focus-visible:ring-offset-2"
+      >
+        <span
+          aria-hidden="true"
+          className={`relative flex-shrink-0 w-12 h-7 rounded-full transition-colors duration-200 ${
+            annual ? 'bg-[#F26B00]' : 'bg-slate-300'
+          }`}
+        >
+          <span
+            className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
+              annual ? 'translate-x-5' : 'translate-x-0'
+            }`}
+          />
+        </span>
+        <span className="text-[15px] font-semibold" style={{ color: INK }}>
+          {percent ? `Save up to ${percent} by paying annually` : savingsNote}
+        </span>
+      </button>
+    </div>
+  );
+}
+
+function PlanCard({
+  tier,
+  annual,
+  popular,
+  description,
+  features,
+  featuresHeading,
+}: {
+  tier: PlanTier;
+  annual: boolean;
+  popular: boolean;
+  description?: string;
+  features: string[];
+  featuresHeading?: string;
+}) {
+  return (
+    <div className={`relative flex flex-col p-8 lg:p-9 ${cardClass} ${popular ? 'ring-1 ring-[#F26B00]/30' : ''}`}>
+      {popular && (
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1.5 rounded-full bg-[#F26B00] text-white text-xs font-semibold uppercase tracking-wider shadow-sm">
+          Most popular
+        </span>
+      )}
+
+      <h3 className="text-xl font-display font-bold" style={{ color: INK }}>{tier.name}</h3>
+      {description && <p className="mt-2 text-[15px] text-[#64748b] leading-relaxed">{description}</p>}
+
+      <div className="mt-7">
+        <div className="flex items-baseline gap-3 flex-wrap">
+          <span className="font-display font-bold text-5xl tracking-tight" style={{ color: INK }}>
+            {formatUsd(annual ? tier.annual : tier.monthly)}
+          </span>
+          {annual && (
+            <span className="text-xl text-[#94a3b8] line-through">{formatUsd(tier.monthly)}</span>
+          )}
+        </div>
+        <p className="mt-2 text-sm text-[#64748b]">
+          /user/month {annual ? 'paid annually' : 'billed monthly'}
+        </p>
       </div>
 
-      <ul className="px-5 sm:px-8 py-5 border-t border-gray-100 space-y-2" style={{ backgroundColor: TINT }}>
-        {footnotes.map((note) => (
-          <li key={note} className="flex gap-2.5 text-sm text-[#475569] leading-snug">
-            <span aria-hidden="true" style={{ color: AZURE }}>•</span>
-            <span>{note}</span>
+      <FeatureList items={features} heading={featuresHeading} />
+    </div>
+  );
+}
+
+function QuotePlanCard({
+  plan,
+  description,
+  features,
+}: {
+  plan: QuotedPlan;
+  description?: string;
+  features: string[];
+}) {
+  return (
+    <div className={`relative flex flex-col p-8 lg:p-9 ${cardClass}`}>
+      <h3 className="text-xl font-display font-bold" style={{ color: INK }}>{plan.name}</h3>
+      {description && <p className="mt-2 text-[15px] text-[#64748b] leading-relaxed">{description}</p>}
+
+      <div className="mt-7">
+        <span className="font-display font-bold text-3xl tracking-tight leading-tight block" style={{ color: INK }}>
+          Contact us for pricing
+        </span>
+        <p className="mt-2 text-sm text-[#64748b]">{plan.note}</p>
+      </div>
+
+      <FeatureList items={features} />
+    </div>
+  );
+}
+
+function FeatureList({ items, heading }: { items: string[]; heading?: string }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="mt-8 pt-7 border-t border-slate-100">
+      {heading && (
+        <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: AZURE }}>
+          {heading}
+        </p>
+      )}
+      <ul className="space-y-3">
+        {items.map((item) => (
+          <li key={item} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
+            <Check weight="bold" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: AZURE }} />
+            <span>{item}</span>
           </li>
         ))}
       </ul>
@@ -839,216 +1135,303 @@ function PlanTable({
   );
 }
 
-function AddOnTable() {
+// --- AI Receptionist tab --------------------------------------------------
+// Kept visually distinct in orange: AIR is licensed per receptionist instance
+// and metered by minutes, so it does not belong in a per-user card grid.
+
+function AIReceptionistPanel() {
   return (
-    <div className={tableCardClass}>
-      <div className="px-5 sm:px-8 pt-6 pb-4">
-        <h3 className="text-xl font-display font-bold" style={{ color: INK }}>Add-ons &amp; everything else</h3>
-        <p className="text-sm text-[#64748b] mt-1">
-          Licensed on top of a base plan. Each group is labeled with how it&apos;s metered.
+    <div className="max-w-5xl mx-auto">
+      <div className="text-center mb-10">
+        <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#F26B00]/10 text-[#C25400] mb-5">
+          Priced differently
+        </span>
+        <h3 className="text-2xl sm:text-3xl font-display font-bold" style={{ color: INK }}>
+          {aiReceptionist.name} ({aiReceptionist.abbreviation}) is not a per-user add-on
+        </h3>
+        <p className="mt-4 text-lg text-[#475569] leading-relaxed max-w-2xl mx-auto">
+          Every other plan on this page is billed per user, per month.{' '}
+          {aiReceptionist.abbreviation} is licensed{' '}
+          <strong style={{ color: INK }}>{aiReceptionist.billingUnit}</strong>.
         </p>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[30rem] border-collapse">
-          <tbody>
-            {addOnGroups.map((group) => (
-              <Fragment key={group.group}>
-                <GroupHeaderRow label={group.group} unit={group.unit} />
-                {group.items.map((item) => (
-                  <tr key={item.name} className="border-t border-gray-100">
-                    <th scope="row" className="px-5 sm:px-8 py-3.5 text-left font-normal">
-                      <span className="font-semibold" style={{ color: INK }}>{item.name}</span>
-                      {item.note && <span className="text-sm text-[#94a3b8] ml-2">{item.note}</span>}
-                    </th>
-                    <td
-                      className="px-5 sm:px-8 py-3.5 text-right whitespace-nowrap font-display font-bold"
-                      style={{ color: INK }}
-                    >
-                      {formatUsd(item.price)}
-                    </td>
-                  </tr>
-                ))}
-              </Fragment>
-            ))}
-
-            <GroupHeaderRow label="Other line items" unit="Metered as noted" />
-            {otherLineItems.map((item) => (
-              <tr key={item.name} className="border-t border-gray-100 align-top">
-                <th scope="row" className="px-5 sm:px-8 py-3.5 text-left font-normal">
-                  <span className="font-semibold" style={{ color: INK }}>{item.name}</span>
-                  {item.note && (
-                    <span className="block sm:inline text-sm text-[#94a3b8] sm:ml-2">{item.note}</span>
-                  )}
-                </th>
-                <td
-                  className="px-5 sm:px-8 py-3.5 text-right whitespace-nowrap font-display font-bold"
-                  style={{ color: INK }}
-                >
-                  {item.price}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-7">
+        <AirPriceCard
+          amount={aiReceptionist.withRingEx}
+          title={`With ${ringEx.name}`}
+          description={`Added to existing ${ringEx.name} phone service.`}
+        />
+        <AirPriceCard
+          amount={aiReceptionist.standalone}
+          title="Standalone"
+          description={`On its own, without ${ringEx.name}.`}
+        />
       </div>
-    </div>
-  );
-}
 
-function GroupHeaderRow({ label, unit }: { label: string; unit: string }) {
-  return (
-    <tr style={{ backgroundColor: TINT }}>
-      <th scope="colgroup" colSpan={2} className="px-5 sm:px-8 py-2.5 text-left">
-        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: AZURE }}>
-          {label}
-        </span>
-        <span className="text-xs text-[#64748b] ml-2">— {unit}</span>
-      </th>
-    </tr>
-  );
-}
-
-// AIR is licensed per receptionist and metered by minutes, so it deliberately
-// sits outside the per-user add-on table. The orange rule is the signal that
-// this one is priced on a different axis.
-function AIReceptionistCard() {
-  return (
-    <div className="rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#F26B00] p-7 lg:p-8 shadow-sm">
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#F26B00]/10 text-[#F26B00]">
-          <Robot weight="fill" className="w-6 h-6" />
-        </div>
-        <div className="min-w-0">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#F26B00]/10 text-[#C25400] mb-3">
-            Priced differently
-          </span>
-          <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
-            {aiReceptionist.name} ({aiReceptionist.abbreviation}) is not a per-user add-on
-          </h3>
-          <p className="text-[#475569] leading-relaxed mb-6">
-            Everything in the table above is billed per user, per month. {aiReceptionist.abbreviation} is
-            not — it&apos;s licensed{' '}
-            <strong style={{ color: INK }}>{aiReceptionist.billingUnit}</strong>, and what actually drives the
-            bill after that is call volume.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div className="rounded-xl p-5" style={{ backgroundColor: TINT }}>
-              <div className="font-display font-bold text-3xl" style={{ color: INK }}>
-                {formatUsd(aiReceptionist.withRingEx)}
-                <span className="text-base font-normal text-[#64748b]">/mo</span>
-              </div>
-              <p className="text-sm text-[#475569] mt-1">Added to {ringEx.name} phone service</p>
-            </div>
-            <div className="rounded-xl p-5" style={{ backgroundColor: TINT }}>
-              <div className="font-display font-bold text-3xl" style={{ color: INK }}>
-                {formatUsd(aiReceptionist.standalone)}
-                <span className="text-base font-normal text-[#64748b]">/mo</span>
-              </div>
-              <p className="text-sm text-[#475569] mt-1">Standalone, without {ringEx.name}</p>
-            </div>
+      <div className={`mt-7 p-8 lg:p-10 ${cardClass} border-t-2 border-t-[#F26B00]`}>
+        <div className="flex items-start gap-5">
+          <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#F26B00]/10 text-[#F26B00]">
+            <Robot weight="fill" className="w-6 h-6" />
           </div>
-
-          <ul className="space-y-2 mb-6">
-            <li className="flex gap-2.5 text-[#475569] leading-snug">
-              <span aria-hidden="true" style={{ color: AZURE }}>•</span>
-              <span>{aiReceptionist.includedMinutes} minutes included at both price points.</span>
-            </li>
-            <li className="flex gap-2.5 text-[#475569] leading-snug">
-              <span aria-hidden="true" style={{ color: AZURE }}>•</span>
-              <span>
-                {formatUsd(aiReceptionist.overagePerMinute)} per minute after that.{' '}
-                {aiReceptionist.overageNote}
-              </span>
-            </li>
-            <li className="flex gap-2.5 text-[#475569] leading-snug">
-              <span aria-hidden="true" style={{ color: AZURE }}>•</span>
-              <span>{aiReceptionist.bundleNote}</span>
-            </li>
-          </ul>
-
-          <p className="text-[#475569] leading-relaxed border-t border-gray-100 pt-5">
-            <strong style={{ color: INK }}>Worth saying plainly:</strong> people routinely budget{' '}
-            {aiReceptionist.abbreviation} as a per-seat cost and it isn&apos;t one. A ten-person business and a
-            two-hundred-person business pay the same license fee. What separates their bills is how many
-            minutes of calls the receptionist actually handles — so the number to forecast is call volume, not
-            headcount.
-          </p>
+          <div>
+            <h4 className="text-xl font-display font-bold mb-5" style={{ color: INK }}>
+              How the usage model works
+            </h4>
+            <ul className="space-y-3 mb-7">
+              <li className="flex gap-3 text-[#475569] leading-relaxed">
+                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
+                <span>{aiReceptionist.includedMinutes} minutes included at both price points.</span>
+              </li>
+              <li className="flex gap-3 text-[#475569] leading-relaxed">
+                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
+                <span>
+                  {formatUsd(aiReceptionist.overagePerMinute)} per minute after that.{' '}
+                  {aiReceptionist.overageNote}
+                </span>
+              </li>
+              <li className="flex gap-3 text-[#475569] leading-relaxed">
+                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
+                <span>{aiReceptionist.bundleNote}</span>
+              </li>
+            </ul>
+            <p className="text-[#475569] leading-relaxed text-lg border-t border-slate-100 pt-6">
+              <strong style={{ color: INK }}>Worth saying plainly:</strong> people routinely budget{' '}
+              {aiReceptionist.abbreviation} as a per-seat cost and it isn&apos;t one. A ten-person business and
+              a two-hundred-person business pay the same license fee. What separates their bills is how many
+              minutes of calls the receptionist actually handles — so the number to forecast is call volume,
+              not headcount.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// The two worked examples, computed in the data file from the same published
-// rates rendered above — so they cannot drift from the tables.
+function AirPriceCard({
+  amount,
+  title,
+  description,
+}: {
+  amount: number;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className={`p-8 lg:p-10 text-center ${cardClass} border-t-2 border-t-[#F26B00]`}>
+      <h4 className="text-xl font-display font-bold" style={{ color: INK }}>{title}</h4>
+      <div className="mt-6">
+        <span className="font-display font-bold text-5xl tracking-tight" style={{ color: INK }}>
+          {formatUsd(amount)}
+        </span>
+        <span className="text-lg text-[#64748b] ml-1">/mo</span>
+      </div>
+      <p className="mt-3 text-[15px] text-[#64748b] leading-relaxed">{description}</p>
+      <p className="mt-1 text-sm font-semibold" style={{ color: AZURE }}>
+        {aiReceptionist.billingUnit}
+      </p>
+    </div>
+  );
+}
+
+// --- Everything Else tab --------------------------------------------------
+
+const lineItemIcons: Record<string, PhosphorIcon> = {
+  'Conversational Intelligence (ACE)': Brain,
+  'Call Queues Booster': PhoneCall,
+  'Business SMS Booster': DeviceMobile,
+  'AI Quality Management': SealCheck,
+  'AI Interaction Analytics': ChartLineUp,
+  'AI Agent Assist': Lightning,
+  'AI Supervisor Assist': Headset,
+  'AI Workforce Management': UsersThree,
+  'Video Meetings': VideoCamera,
+  'RingCentral Rooms': Monitor,
+  'RingCentral Webinar': Presentation,
+  'RingCentral Events': Ticket,
+  'Push to Talk': Megaphone,
+  'Additional toll-free or local numbers': Hash,
+  'Vanity numbers': Star,
+  'Additional international toll-free': Globe,
+  'Additional international numbers': GlobeHemisphereWest,
+  'High Volume SMS': ChatCircleText,
+};
+
+function EverythingElsePanel() {
+  return (
+    <div className="space-y-14">
+      {addOnGroups.map((group) => (
+        <div key={group.group}>
+          <LineItemGroupHeading title={group.group} subtitle={`Licensed on top of a base plan · ${group.unit}`} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {group.items.map((item) => (
+              <LineItemCard
+                key={item.name}
+                name={item.name}
+                description={item.note}
+                price={formatUsd(item.price)}
+                priceNote={group.unit}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div>
+        <LineItemGroupHeading title="Other line items" subtitle="Metered as noted on each card" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {otherLineItems.map((item) => (
+            <LineItemCard
+              key={item.name}
+              name={item.name}
+              description={item.note}
+              price={item.price}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LineItemGroupHeading({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="mb-7">
+      <h3 className="text-2xl font-display font-bold" style={{ color: INK }}>{title}</h3>
+      <p className="mt-1.5 text-[15px] text-[#64748b]">{subtitle}</p>
+    </div>
+  );
+}
+
+function LineItemCard({
+  name,
+  description,
+  price,
+  priceNote,
+}: {
+  name: string;
+  description?: string;
+  price: string;
+  priceNote?: string;
+}) {
+  const Icon = lineItemIcons[name] ?? PuzzlePiece;
+  return (
+    <div className={`flex flex-col p-7 lg:p-8 ${cardClass}`}>
+      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10 mb-5" style={{ color: AZURE }}>
+        <Icon weight="fill" className="w-6 h-6" />
+      </div>
+      <div className="mb-6">
+        <h4 className="text-base font-display font-bold" style={{ color: INK }}>{name}</h4>
+        {description && <p className="mt-2 text-[15px] text-[#64748b] leading-relaxed">{description}</p>}
+      </div>
+      {/* mt-auto keeps prices on one baseline across a row even when only
+          some cards in that row carry a description. */}
+      <div className="mt-auto pt-5 border-t border-slate-100">
+        <span className="font-display font-bold text-2xl" style={{ color: INK }}>{price}</span>
+        {priceNote && <span className="block mt-1 text-sm text-[#64748b]">{priceNote}</span>}
+      </div>
+    </div>
+  );
+}
+
+// --- The advisor math -----------------------------------------------------
+// Comparisons are computed in the data file from the same published rates the
+// cards render, so the two can never drift. Presentation only below here.
+
 function TierMathCard() {
   return (
-    <div className="rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm">
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
+    <div className={`${cardClass} border-l-4 border-l-[#0684BC] p-8 lg:p-12`}>
+      <div className="flex items-start gap-5 mb-8">
+        <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
           <Calculator weight="fill" className="w-6 h-6" />
         </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
+        <div>
+          <h3 className="text-2xl sm:text-3xl font-display font-bold mb-3" style={{ color: INK }}>
             The math RingCentral doesn&apos;t show you
           </h3>
-          <p className="text-[#475569] leading-relaxed mb-6">
+          <p className="text-lg text-[#475569] leading-relaxed">
             Because tiers and add-ons live on different pages, it&apos;s easy to build up a plan à la carte
-            that costs more than the tier which already includes the same features. Both of these come
-            straight from the published rates above.
-          </p>
-
-          <div className="space-y-5">
-            {tierComparisons.map((comparison) => (
-              <div
-                key={`${comparison.baseTier}-${comparison.targetTier}`}
-                className="rounded-xl p-5 sm:p-6"
-                style={{ backgroundColor: TINT }}
-              >
-                <ul className="space-y-1.5 text-[15px] text-[#475569]">
-                  <li className="flex justify-between gap-4">
-                    <span>{ringCx.name} {comparison.baseTier}</span>
-                    <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>
-                      {formatUsd(comparison.baseTierPrice)}
-                    </span>
-                  </li>
-                  {comparison.addOns.map((addOn) => (
-                    <li key={addOn.name} className="flex justify-between gap-4">
-                      <span>+ {addOn.name}</span>
-                      <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>
-                        {formatUsd(addOn.price)}
-                      </span>
-                    </li>
-                  ))}
-                  <li className="flex justify-between gap-4 pt-2 mt-1 border-t border-[#0684BC]/20 font-display font-bold" style={{ color: INK }}>
-                    <span>Built up à la carte</span>
-                    <span className="whitespace-nowrap">{formatUsd(comparison.buildUpTotal)}/agent/mo</span>
-                  </li>
-                  <li className="flex justify-between gap-4 font-display font-bold" style={{ color: INK }}>
-                    <span>
-                      {ringCx.name} {comparison.targetTier} — already includes{' '}
-                      {comparison.addOns.length === 2 ? 'both' : 'all three'}
-                    </span>
-                    <span className="whitespace-nowrap">{formatUsd(comparison.targetTierPrice)}/agent/mo</span>
-                  </li>
-                </ul>
-                <p className="mt-4 text-[15px] font-semibold leading-snug" style={{ color: AZURE }}>
-                  Moving up a tier costs {formatUsd(comparison.savings)}/agent/month less than adding the same
-                  features onto {comparison.baseTier}.
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-[#475569] leading-relaxed mt-6">
-            Neither of these is a trick — they&apos;re just what happens when the tier sheet and the add-on
-            sheet are two different pages. This is the kind of thing we catch when we price your
-            configuration.
+            that costs more than the tier which already includes the same features. Both of these come straight
+            from the published rates above.
           </p>
         </div>
       </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        {tierComparisons.map((comparison) => (
+          <div
+            key={`${comparison.baseTier}-${comparison.targetTier}`}
+            className="rounded-2xl p-7 lg:p-8"
+            style={{ backgroundColor: TINT }}
+          >
+            {/* Stacked equation — one addend per line, totals emphasized. */}
+            <ul className="space-y-3">
+              <EquationRow label={`${ringCx.name} ${comparison.baseTier}`} value={formatUsd(comparison.baseTierPrice)} />
+              {comparison.addOns.map((addOn) => (
+                <EquationRow key={addOn.name} label={`+ ${addOn.name}`} value={formatUsd(addOn.price)} />
+              ))}
+            </ul>
+
+            <div className="mt-5 pt-5 border-t border-[#0684BC]/20 space-y-4">
+              <EquationTotal
+                label="Built up à la carte"
+                value={`${formatUsd(comparison.buildUpTotal)}/agent/mo`}
+              />
+              <EquationTotal
+                label={`${ringCx.name} ${comparison.targetTier} — already includes ${
+                  comparison.addOns.length === 2 ? 'both' : 'all three'
+                }`}
+                value={`${formatUsd(comparison.targetTierPrice)}/agent/mo`}
+                highlight
+              />
+            </div>
+
+            <p className="mt-6 text-[15px] font-semibold leading-relaxed" style={{ color: AZURE }}>
+              Moving up a tier costs {formatUsd(comparison.savings)}/agent/month less than adding the same
+              features onto {comparison.baseTier}.
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-lg text-[#475569] leading-relaxed mt-8">
+        Neither of these is a trick — they&apos;re just what happens when the tier sheet and the add-on sheet
+        are two different pages. This is the kind of thing we catch when we price your configuration.
+      </p>
+    </div>
+  );
+}
+
+function EquationRow({ label, value }: { label: string; value: string }) {
+  return (
+    <li className="flex justify-between items-baseline gap-4 text-[15px] text-[#475569]">
+      <span>{label}</span>
+      <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>{value}</span>
+    </li>
+  );
+}
+
+function EquationTotal({
+  label,
+  value,
+  highlight = false,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="flex justify-between items-baseline gap-4">
+      <span className="font-display font-bold text-[15px] leading-snug" style={{ color: INK }}>
+        {label}
+      </span>
+      <span
+        className="font-display font-bold text-xl whitespace-nowrap"
+        style={{ color: highlight ? AZURE : INK }}
+      >
+        {value}
+      </span>
     </div>
   );
 }
