@@ -14,7 +14,7 @@ export const ringCentralFaq: RingCentralFAQ[] = [
   },
   {
     q: 'How much does RingCentral cost?',
-    a: "RingEX starts at $20 per user, per month on annual billing, $25 for Advanced and $35 for Ultra; the RingCX contact center is licensed separately at $65, $95, or $145 per user, per month. The full published rate card — every tier, the AI add-ons, AI Receptionist, and the per-number and per-message line items — is laid out in the pricing tables on this page, so you can add up your own configuration. Two things the tables also make clear: RingCentral publishes no rate above 100 seats, and buying AI features à la carte can cost more than the RingCX tier that already includes them. Those are list prices; ask us for a quote and we'll price your real configuration.",
+    a: "RingEX starts at $20 per user, per month on annual billing, $25 for Advanced and $35 for Ultra; the RingCX contact center is licensed separately at $65, $95, or $145 per user, per month. The full published rate card — every tier, the AI add-ons, AI Receptionist, and the per-number and per-message line items — is laid out in the pricing cards on this page, under the Business Phone, Contact Center, AI Receptionist, and Everything Else tabs, so you can add up your own configuration. Two things those cards also make clear: RingCentral publishes no rate above 100 seats, and buying AI features à la carte can cost more than the RingCX tier that already includes them. Those are list prices; ask us for a quote and we'll price your real configuration.",
   },
   {
     q: 'What is RingSense / ACE?',
@@ -26,7 +26,7 @@ export const ringCentralFaq: RingCentralFAQ[] = [
   },
   {
     q: 'Can Insero get me better RingCentral pricing than going direct?',
-    a: "Often, yes. We have access to current promotions and negotiated terms, and just as importantly, we price your full configuration so add-on costs don't surprise you later. Even when the per-seat rate is identical, the right plan structure and contract term can save real money. And if RingCentral isn't the best fit for you, we'll say so — we're not their sales team.",
+    a: "Often, yes. We buy through technology services distributors, which gives us channel access to current promotions and pricing programs that aren't always surfaced to direct buyers. The bigger lever is usually structural: sizing the configuration to what you'll actually use and getting the contract term right, so add-on costs don't surprise you later. Even when the per-seat rate is identical, that structure can save real money. And if RingCentral isn't the best fit for you, we'll say so — we're not their sales team.",
   },
   {
     q: 'RingCentral vs Zoom for business?',

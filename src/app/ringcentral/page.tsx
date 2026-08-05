@@ -58,6 +58,36 @@ const breadcrumbSchema = {
   ],
 };
 
+// WebPage schema. `about` is the correct way to say "this page is about
+// RingCentral" — a descriptive statement of subject matter. It carries none of
+// the implication that `brand` did on the Service block, which asserted Insero
+// provides a RingCentral-branded service. sameAs pins the entity to
+// RingCentral's own domain so search engines resolve it unambiguously.
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://insero.cloud/ringcentral',
+  url: 'https://insero.cloud/ringcentral',
+  name: 'RingCentral for Business: AI Phone, Contact Center & Pricing',
+  description:
+    "RingCentral's AI-powered business phone, contact center, and agentic voice AI — explained honestly, with published list pricing consolidated in one place.",
+  about: {
+    '@type': 'Brand',
+    name: 'RingCentral',
+    sameAs: 'https://www.ringcentral.com',
+  },
+  isPartOf: {
+    '@type': 'WebSite',
+    url: 'https://insero.cloud',
+    name: 'Insero',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Insero',
+    url: 'https://insero.cloud',
+  },
+};
+
 // Service schema: Insero's OWN advisory and sourcing service.
 //
 // This deliberately does not declare `brand: RingCentral`. Pairing a
@@ -112,6 +142,10 @@ const faqSchema = {
 export default function RingCentralPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

@@ -304,6 +304,10 @@ export function RingCentralPageClient() {
               </motion.div>
             ))}
           </div>
+
+          {/* These are RingCentral's own published claims, not Insero's
+              measurements — attributed so they don't read as our findings. */}
+          <p className="mt-6 px-4 sm:px-8 text-xs text-slate-500">Figures published by RingCentral.</p>
         </Container>
       </section>
 
@@ -1590,32 +1594,36 @@ function EquationTotal({
 }
 
 // --- Hero product video ---------------------------------------------------
-// Hot-links a product video from RingCentral's own CDN. If the asset ever
-// moves, onError hides the whole frame so the hero stays clean.
+// RingCentral's official partner-portal animation, self-hosted from
+// /public/video rather than streamed from RingCentral's CDN.
 //
-// COMPLIANCE: serving a third party's asset from their CDN is a licensing and
-// bandwidth question, not just a technical one. Flagged for review — left in
-// place because removing it would be a layout change.
+// The asset is 776x700 — nearly square, not the landscape shape a hero column
+// usually takes. The wrapper is capped and centred so the clip plays at its
+// own proportions; w-full h-auto lets the video size intrinsically, so it is
+// never stretched or cropped. onError unmounts the whole frame so a missing
+// file leaves the hero clean rather than showing a broken player.
 
 function HeroVideo() {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#0684BC]/20 shadow-xl shadow-[#032B44]/5">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        onError={() => setFailed(true)}
-        className="w-full h-auto block"
-      >
-        <source
-          src="https://www.ringcentral.com/content/dam/rc-www/en_us/images/content/ab-tests/homepages/home_b/video/products-new.mp4"
-          type="video/mp4"
-        />
-      </video>
+    <div className="w-full max-w-[420px] lg:max-w-[480px] mx-auto">
+      <div className="relative overflow-hidden rounded-2xl border border-[#0684BC]/20 shadow-xl shadow-[#032B44]/5">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          width={776}
+          height={700}
+          onError={() => setFailed(true)}
+          className="w-full h-auto block"
+        >
+          <source src="/video/rc_hero.webm" type="video/webm" />
+          <source src="/video/rc_hero.mp4" type="video/mp4" />
+        </video>
+      </div>
     </div>
   );
 }
