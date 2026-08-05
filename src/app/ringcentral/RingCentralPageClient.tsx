@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -26,11 +26,25 @@ import {
   BookOpen,
   PaperPlaneRight,
   WarningCircle,
+  Calculator,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
+import {
+  lastVerified,
+  pricingSourceUrl,
+  ringEx,
+  ringCx,
+  aiReceptionist,
+  addOnGroups,
+  otherLineItems,
+  tierComparisons,
+  formatUsd,
+  type PlanTier,
+  type QuotedPlan,
+} from '@/data/ringcentral-pricing';
 import { submitContactForm, type ContactFormData } from '../contact/actions';
 import { ringCentralFaq } from './faq';
 
@@ -445,49 +459,101 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== HONEST PRICING ===================== */}
+      {/* The consolidated all-in reference. Every figure renders from
+          @/data/ringcentral-pricing — nothing here is hardcoded. */}
       <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp}>
             <SectionEyebrow>Honest Pricing</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
-              The sticker price isn&apos;t the all-in price
+              What RingCentral actually costs — all of it, in one place
             </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-10">
+            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-12">
               <p>
-                RingCentral is priced per user, per month, with tiered plans — and committing to annual billing
-                is typically meaningfully cheaper than paying month to month. That part is straightforward.
-              </p>
-              <p>
-                What trips people up is everything that sits outside the base seat. The most powerful AI
-                features are paid add-ons, not all included — conversation intelligence (ACE / RingSense) and the
-                AI Receptionist are add-ons, and the RingCX contact center is a separate license entirely. A
-                price you see advertised for a base plan can look very different once the capabilities you came
-                for are added in.
+                RingCentral publishes its pricing across six separate pages. Working out what a real deployment
+                costs — seats, contact center, the AI you actually want, and the numbers and rooms that come
+                with it — means visiting four of them and doing the arithmetic yourself. This is that
+                arithmetic, on one page.
               </p>
             </div>
+          </motion.div>
 
-            <div className="rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
-                  <CurrencyDollar weight="fill" className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
-                    Why this is exactly where an advisor earns their keep
-                  </h3>
-                  <p className="text-[#475569] leading-relaxed">
-                    Because the all-in number depends entirely on your configuration, the honest answer to
-                    &quot;what does RingCentral cost?&quot; is &quot;it depends — let&apos;s price your real
-                    setup.&quot; We don&apos;t publish figures here that would be stale next quarter or read as
-                    a promise we can&apos;t keep. Instead, we&apos;ll build your actual configuration — seats,
-                    the add-ons that matter, and contact center if you need it — and put a real, current number
-                    in front of you. Curious what you&apos;re overpaying for elsewhere?{' '}
-                    <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: AZURE }}>
-                      Try our cost estimator
-                    </Link>{' '}
-                    or just ask for a quote.
-                  </p>
-                </div>
+          {/* --- RingEX --- */}
+          <motion.div {...fadeUp} className="mb-6">
+            <PlanTable
+              title={`${ringEx.name} — business phone`}
+              subtitle="Per user, per month."
+              tiers={ringEx.tiers}
+              quoted={ringEx.quoted}
+              footnotes={[ringEx.seatBandNote, ringEx.aboveBandNote, ringEx.annualSavingsNote]}
+            />
+          </motion.div>
+
+          {/* --- RingCX --- */}
+          <motion.div {...fadeUp} className="mb-6">
+            <PlanTable
+              title={`${ringCx.name} — contact center`}
+              subtitle="Per user, per month. Licensed separately from RingEX."
+              tiers={ringCx.tiers}
+              quoted={ringCx.quoted}
+              footnotes={[ringCx.annualSavingsNote]}
+            />
+          </motion.div>
+
+          {/* --- Add-ons and everything else --- */}
+          <motion.div {...fadeUp} className="mb-6">
+            <AddOnTable />
+          </motion.div>
+
+          {/* --- AI Receptionist: different pricing model, its own card --- */}
+          <motion.div {...fadeUp} className="mb-6">
+            <AIReceptionistCard />
+          </motion.div>
+
+          {/* --- The advisor math --- */}
+          <motion.div {...fadeUp}>
+            <TierMathCard />
+          </motion.div>
+
+          <motion.p {...fadeUp} className="mt-6 text-sm text-[#64748b] text-center leading-relaxed">
+            RingCentral&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
+            <a
+              href={pricingSourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold hover:underline"
+              style={{ color: AZURE }}
+            >
+              ringcentral.com
+            </a>
+            .
+          </motion.p>
+
+          {/* --- Advisor close --- */}
+          <motion.div
+            {...fadeUp}
+            className="mt-10 rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm"
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
+                <CurrencyDollar weight="fill" className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
+                  Where an advisor actually earns their keep
+                </h3>
+                <p className="text-[#475569] leading-relaxed">
+                  We publish RingCentral&apos;s list pricing because you should be able to see it before you
+                  talk to anyone. We can&apos;t change their published rates. What we can do is request better
+                  pricing on your behalf, structure the contract term and plan mix around how you actually use
+                  the system, and make sure you&apos;re not buying à la carte what a tier already includes. And
+                  past {ringEx.publishedSeatCap} seats there&apos;s no published rate at all — a quote is the
+                  only way to know what you&apos;d pay. Curious what you&apos;re overpaying for elsewhere?{' '}
+                  <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: AZURE }}>
+                    Try our cost estimator
+                  </Link>{' '}
+                  or just ask for a quote.
+                </p>
               </div>
             </div>
           </motion.div>
@@ -688,6 +754,302 @@ export function RingCentralPageClient() {
         </Container>
       </section>
     </>
+  );
+}
+
+// --- Pricing tables -------------------------------------------------------
+// Every figure comes from @/data/ringcentral-pricing. Tables scroll
+// horizontally rather than wrapping, so a narrow phone never mangles a rate.
+
+const tableCardClass =
+  'rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] shadow-sm overflow-hidden';
+const thClass = 'px-5 sm:px-8 py-3 text-xs font-semibold uppercase tracking-wider text-[#64748b]';
+
+function PlanTable({
+  title,
+  subtitle,
+  tiers,
+  quoted,
+  footnotes,
+}: {
+  title: string;
+  subtitle: string;
+  tiers: readonly PlanTier[];
+  quoted: readonly QuotedPlan[];
+  footnotes: readonly string[];
+}) {
+  return (
+    <div className={tableCardClass}>
+      <div className="px-5 sm:px-8 pt-6 pb-4">
+        <h3 className="text-xl font-display font-bold" style={{ color: INK }}>{title}</h3>
+        <p className="text-sm text-[#64748b] mt-1">{subtitle}</p>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[30rem] border-collapse">
+          <thead>
+            <tr style={{ backgroundColor: TINT }}>
+              <th scope="col" className={`${thClass} text-left`}>Plan</th>
+              <th scope="col" className={`${thClass} text-right whitespace-nowrap`}>Annual</th>
+              <th scope="col" className={`${thClass} text-right whitespace-nowrap`}>Monthly</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tiers.map((tier) => (
+              <tr key={tier.name} className="border-t border-gray-100 align-top">
+                <th scope="row" className="px-5 sm:px-8 py-4 text-left font-normal">
+                  <span className="font-display font-bold text-base" style={{ color: INK }}>{tier.name}</span>
+                  {tier.note && (
+                    <p className="text-sm text-[#64748b] mt-1 max-w-xs leading-snug">{tier.note}</p>
+                  )}
+                </th>
+                <td className="px-5 sm:px-8 py-4 text-right whitespace-nowrap">
+                  <span className="font-display font-bold text-2xl" style={{ color: INK }}>
+                    {formatUsd(tier.annual)}
+                  </span>
+                </td>
+                <td className="px-5 sm:px-8 py-4 text-right whitespace-nowrap text-[#64748b]">
+                  {formatUsd(tier.monthly)}
+                </td>
+              </tr>
+            ))}
+            {quoted.map((plan) => (
+              <tr key={plan.name} className="border-t border-gray-100">
+                <th scope="row" className="px-5 sm:px-8 py-4 text-left">
+                  <span className="font-display font-bold text-base" style={{ color: INK }}>{plan.name}</span>
+                </th>
+                <td colSpan={2} className="px-5 sm:px-8 py-4 text-right text-sm text-[#64748b]">
+                  {plan.note}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <ul className="px-5 sm:px-8 py-5 border-t border-gray-100 space-y-2" style={{ backgroundColor: TINT }}>
+        {footnotes.map((note) => (
+          <li key={note} className="flex gap-2.5 text-sm text-[#475569] leading-snug">
+            <span aria-hidden="true" style={{ color: AZURE }}>•</span>
+            <span>{note}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function AddOnTable() {
+  return (
+    <div className={tableCardClass}>
+      <div className="px-5 sm:px-8 pt-6 pb-4">
+        <h3 className="text-xl font-display font-bold" style={{ color: INK }}>Add-ons &amp; everything else</h3>
+        <p className="text-sm text-[#64748b] mt-1">
+          Licensed on top of a base plan. Each group is labeled with how it&apos;s metered.
+        </p>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[30rem] border-collapse">
+          <tbody>
+            {addOnGroups.map((group) => (
+              <Fragment key={group.group}>
+                <GroupHeaderRow label={group.group} unit={group.unit} />
+                {group.items.map((item) => (
+                  <tr key={item.name} className="border-t border-gray-100">
+                    <th scope="row" className="px-5 sm:px-8 py-3.5 text-left font-normal">
+                      <span className="font-semibold" style={{ color: INK }}>{item.name}</span>
+                      {item.note && <span className="text-sm text-[#94a3b8] ml-2">{item.note}</span>}
+                    </th>
+                    <td
+                      className="px-5 sm:px-8 py-3.5 text-right whitespace-nowrap font-display font-bold"
+                      style={{ color: INK }}
+                    >
+                      {formatUsd(item.price)}
+                    </td>
+                  </tr>
+                ))}
+              </Fragment>
+            ))}
+
+            <GroupHeaderRow label="Other line items" unit="Metered as noted" />
+            {otherLineItems.map((item) => (
+              <tr key={item.name} className="border-t border-gray-100 align-top">
+                <th scope="row" className="px-5 sm:px-8 py-3.5 text-left font-normal">
+                  <span className="font-semibold" style={{ color: INK }}>{item.name}</span>
+                  {item.note && (
+                    <span className="block sm:inline text-sm text-[#94a3b8] sm:ml-2">{item.note}</span>
+                  )}
+                </th>
+                <td
+                  className="px-5 sm:px-8 py-3.5 text-right whitespace-nowrap font-display font-bold"
+                  style={{ color: INK }}
+                >
+                  {item.price}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function GroupHeaderRow({ label, unit }: { label: string; unit: string }) {
+  return (
+    <tr style={{ backgroundColor: TINT }}>
+      <th scope="colgroup" colSpan={2} className="px-5 sm:px-8 py-2.5 text-left">
+        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: AZURE }}>
+          {label}
+        </span>
+        <span className="text-xs text-[#64748b] ml-2">— {unit}</span>
+      </th>
+    </tr>
+  );
+}
+
+// AIR is licensed per receptionist and metered by minutes, so it deliberately
+// sits outside the per-user add-on table. The orange rule is the signal that
+// this one is priced on a different axis.
+function AIReceptionistCard() {
+  return (
+    <div className="rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#F26B00] p-7 lg:p-8 shadow-sm">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#F26B00]/10 text-[#F26B00]">
+          <Robot weight="fill" className="w-6 h-6" />
+        </div>
+        <div className="min-w-0">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#F26B00]/10 text-[#C25400] mb-3">
+            Priced differently
+          </span>
+          <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
+            {aiReceptionist.name} ({aiReceptionist.abbreviation}) is not a per-user add-on
+          </h3>
+          <p className="text-[#475569] leading-relaxed mb-6">
+            Everything in the table above is billed per user, per month. {aiReceptionist.abbreviation} is
+            not — it&apos;s licensed{' '}
+            <strong style={{ color: INK }}>{aiReceptionist.billingUnit}</strong>, and what actually drives the
+            bill after that is call volume.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div className="rounded-xl p-5" style={{ backgroundColor: TINT }}>
+              <div className="font-display font-bold text-3xl" style={{ color: INK }}>
+                {formatUsd(aiReceptionist.withRingEx)}
+                <span className="text-base font-normal text-[#64748b]">/mo</span>
+              </div>
+              <p className="text-sm text-[#475569] mt-1">Added to {ringEx.name} phone service</p>
+            </div>
+            <div className="rounded-xl p-5" style={{ backgroundColor: TINT }}>
+              <div className="font-display font-bold text-3xl" style={{ color: INK }}>
+                {formatUsd(aiReceptionist.standalone)}
+                <span className="text-base font-normal text-[#64748b]">/mo</span>
+              </div>
+              <p className="text-sm text-[#475569] mt-1">Standalone, without {ringEx.name}</p>
+            </div>
+          </div>
+
+          <ul className="space-y-2 mb-6">
+            <li className="flex gap-2.5 text-[#475569] leading-snug">
+              <span aria-hidden="true" style={{ color: AZURE }}>•</span>
+              <span>{aiReceptionist.includedMinutes} minutes included at both price points.</span>
+            </li>
+            <li className="flex gap-2.5 text-[#475569] leading-snug">
+              <span aria-hidden="true" style={{ color: AZURE }}>•</span>
+              <span>
+                {formatUsd(aiReceptionist.overagePerMinute)} per minute after that.{' '}
+                {aiReceptionist.overageNote}
+              </span>
+            </li>
+            <li className="flex gap-2.5 text-[#475569] leading-snug">
+              <span aria-hidden="true" style={{ color: AZURE }}>•</span>
+              <span>{aiReceptionist.bundleNote}</span>
+            </li>
+          </ul>
+
+          <p className="text-[#475569] leading-relaxed border-t border-gray-100 pt-5">
+            <strong style={{ color: INK }}>Worth saying plainly:</strong> people routinely budget{' '}
+            {aiReceptionist.abbreviation} as a per-seat cost and it isn&apos;t one. A ten-person business and a
+            two-hundred-person business pay the same license fee. What separates their bills is how many
+            minutes of calls the receptionist actually handles — so the number to forecast is call volume, not
+            headcount.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// The two worked examples, computed in the data file from the same published
+// rates rendered above — so they cannot drift from the tables.
+function TierMathCard() {
+  return (
+    <div className="rounded-2xl bg-white border border-gray-100 border-t-2 border-t-[#0684BC] p-7 lg:p-8 shadow-sm">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-xl bg-[#0684BC]/10" style={{ color: AZURE }}>
+          <Calculator weight="fill" className="w-6 h-6" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h3 className="text-xl font-display font-bold mb-2" style={{ color: INK }}>
+            The math RingCentral doesn&apos;t show you
+          </h3>
+          <p className="text-[#475569] leading-relaxed mb-6">
+            Because tiers and add-ons live on different pages, it&apos;s easy to build up a plan à la carte
+            that costs more than the tier which already includes the same features. Both of these come
+            straight from the published rates above.
+          </p>
+
+          <div className="space-y-5">
+            {tierComparisons.map((comparison) => (
+              <div
+                key={`${comparison.baseTier}-${comparison.targetTier}`}
+                className="rounded-xl p-5 sm:p-6"
+                style={{ backgroundColor: TINT }}
+              >
+                <ul className="space-y-1.5 text-[15px] text-[#475569]">
+                  <li className="flex justify-between gap-4">
+                    <span>{ringCx.name} {comparison.baseTier}</span>
+                    <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>
+                      {formatUsd(comparison.baseTierPrice)}
+                    </span>
+                  </li>
+                  {comparison.addOns.map((addOn) => (
+                    <li key={addOn.name} className="flex justify-between gap-4">
+                      <span>+ {addOn.name}</span>
+                      <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>
+                        {formatUsd(addOn.price)}
+                      </span>
+                    </li>
+                  ))}
+                  <li className="flex justify-between gap-4 pt-2 mt-1 border-t border-[#0684BC]/20 font-display font-bold" style={{ color: INK }}>
+                    <span>Built up à la carte</span>
+                    <span className="whitespace-nowrap">{formatUsd(comparison.buildUpTotal)}/agent/mo</span>
+                  </li>
+                  <li className="flex justify-between gap-4 font-display font-bold" style={{ color: INK }}>
+                    <span>
+                      {ringCx.name} {comparison.targetTier} — already includes{' '}
+                      {comparison.addOns.length === 2 ? 'both' : 'all three'}
+                    </span>
+                    <span className="whitespace-nowrap">{formatUsd(comparison.targetTierPrice)}/agent/mo</span>
+                  </li>
+                </ul>
+                <p className="mt-4 text-[15px] font-semibold leading-snug" style={{ color: AZURE }}>
+                  Moving up a tier costs {formatUsd(comparison.savings)}/agent/month less than adding the same
+                  features onto {comparison.baseTier}.
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-[#475569] leading-relaxed mt-6">
+            Neither of these is a trick — they&apos;re just what happens when the tier sheet and the add-on
+            sheet are two different pages. This is the kind of thing we catch when we price your
+            configuration.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -14,7 +14,7 @@ export const ringCentralFaq: RingCentralFAQ[] = [
   },
   {
     q: 'How much does RingCentral cost?',
-    a: "RingCentral is priced per user, per month, and paying annually is meaningfully cheaper than month-to-month. But the base seat is only part of the story — the most powerful AI features and the RingCX contact center are licensed separately, so a price you see online rarely matches your real bill. We price your actual configuration — seats, add-ons, and contact center if you need it — so you see the all-in number before you commit. Request a free quote and we'll put real figures in front of you.",
+    a: "RingEX starts at $20 per user, per month on annual billing, $25 for Advanced and $35 for Ultra; the RingCX contact center is licensed separately at $65, $95, or $145 per user, per month. The full published rate card — every tier, the AI add-ons, AI Receptionist, and the per-number and per-message line items — is laid out in the pricing tables on this page, so you can add up your own configuration. Two things the tables also make clear: RingCentral publishes no rate above 100 seats, and buying AI features à la carte can cost more than the RingCX tier that already includes them. Those are list prices; ask us for a quote and we'll price your real configuration.",
   },
   {
     q: 'What is RingSense / ACE?',
