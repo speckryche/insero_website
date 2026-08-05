@@ -754,6 +754,27 @@ const subgridCard = `row-span-2 grid grid-rows-subgrid ${cardClass}`;
  */
 const CARD_BAND = '#C2DEEF';
 
+/**
+ * Text and badge colours that sit on CARD_BAND or on a badge fill. Every value
+ * here is chosen to clear WCAG AA (4.5:1) for normal-size text — the badges
+ * are 11px, so none of them qualify for the large-text allowance.
+ *
+ *   BAND_EYEBROW  #04618A on CARD_BAND      4.86:1
+ *   BAND_TEXT     #475569 on CARD_BAND      5.41:1
+ *   white         on BADGE_SOLID            5.20:1
+ *   BADGE_SOFT_TEXT on BADGE_SOFT_BG        5.55:1
+ *
+ * The soft badge is a solid fill rather than the alpha tint it replaces: 10%
+ * orange composited over the azure band produced a grey-blue chip that read
+ * neither orange nor legible, and it changed colour depending on whether the
+ * badge sat on a band or on a white card body.
+ */
+const BAND_EYEBROW = '#04618A';
+const BAND_TEXT = '#475569';
+const BADGE_SOLID = '#B34F00';
+const BADGE_SOFT_BG = '#FFE8D6';
+const BADGE_SOFT_TEXT = '#9A4400';
+
 /** Tinted band at the top of every card: optional icon, title, optional badge
  *  opposite it, and an optional one-line description beneath. */
 function CardHeader({
@@ -781,7 +802,7 @@ function CardHeader({
       {eyebrow && (
         <span
           className="block text-xs font-semibold uppercase tracking-wider mb-2"
-          style={{ color: AZURE }}
+          style={{ color: BAND_EYEBROW }}
         >
           {eyebrow}
         </span>
@@ -808,7 +829,9 @@ function CardHeader({
         {badge}
       </div>
       {description && (
-        <p className="mt-3 text-[15px] text-[#64748b] leading-relaxed">{description}</p>
+        <p className="mt-3 text-[15px] leading-relaxed" style={{ color: BAND_TEXT }}>
+          {description}
+        </p>
       )}
     </div>
   );
@@ -816,7 +839,10 @@ function CardHeader({
 
 function PopularBadge() {
   return (
-    <span className="flex-shrink-0 px-3 py-1 rounded-full bg-[#F26B00] text-white text-[11px] font-semibold uppercase tracking-wider">
+    <span
+      className="flex-shrink-0 px-3 py-1 rounded-full text-white text-[11px] font-semibold uppercase tracking-wider"
+      style={{ backgroundColor: BADGE_SOLID }}
+    >
       Most popular
     </span>
   );
@@ -824,7 +850,10 @@ function PopularBadge() {
 
 function PricedDifferentlyBadge() {
   return (
-    <span className="flex-shrink-0 px-3 py-1 rounded-full bg-[#F26B00]/10 text-[#C25400] text-[11px] font-semibold uppercase tracking-wider">
+    <span
+      className="flex-shrink-0 px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider"
+      style={{ backgroundColor: BADGE_SOFT_BG, color: BADGE_SOFT_TEXT }}
+    >
       Priced differently
     </span>
   );
@@ -1238,7 +1267,10 @@ function TierFeatureList({ features }: { features: TierFeatures }) {
                 <span>
                   {item.name}
                   {item.addOn && (
-                    <span className="ml-2 inline-block px-2 py-0.5 rounded-full bg-[#F26B00]/10 text-[#C25400] text-[11px] font-semibold uppercase tracking-wide align-middle">
+                    <span
+                      className="ml-2 inline-block px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wide align-middle"
+                      style={{ backgroundColor: BADGE_SOFT_BG, color: BADGE_SOFT_TEXT }}
+                    >
                       Add-on
                     </span>
                   )}
