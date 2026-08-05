@@ -1600,8 +1600,17 @@ function EquationTotal({
 // The asset is 776x700 — nearly square, not the landscape shape a hero column
 // usually takes. The wrapper is capped and centred so the clip plays at its
 // own proportions; w-full h-auto lets the video size intrinsically, so it is
-// never stretched or cropped. onError unmounts the whole frame so a missing
-// file leaves the hero clean rather than showing a broken player.
+// never stretched or cropped.
+//
+// mp4 is listed first because this encode is the smaller of the two (1.33 MB
+// against the webm's 1.68 MB) and h.264 is universally supported, so the webm
+// is a genuine fallback rather than the default download.
+//
+// The error handler sits on the LAST <source>, not on the <video>. A failing
+// source fires `error` on the source element itself and that event does not
+// bubble, so a handler on the video never runs for a load failure. The browser
+// walks the list in order and gives up after the last entry, which is why that
+// is the one that has to report.
 
 function HeroVideo() {
   const [failed, setFailed] = useState(false);
@@ -1617,11 +1626,10 @@ function HeroVideo() {
           preload="metadata"
           width={776}
           height={700}
-          onError={() => setFailed(true)}
           className="w-full h-auto block"
         >
-          <source src="/video/rc_hero.webm" type="video/webm" />
           <source src="/video/rc_hero.mp4" type="video/mp4" />
+          <source src="/video/rc_hero.webm" type="video/webm" onError={() => setFailed(true)} />
         </video>
       </div>
     </div>
