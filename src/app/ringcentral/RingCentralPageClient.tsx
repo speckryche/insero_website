@@ -743,6 +743,17 @@ const cardBodyClass = 'p-7 lg:p-8';
 const cardGridRows = 'grid-rows-[auto_1fr]';
 const subgridCard = `row-span-2 grid grid-rows-subgrid ${cardClass}`;
 
+/**
+ * Fill for every card header band on the page — the single place this colour
+ * is set. Deliberately deeper than the TINT section background so a band on a
+ * tinted section still reads as part of the card rather than as a recess in
+ * the page. One value everywhere; never conditional on section background.
+ *
+ * Contrast against this fill (WCAG 2.1): ink title #032B44 is 10.46:1, which
+ * clears AA and AAA for text at any size.
+ */
+const CARD_BAND = '#C2DEEF';
+
 /** Tinted band at the top of every card: optional icon, title, optional badge
  *  opposite it, and an optional one-line description beneath. */
 function CardHeader({
@@ -766,7 +777,7 @@ function CardHeader({
 }) {
   const Heading = level === 4 ? 'h4' : 'h3';
   return (
-    <div className="px-7 lg:px-8 py-6 border-b border-slate-200" style={{ backgroundColor: TINT }}>
+    <div className="px-7 lg:px-8 py-6 border-b border-slate-200" style={{ backgroundColor: CARD_BAND }}>
       {eyebrow && (
         <span
           className="block text-xs font-semibold uppercase tracking-wider mb-2"
