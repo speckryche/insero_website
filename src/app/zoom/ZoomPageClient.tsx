@@ -46,15 +46,22 @@ import {
 } from '@/data/zoom-pricing';
 import { zoomFaq } from './faq';
 
-// --- Zoom brand palette ---------------------------------------------------
-// Zoom's real design language: white pages, huge near-black "midnight"
-// headlines, Zoom Blue for CTAs and accents, soft blue tints, and heavily
-// rounded corners — airy and friendly. Insero lives only in the header,
-// footer, and the words — never in the page's color system.
-const MIDNIGHT = '#00053D'; // headlines, near-black navy
-const BLUE = '#0B5CFF'; // CTAs, accents, links
-const BLUE_HOVER = '#0847C4';
-const TINT = '#EDF3FF'; // light blue section background
+// --- Insero design system -------------------------------------------------
+// Tokens from globals.css. The only Zoom blue left on this page is inside the
+// logo image itself, which is not altered.
+//
+// This is a compliance requirement as much as a design one: Zoom's trademark
+// guidelines ask that a bright blue close to their own is not adopted as the
+// accent for a product or service that refers to Zoom, and their partner rules
+// want the partner's branding to be the more prominent brand.
+//
+// BLUE (#008838) clears AA on white (4.59:1) but not on either tint (4.07:1 on
+// primary-50, 3.47:1 on the card band), so accent TEXT on a tint uses
+// BLUE_HOVER. Kept under the old names so the diff stays a colour change only.
+const MIDNIGHT = 'var(--color-secondary)'; // headlines
+const BLUE = 'var(--color-primary)'; // accents on white, icons, fills
+const BLUE_HOVER = 'var(--color-primary-dark)'; // accent text on any tint
+const TINT = 'var(--color-primary-50)'; // light section background
 
 // --- Section data ---------------------------------------------------------
 
@@ -166,7 +173,7 @@ const fadeUp = {
 
 // Shared Zoom blue pill CTA
 const zoomButtonClass =
-  'group inline-flex items-center gap-3 px-10 py-5 bg-[#0B5CFF] text-white font-semibold text-lg rounded-full hover:bg-[#0847C4] transition-colors duration-200 shadow-lg shadow-[#0B5CFF]/25';
+  'group inline-flex items-center gap-3 px-10 py-5 bg-accent text-white font-semibold text-lg rounded-full hover:bg-[var(--color-accent-dark)] transition-colors duration-200 shadow-lg shadow-accent/25';
 
 // --- Page -----------------------------------------------------------------
 
@@ -199,7 +206,7 @@ export function ZoomPageClient() {
               <span style={{ color: BLUE }}>AI-First Phone, Built In</span>
             </h1>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-[var(--color-gray-600)] mb-10 max-w-3xl leading-relaxed">
               Zoom Phone is a leading AI-first cloud phone platform — best known for video, but now a full
               business communications suite with capable AI included by default. Insero is the independent
               advisor who sources it for you at zero cost, with honest guidance on whether it actually fits.
@@ -234,7 +241,7 @@ export function ZoomPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
               What Zoom Workplace actually is
             </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
+            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               <p>
                 Most people know the Zoom brand for video. The fuller picture is Zoom Workplace — a cloud business
                 communications platform that brings phone, meetings, team chat, and a contact center into one
@@ -265,14 +272,14 @@ export function ZoomPageClient() {
       <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container>
           <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0B5CFF]/10" style={{ color: BLUE }}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/10" style={{ color: BLUE_HOVER }}>
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: MIDNIGHT }}>
               Capable AI that&apos;s included, not billed as an add-on
             </h2>
-            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               The Zoom Workplace standout is that useful AI comes with the seat. AI Companion is included at no extra
               cost on eligible paid plans — which makes Zoom Phone one of the simplest, most cost-effective ways to
               put real AI in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
@@ -293,14 +300,14 @@ export function ZoomPageClient() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="rounded-3xl p-7 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-[#0B5CFF]/10 mb-5" style={{ color: BLUE }}>
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 mb-5" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>
                     {cap.stage}
                   </span>
                   <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: MIDNIGHT }}>{cap.name}</h3>
-                  <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
+                  <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
                 </motion.div>
               );
             })}
@@ -319,12 +326,12 @@ export function ZoomPageClient() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex gap-4 rounded-3xl p-7 bg-white shadow-sm"
                 >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-[#0B5CFF]/10" style={{ color: BLUE }}>
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>{item.name}</h3>
-                    <p className="text-[#64748b] leading-relaxed text-[15px]">{item.description}</p>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -341,7 +348,7 @@ export function ZoomPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Everything in the Zoom platform
             </h2>
-            <p className="text-lg md:text-xl text-[#64748b]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
               The building blocks, in plain terms — so you know what&apos;s standard and what&apos;s a separate
               license.
             </p>
@@ -366,7 +373,7 @@ export function ZoomPageClient() {
                   <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                     {product.name}
                   </h3>
-                  <p className="text-[#64748b] leading-relaxed text-[15px]">{product.description}</p>
+                  <p className="text-[var(--color-gray-600)] leading-relaxed text-[15px]">{product.description}</p>
                 </motion.div>
               );
             })}
@@ -388,7 +395,7 @@ export function ZoomPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: MIDNIGHT }}>
               What Zoom Phone actually costs — all of it, in one place
             </h2>
-            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               Zoom publishes phone and contact center pricing on separate pages, with the add-ons
               inside horizontally-scrolling carousels. A real voice deployment usually spans all of
               it, so the published rates are brought together here — seats, contact center, and the
@@ -405,7 +412,7 @@ export function ZoomPageClient() {
             <AiPackagingCard />
           </motion.div>
 
-          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[#475569] text-center leading-relaxed">
+          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[var(--color-gray-600)] text-center leading-relaxed">
             Zoom&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
             <a
               href={pricingSourceUrl}
@@ -431,7 +438,7 @@ export function ZoomPageClient() {
                 <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
                   Where an advisor actually earns their keep
                 </h3>
-                <p className="text-[#475569] leading-relaxed text-lg">
+                <p className="text-[var(--color-gray-600)] leading-relaxed text-lg">
                   We publish the list pricing because you should be able to see it before you talk to
                   anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
                   pricing on your behalf, structuring the plan mix and contract term around how
@@ -456,7 +463,7 @@ export function ZoomPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Why source Zoom Phone through Insero
             </h2>
-            <p className="text-lg md:text-xl text-[#64748b]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
               You can buy Zoom Phone directly. Here&apos;s why most businesses are better off having an independent
               advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
               <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: BLUE }}>
@@ -486,7 +493,7 @@ export function ZoomPageClient() {
                     <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                       {item.title}
                     </h3>
-                    <p className="text-[#475569] leading-relaxed">{item.description}</p>
+                    <p className="text-[var(--color-gray-600)] leading-relaxed">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -503,7 +510,7 @@ export function ZoomPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Is Zoom Phone right for you?
             </h2>
-            <p className="text-lg md:text-xl text-[#64748b]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)]">
               We&apos;d rather you land on the right platform than the one we&apos;re talking about. Here&apos;s
               the straight version.
             </p>
@@ -534,14 +541,14 @@ export function ZoomPageClient() {
 
           <motion.div {...fadeUp} className="mt-8 rounded-3xl bg-white p-7 lg:p-8 shadow-sm">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-[#0B5CFF]/10" style={{ color: BLUE }}>
+              <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-primary/10" style={{ color: BLUE }}>
                 <Scales weight="fill" className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
                   A quick word on Zoom Phone vs RingCentral
                 </h3>
-                <p className="text-[#475569] leading-relaxed">
+                <p className="text-[var(--color-gray-600)] leading-relaxed">
                   If you&apos;re weighing the two: the Zoom Phone advantage is value and simplicity — capable AI is
                   included and the platform is famously easy to adopt, especially if your team already lives in
                   Zoom Meetings. RingCentral&apos;s advantage is the depth of its contact-center and
@@ -609,15 +616,15 @@ export function ZoomPageClient() {
       >
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: BLUE }}>
-              <span className="w-8 h-px" style={{ backgroundColor: BLUE }} />
+            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: BLUE_HOVER }}>
+              <span className="w-8 h-px" style={{ backgroundColor: BLUE_HOVER }} />
               Let&apos;s Talk
-              <span className="w-8 h-px" style={{ backgroundColor: BLUE }} />
+              <span className="w-8 h-px" style={{ backgroundColor: BLUE_HOVER }} />
             </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: MIDNIGHT }}>
               Get a free Zoom Phone quote
             </h2>
-            <p className="text-xl text-[#64748b] leading-relaxed">
+            <p className="text-xl text-[var(--color-gray-600)] leading-relaxed">
               Zero cost, honest advice. We&apos;ll price your real configuration — and tell you straight if
               something else fits you better.
             </p>
@@ -629,15 +636,15 @@ export function ZoomPageClient() {
             <div className="mt-8">
               <a
                 href={company.phoneLink}
-                className="inline-flex flex-col items-center text-[#64748b] transition-colors hover:text-[#00053D]"
+                className="inline-flex flex-col items-center text-[var(--color-gray-600)] transition-colors hover:text-secondary"
               >
                 <span className="text-lg">or call us at</span>
                 <span className="font-bold text-2xl md:text-3xl mt-1" style={{ color: MIDNIGHT }}>{company.phoneFormatted}</span>
               </a>
             </div>
 
-            <div className="mt-16 pt-10 border-t border-[#0B5CFF]/20">
-              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
+            <div className="mt-16 pt-10 border-t border-primary/20">
+              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[var(--color-gray-600)] font-medium">
                 <TrustItem icon={Handshake}>Independent &mdash; Vendor-Neutral</TrustItem>
                 <TrustItem icon={CurrencyDollar}>Same price as going direct</TrustItem>
                 <TrustItem icon={Clock}>25+ Years Founder Experience</TrustItem>
@@ -651,7 +658,7 @@ export function ZoomPageClient() {
       {/* Last block of page content, above the site footer. */}
       <section className="pb-10" style={{ backgroundColor: TINT }}>
         <Container size="md">
-          <p className="text-xs text-slate-500 leading-relaxed text-center">
+          <p className="text-xs text-[var(--color-gray-600)] leading-relaxed text-center">
             Zoom and the Zoom logo are trademarks of Zoom Video Communications, Inc., registered in the
             United States and other countries.
           </p>
@@ -677,7 +684,7 @@ export function ZoomPageClient() {
 // Card header band: one step deeper than TINT (1.20x), the same relationship
 // /ringcentral uses, so a band on a tinted section still reads as part of the
 // card rather than as a recess in the page.
-const BAND = '#CFE0FF';
+const BAND = 'var(--color-primary-100)';
 
 // Accent TEXT, not BLUE. Zoom Blue clears AA on white (5.26:1) but fails on
 // the band (3.95:1); the darker blue clears both — 5.82:1 on the band, 6.96:1
@@ -728,7 +735,7 @@ function ZoomCardHeader({
         {badge}
       </div>
       {description && (
-        <p className="mt-3 text-[15px] leading-relaxed text-[#475569]">{description}</p>
+        <p className="mt-3 text-[15px] leading-relaxed text-[var(--color-gray-600)]">{description}</p>
       )}
     </div>
   );
@@ -801,7 +808,7 @@ function ZoomPricingTabs() {
                 style={
                   selected
                     ? { backgroundColor: BLUE, color: '#ffffff' }
-                    : { color: '#475569' }
+                    : { color: 'var(--color-gray-600)' }
                 }
               >
                 {tab.label}
@@ -899,7 +906,7 @@ function PlanPanel({
 
       <div className="mt-10 space-y-2 text-center">
         {notes.map((note) => (
-          <p key={note} className="text-[15px] text-[#475569] max-w-3xl mx-auto leading-relaxed">
+          <p key={note} className="text-[15px] text-[var(--color-gray-600)] max-w-3xl mx-auto leading-relaxed">
             {note}
           </p>
         ))}
@@ -931,7 +938,7 @@ function BillingToggle({
         <span
           aria-hidden="true"
           className="relative flex-shrink-0 w-12 h-7 rounded-full transition-colors duration-200"
-          style={{ backgroundColor: annual ? BLUE : '#cbd5e1' }}
+          style={{ backgroundColor: annual ? BLUE : 'var(--color-gray-300)' }}
         >
           <span
             className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
@@ -962,16 +969,16 @@ function PlanCard({
       <div className={`flex flex-col ${zoomCardBody}`}>
         <div className="flex items-baseline gap-3 flex-wrap">
           {startingAt && (
-            <span className="text-sm font-semibold text-[#64748b]">from</span>
+            <span className="text-sm font-semibold text-[var(--color-gray-500)]">from</span>
           )}
           <span className="font-display font-bold text-5xl tracking-tight" style={{ color: MIDNIGHT }}>
             {formatUsd(annual ? tier.annual : tier.monthly)}
           </span>
           {annual && (
-            <span className="text-xl text-[#64748b] line-through">{formatUsd(tier.monthly)}</span>
+            <span className="text-xl text-[var(--color-gray-500)] line-through">{formatUsd(tier.monthly)}</span>
           )}
         </div>
-        <p className="mt-2 text-sm text-[#64748b]">
+        <p className="mt-2 text-sm text-[var(--color-gray-500)]">
           /user/month {annual ? 'paid annually' : 'billed monthly'}
         </p>
       </div>
@@ -996,9 +1003,9 @@ function IncludedReceptionistCard() {
           <span className="font-display font-bold text-4xl tracking-tight" style={{ color: MIDNIGHT }}>
             {feature.allowance}
           </span>
-          <span className="text-lg text-[#64748b]">at no additional charge</span>
+          <span className="text-lg text-[var(--color-gray-500)]">at no additional charge</span>
         </div>
-        <p className="mt-3 text-[15px] text-[#475569] leading-relaxed">
+        <p className="mt-3 text-[15px] text-[var(--color-gray-600)] leading-relaxed">
           {feature.note} {feature.trialNote}
         </p>
       </div>
@@ -1015,7 +1022,7 @@ function AddOnsPanel() {
             <h3 className="text-2xl font-display font-bold" style={{ color: MIDNIGHT }}>
               {group.group}
             </h3>
-            <p className="mt-1.5 text-[15px] text-[#475569]">
+            <p className="mt-1.5 text-[15px] text-[var(--color-gray-600)]">
               {[group.unit, group.annualSavingsNote, group.requirement].filter(Boolean).join(' · ')}
             </p>
           </div>
@@ -1045,12 +1052,12 @@ function AddOnCard({
     <div className={zoomSubgridCard}>
       <ZoomCardHeader title={name} />
       <div className={`flex flex-col ${zoomCardBody}`}>
-        {note && <p className="text-[15px] text-[#475569] leading-relaxed mb-6">{note}</p>}
+        {note && <p className="text-[15px] text-[var(--color-gray-600)] leading-relaxed mb-6">{note}</p>}
         <div className="mt-auto">
           <span className="font-display font-bold text-2xl" style={{ color: MIDNIGHT }}>
             {price === null ? 'Contact us for pricing' : formatUsd(price)}
           </span>
-          {price !== null && <span className="block mt-1 text-sm text-[#64748b]">{unit}</span>}
+          {price !== null && <span className="block mt-1 text-sm text-[var(--color-gray-500)]">{unit}</span>}
         </div>
       </div>
     </div>
@@ -1075,7 +1082,7 @@ function AiPackagingCard() {
           <h3 className="text-2xl sm:text-3xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
             The AI is already in the price
           </h3>
-          <p className="text-lg text-[#475569] leading-relaxed">
+          <p className="text-lg text-[var(--color-gray-600)] leading-relaxed">
             The two platforms package voice AI differently. Zoom Phone plans bundle the{' '}
             {p.zoomFeature} into the seat; RingCentral licenses its equivalent separately. That is a
             difference in packaging rather than a verdict on either platform, and it favours buyers
@@ -1092,7 +1099,7 @@ function AiPackagingCard() {
           <div className="font-display font-bold text-3xl" style={{ color: MIDNIGHT }}>
             Included
           </div>
-          <p className="mt-2 text-[15px] text-[#475569] leading-relaxed">
+          <p className="mt-2 text-[15px] text-[var(--color-gray-600)] leading-relaxed">
             {p.zoomFeature}, {p.zoomAllowance}, at no additional charge with a Zoom Phone plan.
           </p>
         </div>
@@ -1103,22 +1110,22 @@ function AiPackagingCard() {
           </p>
           <div className="font-display font-bold text-3xl" style={{ color: MIDNIGHT }}>
             {formatUsd(p.rcMonthly)}
-            <span className="text-base font-normal text-[#64748b]">/month</span>
+            <span className="text-base font-normal text-[var(--color-gray-600)]">/month</span>
           </div>
-          <p className="mt-2 text-[15px] text-[#475569] leading-relaxed">
+          <p className="mt-2 text-[15px] text-[var(--color-gray-600)] leading-relaxed">
             {p.rcFeature}, {p.rcAllowance}, {p.rcBillingUnit} — {formatUsd(p.rcAnnualized)} a year.
           </p>
         </div>
       </div>
 
-      <p className="mt-6 text-[15px] text-[#64748b] leading-relaxed">{p.caveat}</p>
+      <p className="mt-6 text-[15px] text-[var(--color-gray-500)] leading-relaxed">{p.caveat}</p>
 
       {/* The counterweight. Same computation, opposite direction. */}
-      <div className="mt-8 pt-8 border-t border-[#CFE0FF]">
+      <div className="mt-8 pt-8 border-t border-[var(--color-gray-200)]">
         <h4 className="text-xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
           On the contact center side the comparison narrows
         </h4>
-        <p className="text-[15px] text-[#475569] leading-relaxed mb-6">
+        <p className="text-[15px] text-[var(--color-gray-600)] leading-relaxed mb-6">
           The included-AI advantage is a Zoom Phone story. Among the contact center AI capabilities
           both vendors publish a rate for, {contactCenterAiDeltasFavouringRc.length} of{' '}
           {contactCenterAiDeltas.length} are dearer on the Zoom Contact Center side.
@@ -1127,13 +1134,13 @@ function AiPackagingCard() {
           {contactCenterAiDeltas.map((d) => (
             <li
               key={d.capability}
-              className="flex flex-wrap justify-between items-baseline gap-x-4 gap-y-1 text-[15px] text-[#475569]"
+              className="flex flex-wrap justify-between items-baseline gap-x-4 gap-y-1 text-[15px] text-[var(--color-gray-600)]"
             >
               <span className="font-semibold" style={{ color: MIDNIGHT }}>{d.capability}</span>
               <span>
                 Zoom Contact Center {formatUsd(d.zoomMonthly)} · RingCentral {formatUsd(d.rcMonthly)}
                 {d.delta === 0 ? (
-                  <span className="ml-2 text-[#64748b]">— matched</span>
+                  <span className="ml-2 text-[var(--color-gray-500)]">— matched</span>
                 ) : (
                   <span className="ml-2 font-semibold" style={{ color: BLUE_TEXT }}>
                     — {formatUsd(Math.abs(d.delta))} {d.delta > 0 ? 'more' : 'less'} a month
@@ -1143,7 +1150,7 @@ function AiPackagingCard() {
             </li>
           ))}
         </ul>
-        <p className="mt-6 text-[15px] text-[#475569] leading-relaxed">
+        <p className="mt-6 text-[15px] text-[var(--color-gray-600)] leading-relaxed">
           Which way that nets out depends on how much contact center AI you actually license, which
           is the sort of thing worth working through before you sign rather than after.
         </p>
@@ -1212,7 +1219,7 @@ function QuoteForm() {
 
   const inputClass =
     'w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors focus:outline-none';
-  const okBorder = 'border-[#CFE0FF] focus:border-[#0B5CFF]';
+  const okBorder = 'border-[var(--color-gray-200)] focus:border-primary';
   const errBorder = 'border-red-400 focus:border-red-500';
 
   if (isSubmitted) {
@@ -1227,7 +1234,7 @@ function QuoteForm() {
         <h3 className="text-2xl lg:text-3xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
           Thanks — we&apos;ve got it
         </h3>
-        <p className="text-[#64748b] max-w-md mx-auto mb-8">
+        <p className="text-[var(--color-gray-500)] max-w-md mx-auto mb-8">
           We&apos;ll price your real Zoom Phone configuration and get back to you within one business day.
         </p>
         <button
@@ -1320,8 +1327,7 @@ function QuoteForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-full shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ backgroundColor: BLUE }}
+          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-semibold text-lg rounded-full shadow-lg shadow-accent/25 hover:bg-[var(--color-accent-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <span>Sending…</span>
@@ -1333,7 +1339,7 @@ function QuoteForm() {
           )}
         </button>
 
-        <p className="text-sm text-[#64748b] text-center">
+        <p className="text-sm text-[var(--color-gray-500)] text-center">
           By submitting, you agree to be contacted about your quote. We never share your information.
         </p>
       </form>
@@ -1346,7 +1352,7 @@ function QuoteForm() {
 function SectionEyebrow({
   children,
   centered = false,
-  color = BLUE,
+  color = BLUE_HOVER,
 }: {
   children: React.ReactNode;
   centered?: boolean;
@@ -1380,12 +1386,12 @@ function RelatedCard({
       className="group rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
       style={{ backgroundColor: TINT }}
     >
-      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>{label}</span>
+      <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE_HOVER }}>{label}</span>
       <h3 className="font-display font-bold text-base mt-2 mb-2 leading-snug" style={{ color: MIDNIGHT }}>
         {title}
       </h3>
-      <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
-      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: BLUE }}>
+      <p className="text-sm text-[var(--color-gray-600)] leading-relaxed flex-grow">{description}</p>
+      <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: BLUE_HOVER }}>
         Read more
         <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </span>
@@ -1396,7 +1402,7 @@ function RelatedCard({
 function TrustItem({ icon: Icon, children }: { icon: typeof Handshake; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <Icon weight="fill" className="w-4 h-4" style={{ color: BLUE }} />
+      <Icon weight="fill" className="w-4 h-4" style={{ color: BLUE_HOVER }} />
       <span>{children}</span>
     </div>
   );

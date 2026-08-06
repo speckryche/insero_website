@@ -3,9 +3,9 @@ import { ZoomPageClient } from './ZoomPageClient';
 import { zoomFaq } from './faq';
 
 export const metadata: Metadata = {
-  title: 'Zoom for Business: AI Phone, Contact Center & Pricing',
+  title: 'Zoom Phone for Business: AI Phone, Contact Center & Pricing',
   description:
-    "Zoom's AI-first business phone and contact center — with AI Companion included at no extra cost. Sourced through Insero, an independent advisor, at zero cost to you. Get a free quote.",
+    "Zoom Phone and Zoom Contact Center pricing in one place, with AI Companion included. Sourced through Insero, an independent advisor, at zero cost.",
   keywords: [
     'Zoom',
     'Zoom for business',
@@ -20,17 +20,17 @@ export const metadata: Metadata = {
     'business phone AI',
   ],
   openGraph: {
-    title: 'Zoom for Business: AI Phone, Contact Center & Pricing | Insero',
+    title: 'Zoom Phone for Business: AI Phone, Contact Center & Pricing | Insero',
     description:
-      "Zoom's AI-first business phone and contact center — with AI Companion included at no extra cost. Sourced through Insero at zero cost.",
+      'Zoom Phone and Zoom Contact Center pricing in one place, with AI Companion included at no extra cost. Sourced through Insero at zero cost.',
     url: 'https://insero.cloud/zoom',
-    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Zoom for Business — sourced through Insero' }],
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Zoom Phone for Business — sourced through Insero' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zoom for Business: AI Phone, Contact Center & Pricing | Insero',
+    title: 'Zoom Phone for Business: AI Phone, Contact Center & Pricing | Insero',
     description:
-      "Zoom's AI-first business phone with AI Companion included — explained honestly. Source it through Insero at zero cost.",
+      'Zoom Phone with AI Companion included — explained honestly, with published pricing. Source it through Insero at zero cost.',
     images: ['/og-default.png'],
   },
   alternates: {
@@ -68,7 +68,7 @@ const webPageSchema = {
   '@type': 'WebPage',
   '@id': 'https://insero.cloud/zoom',
   url: 'https://insero.cloud/zoom',
-  name: 'Zoom for Business: AI Phone, Contact Center & Pricing',
+  name: 'Zoom Phone for Business: AI Phone, Contact Center & Pricing',
   description:
     "Zoom Phone and Zoom Contact Center — explained honestly, with published list pricing consolidated in one place.",
   about: {
