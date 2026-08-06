@@ -27,7 +27,6 @@ import {
   PaperPlaneRight,
   WarningCircle,
   Calculator,
-  ListChecks,
   Check,
   Monitor,
   Presentation,
@@ -355,7 +354,7 @@ export function RingCentralPageClient() {
             <TierMathCard />
           </motion.div>
 
-          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[var(--color-gray-600)] text-center leading-relaxed">
+          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-10 lg:mt-12 text-sm text-[var(--color-gray-600)] text-center leading-relaxed">
             RingCentral&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
             <a
               href={pricingSourceUrl}
@@ -370,31 +369,31 @@ export function RingCentralPageClient() {
           </motion.p>
 
           {/* --- Advisor close --- */}
-          <motion.div
-            {...fadeUp}
-            className={`max-w-5xl mx-auto mt-12 ${cardClass}`}
-          >
-            {/* Heading is scoped to configuration and the number, not to the
-                case for using an advisor at all — "Why source RingCentral
-                through Insero" owns that framing further down the page. */}
-            <CardHeader icon={ListChecks} title="How Insero prices this for you" />
-            <div className="p-8 lg:p-10">
-              <div>
-                <p className="text-[var(--color-gray-600)] leading-relaxed text-lg">
-                  We publish RingCentral&apos;s list pricing because you should be able to see it before you
-                  talk to anyone. Those rates are RingCentral&apos;s to set. What we add is the fit: requesting
-                  pricing on your behalf, structuring the
-                  contract term and plan mix around how you actually use the system, and matching each tier to
-                  what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
-                  {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
-                  your number.{' '}
-                  <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-                    Ask us for a quote
-                  </Link>{' '}
-                  and we&apos;ll price your actual configuration.
-                </p>
-              </div>
-            </div>
+          {/* Plain prose on the section tint, not a card. It closes the section
+              rather than competing with the tier math above it, which is the
+              only block down here that keeps card weight.
+              Heading is scoped to configuration and the number, not to the case
+              for using an advisor at all — "Why source RingCentral through
+              Insero" owns that framing further down the page.
+              On tint, gray-600 body text measures 6.82:1 and PRIMARY_DARK links
+              clear AA; gray-500 would not, which is why it is not used here. */}
+          <motion.div {...fadeUp} className="max-w-5xl mx-auto mt-12">
+            <p className="text-base font-bold mb-3" style={{ color: INK }}>
+              How Insero prices this for you
+            </p>
+            <p className="text-lg text-[var(--color-gray-600)] leading-relaxed">
+              We publish RingCentral&apos;s list pricing because you should be able to see it before you
+              talk to anyone. Those rates are RingCentral&apos;s to set. What we add is the fit: requesting
+              pricing on your behalf, structuring the
+              contract term and plan mix around how you actually use the system, and matching each tier to
+              what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
+              {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
+              your number.{' '}
+              <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
+                Ask us for a quote
+              </Link>{' '}
+              and we&apos;ll price your actual configuration.
+            </p>
           </motion.div>
         </Container>
       </section>
@@ -1141,11 +1140,13 @@ function PlanPanel({
         ))}
       </div>
 
-      {notice}
-
+      {/* The footnote describes the cards, so it sits with them, above any
+          notice. It used to be stranded between two callouts. */}
       <p className="mt-10 text-center text-[15px] text-[var(--color-gray-600)] max-w-3xl mx-auto leading-relaxed">
         {footnote}
       </p>
+
+      {notice}
     </div>
   );
 }
@@ -1159,30 +1160,40 @@ function PlanPanel({
  * card weight instead.
  *
  * Deliberately no accent orange: that colour is the CTA's alone here. The
- * caution reads from the icon, the band, and the position, not from a warning
+ * caution reads from the icon, the rule, and the position, not from a warning
  * colour. The framing is neutral toward RingCentral — publishing one band and
  * quoting the rest is ordinary enterprise practice, not a catch.
+ *
+ * An inline notice rather than a banded card: below the plan cards only the
+ * tier math earns full card weight, and three stacked cards flattened the
+ * whole section to one level. This reads as an important aside instead.
+ * White fill, so gray-600 body text and a PRIMARY_DARK link both keep the
+ * contrast they had inside the card.
  */
 function SeatCapNotice() {
   return (
-    <div className={`mt-10 max-w-3xl mx-auto ${cardClass}`}>
-      <CardHeader
-        icon={WarningCircle}
-        title={`Buying more than ${ringEx.publishedSeatCap} seats?`}
-        titleClassName="text-lg"
-      />
-      <div className="p-7 lg:p-8">
-        <p className="text-[var(--color-gray-600)] leading-relaxed">
-          The rates above are RingCentral&apos;s published pricing for 1&ndash;{ringEx.publishedSeatCap}{' '}
-          users. Past {ringEx.publishedSeatCap} seats RingCentral prices each deployment individually and
-          publishes no rate at all, so a quote is the only way to know your number &mdash; it is not the
-          published price with a discount applied.{' '}
-          <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-            Get a quote for your seat count
-          </Link>
-          .
-        </p>
-      </div>
+    <div
+      className="mt-8 max-w-3xl mx-auto bg-white rounded-r-lg py-5 pl-6 pr-7"
+      style={{ borderLeft: '3px solid var(--color-primary)' }}
+    >
+      <p className="text-[var(--color-gray-600)] leading-relaxed">
+        <WarningCircle
+          weight="fill"
+          className="inline w-5 h-5 mr-2 align-text-bottom"
+          style={{ color: PRIMARY }}
+        />
+        <strong className="font-semibold" style={{ color: INK }}>
+          Buying more than {ringEx.publishedSeatCap} seats?
+        </strong>{' '}
+        The rates above are RingCentral&apos;s published pricing for 1&ndash;{ringEx.publishedSeatCap}{' '}
+        users. Past {ringEx.publishedSeatCap} seats RingCentral prices each deployment individually and
+        publishes no rate at all, so a quote is the only way to know your number &mdash; it is not the
+        published price with a discount applied.{' '}
+        <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
+          Get a quote for your seat count
+        </Link>
+        .
+      </p>
     </div>
   );
 }
@@ -1576,7 +1587,12 @@ function LineItemCard({
 
 function TierMathCard() {
   return (
-    <div className={cardClass}>
+    // The only full card below the plan cards, and the one carrying the
+    // section's payoff — a heavier shadow lifts it in front of the inline
+    // notice and the prose around it. Built off cardClass by swapping the
+    // shadow rather than appending one, so there is no shadow-sm/shadow-lg
+    // race in the emitted class order.
+    <div className={cardClass.replace('shadow-sm', 'shadow-lg')}>
       <CardHeader title="Sometimes the higher tier costs less" icon={Calculator} />
 
       <div className="p-8 lg:p-10">
@@ -1587,11 +1603,10 @@ function TierMathCard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {tierComparisons.map((comparison) => (
-          <div
-            key={`${comparison.baseTier}-${comparison.targetTier}`}
-            className="rounded-2xl p-7 lg:p-8"
-            style={{ backgroundColor: TINT }}
-          >
+          // No fill, radius, or padding of its own: the tinted box made this a
+          // third container (section → card → box). The divider above the
+          // totals is what makes them read as a conclusion now.
+          <div key={`${comparison.baseTier}-${comparison.targetTier}`}>
             {/* Stacked equation — one addend per line, totals emphasized. */}
             <ul className="space-y-3">
               <EquationRow label={`${ringCx.name} ${comparison.baseTier}`} value={formatUsd(comparison.baseTierPrice)} />
@@ -1610,7 +1625,6 @@ function TierMathCard() {
                   comparison.addOns.length === 2 ? 'both' : 'all three'
                 }`}
                 value={`${formatUsd(comparison.targetTierPrice)}/agent/mo`}
-                highlight
               />
             </div>
 
@@ -1640,23 +1654,18 @@ function EquationRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function EquationTotal({
-  label,
-  value,
-  highlight = false,
-}: {
-  label: string;
-  value: string;
-  highlight?: boolean;
-}) {
+// Both totals now carry the same weight and colour: the comparison IS the two
+// numbers side by side, so singling one out with `highlight` undersold the
+// other half of it. PRIMARY_DARK clears AA on the white card at any size.
+function EquationTotal({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-baseline gap-4">
       <span className="font-display font-bold text-[15px] leading-snug" style={{ color: INK }}>
         {label}
       </span>
       <span
-        className="font-display font-bold text-xl whitespace-nowrap"
-        style={{ color: highlight ? PRIMARY_DARK : INK }}
+        className="font-display font-bold text-2xl lg:text-3xl whitespace-nowrap"
+        style={{ color: PRIMARY_DARK }}
       >
         {value}
       </span>
