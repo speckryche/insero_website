@@ -1627,7 +1627,10 @@ function HeroVideo() {
   if (failed) return null;
   return (
     <div className="w-full max-w-[420px] lg:max-w-[480px] mx-auto">
-      <div className="relative overflow-hidden rounded-2xl border border-primary/20 shadow-xl shadow-secondary/5">
+      {/* No border, radius or shadow: with the multiply blend the clip has no
+          visible edge of its own, so a frame would outline empty space around
+          a floating graphic. */}
+      <div className="relative overflow-hidden">
         <video
           autoPlay
           muted
