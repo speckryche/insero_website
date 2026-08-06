@@ -1606,11 +1606,16 @@ function EquationTotal({
 // against the webm's 1.68 MB) and h.264 is universally supported, so the webm
 // is a genuine fallback rather than the default download.
 //
-// The error handler sits on the LAST <source>, not on the <video>. A failing
-// source fires `error` on the source element itself and that event does not
-// bubble, so a handler on the video never runs for a load failure. The browser
-// walks the list in order and gives up after the last entry, which is why that
-// is the one that has to report.
+// Two error handlers, covering the two distinct failure modes:
+//
+//  - LOAD failure fires `error` on the <source> element, and that event does
+//    not bubble, so only a handler on the source sees it. The browser walks
+//    the list in order and gives up after the last entry, so that is the one
+//    that has to report.
+//  - DECODE failure (MEDIA_ERR_DECODE — file downloads fine but will not play)
+//    fires on the media element instead, where no source handler would run.
+//
+// Both call the same setFailed, and the frame can only unmount once.
 
 function HeroVideo() {
   const [failed, setFailed] = useState(false);
@@ -1626,6 +1631,7 @@ function HeroVideo() {
           preload="metadata"
           width={776}
           height={700}
+          onError={() => setFailed(true)}
           className="w-full h-auto block"
         >
           <source src="/video/rc_hero.mp4" type="video/mp4" />
