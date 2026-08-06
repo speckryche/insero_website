@@ -1716,50 +1716,64 @@ function HeroVideo() {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
   return (
-    <div className="w-full max-w-[420px] lg:max-w-[480px] mx-auto">
-      <div className="relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10">
-        {/* The desk surface the devices float on. A <picture> rather than a CSS
-            background-image: image-set() is the only way to express
-            "webp, falling back to jpg" that every browser honours — image-set()
-            with type() only landed in Safari 17, and Safari is precisely the
-            browser being served here, so 15 and 16 would have got no backdrop
-            at all behind a now-transparent clip. Same result: cover, centred,
-            clipped by the wrapper's overflow-hidden, and it fills the padding
-            box so the surface shows on all four sides of the video. */}
-        <picture>
-          <source srcSet="/images/rc_hero_desk.webp" type="image/webp" />
-          <img
-            src="/images/rc_hero_desk.jpg"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </picture>
+    // 16:9 panel filling its grid column, matching the proportions RingCentral
+    // gives its own hero visual. aspect-video reserves the full box before any
+    // asset arrives, and both children are taken out of flow, so nothing here
+    // can shift the page as it loads.
+    <div className="relative w-full aspect-video overflow-hidden rounded-2xl">
+      {/* The surface the devices float on. A <picture> rather than a CSS
+          background-image: image-set() is the only way to express
+          "webp, falling back to jpg" that every browser honours — image-set()
+          with type() only landed in Safari 17, and Safari is precisely the
+          browser being served here, so 15 and 16 would have got no backdrop
+          at all behind a now-transparent clip. Cover and centred, filling the
+          panel and clipped by its overflow-hidden. */}
+      <picture>
+        <source srcSet="/images/rc_hero_desk_wide.webp" type="image/webp" />
+        <img
+          src="/images/rc_hero_desk_wide.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      </picture>
 
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          // Same URL the <picture> above resolves to on any browser that can
-          // decode either alpha encode, so the poster costs no extra bytes: one
-          // fetch shared with the backdrop. Pointing it at the .jpg instead
-          // pulled a second 49 KB copy of the same image.
-          poster="/images/rc_hero_desk.webp"
-          width={776}
-          height={700}
+      {/* The clip is 776x700, so it can never fill a 16:9 box without being
+          stretched. Sized by height instead and centred: at 88% of panel
+          height it comes out ~55% of panel width, leaving the bokeh to carry
+          the rest — which is the point of the wide panel. Absolutely
+          positioned so it stays out of flow and contributes no layout shift.
+
+          aspect-[776/700] is load-bearing, not decoration. The width/height
+          attributes give the UA `aspect-ratio: auto 776 / 700`, and the `auto`
+          keyword defers to the media's real ratio — which is 0x0 until the clip
+          decodes. Before that, w-auto had nothing to resolve against and fell
+          back to the containing block, stretching the box to the panel's 16:9
+          (measured 506x285 instead of 316x285). An explicit ratio holds 776:700
+          from first paint, through the poster, and after load. */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        // Same URL the <picture> above resolves to on any browser that can
+        // decode either alpha encode, so the poster costs no extra bytes: one
+        // fetch shared with the backdrop. Pointing it at the .jpg instead
+        // pulled a second copy of the same image on every load.
+        poster="/images/rc_hero_desk_wide.webp"
+        width={776}
+        height={700}
+        onError={() => setFailed(true)}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[88%] w-auto aspect-[776/700] max-w-full block"
+      >
+        <source src="/video/rc_hero_alpha.webm" type="video/webm" />
+        <source
+          src="/video/rc_hero_alpha.mp4"
+          type='video/mp4; codecs="hvc1"'
           onError={() => setFailed(true)}
-          className="relative w-full h-auto block"
-        >
-          <source src="/video/rc_hero_alpha.webm" type="video/webm" />
-          <source
-            src="/video/rc_hero_alpha.mp4"
-            type='video/mp4; codecs="hvc1"'
-            onError={() => setFailed(true)}
-          />
-        </video>
-      </div>
+        />
+      </video>
     </div>
   );
 }
