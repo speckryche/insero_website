@@ -1601,13 +1601,29 @@ function TierMathCard() {
           need sometimes costs less than building up from a lower one. Here&apos;s where that happens.
         </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        {/* Four shared row lines — heading, line items, à-la-carte total,
+            winning chip — so the dividers and chips land on the same baseline
+            in both columns even though one comparison has three line items and
+            the other has four. The 1fr on the line-items row is what absorbs
+            the difference: the shorter list stretches, and everything after it
+            stays aligned. Same subgrid technique as the card header bands.
+
+            Subgrid is lg-only. Stacked on one column there is nothing to align
+            across, so the children stay in normal flow and space-y-5 carries
+            the rhythm at both breakpoints — which is also why the row gap goes
+            to 0 at lg, so the two never stack up. */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-12 lg:gap-y-0 gap-x-8 lg:gap-x-12 lg:grid-rows-[auto_1fr_auto_auto]">
         {tierComparisons.map((comparison) => (
-          // No fill, radius, or padding of its own: the tinted box made this a
-          // third container (section → card → box). The divider above the
-          // totals is what makes them read as a conclusion now.
-          <div key={`${comparison.baseTier}-${comparison.targetTier}`}>
-            {/* Stacked equation — one addend per line, totals emphasized. */}
+          <div
+            key={`${comparison.baseTier}-${comparison.targetTier}`}
+            className="space-y-5 lg:row-span-4 lg:grid lg:grid-rows-subgrid"
+          >
+            {/* 1 — the progression being priced */}
+            <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: PRIMARY_DARK }}>
+              {comparison.baseTier} &rarr; {comparison.targetTier}
+            </p>
+
+            {/* 2 — the addends */}
             <ul className="space-y-3">
               <EquationRow label={`${ringCx.name} ${comparison.baseTier}`} value={formatUsd(comparison.baseTierPrice)} />
               {comparison.addOns.map((addOn) => (
@@ -1615,23 +1631,33 @@ function TierMathCard() {
               ))}
             </ul>
 
-            <div className="mt-5 pt-5 border-t border-[var(--color-gray-200)] space-y-4">
-              <EquationTotal
-                label="Built up à la carte"
-                value={`${formatUsd(comparison.buildUpTotal)}/agent/mo`}
-              />
-              <EquationTotal
-                label={`${ringCx.name} ${comparison.targetTier} — already includes ${
-                  comparison.addOns.length === 2 ? 'both' : 'all three'
-                }`}
-                value={`${formatUsd(comparison.targetTierPrice)}/agent/mo`}
-              />
+            {/* 3 — the setup: what building it up costs. Deliberately quiet. */}
+            <div className="flex justify-between items-baseline gap-4 border-t border-[var(--color-gray-200)] pt-5 text-lg text-[var(--color-gray-600)]">
+              <span>Built à la carte</span>
+              <span className="font-semibold tabular-nums whitespace-nowrap">
+                {formatUsd(comparison.buildUpTotal)}/agent/mo
+              </span>
             </div>
 
-            <p className="mt-6 text-[15px] font-semibold leading-relaxed" style={{ color: PRIMARY_DARK }}>
-              Moving up a tier costs {formatUsd(comparison.savings)}/agent/month less than adding the same
-              features onto {comparison.baseTier}.
-            </p>
+            {/* 4 — the answer. The chip is the only filled element in the card,
+                which is what makes the punchline findable without reading the
+                stack above it. */}
+            <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--color-primary-50)' }}>
+              <div className="flex justify-between items-baseline gap-4">
+                <span className="font-display font-semibold text-lg leading-snug" style={{ color: PRIMARY_DARK }}>
+                  {ringCx.name} {comparison.targetTier}
+                </span>
+                <span
+                  className="font-display font-semibold text-xl tabular-nums whitespace-nowrap"
+                  style={{ color: PRIMARY_DARK }}
+                >
+                  {formatUsd(comparison.targetTierPrice)}/agent/mo
+                </span>
+              </div>
+              <p className="mt-1.5 text-sm font-semibold" style={{ color: PRIMARY_DARK }}>
+                Saves {formatUsd(comparison.savings)}/agent/mo
+              </p>
+            </div>
           </div>
           ))}
         </div>
@@ -1649,29 +1675,12 @@ function EquationRow({ label, value }: { label: string; value: string }) {
   return (
     <li className="flex justify-between items-baseline gap-4 text-[15px] text-[var(--color-gray-600)]">
       <span>{label}</span>
-      <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>{value}</span>
+      {/* tabular-nums so the prices form a column even at ragged label widths. */}
+      <span className="font-semibold tabular-nums whitespace-nowrap">{value}</span>
     </li>
   );
 }
 
-// Both totals now carry the same weight and colour: the comparison IS the two
-// numbers side by side, so singling one out with `highlight` undersold the
-// other half of it. PRIMARY_DARK clears AA on the white card at any size.
-function EquationTotal({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between items-baseline gap-4">
-      <span className="font-display font-bold text-[15px] leading-snug" style={{ color: INK }}>
-        {label}
-      </span>
-      <span
-        className="font-display font-bold text-2xl lg:text-3xl whitespace-nowrap"
-        style={{ color: PRIMARY_DARK }}
-      >
-        {value}
-      </span>
-    </div>
-  );
-}
 
 // --- Hero product video ---------------------------------------------------
 // RingCentral's official partner-portal animation, self-hosted from
