@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -1744,9 +1744,58 @@ function EquationRow({ label, value }: { label: string; value: string }) {
 //    fires on the media element instead, where no source handler would run.
 //
 // Both call the same setFailed, and the frame can only unmount once.
+//
+// The backdrop is not one image but five, crossfading with the clip's five
+// segments. All five stay mounted for the life of the component and are
+// switched on opacity alone: mounting and unmounting them would re-request the
+// image on every loop and flash the card white in the gap.
+
+/** Segment boundaries, measured off the frames. The clip is 25s and loops. */
+const HERO_SEGMENTS = [
+  { from: 0, slug: 'bg_01_receptionist' },
+  { from: 5, slug: 'bg_02_businessphone' },
+  { from: 10, slug: 'bg_03_video' },
+  { from: 16, slug: 'bg_04_contactcenter' },
+  { from: 21, slug: 'bg_05_finale' },
+] as const;
+
+/**
+ * Index of the segment covering `time`.
+ *
+ * Written as a scan from the start rather than a chain of comparisons so that
+ * anything unexpected — NaN before metadata arrives, a negative seek, a time
+ * past the end — leaves the result at 0 instead of undefined. The backdrop can
+ * therefore never be blank: index 0 is the floor, not a special case.
+ */
+function heroSegmentAt(time: number): number {
+  let index = 0;
+  for (let i = 0; i < HERO_SEGMENTS.length; i += 1) {
+    if (time >= HERO_SEGMENTS[i].from) index = i;
+  }
+  return index;
+}
 
 function HeroVideo() {
   const [failed, setFailed] = useState(false);
+  const [segment, setSegment] = useState(0);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const onTimeUpdate = () => {
+      const next = heroSegmentAt(video.currentTime);
+      // timeupdate fires ~4x a second; bail unless the segment actually turned
+      // over, so this re-renders 5 times per 25s loop rather than ~100.
+      setSegment((current) => (current === next ? current : next));
+    };
+    video.addEventListener('timeupdate', onTimeUpdate);
+    return () => video.removeEventListener('timeupdate', onTimeUpdate);
+  }, []);
+
+  // Every early return has to come after the hooks above, so this sits here
+  // rather than at the top. Returning null takes the backdrops with it — they
+  // are inside this tree, so a failed clip cannot strand an image behind.
   if (failed) return null;
   return (
     // 6/5 (1.2:1) rather than 16:9. The clip is 1.109:1, so a 16:9 card left a
@@ -1758,22 +1807,36 @@ function HeroVideo() {
     // ring, not border: it draws outside the border box, so the card's own
     // overflow-hidden cannot clip it and it follows the same rounded corner.
     <div className="relative w-full aspect-[6/5] overflow-hidden rounded-2xl ring-[6px] ring-white/70 shadow-xl">
-      {/* The surface the devices float on. A <picture> rather than a CSS
+      {/* The surfaces the devices float on, one per segment, all five stacked
+          and all five mounted. A <picture> rather than a CSS
           background-image: image-set() is the only way to express
           "webp, falling back to jpg" that every browser honours — image-set()
           with type() only landed in Safari 17, and Safari is precisely the
           browser being served here, so 15 and 16 would have got no backdrop
           at all behind a now-transparent clip. Cover and centred, filling the
-          panel and clipped by its overflow-hidden. */}
-      <picture>
-        <source srcSet="/images/rc_hero_desk_wide.webp" type="image/webp" />
-        <img
-          src="/images/rc_hero_desk_wide.jpg"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      </picture>
+          panel and clipped by its overflow-hidden.
+
+          motion-reduce:transition-none cuts the crossfade to an instant switch
+          rather than holding on backdrop 1. The clip keeps playing under a
+          reduced-motion preference — autoPlay is unchanged — so pinning the
+          backdrop would leave it describing the wrong segment for 20 of every
+          25 seconds. Losing the fade removes the animation; losing the switch
+          would have broken the meaning. */}
+      {HERO_SEGMENTS.map((seg, i) => (
+        <picture key={seg.slug}>
+          <source srcSet={`/images/${seg.slug}.webp`} type="image/webp" />
+          <img
+            src={`/images/${seg.slug}.jpg`}
+            alt=""
+            aria-hidden="true"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'low'}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[600ms] motion-reduce:transition-none ${
+              i === segment ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </picture>
+      ))}
 
       {/* The clip is 776x700 and the card is 1.2:1, so it still cannot fill the
           box without stretching. Sized by height and centred: 94% of card
@@ -1790,16 +1853,17 @@ function HeroVideo() {
           (measured 506x285 instead of 316x285). An explicit ratio holds 776:700
           from first paint, through the poster, and after load. */}
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
         preload="metadata"
-        // Same URL the <picture> above resolves to on any browser that can
+        // Same URL the first <picture> resolves to on any browser that can
         // decode either alpha encode, so the poster costs no extra bytes: one
-        // fetch shared with the backdrop. Pointing it at the .jpg instead
-        // pulled a second copy of the same image on every load.
-        poster="/images/rc_hero_desk_wide.webp"
+        // fetch shared with backdrop 1, which is also the one showing at t=0.
+        // Pointing it at a .jpg instead pulled a second copy of the same image.
+        poster="/images/bg_01_receptionist.webp"
         width={776}
         height={700}
         onError={() => setFailed(true)}
