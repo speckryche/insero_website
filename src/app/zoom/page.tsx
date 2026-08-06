@@ -58,34 +58,68 @@ const breadcrumbSchema = {
   ],
 };
 
-// Service schema: Zoom platform, offered through Insero
+// WebPage schema. `about` is the correct way to say "this page is about Zoom" —
+// a descriptive statement of subject matter. It carries none of the implication
+// that `brand` did on the Service block, which asserted Insero provides a
+// Zoom-branded service. sameAs pins the entity to Zoom's own domain so search
+// engines resolve it unambiguously.
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://insero.cloud/zoom',
+  url: 'https://insero.cloud/zoom',
+  name: 'Zoom for Business: AI Phone, Contact Center & Pricing',
+  description:
+    "Zoom Phone and Zoom Contact Center — explained honestly, with published list pricing consolidated in one place.",
+  about: {
+    '@type': 'Brand',
+    name: 'Zoom',
+    sameAs: 'https://www.zoom.com',
+  },
+  isPartOf: {
+    '@type': 'WebSite',
+    url: 'https://insero.cloud',
+    name: 'Insero',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Insero',
+    url: 'https://insero.cloud',
+  },
+};
+
+// Service schema: Insero's OWN advisory and sourcing service.
+//
+// This deliberately does not declare `brand: Zoom`. Pairing a Zoom brand with
+// Insero as `provider` asserts, in machine-readable form, that Insero provides
+// a Zoom-branded service — which reads as an authorized or endorsed
+// relationship. The service described here is the one Insero actually performs:
+// independent advisory and sourcing. Zoom is named as subject matter in the
+// description, not as the brand of the service, and the offer catalog lists
+// Insero's services rather than Zoom products.
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  name: 'Zoom Business Communications',
-  serviceType: 'Cloud Business Phone & Contact Center',
-  brand: {
-    '@type': 'Brand',
-    name: 'Zoom',
-  },
+  name: 'Independent Business Communications Advisory & Sourcing',
+  serviceType: 'Telecom Advisory & Sourcing',
   provider: {
     '@type': 'Organization',
     name: 'Insero',
     url: 'https://insero.cloud',
     description:
-      'Independent telecom advisor that sources Zoom and other providers at zero cost to the customer.',
+      'Independent telecom advisor. Insero is not affiliated with, endorsed by, sponsored by, or authorized by Zoom Video Communications, Inc.',
   },
   description:
-    "Zoom's AI-first business phone (Zoom Phone), meetings, team chat, and contact center, with AI Companion included at no extra cost — sourced and supported through Insero, an independent advisor, at no added cost.",
+    'Independent advisory and sourcing for cloud business phone and contact center services, including Zoom Phone and Zoom Contact Center. Insero is an independent advisor and is not affiliated with or endorsed by Zoom Video Communications, Inc.',
   areaServed: 'US',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Zoom Solutions',
+    name: 'Advisory & Sourcing Services',
     itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Zoom Phone Business Calling' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Companion (included with eligible plans)' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Zoom Contact Center' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Meetings, Video & Team Chat' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Business phone sourcing and advisory' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Voice AI evaluation and advisory' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Contact center sourcing and advisory' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Quoting, contract, and implementation support' } },
     ],
   },
 };
@@ -107,6 +141,10 @@ const faqSchema = {
 export default function ZoomPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

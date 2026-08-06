@@ -220,7 +220,7 @@ export const receptionistPackaging: ReceptionistPackaging = {
   rcBillingUnit: rcAiReceptionist.billingUnit,
   rcAnnualized: rcAiReceptionist.withRingEx * 12,
   caveat:
-    'The included allowances match, but the billing units differ: Zoom bundles the capability into the plan, while RingCentral licenses a receptionist instance separately.',
+    'The included allowances match, but the billing units differ: a Zoom Phone plan bundles the capability, while RingCentral licenses a receptionist instance separately.',
 };
 
 /** One comparable contact center AI capability, priced by both vendors. */

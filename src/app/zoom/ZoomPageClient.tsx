@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -23,11 +24,14 @@ import {
   Clock,
   Lightning,
   BookOpen,
+  PaperPlaneRight,
+  WarningCircle,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
+import { submitContactForm, type ContactFormData } from '../contact/actions';
 import {
   lastVerified,
   pricingSourceUrl,
@@ -112,7 +116,7 @@ const coreProducts = [
   {
     name: 'SMS & MMS',
     icon: DeviceMobile,
-    description: 'Send and receive business texts and media from your Zoom numbers.',
+    description: 'Send and receive business texts and media from your business numbers.',
   },
   {
     name: 'Contact Center (Zoom Contact Center)',
@@ -181,14 +185,17 @@ export function ZoomPageClient() {
             className="max-w-4xl"
           >
             {/* Logo sits directly on white — no pill needed */}
+            {/* Partner mark leads and stays more prominent: the Insero lockup in the
+                site header measures 155x64 (mobile) / 194x80 (lg); this renders
+                84x20 / 101x24, smaller on both axes at both breakpoints. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/carriers/Zoom.png" alt="Zoom" className="h-8 w-auto mb-10" />
+            <img src="/carriers/Zoom.png" alt="Zoom" className="h-5 lg:h-6 w-auto mb-10" />
 
             <h1
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
               style={{ color: MIDNIGHT }}
             >
-              Zoom for Business —{' '}
+              Zoom Phone for Business —{' '}
               <span style={{ color: BLUE }}>AI-First Phone, Built In</span>
             </h1>
 
@@ -198,13 +205,23 @@ export function ZoomPageClient() {
               advisor who sources it for you at zero cost, with honest guidance on whether it actually fits.
             </p>
 
-            <Link href="/contact">
-              <button className={zoomButtonClass}>
+            {/* Both calls to action stay on this page — the quote form is in the
+                final section rather than a hand-off to /contact. */}
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <a href="#get-a-quote" className={zoomButtonClass}>
                 <Phone weight="fill" className="w-5 h-5" />
                 <span>Get a Free Quote</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              </button>
-            </Link>
+              </a>
+              <a
+                href="#pricing"
+                className="group inline-flex items-center gap-2 font-semibold text-lg hover:underline"
+                style={{ color: BLUE_TEXT }}
+              >
+                <span>See the pricing</span>
+                <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+              </a>
+            </div>
           </motion.div>
         </Container>
       </section>
@@ -215,11 +232,11 @@ export function ZoomPageClient() {
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
-              What Zoom actually is
+              What Zoom Workplace actually is
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
               <p>
-                Most people know Zoom as the video app. The fuller picture is Zoom Workplace — a cloud business
+                Most people know the Zoom brand for video. The fuller picture is Zoom Workplace — a cloud business
                 communications platform that brings phone, meetings, team chat, and a contact center into one
                 place. Zoom Phone is the piece that turns the video tool you already use into a complete{' '}
                 <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: BLUE }}>
@@ -234,8 +251,8 @@ export function ZoomPageClient() {
                 advantage is simply familiarity: adoption is fast because people already know the interface.
               </p>
               <p>
-                But what increasingly sets Zoom apart is its approach to AI. Where many providers treat capable
-                AI as a paid upgrade, Zoom includes its AI Companion with eligible paid plans at no extra cost.
+                But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
+                AI as a paid upgrade, Zoom Workplace includes AI Companion with eligible paid plans at no extra cost.
                 That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
                 most advanced agentic pieces still available as add-ons when you need them.
               </p>
@@ -256,9 +273,9 @@ export function ZoomPageClient() {
               Capable AI that&apos;s included, not billed as an add-on
             </h2>
             <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
-              Zoom&apos;s standout is that useful AI comes with the seat. AI Companion is included at no extra
-              cost on eligible paid plans — which makes Zoom the simplest, most cost-effective way to put real AI
-              in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
+              The Zoom Workplace standout is that useful AI comes with the seat. AI Companion is included at no extra
+              cost on eligible paid plans — which makes Zoom Phone one of the simplest, most cost-effective ways to
+              put real AI in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
               add-on.
             </p>
           </motion.div>
@@ -360,7 +377,11 @@ export function ZoomPageClient() {
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated voice reference. Every figure renders from
           @/data/zoom-pricing — nothing here is hardcoded. */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
+      <section
+        id="pricing"
+        className="py-20 lg:py-28 scroll-mt-24 lg:scroll-mt-28"
+        style={{ backgroundColor: TINT }}
+      >
         <Container>
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-14 lg:mb-16">
             <SectionEyebrow centered>Honest Pricing</SectionEyebrow>
@@ -433,10 +454,10 @@ export function ZoomPageClient() {
           <motion.div {...fadeUp} className="max-w-2xl mb-14">
             <SectionEyebrow>The Difference</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
-              Why source Zoom through Insero
+              Why source Zoom Phone through Insero
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
-              You can buy Zoom directly. Here&apos;s why most businesses are better off having an independent
+              You can buy Zoom Phone directly. Here&apos;s why most businesses are better off having an independent
               advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
               <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: BLUE }}>
                 every voice project
@@ -480,7 +501,7 @@ export function ZoomPageClient() {
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
-              Is Zoom right for you?
+              Is Zoom Phone right for you?
             </h2>
             <p className="text-lg md:text-xl text-[#64748b]">
               We&apos;d rather you land on the right platform than the one we&apos;re talking about. Here&apos;s
@@ -493,7 +514,7 @@ export function ZoomPageClient() {
               left={{
                 title: 'Great fit if…',
                 points: [
-                  'You already use Zoom for meetings and want one familiar app for calls too',
+                  'You already use Zoom Meetings and want one familiar app for calls too',
                   'You want capable AI included without assembling and paying for add-ons',
                   'You want simple, fast deployment your team adopts on day one',
                   'Your team is video-heavy and collaboration-first',
@@ -518,12 +539,12 @@ export function ZoomPageClient() {
               </div>
               <div>
                 <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
-                  A quick word on Zoom vs RingCentral
+                  A quick word on Zoom Phone vs RingCentral
                 </h3>
                 <p className="text-[#475569] leading-relaxed">
-                  If you&apos;re weighing the two: Zoom&apos;s advantage is value and simplicity — capable AI is
+                  If you&apos;re weighing the two: the Zoom Phone advantage is value and simplicity — capable AI is
                   included and the platform is famously easy to adopt, especially if your team already lives in
-                  Zoom meetings. RingCentral&apos;s advantage is the depth of its contact-center and
+                  Zoom Meetings. RingCentral&apos;s advantage is the depth of its contact-center and
                   conversation-intelligence stack, though its most powerful AI comes as add-ons. Read our honest
                   take on{' '}
                   <Link href="/ringcentral" className="font-semibold hover:underline" style={{ color: BLUE }}>
@@ -543,7 +564,7 @@ export function ZoomPageClient() {
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold" style={{ color: MIDNIGHT }}>
-              Zoom FAQ
+              Zoom Phone FAQ
             </h2>
           </motion.div>
           <motion.div {...fadeUp}>
@@ -581,30 +602,31 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
-        <Container size="sm" className="text-center">
-          <motion.div {...fadeUp}>
+      <section
+        id="get-a-quote"
+        className="pt-24 lg:pt-28 pb-20 lg:pb-24 scroll-mt-24 lg:scroll-mt-28"
+        style={{ backgroundColor: TINT }}
+      >
+        <Container size="md">
+          <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
             <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: BLUE }}>
               <span className="w-8 h-px" style={{ backgroundColor: BLUE }} />
               Let&apos;s Talk
               <span className="w-8 h-px" style={{ backgroundColor: BLUE }} />
             </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: MIDNIGHT }}>
-              Get a free Zoom quote
+              Get a free Zoom Phone quote
             </h2>
-            <p className="text-xl text-[#64748b] mb-10 max-w-xl mx-auto leading-relaxed">
+            <p className="text-xl text-[#64748b] leading-relaxed">
               Zero cost, honest advice. We&apos;ll price your real configuration — and tell you straight if
               something else fits you better.
             </p>
-            <Link href="/contact">
-              <button className={zoomButtonClass}>
-                <Phone weight="fill" className="w-5 h-5" />
-                <span>Get a Free Quote</span>
-                <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-              </button>
-            </Link>
+          </motion.div>
 
-            <div className="mt-6">
+          <motion.div {...fadeUp}>
+            <QuoteForm />
+
+            <div className="mt-8">
               <a
                 href={company.phoneLink}
                 className="inline-flex flex-col items-center text-[#64748b] transition-colors hover:text-[#00053D]"
@@ -622,6 +644,17 @@ export function ZoomPageClient() {
               </div>
             </div>
           </motion.div>
+        </Container>
+      </section>
+
+      {/* ===================== TRADEMARK CREDIT ===================== */}
+      {/* Last block of page content, above the site footer. */}
+      <section className="pb-10" style={{ backgroundColor: TINT }}>
+        <Container size="md">
+          <p className="text-xs text-slate-500 leading-relaxed text-center">
+            Zoom and the Zoom logo are trademarks of Zoom Video Communications, Inc., registered in the
+            United States and other countries.
+          </p>
         </Container>
       </section>
     </>
@@ -1115,6 +1148,195 @@ function AiPackagingCard() {
           is the sort of thing worth working through before you sign rather than after.
         </p>
       </div>
+    </div>
+  );
+}
+
+// --- On-page quote form ---------------------------------------------------
+// Same submission path as /contact and /ringcentral (submitContactForm →
+// Supabase insert + email + portal opportunity), so leads from this page land
+// where every other lead does. Source is tagged through the existing `service`
+// column since the schema has no dedicated source field.
+//
+// Keeping the form here rather than linking to /contact also means the call to
+// action resolves on a partner-owned landing page.
+
+interface QuoteFormValues {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  message: string;
+  _hp?: string;
+}
+
+function QuoteForm() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [formLoadedAt] = useState(() => Date.now());
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<QuoteFormValues>();
+
+  const onSubmit = async (data: QuoteFormValues) => {
+    setSubmitError(null);
+    const trimmedName = data.name.trim();
+    const firstSpace = trimmedName.indexOf(' ');
+    const firstName = firstSpace === -1 ? trimmedName : trimmedName.slice(0, firstSpace);
+    const lastName = firstSpace === -1 ? '' : trimmedName.slice(firstSpace + 1).trim();
+
+    const formData: ContactFormData = {
+      firstName,
+      lastName,
+      email: data.email,
+      phone: data.phone || undefined,
+      company: data.company || undefined,
+      // Tag the lead source through the existing service field.
+      services: ['Zoom (source: zoom-page)'],
+      message: data.message || undefined,
+      _hp: data._hp,
+      _t: formLoadedAt,
+    };
+
+    const result = await submitContactForm(formData);
+    if (result.success) {
+      setIsSubmitted(true);
+    } else {
+      setSubmitError(result.error || 'An unexpected error occurred. Please try again.');
+    }
+  };
+
+  const inputClass =
+    'w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors focus:outline-none';
+  const okBorder = 'border-[#CFE0FF] focus:border-[#0B5CFF]';
+  const errBorder = 'border-red-400 focus:border-red-500';
+
+  if (isSubmitted) {
+    return (
+      <div className="rounded-3xl bg-white p-8 lg:p-12 shadow-sm text-center">
+        <div
+          className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+          style={{ backgroundColor: TINT, color: BLUE }}
+        >
+          <CheckCircle weight="fill" className="w-10 h-10" />
+        </div>
+        <h3 className="text-2xl lg:text-3xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
+          Thanks — we&apos;ve got it
+        </h3>
+        <p className="text-[#64748b] max-w-md mx-auto mb-8">
+          We&apos;ll price your real Zoom Phone configuration and get back to you within one business day.
+        </p>
+        <button
+          onClick={() => {
+            setIsSubmitted(false);
+            setSubmitError(null);
+            reset();
+          }}
+          className="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full border-2 transition-colors"
+          style={{ color: BLUE_TEXT, borderColor: BLUE_TEXT }}
+        >
+          Send another request
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-3xl bg-white p-8 lg:p-10 shadow-sm">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* Honeypot — hidden from real users */}
+        <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+          <label htmlFor="zm-website">Website</label>
+          <input type="text" id="zm-website" tabIndex={-1} autoComplete="off" {...register('_hp')} />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label htmlFor="zm-name" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Name *</label>
+            <input
+              type="text" id="zm-name"
+              {...register('name', { required: 'Name is required' })}
+              className={`${inputClass} ${errors.name ? errBorder : okBorder}`}
+              placeholder="Jane Smith"
+              style={{ color: MIDNIGHT }}
+            />
+            {errors.name && <p className="mt-1.5 text-sm text-red-500">{errors.name.message}</p>}
+          </div>
+          <div>
+            <label htmlFor="zm-email" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Email *</label>
+            <input
+              type="email" id="zm-email"
+              {...register('email', { required: 'Email is required', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' } })}
+              className={`${inputClass} ${errors.email ? errBorder : okBorder}`}
+              placeholder="jane@company.com"
+              style={{ color: MIDNIGHT }}
+            />
+            {errors.email && <p className="mt-1.5 text-sm text-red-500">{errors.email.message}</p>}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label htmlFor="zm-phone" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Phone</label>
+            <input
+              type="tel" id="zm-phone" {...register('phone')}
+              className={`${inputClass} ${okBorder}`}
+              placeholder="(123) 456-7890"
+              style={{ color: MIDNIGHT }}
+            />
+          </div>
+          <div>
+            <label htmlFor="zm-company" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Company</label>
+            <input
+              type="text" id="zm-company" {...register('company')}
+              className={`${inputClass} ${okBorder}`}
+              placeholder="Your Company Inc."
+              style={{ color: MIDNIGHT }}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="zm-message" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>How can we help?</label>
+          <textarea
+            id="zm-message" {...register('message')} rows={3}
+            className={`${inputClass} ${okBorder} resize-none`}
+            placeholder="Seats, contact center needs, and whether you already use Zoom Meetings — anything that helps us price it right."
+            style={{ color: MIDNIGHT }}
+          />
+        </div>
+
+        {submitError && (
+          <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+            <WarningCircle weight="fill" className="w-5 h-5 text-red-500 flex-shrink-0" />
+            <p className="text-red-700 text-sm">{submitError}</p>
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full flex items-center justify-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-full shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ backgroundColor: BLUE }}
+        >
+          {isSubmitting ? (
+            <span>Sending…</span>
+          ) : (
+            <>
+              <span>Get My Free Zoom Phone Quote</span>
+              <PaperPlaneRight weight="fill" className="w-5 h-5" />
+            </>
+          )}
+        </button>
+
+        <p className="text-sm text-[#64748b] text-center">
+          By submitting, you agree to be contacted about your quote. We never share your information.
+        </p>
+      </form>
     </div>
   );
 }
