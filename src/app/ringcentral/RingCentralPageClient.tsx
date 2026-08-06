@@ -138,10 +138,10 @@ const aiAlsoIncluded = [
     name: 'AI Call Notes & personal assistant',
     icon: Sparkle,
     description:
-      'Included with RingEX™ plans: automatic call summaries, action items, and a personal AI assistant that drafts follow-ups — genuinely useful AI you get without an upgrade.',
+      'Included with RingEX plans: automatic call summaries, action items, and a personal AI assistant that drafts follow-ups — genuinely useful AI you get without an upgrade.',
   },
   {
-    name: 'RingCX™ — AI contact center',
+    name: 'RingCX — AI contact center',
     icon: Headset,
     description:
       'A full AI-powered contact center: real-time agent assist, automated CSAT scoring, live sentiment, and churn-risk detection so supervisors can step in before a customer walks.',
@@ -325,168 +325,6 @@ export function RingCentralPageClient() {
         </Container>
       </section>
 
-      {/* ===================== WHAT RINGCENTRAL IS ===================== */}
-      <section className="py-20 lg:py-28 bg-white">
-        <Container size="md">
-          <motion.div {...fadeUp}>
-            <SectionEyebrow>The Overview</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
-              What RingCentral actually is
-            </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
-              <p>
-                At its core, RingCentral is a cloud business communications platform: your phone system, video
-                meetings, team messaging, and business texting, all delivered as a subscription and managed from
-                one place. There&apos;s no PBX in a closet and no carrier lines to babysit — it&apos;s the modern{' '}
-                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-                  hosted UCaaS
-                </Link>{' '}
-                model, and RingCentral is one of the most established names in it.
-              </p>
-              <p>
-                It has a long-standing reputation for reliability — the kind of uptime and call quality that
-                businesses build their day around. But what increasingly sets RingCentral apart is the depth of
-                its AI layer. Where many providers bolt a summary feature onto calls and call it &quot;AI,&quot;
-                RingCentral has built an agentic stack that does real work before, during, and after a
-                conversation.
-              </p>
-              <p>
-                That makes it a strong choice for teams that live on the phone — sales, support, and any
-                business where the contact center is the front door. The catch, which we&apos;re upfront about
-                below, is that the most powerful pieces are priced as add-ons rather than bundled into the base
-                seat. Knowing which ones you actually need is most of the battle.
-              </p>
-            </div>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* ===================== AI CAPABILITIES (hook) ===================== */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
-        <Container>
-          <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/10" style={{ color: PRIMARY_DARK }}>
-              <Sparkle weight="fill" className="w-4 h-4" />
-              <span className="text-sm font-semibold">The AI Layer</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: INK }}>
-              One of the deepest agentic voice-AI stacks in the market
-            </h2>
-            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
-              RingCentral&apos;s agentic Voice AI suite spans the entire call — an AI that greets and routes
-              callers, assists your reps live, and turns finished conversations into coaching and CRM updates.
-              Here&apos;s the honest breakdown of what each piece does.
-            </p>
-          </motion.div>
-
-          {/* Before / During / After */}
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 ${cardGridRows}`}>
-            {aiCapabilities.map((cap, index) => {
-              const Icon = cap.icon;
-              return (
-                <motion.div
-                  key={cap.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`${subgridCard} hover:shadow-md transition-shadow duration-300`}
-                >
-                  <CardHeader eyebrow={cap.stage} icon={Icon} title={cap.name} />
-                  <div className={cardBodyClass}>
-                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Also included / contact center */}
-          <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${cardGridRows}`}>
-            {aiAlsoIncluded.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={subgridCard}
-                >
-                  <CardHeader icon={Icon} title={item.name} titleClassName="text-lg" />
-                  <div className={cardBodyClass}>
-                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </Container>
-      </section>
-
-      {/* ===================== PRODUCT PILLARS ===================== */}
-      <section className="py-20 lg:py-28 bg-white">
-        <Container>
-          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
-            <SectionEyebrow centered>The Platform</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
-              Three pillars, one platform
-            </h2>
-            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
-              RingCentral is built around three product families. Here&apos;s what each one covers — and where a
-              separate license comes into play.
-            </p>
-          </motion.div>
-
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 ${cardGridRows}`}>
-            {productPillars.map((pillar, index) => {
-              const Icon = pillar.icon;
-              return (
-                <motion.div
-                  key={pillar.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`${subgridCard} hover:shadow-xl transition-all duration-300`}
-                >
-                  <CardHeader icon={Icon} title={pillar.name} titleClassName="text-xl lg:text-2xl" />
-                  <div className={cardBodyClass}>
-                    <p className="text-[var(--color-gray-500)] leading-relaxed">{pillar.description}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* The full building-block breakdown stays available below the pillars. */}
-          {/* These were tinted cards on a white section. As banded cards they'd
-              be tint-on-tint, so the body takes the white fill and the band
-              carries the tint — matching the pillars directly above. */}
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 lg:mt-8 ${cardGridRows}`}>
-            {coreProducts.map((product, index) => {
-              const Icon = product.icon;
-              return (
-                <motion.div
-                  key={product.name}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className={subgridCard}
-                >
-                  <CardHeader icon={Icon} title={product.name} level={4} />
-                  <div className={cardBodyClass}>
-                    <p className="text-[var(--color-gray-500)] leading-relaxed text-sm">{product.description}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </Container>
-      </section>
-
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated all-in reference. Every figure renders from
           @/data/ringcentral-pricing — nothing here is hardcoded. */}
@@ -600,8 +438,173 @@ export function RingCentralPageClient() {
         </Container>
       </section>
 
-      {/* ===================== IS IT RIGHT FOR YOU ===================== */}
+      {/* ===================== WHAT RINGCENTRAL IS ===================== */}
       <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
+        <Container size="md">
+          <motion.div {...fadeUp}>
+            <SectionEyebrow>The Overview</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
+              What RingCentral actually is
+            </h2>
+            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
+              <p>
+                At its core, RingCentral is a cloud business communications platform: your phone system, video
+                meetings, team messaging, and business texting, all delivered as a subscription and managed from
+                one place. There&apos;s no PBX in a closet and no carrier lines to babysit — it&apos;s the modern{' '}
+                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
+                  hosted UCaaS
+                </Link>{' '}
+                model, and RingCentral is one of the most established names in it.
+              </p>
+              <p>
+                It has a long-standing reputation for reliability — the kind of uptime and call quality that
+                businesses build their day around. But what increasingly sets RingCentral apart is the depth of
+                its AI layer. Where many providers bolt a summary feature onto calls and call it &quot;AI,&quot;
+                RingCentral has built an agentic stack that does real work before, during, and after a
+                conversation.
+              </p>
+              <p>
+                That makes it a strong choice for teams that live on the phone — sales, support, and any
+                business where the contact center is the front door. The catch, which we&apos;re upfront about
+                below, is that the most powerful pieces are priced as add-ons rather than bundled into the base
+                seat. Knowing which ones you actually need is most of the battle.
+              </p>
+            </div>
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* ===================== AI CAPABILITIES (hook) ===================== */}
+      <section className="py-20 lg:py-28 bg-white">
+        <Container>
+          <motion.div {...fadeUp} className="max-w-3xl mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/10" style={{ color: PRIMARY_DARK }}>
+              <Sparkle weight="fill" className="w-4 h-4" />
+              <span className="text-sm font-semibold">The AI Layer</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: INK }}>
+              One of the deepest agentic voice-AI stacks in the market
+            </h2>
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
+              RingCentral&apos;s agentic Voice AI suite spans the entire call — an AI that greets and routes
+              callers, assists your reps live, and turns finished conversations into coaching and CRM updates.
+              Here&apos;s the honest breakdown of what each piece does.
+            </p>
+          </motion.div>
+
+          {/* Before / During / After */}
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 ${cardGridRows}`}>
+            {aiCapabilities.map((cap, index) => {
+              const Icon = cap.icon;
+              return (
+                <motion.div
+                  key={cap.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={`${subgridCard} hover:shadow-md transition-shadow duration-300`}
+                >
+                  <CardHeader eyebrow={cap.stage} icon={Icon} title={cap.name} />
+                  <div className={cardBodyClass}>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Also included / contact center */}
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${cardGridRows}`}>
+            {aiAlsoIncluded.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={subgridCard}
+                >
+                  <CardHeader icon={Icon} title={item.name} titleClassName="text-lg" />
+                  <div className={cardBodyClass}>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===================== PRODUCT PILLARS ===================== */}
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
+        <Container>
+          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
+            <SectionEyebrow centered>The Platform</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
+              Three pillars, one platform
+            </h2>
+            {/* gray-600, not gray-500: this intro sits directly on the tint now,
+                where gray-500 measures 4.42:1 and misses AA. Inside the cards
+                below, gray-500 is still on white and stays. */}
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)]">
+              RingCentral is built around three product families. Here&apos;s what each one covers — and where a
+              separate license comes into play.
+            </p>
+          </motion.div>
+
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 ${cardGridRows}`}>
+            {productPillars.map((pillar, index) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={pillar.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className={`${subgridCard} hover:shadow-xl transition-all duration-300`}
+                >
+                  <CardHeader icon={Icon} title={pillar.name} titleClassName="text-xl lg:text-2xl" />
+                  <div className={cardBodyClass}>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed">{pillar.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* The full building-block breakdown stays available below the pillars. */}
+          {/* These were tinted cards on a white section. As banded cards they'd
+              be tint-on-tint, so the body takes the white fill and the band
+              carries the tint — matching the pillars directly above. */}
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 lg:mt-8 ${cardGridRows}`}>
+            {coreProducts.map((product, index) => {
+              const Icon = product.icon;
+              return (
+                <motion.div
+                  key={product.name}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className={subgridCard}
+                >
+                  <CardHeader icon={Icon} title={product.name} level={4} />
+                  <div className={cardBodyClass}>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-sm">{product.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===================== IS IT RIGHT FOR YOU ===================== */}
+      <section className="py-20 lg:py-28 bg-white">
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
@@ -658,7 +661,7 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== FAQ ===================== */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
@@ -701,7 +704,7 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== FINAL CTA — LEAD FORM ===================== */}
-      <section id="get-a-quote" className="scroll-mt-24 lg:scroll-mt-28 pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
+      <section id="get-a-quote" className="scroll-mt-24 lg:scroll-mt-28 pt-24 lg:pt-28 pb-20 lg:pb-24 bg-white">
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
             <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: PRIMARY_DARK }}>
@@ -744,7 +747,7 @@ export function RingCentralPageClient() {
 
       {/* ===================== TRADEMARK CREDIT ===================== */}
       {/* Last block of page content, above the site footer. */}
-      <section className="pb-10" style={{ backgroundColor: TINT }}>
+      <section className="pb-10 bg-white">
         <Container size="md">
           <p className="text-xs text-[var(--color-gray-600)] leading-relaxed text-center">
             RingCentral is a registered trademark of RingCentral, Inc. Other third-party marks referenced
@@ -895,8 +898,11 @@ function PricedDifferentlyBadge() {
 }
 
 const TABS = [
-  { id: 'ringex', label: `Business Phone (${ringEx.name})` },
-  { id: 'ringcx', label: `Contact Center (${ringCx.name})` },
+  // First-use trademark symbols live here: after the pricing section moved
+  // above the AI layer, these tab labels are the first RingEX / RingCX
+  // mentions in DOM order. Later mentions carry no symbol.
+  { id: 'ringex', label: `Business Phone (${ringEx.name}™)` },
+  { id: 'ringcx', label: `Contact Center (${ringCx.name}™)` },
   { id: 'air', label: aiReceptionist.name },
   { id: 'other', label: 'Everything Else' },
 ] as const;
