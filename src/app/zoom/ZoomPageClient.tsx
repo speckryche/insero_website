@@ -196,7 +196,7 @@ export function ZoomPageClient() {
                 site header measures 155x64 (mobile) / 194x80 (lg); this renders
                 84x20 / 101x24, smaller on both axes at both breakpoints. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/carriers/Zoom.png" alt="Zoom" className="h-5 lg:h-6 w-auto mb-10" />
+            <img src="/carriers/Zoom_Logo_Bloom_RGB.png" alt="Zoom" className="h-5 lg:h-6 w-auto mb-10" />
 
             <h1
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
