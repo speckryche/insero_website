@@ -227,29 +227,37 @@ export function RingCentralPageClient() {
       {/* ============================ HERO ============================ */}
       {/* WHITE page. The standard Insero light header sits above; the RC
           treatment begins here. No dark-hero attribute. */}
-      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
-        <Container className="relative z-10">
-          {/* Gradient panel. Inset from the page edges by the Container's own
-              padding, so its edges line up with the stats band and every
-              section below rather than floating at some unrelated width.
+      {/* Full-bleed gradient, the way every tint section below it works: the
+          background is on the section so it runs edge to edge, and only the
+          Container constrains the content. The gradient used to sit on an inset
+          rounded panel with its own horizontal padding, which pushed the hero's
+          text edge 24–56px inside the sections beneath it; dropping that panel
+          is what brings the two back into line.
 
-              The warm end is color-mix'd off --color-accent rather than being a
-              new hex: 8% accent over white lands at roughly #FFF4EC, which
-              picks up the video's warmth without putting another brand colour
-              in the palette. color-mix is safe here — this file already ships
-              grid-rows-subgrid, which has a narrower support floor.
+          Horizontal rather than diagonal, cool end first: primary-50 sits on
+          the left under the copy and the cream on the right under the media
+          card, so the warmth tracks the video instead of washing under the
+          headline. The warm end is color-mix'd off --color-accent rather than
+          being a new hex — 8% accent over white lands at roughly #FFF4EC, which
+          picks up the video's warmth without putting another brand colour in
+          the palette. color-mix is safe here: this file already ships
+          grid-rows-subgrid, which has a narrower support floor.
 
-              primary-50 is the darkest stop of the three (relative luminance
-              0.882 against the cream's 0.920), so it is the worst case for
-              every piece of text on the panel. Measured there: ink H1 13.79:1,
-              gray-600 body 6.82:1, primary-dark link 7.28:1. */}
-          <div
-            className="rounded-3xl overflow-hidden px-6 sm:px-10 lg:px-14 py-14 lg:py-20"
-            style={{
-              background:
-                'linear-gradient(135deg, var(--color-primary-50) 0%, #ffffff 48%, color-mix(in srgb, var(--color-accent) 8%, #ffffff) 100%)',
-            }}
-          >
+          primary-50 is the darkest of the three stops (relative luminance 0.882
+          against white's 1.000 and the cream's 0.920) and it is also the end
+          the text sits over, so it is the worst case twice over. Measured
+          there: ink H1 13.79:1, gray-600 body 6.82:1, primary-dark link
+          7.28:1. */}
+      <section
+        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 overflow-hidden"
+        style={{
+          background:
+            'linear-gradient(90deg, var(--color-primary-50) 0%, #ffffff 50%, color-mix(in srgb, var(--color-accent) 8%, #ffffff) 100%)',
+        }}
+      >
+        {/* py here rather than on the section so the total vertical rhythm
+            matches what the inset panel used to contribute. */}
+        <Container className="relative z-10 py-14 lg:py-20">
           {/* Media column takes 1.1fr against the text's 1fr, so the card reads
               as the equal partner it is on RC's own hero rather than the
               smaller half. minmax(0,…) on both tracks stops the long H1 and the
@@ -317,7 +325,6 @@ export function RingCentralPageClient() {
             >
               <HeroVideo />
             </motion.div>
-          </div>
           </div>
         </Container>
       </section>
