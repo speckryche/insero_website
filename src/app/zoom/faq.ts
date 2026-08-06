@@ -14,7 +14,7 @@ export const zoomFaq: ZoomFAQ[] = [
   },
   {
     q: 'How much does Zoom Phone cost?',
-    a: "Zoom Phone is priced per user, per month, with competitive entry pricing and month-to-month options, and it bundles neatly with Zoom Workplace licenses if you're already paying for meetings. The headline advantage is that AI Companion is included rather than billed separately. Where the number moves is the advanced add-ons — AI Concierge, Custom AI Companion, and engagement or power packs. We price your actual configuration so the quote reflects your real setup, not a base-plan teaser. Ask for a free quote and we'll put real figures in front of you.",
+    a: "Zoom Phone plans start at $16 per user, per month on annual billing for US & CA Unlimited, $20.50 for Pro Plus and $24.50 for Business Plus; a metered option is $10.50, selected at checkout rather than sold as a separate tier. Zoom Contact Center is licensed separately, starting at $69, $99, or $149 per user, per month. The full published rate card — every tier, both add-on groups, and the Virtual Agent Receptionist that comes with the seat — is laid out in the pricing cards on this page, under the Business Phone, Contact Center, and Add-ons tabs, so you can add up your own configuration. The headline is that the Virtual Agent Receptionist is included with Zoom Phone plans rather than billed separately. Where the number moves is the advanced add-ons. Those are list prices; ask us for a quote and we'll price your real configuration.",
   },
   {
     q: 'Is Zoom AI Companion really free?',

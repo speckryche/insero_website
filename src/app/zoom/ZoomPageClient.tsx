@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -27,6 +28,18 @@ import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
+import {
+  lastVerified,
+  pricingSourceUrl,
+  zoomPhone,
+  zoomContactCenter,
+  addOnGroups as zoomAddOnGroups,
+  receptionistPackaging,
+  contactCenterAiDeltas,
+  contactCenterAiDeltasFavouringRc,
+  formatUsd,
+  type PlanTier as ZoomPlanTier,
+} from '@/data/zoom-pricing';
 import { zoomFaq } from './faq';
 
 // --- Zoom brand palette ---------------------------------------------------
@@ -345,50 +358,69 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== HONEST PRICING ===================== */}
+      {/* The consolidated voice reference. Every figure renders from
+          @/data/zoom-pricing — nothing here is hardcoded. */}
       <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
-        <Container size="md">
-          <motion.div {...fadeUp}>
-            <SectionEyebrow>Honest Pricing</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
-              The sticker price isn&apos;t always the all-in price
+        <Container>
+          <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-14 lg:mb-16">
+            <SectionEyebrow centered>Honest Pricing</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: MIDNIGHT }}>
+              What Zoom Phone actually costs — all of it, in one place
             </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed mb-10">
-              <p>
-                Zoom Phone is priced per user, per month, with competitive entry pricing and month-to-month
-                options, and it bundles neatly with Zoom Workplace licenses if you&apos;re already paying for
-                meetings. The standout advantage is that AI Companion is included rather than billed separately —
-                so a lot of genuinely useful AI is already in the price.
-              </p>
-              <p>
-                Where the number moves is the advanced tier. The most powerful pieces — AI Concierge, Custom AI
-                Companion, the deeper Revenue Accelerator tiers, and the Power Pack / Customer Engagement Pack —
-                are paid add-ons. So even with Zoom&apos;s strong included baseline, the base sticker isn&apos;t
-                always the all-in number once you add the advanced capabilities you came for.
-              </p>
-            </div>
+            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
+              Zoom publishes phone and contact center pricing on separate pages, with the add-ons
+              inside horizontally-scrolling carousels. A real voice deployment usually spans all of
+              it, so the published rates are brought together here — seats, contact center, and the
+              add-ons — for you to price in one place.
+            </p>
+          </motion.div>
 
-            <div className="rounded-3xl bg-white p-7 lg:p-8 shadow-sm">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-[#0B5CFF]/10" style={{ color: BLUE }}>
-                  <CurrencyDollar weight="fill" className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
-                    Why this is exactly where an advisor earns their keep
-                  </h3>
-                  <p className="text-[#475569] leading-relaxed">
-                    Because the all-in number depends on your plan mix and add-ons, the honest answer to
-                    &quot;what does Zoom cost?&quot; is &quot;it depends — let&apos;s price your real setup.&quot;
-                    We don&apos;t publish figures here that would be stale next quarter or read as a promise we
-                    can&apos;t keep. Instead, we&apos;ll build your actual configuration — seats, license
-                    bundling, the add-ons that matter, and contact center if you need it — and put a real,
-                    current number in front of you. Curious what you&apos;re overpaying for elsewhere?{' '}
-                    <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: BLUE }}>
-                      Try our cost estimator
-                    </Link>{' '}
-                    or just ask for a quote.
-                  </p>
-                </div>
+          <motion.div {...fadeUp}>
+            <ZoomPricingTabs />
+          </motion.div>
+
+          {/* Sits outside the tab system so it is visible whichever tab is open. */}
+          <motion.div {...fadeUp} className="max-w-5xl mx-auto mt-16 lg:mt-20">
+            <AiPackagingCard />
+          </motion.div>
+
+          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[#475569] text-center leading-relaxed">
+            Zoom&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
+            <a
+              href={pricingSourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold hover:underline"
+              style={{ color: BLUE_TEXT }}
+            >
+              zoom.com
+            </a>
+            .
+          </motion.p>
+
+          <motion.div {...fadeUp} className="max-w-5xl mx-auto mt-12 rounded-3xl bg-white p-8 lg:p-10 shadow-sm">
+            <div className="flex items-start gap-5">
+              <div
+                className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl"
+                style={{ backgroundColor: TINT, color: BLUE }}
+              >
+                <CurrencyDollar weight="fill" className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
+                  Where an advisor actually earns their keep
+                </h3>
+                <p className="text-[#475569] leading-relaxed text-lg">
+                  We publish the list pricing because you should be able to see it before you talk to
+                  anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
+                  pricing on your behalf, structuring the plan mix and contract term around how
+                  you&apos;ll actually use the system, and making sure a licence you are already
+                  paying for is not bought twice. Curious what you&apos;re overpaying for elsewhere?{' '}
+                  <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
+                    Try our cost estimator
+                  </Link>{' '}
+                  or just ask for a quote.
+                </p>
               </div>
             </div>
           </motion.div>
@@ -593,6 +625,497 @@ export function ZoomPageClient() {
         </Container>
       </section>
     </>
+  );
+}
+
+// --- Pricing UI -----------------------------------------------------------
+// The same tabbed card layout as /ringcentral — same card anatomy, same
+// always-mounted panels, same billing toggle — rendered in Zoom's palette
+// rather than Insero's.
+//
+// Two rules this section follows strictly:
+//  1. No rate is written here. Every figure renders from @/data/zoom-pricing,
+//     including the savings percentages, which are read out of the published
+//     savings notes rather than restated.
+//  2. All three panels stay mounted at all times and are hidden with CSS, so a
+//     crawler sees the contact center and add-on rates even though the phone
+//     tab is the one that opens by default.
+
+// Card header band: one step deeper than TINT (1.20x), the same relationship
+// /ringcentral uses, so a band on a tinted section still reads as part of the
+// card rather than as a recess in the page.
+const BAND = '#CFE0FF';
+
+// Accent TEXT, not BLUE. Zoom Blue clears AA on white (5.26:1) but fails on
+// the band (3.95:1); the darker blue clears both — 5.82:1 on the band, 6.96:1
+// on TINT, 7.75:1 on white. BLUE stays on icons and fills.
+const BLUE_TEXT = BLUE_HOVER;
+
+// Borderless and heavily rounded, matching the cards already on this page. The
+// band-to-white transition is its own divider, so no rule is needed between
+// them.
+const zoomCardClass = 'rounded-3xl bg-white shadow-sm overflow-hidden';
+const zoomCardBody = 'p-7 lg:p-8';
+const zoomGridRows = 'grid-rows-[auto_1fr]';
+const zoomSubgridCard = `row-span-2 grid grid-rows-subgrid ${zoomCardClass}`;
+
+/** Pull "15%" out of a published savings note so a toggle label never restates
+ *  a number the data file already owns. The three groups differ. */
+function savingsPercent(note: string): string | null {
+  return note.match(/\d+%/)?.[0] ?? null;
+}
+
+function ZoomCardHeader({
+  title,
+  description,
+  badge,
+  eyebrow,
+}: {
+  title: string;
+  description?: string;
+  badge?: React.ReactNode;
+  eyebrow?: string;
+}) {
+  return (
+    <div className="px-7 lg:px-8 py-6" style={{ backgroundColor: BAND }}>
+      {eyebrow && (
+        <span
+          className="block text-xs font-semibold uppercase tracking-wider mb-2"
+          style={{ color: BLUE_TEXT }}
+        >
+          {eyebrow}
+        </span>
+      )}
+      {/* min-h pins the row to the heading's line box so a badge cannot make one
+          card's band taller than its neighbours' and misalign the boundaries. */}
+      <div className="flex items-center justify-between gap-3 min-h-7">
+        <h3 className="font-display font-bold text-xl" style={{ color: MIDNIGHT }}>
+          {title}
+        </h3>
+        {badge}
+      </div>
+      {description && (
+        <p className="mt-3 text-[15px] leading-relaxed text-[#475569]">{description}</p>
+      )}
+    </div>
+  );
+}
+
+function IncludedBadge({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="flex-shrink-0 px-3 py-1 rounded-full text-white text-[11px] font-semibold uppercase tracking-wider"
+      style={{ backgroundColor: BLUE }}
+    >
+      {children}
+    </span>
+  );
+}
+
+const ZOOM_TABS = [
+  { id: 'phone', label: `Business Phone (${zoomPhone.name})` },
+  { id: 'cc', label: 'Contact Center' },
+  { id: 'addons', label: 'Add-ons' },
+] as const;
+
+type ZoomTabId = (typeof ZOOM_TABS)[number]['id'];
+
+function ZoomPricingTabs() {
+  const [active, setActive] = useState<ZoomTabId>('phone');
+  // Billing choice is shared across the panels, so switching tabs does not
+  // silently reset what the visitor picked.
+  const [annual, setAnnual] = useState(true);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const last = ZOOM_TABS.length - 1;
+    let next = -1;
+    if (event.key === 'ArrowRight') next = index === last ? 0 : index + 1;
+    else if (event.key === 'ArrowLeft') next = index === 0 ? last : index - 1;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = last;
+    if (next < 0) return;
+    event.preventDefault();
+    setActive(ZOOM_TABS[next].id);
+    tabRefs.current[next]?.focus();
+  };
+
+  return (
+    <div>
+      <div className="flex justify-center">
+        <div
+          role="tablist"
+          aria-label="Zoom Phone and Zoom Contact Center pricing categories"
+          className="inline-flex flex-wrap justify-center gap-1 p-1.5 rounded-full bg-white shadow-sm"
+        >
+          {ZOOM_TABS.map((tab, index) => {
+            const selected = active === tab.id;
+            return (
+              <button
+                key={tab.id}
+                ref={(node) => {
+                  tabRefs.current[index] = node;
+                }}
+                type="button"
+                role="tab"
+                id={`zoom-tab-${tab.id}`}
+                aria-selected={selected}
+                aria-controls={`zoom-panel-${tab.id}`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setActive(tab.id)}
+                onKeyDown={(event) => handleKeyDown(event, index)}
+                className="px-5 sm:px-7 py-3 rounded-full text-sm sm:text-base font-semibold transition-colors duration-200"
+                style={
+                  selected
+                    ? { backgroundColor: BLUE, color: '#ffffff' }
+                    : { color: '#475569' }
+                }
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-12 lg:mt-14">
+        <ZoomTabPanel id="phone" active={active}>
+          <PlanPanel
+            tiers={zoomPhone.tiers}
+            savingsNote={zoomPhone.annualSavingsNote}
+            annual={annual}
+            onToggle={setAnnual}
+            included={<IncludedReceptionistCard />}
+            notes={[
+              `${zoomPhone.metered.name}: ${formatUsd(zoomPhone.metered.annual)} per user, per month billed annually, ${formatUsd(zoomPhone.metered.monthly)} month-to-month. ${zoomPhone.metered.note}`,
+            ]}
+          />
+        </ZoomTabPanel>
+
+        <ZoomTabPanel id="cc" active={active}>
+          <PlanPanel
+            tiers={zoomContactCenter.tiers}
+            savingsNote={zoomContactCenter.annualSavingsNote}
+            annual={annual}
+            onToggle={setAnnual}
+            startingAt
+            notes={[zoomContactCenter.startingAtNote, zoomContactCenter.licensingNote]}
+          />
+        </ZoomTabPanel>
+
+        <ZoomTabPanel id="addons" active={active}>
+          <AddOnsPanel />
+        </ZoomTabPanel>
+      </div>
+    </div>
+  );
+}
+
+function ZoomTabPanel({
+  id,
+  active,
+  children,
+}: {
+  id: ZoomTabId;
+  active: ZoomTabId;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      role="tabpanel"
+      id={`zoom-panel-${id}`}
+      aria-labelledby={`zoom-tab-${id}`}
+      className={active === id ? '' : 'hidden'}
+    >
+      {children}
+    </div>
+  );
+}
+
+// Tier cards carry no descriptive blurb. The data file holds published rates
+// only, and writing "what this tier includes" copy without a verified source
+// would be asserting the contents of a real product's plan.
+function PlanPanel({
+  tiers,
+  savingsNote,
+  annual,
+  onToggle,
+  notes,
+  included,
+  startingAt = false,
+}: {
+  tiers: readonly ZoomPlanTier[];
+  savingsNote: string;
+  annual: boolean;
+  onToggle: (next: boolean) => void;
+  notes: string[];
+  included?: React.ReactNode;
+  startingAt?: boolean;
+}) {
+  return (
+    <div>
+      <BillingToggle annual={annual} onToggle={onToggle} savingsNote={savingsNote} />
+
+      <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7 ${zoomGridRows}`}>
+        {tiers.map((tier) => (
+          <PlanCard key={tier.name} tier={tier} annual={annual} startingAt={startingAt} />
+        ))}
+      </div>
+
+      {included && <div className="mt-6">{included}</div>}
+
+      <div className="mt-10 space-y-2 text-center">
+        {notes.map((note) => (
+          <p key={note} className="text-[15px] text-[#475569] max-w-3xl mx-auto leading-relaxed">
+            {note}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BillingToggle({
+  annual,
+  onToggle,
+  savingsNote,
+}: {
+  annual: boolean;
+  onToggle: (next: boolean) => void;
+  savingsNote: string;
+}) {
+  const percent = savingsPercent(savingsNote);
+  return (
+    <div className="flex justify-center sm:justify-end mb-8">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={annual}
+        onClick={() => onToggle(!annual)}
+        className="group inline-flex items-center gap-3 rounded-full px-2 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        style={{ outlineColor: BLUE }}
+      >
+        <span
+          aria-hidden="true"
+          className="relative flex-shrink-0 w-12 h-7 rounded-full transition-colors duration-200"
+          style={{ backgroundColor: annual ? BLUE : '#cbd5e1' }}
+        >
+          <span
+            className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
+              annual ? 'translate-x-5' : 'translate-x-0'
+            }`}
+          />
+        </span>
+        <span className="text-[15px] font-semibold" style={{ color: MIDNIGHT }}>
+          {percent ? `Save up to ${percent} by paying annually` : savingsNote}
+        </span>
+      </button>
+    </div>
+  );
+}
+
+function PlanCard({
+  tier,
+  annual,
+  startingAt,
+}: {
+  tier: ZoomPlanTier;
+  annual: boolean;
+  startingAt: boolean;
+}) {
+  return (
+    <div className={zoomSubgridCard}>
+      <ZoomCardHeader title={tier.name} />
+      <div className={`flex flex-col ${zoomCardBody}`}>
+        <div className="flex items-baseline gap-3 flex-wrap">
+          {startingAt && (
+            <span className="text-sm font-semibold text-[#64748b]">from</span>
+          )}
+          <span className="font-display font-bold text-5xl tracking-tight" style={{ color: MIDNIGHT }}>
+            {formatUsd(annual ? tier.annual : tier.monthly)}
+          </span>
+          {annual && (
+            <span className="text-xl text-[#64748b] line-through">{formatUsd(tier.monthly)}</span>
+          )}
+        </div>
+        <p className="mt-2 text-sm text-[#64748b]">
+          /user/month {annual ? 'paid annually' : 'billed monthly'}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// The included receptionist is the point of the page, so it gets a card of its
+// own rather than a row in the add-on table — the same reasoning that keeps
+// RingCentral's usage-priced receptionist out of its per-user tables.
+function IncludedReceptionistCard() {
+  const feature = zoomPhone.includedFeature;
+  return (
+    <div className={zoomCardClass}>
+      <ZoomCardHeader
+        title={feature.name}
+        eyebrow="Included with the seat"
+        badge={<IncludedBadge>Included</IncludedBadge>}
+      />
+      <div className={zoomCardBody}>
+        <div className="flex items-baseline gap-3 flex-wrap">
+          <span className="font-display font-bold text-4xl tracking-tight" style={{ color: MIDNIGHT }}>
+            {feature.allowance}
+          </span>
+          <span className="text-lg text-[#64748b]">at no additional charge</span>
+        </div>
+        <p className="mt-3 text-[15px] text-[#475569] leading-relaxed">
+          {feature.note} {feature.trialNote}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function AddOnsPanel() {
+  return (
+    <div className="space-y-14">
+      {zoomAddOnGroups.map((group) => (
+        <div key={group.group}>
+          <div className="mb-7">
+            <h3 className="text-2xl font-display font-bold" style={{ color: MIDNIGHT }}>
+              {group.group}
+            </h3>
+            <p className="mt-1.5 text-[15px] text-[#475569]">
+              {[group.unit, group.annualSavingsNote, group.requirement].filter(Boolean).join(' · ')}
+            </p>
+          </div>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ${zoomGridRows}`}>
+            {group.items.map((item) => (
+              <AddOnCard key={item.name} name={item.name} price={item.price} note={item.note} unit={group.unit} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AddOnCard({
+  name,
+  price,
+  note,
+  unit,
+}: {
+  name: string;
+  price: number | null;
+  note?: string;
+  unit: string;
+}) {
+  return (
+    <div className={zoomSubgridCard}>
+      <ZoomCardHeader title={name} />
+      <div className={`flex flex-col ${zoomCardBody}`}>
+        {note && <p className="text-[15px] text-[#475569] leading-relaxed mb-6">{note}</p>}
+        <div className="mt-auto">
+          <span className="font-display font-bold text-2xl" style={{ color: MIDNIGHT }}>
+            {price === null ? 'Contact us for pricing' : formatUsd(price)}
+          </span>
+          {price !== null && <span className="block mt-1 text-sm text-[#64748b]">{unit}</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// The packaging comparison, computed in the data layer from both published
+// rate cards. Both directions are stated: neither vendor comes out ahead on
+// every line, and publishing only the flattering half would not be honest.
+function AiPackagingCard() {
+  const p = receptionistPackaging;
+  return (
+    <div className={`${zoomCardClass} p-8 lg:p-12`}>
+      <div className="flex items-start gap-5 mb-8">
+        <div
+          className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl"
+          style={{ backgroundColor: TINT, color: BLUE }}
+        >
+          <Sparkle weight="fill" className="w-6 h-6" />
+        </div>
+        <div>
+          <h3 className="text-2xl sm:text-3xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
+            The AI is already in the price
+          </h3>
+          <p className="text-lg text-[#475569] leading-relaxed">
+            The two platforms package voice AI differently. Zoom Phone plans bundle the{' '}
+            {p.zoomFeature} into the seat; RingCentral licenses its equivalent separately. That is a
+            difference in packaging rather than a verdict on either platform, and it favours buyers
+            who want capable AI without assembling add-ons.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="rounded-2xl p-7 lg:p-8" style={{ backgroundColor: TINT }}>
+          <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: BLUE_TEXT }}>
+            Zoom Phone
+          </p>
+          <div className="font-display font-bold text-3xl" style={{ color: MIDNIGHT }}>
+            Included
+          </div>
+          <p className="mt-2 text-[15px] text-[#475569] leading-relaxed">
+            {p.zoomFeature}, {p.zoomAllowance}, at no additional charge with a Zoom Phone plan.
+          </p>
+        </div>
+
+        <div className="rounded-2xl p-7 lg:p-8" style={{ backgroundColor: TINT }}>
+          <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: BLUE_TEXT }}>
+            RingCentral
+          </p>
+          <div className="font-display font-bold text-3xl" style={{ color: MIDNIGHT }}>
+            {formatUsd(p.rcMonthly)}
+            <span className="text-base font-normal text-[#64748b]">/month</span>
+          </div>
+          <p className="mt-2 text-[15px] text-[#475569] leading-relaxed">
+            {p.rcFeature}, {p.rcAllowance}, {p.rcBillingUnit} — {formatUsd(p.rcAnnualized)} a year.
+          </p>
+        </div>
+      </div>
+
+      <p className="mt-6 text-[15px] text-[#64748b] leading-relaxed">{p.caveat}</p>
+
+      {/* The counterweight. Same computation, opposite direction. */}
+      <div className="mt-8 pt-8 border-t border-[#CFE0FF]">
+        <h4 className="text-xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
+          On the contact center side the comparison narrows
+        </h4>
+        <p className="text-[15px] text-[#475569] leading-relaxed mb-6">
+          The included-AI advantage is a Zoom Phone story. Among the contact center AI capabilities
+          both vendors publish a rate for, {contactCenterAiDeltasFavouringRc.length} of{' '}
+          {contactCenterAiDeltas.length} are dearer on the Zoom Contact Center side.
+        </p>
+        <ul className="space-y-3">
+          {contactCenterAiDeltas.map((d) => (
+            <li
+              key={d.capability}
+              className="flex flex-wrap justify-between items-baseline gap-x-4 gap-y-1 text-[15px] text-[#475569]"
+            >
+              <span className="font-semibold" style={{ color: MIDNIGHT }}>{d.capability}</span>
+              <span>
+                Zoom Contact Center {formatUsd(d.zoomMonthly)} · RingCentral {formatUsd(d.rcMonthly)}
+                {d.delta === 0 ? (
+                  <span className="ml-2 text-[#64748b]">— matched</span>
+                ) : (
+                  <span className="ml-2 font-semibold" style={{ color: BLUE_TEXT }}>
+                    — {formatUsd(Math.abs(d.delta))} {d.delta > 0 ? 'more' : 'less'} a month
+                  </span>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 text-[15px] text-[#475569] leading-relaxed">
+          Which way that nets out depends on how much contact center AI you actually license, which
+          is the sort of thing worth working through before you sign rather than after.
+        </p>
+      </div>
+    </div>
   );
 }
 
