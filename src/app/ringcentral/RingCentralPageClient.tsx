@@ -229,7 +229,32 @@ export function RingCentralPageClient() {
           treatment begins here. No dark-hero attribute. */}
       <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
         <Container className="relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Gradient panel. Inset from the page edges by the Container's own
+              padding, so its edges line up with the stats band and every
+              section below rather than floating at some unrelated width.
+
+              The warm end is color-mix'd off --color-accent rather than being a
+              new hex: 8% accent over white lands at roughly #FFF4EC, which
+              picks up the video's warmth without putting another brand colour
+              in the palette. color-mix is safe here — this file already ships
+              grid-rows-subgrid, which has a narrower support floor.
+
+              primary-50 is the darkest stop of the three (relative luminance
+              0.882 against the cream's 0.920), so it is the worst case for
+              every piece of text on the panel. Measured there: ink H1 13.79:1,
+              gray-600 body 6.82:1, primary-dark link 7.28:1. */}
+          <div
+            className="rounded-3xl overflow-hidden px-6 sm:px-10 lg:px-14 py-14 lg:py-20"
+            style={{
+              background:
+                'linear-gradient(135deg, var(--color-primary-50) 0%, #ffffff 48%, color-mix(in srgb, var(--color-accent) 8%, #ffffff) 100%)',
+            }}
+          >
+          {/* Media column takes 1.1fr against the text's 1fr, so the card reads
+              as the equal partner it is on RC's own hero rather than the
+              smaller half. minmax(0,…) on both tracks stops the long H1 and the
+              card from blowing the columns past their share. */}
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-12 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -292,6 +317,7 @@ export function RingCentralPageClient() {
             >
               <HeroVideo />
             </motion.div>
+          </div>
           </div>
         </Container>
       </section>
@@ -1716,11 +1742,15 @@ function HeroVideo() {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
   return (
-    // 16:9 panel filling its grid column, matching the proportions RingCentral
-    // gives its own hero visual. aspect-video reserves the full box before any
-    // asset arrives, and both children are taken out of flow, so nothing here
-    // can shift the page as it loads.
-    <div className="relative w-full aspect-video overflow-hidden rounded-2xl">
+    // 6/5 (1.2:1) rather than 16:9. The clip is 1.109:1, so a 16:9 card left a
+    // wide empty margin down both sides that read as dead space; at 1.2 the
+    // backdrop closes to a thin warm frame. Explicit ratio, so the box is
+    // reserved before any asset arrives — that plus both children being out of
+    // flow is what keeps layout shift at zero.
+    //
+    // ring, not border: it draws outside the border box, so the card's own
+    // overflow-hidden cannot clip it and it follows the same rounded corner.
+    <div className="relative w-full aspect-[6/5] overflow-hidden rounded-2xl ring-[6px] ring-white/70 shadow-xl">
       {/* The surface the devices float on. A <picture> rather than a CSS
           background-image: image-set() is the only way to express
           "webp, falling back to jpg" that every browser honours — image-set()
@@ -1738,11 +1768,12 @@ function HeroVideo() {
         />
       </picture>
 
-      {/* The clip is 776x700, so it can never fill a 16:9 box without being
-          stretched. Sized by height instead and centred: at 88% of panel
-          height it comes out ~55% of panel width, leaving the bokeh to carry
-          the rest — which is the point of the wide panel. Absolutely
-          positioned so it stays out of flow and contributes no layout shift.
+      {/* The clip is 776x700 and the card is 1.2:1, so it still cannot fill the
+          box without stretching. Sized by height and centred: 94% of card
+          height works out to ~86.8% of card width, leaving roughly 6.6% of
+          backdrop down each side and 3% top and bottom — the thin warm frame
+          the wide-margin version was missing. Absolutely positioned so it
+          stays out of flow and contributes no layout shift.
 
           aspect-[776/700] is load-bearing, not decoration. The width/height
           attributes give the UA `aspect-ratio: auto 776 / 700`, and the `auto`
@@ -1765,7 +1796,7 @@ function HeroVideo() {
         width={776}
         height={700}
         onError={() => setFailed(true)}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[88%] w-auto aspect-[776/700] max-w-full block"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[94%] w-auto aspect-[776/700] max-w-full block"
       >
         <source src="/video/rc_hero_alpha.webm" type="video/webm" />
         <source
