@@ -27,6 +27,7 @@ import {
   PaperPlaneRight,
   WarningCircle,
   Calculator,
+  ListChecks,
   Check,
   Monitor,
   Presentation,
@@ -373,7 +374,10 @@ export function RingCentralPageClient() {
             {...fadeUp}
             className={`max-w-5xl mx-auto mt-12 ${cardClass}`}
           >
-            <CardHeader icon={CurrencyDollar} title="Where an advisor actually earns their keep" />
+            {/* Heading is scoped to configuration and the number, not to the
+                case for using an advisor at all — "Why source RingCentral
+                through Insero" owns that framing further down the page. */}
+            <CardHeader icon={ListChecks} title="How Insero prices this for you" />
             <div className="p-8 lg:p-10">
               <div>
                 <p className="text-[var(--color-gray-600)] leading-relaxed text-lg">
@@ -383,11 +387,11 @@ export function RingCentralPageClient() {
                   contract term and plan mix around how you actually use the system, and matching each tier to
                   what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
                   {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
-                  your number. Curious what you&apos;re overpaying for elsewhere?{' '}
-                  <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-                    Try our cost estimator
+                  your number.{' '}
+                  <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
+                    Ask us for a quote
                   </Link>{' '}
-                  or just ask for a quote.
+                  and we&apos;ll price your actual configuration.
                 </p>
               </div>
             </div>
@@ -692,11 +696,15 @@ export function RingCentralPageClient() {
                 title="Voice Connectivity"
                 description="How we help you compare providers and land the right business phone system at the best price."
               />
+              {/* Was the POTS cost estimator, which only covers legacy line
+                  replacement — a different service, and a dead end for someone
+                  pricing RingCentral. This answers the question this page
+                  raises most often: how the advisory is free. */}
               <RelatedCard
-                href="/tools/pots-cost-estimator"
-                label="Free Tool"
-                title="POTS Replacement Cost Estimator"
-                description="See what you're really paying for legacy lines and how much a modern platform could save."
+                href="/resources/how-a-telecom-broker-works"
+                label="How We Work"
+                title="How a Telecom Broker Actually Works (And Why It's Free)"
+                description="The honest answer to how we're paid, what we do that going direct doesn't, and when it isn't worth it."
               />
             </div>
           </motion.div>
@@ -984,7 +992,10 @@ function PricingTabs() {
             savingsNote={ringEx.annualSavingsNote}
             annual={annual}
             onToggle={setAnnual}
-            footnote={`${ringEx.seatBandNote} ${ringEx.aboveBandNote}`}
+            notice={<SeatCapNotice />}
+            // aboveBandNote is no longer appended here: it carries SeatCapNotice
+            // now, and repeating it in the small print would undercut the promotion.
+            footnote={ringEx.seatBandNote}
           />
         </TabPanel>
 
@@ -1088,6 +1099,7 @@ function PlanPanel({
   annual,
   onToggle,
   footnote,
+  notice,
 }: {
   tiers: readonly PlanTier[];
   quoted: readonly QuotedPlan[];
@@ -1097,6 +1109,9 @@ function PlanPanel({
   annual: boolean;
   onToggle: (next: boolean) => void;
   footnote: string;
+  /** Sits between the cards and the footnote, for anything that must not be
+      read as small print. */
+  notice?: React.ReactNode;
 }) {
   // The middle priced tier carries the badge, the way RC flags a plan.
   const popularIndex = Math.floor((tiers.length - 1) / 2);
@@ -1126,9 +1141,48 @@ function PlanPanel({
         ))}
       </div>
 
+      {notice}
+
       <p className="mt-10 text-center text-[15px] text-[var(--color-gray-600)] max-w-3xl mx-auto leading-relaxed">
         {footnote}
       </p>
+    </div>
+  );
+}
+
+/**
+ * The seat-cap caution, directly under the RingEX cards.
+ *
+ * This was a clause in the small-print footnote, where a 250-seat buyer could
+ * read the published rates as theirs and budget from a number that was never
+ * quoted to them — the most expensive misread available on this page. It gets
+ * card weight instead.
+ *
+ * Deliberately no accent orange: that colour is the CTA's alone here. The
+ * caution reads from the icon, the band, and the position, not from a warning
+ * colour. The framing is neutral toward RingCentral — publishing one band and
+ * quoting the rest is ordinary enterprise practice, not a catch.
+ */
+function SeatCapNotice() {
+  return (
+    <div className={`mt-10 max-w-3xl mx-auto ${cardClass}`}>
+      <CardHeader
+        icon={WarningCircle}
+        title={`Buying more than ${ringEx.publishedSeatCap} seats?`}
+        titleClassName="text-lg"
+      />
+      <div className="p-7 lg:p-8">
+        <p className="text-[var(--color-gray-600)] leading-relaxed">
+          The rates above are RingCentral&apos;s published pricing for 1&ndash;{ringEx.publishedSeatCap}{' '}
+          users. Past {ringEx.publishedSeatCap} seats RingCentral prices each deployment individually and
+          publishes no rate at all, so a quote is the only way to know your number &mdash; it is not the
+          published price with a discount applied.{' '}
+          <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
+            Get a quote for your seat count
+          </Link>
+          .
+        </p>
+      </div>
     </div>
   );
 }
