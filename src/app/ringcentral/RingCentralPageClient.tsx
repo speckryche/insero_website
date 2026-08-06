@@ -1691,15 +1691,15 @@ function EquationRow({ label, value }: { label: string; value: string }) {
 // own proportions; w-full h-auto lets the video size intrinsically, so it is
 // never stretched or cropped.
 //
-// mp4 is listed first because this encode is the smaller of the two (1.33 MB
-// against the webm's 1.68 MB) and h.264 is universally supported, so the webm
-// is a genuine fallback rather than the default download.
+// Both encodes carry a real alpha channel, so the clip composites over the
+// desk backdrop instead of being keyed against the page.
 //
-// mix-blend-multiply drops the clip's pure-white background out against the
-// page, which is what an alpha-channel encode would otherwise be needed for.
-// Multiply only darkens, so this depends on the backdrop staying light — the
-// hero section is bg-white. Moving this onto a dark background would turn the
-// clip into a solid block.
+// webm is listed first and is the one Chrome and Firefox take: VP9-with-alpha
+// at 2.1 MB. Safari cannot decode it and falls through to the HEVC-with-alpha
+// mp4, which is 7.2 MB — the reason the order is the reverse of the old
+// opaque pair, where the smaller file was the mp4. The mp4's type carries
+// codecs="hvc1" because Safari will not select the source on the bare
+// video/mp4 type.
 //
 // Two error handlers, covering the two distinct failure modes:
 //
@@ -1717,23 +1717,47 @@ function HeroVideo() {
   if (failed) return null;
   return (
     <div className="w-full max-w-[420px] lg:max-w-[480px] mx-auto">
-      {/* No border, radius or shadow: with the multiply blend the clip has no
-          visible edge of its own, so a frame would outline empty space around
-          a floating graphic. */}
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden rounded-2xl p-6 sm:p-8 lg:p-10">
+        {/* The desk surface the devices float on. A <picture> rather than a CSS
+            background-image: image-set() is the only way to express
+            "webp, falling back to jpg" that every browser honours — image-set()
+            with type() only landed in Safari 17, and Safari is precisely the
+            browser being served here, so 15 and 16 would have got no backdrop
+            at all behind a now-transparent clip. Same result: cover, centred,
+            clipped by the wrapper's overflow-hidden, and it fills the padding
+            box so the surface shows on all four sides of the video. */}
+        <picture>
+          <source srcSet="/images/rc_hero_desk.webp" type="image/webp" />
+          <img
+            src="/images/rc_hero_desk.jpg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </picture>
+
         <video
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
+          // Same URL the <picture> above resolves to on any browser that can
+          // decode either alpha encode, so the poster costs no extra bytes: one
+          // fetch shared with the backdrop. Pointing it at the .jpg instead
+          // pulled a second 49 KB copy of the same image.
+          poster="/images/rc_hero_desk.webp"
           width={776}
           height={700}
           onError={() => setFailed(true)}
-          className="w-full h-auto block mix-blend-multiply"
+          className="relative w-full h-auto block"
         >
-          <source src="/video/rc_hero.mp4" type="video/mp4" />
-          <source src="/video/rc_hero.webm" type="video/webm" onError={() => setFailed(true)} />
+          <source src="/video/rc_hero_alpha.webm" type="video/webm" />
+          <source
+            src="/video/rc_hero_alpha.mp4"
+            type='video/mp4; codecs="hvc1"'
+            onError={() => setFailed(true)}
+          />
         </video>
       </div>
     </div>
