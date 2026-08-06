@@ -63,15 +63,17 @@ import {
 import { submitContactForm, type ContactFormData } from '../contact/actions';
 import { ringCentralFaq } from './faq';
 
-// --- RingCentral brand palette -------------------------------------------
-// RC's real design language: white pages, deep ink-navy headlines, bright
-// azure accents, and signature orange pill CTAs. Insero lives only in the
-// header, footer, and the words — never in the page's color system.
-const INK = '#032B44'; // headlines, near-navy
-const AZURE = '#0684BC'; // accents, eyebrows, icons, links
-const ORANGE = '#F26B00'; // primary CTA (FF7A00 darkened for white-text contrast)
-const ORANGE_HOVER = '#D95F00';
-const TINT = '#EFF7FB'; // light azure section background
+// --- Insero design system -------------------------------------------------
+// Tokens from globals.css. Only the RingCentral logo keeps RingCentral's own
+// colours; everything else on this page is Insero's palette.
+//
+// PRIMARY (#008838) clears AA on white but not on either tint (3.47:1 on the
+// band), so it is used for icons and decorative fills only. All accent TEXT
+// uses PRIMARY_DARK, which clears AA on white and on both tints.
+const INK = 'var(--color-secondary)'; // headlines
+const PRIMARY = 'var(--color-primary)'; // icons and decorative fills, on white
+const PRIMARY_DARK = 'var(--color-primary-dark)'; // all accent text, any background
+const TINT = 'var(--color-primary-50)'; // section background
 
 // --- Section data ---------------------------------------------------------
 
@@ -215,7 +217,7 @@ const fadeUp = {
 
 // Shared RC orange pill CTA
 const rcButtonClass =
-  'group inline-flex items-center gap-3 px-10 py-5 bg-[#F26B00] text-white font-semibold text-lg rounded-full hover:bg-[#D95F00] transition-colors duration-200 shadow-lg shadow-[#F26B00]/25';
+  'group inline-flex items-center gap-3 px-10 py-5 bg-accent text-white font-semibold text-lg rounded-full hover:bg-[var(--color-accent-dark)] transition-colors duration-200 shadow-lg shadow-accent/25';
 
 // --- Page -----------------------------------------------------------------
 
@@ -251,10 +253,10 @@ export function RingCentralPageClient() {
                 style={{ color: INK }}
               >
                 RingCentral<sup className="text-[0.5em] align-super">&reg;</sup> for Business —{' '}
-                <span style={{ color: AZURE }}>AI-Powered Phone, Done Right</span>
+                <span style={{ color: PRIMARY_DARK }}>AI-Powered Phone, Done Right</span>
               </h1>
 
-              <p className="text-lg md:text-xl text-[#475569] mb-10 max-w-3xl leading-relaxed">
+              <p className="text-lg md:text-xl text-[var(--color-gray-600)] mb-10 max-w-3xl leading-relaxed">
                 RingCentral is one of the leading AI business communications platforms — phone, video, messaging,
                 and a deep agentic AI layer. Insero is the independent advisor who sources it for you at zero cost,
                 with honest guidance on whether it&apos;s actually the right fit.
@@ -283,7 +285,7 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== STATS BAND ===================== */}
-      <section className="py-16 lg:py-20 bg-white border-t border-gray-100">
+      <section className="py-16 lg:py-20 bg-white border-t border-[var(--color-gray-100)]">
         <Container>
           <div className="grid grid-cols-2 lg:grid-cols-4">
             {rcStats.map((stat, index) => (
@@ -294,20 +296,20 @@ export function RingCentralPageClient() {
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
                 className={`px-4 py-6 sm:px-8 text-center lg:text-left ${
-                  index > 0 ? 'lg:border-l lg:border-[#0684BC]/25' : ''
+                  index > 0 ? 'lg:border-l lg:border-primary/25' : ''
                 }`}
               >
                 <div className="font-display font-bold text-4xl sm:text-5xl tracking-tight" style={{ color: INK }}>
                   {stat.value}
                 </div>
-                <div className="mt-2 text-sm sm:text-[15px] text-[#64748b] leading-snug">{stat.label}</div>
+                <div className="mt-2 text-sm sm:text-[15px] text-[var(--color-gray-500)] leading-snug">{stat.label}</div>
               </motion.div>
             ))}
           </div>
 
           {/* These are RingCentral's own published claims, not Insero's
               measurements — attributed so they don't read as our findings. */}
-          <p className="mt-6 px-4 sm:px-8 text-xs text-slate-500">Figures published by RingCentral.</p>
+          <p className="mt-6 px-4 sm:px-8 text-xs text-[var(--color-gray-500)]">Figures published by RingCentral.</p>
         </Container>
       </section>
 
@@ -319,12 +321,12 @@ export function RingCentralPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: INK }}>
               What RingCentral actually is
             </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[#475569] leading-relaxed">
+            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               <p>
                 At its core, RingCentral is a cloud business communications platform: your phone system, video
                 meetings, team messaging, and business texting, all delivered as a subscription and managed from
                 one place. There&apos;s no PBX in a closet and no carrier lines to babysit — it&apos;s the modern{' '}
-                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: AZURE }}>
+                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                   hosted UCaaS
                 </Link>{' '}
                 model, and RingCentral is one of the most established names in it.
@@ -351,14 +353,14 @@ export function RingCentralPageClient() {
       <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container>
           <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-[#0684BC]/10" style={{ color: AZURE }}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/10" style={{ color: PRIMARY_DARK }}>
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">The AI Layer</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: INK }}>
               One of the deepest agentic voice-AI stacks in the market
             </h2>
-            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               RingCentral&apos;s agentic Voice AI suite spans the entire call — an AI that greets and routes
               callers, assists your reps live, and turns finished conversations into coaching and CRM updates.
               Here&apos;s the honest breakdown of what each piece does.
@@ -380,7 +382,7 @@ export function RingCentralPageClient() {
                 >
                   <CardHeader eyebrow={cap.stage} icon={Icon} title={cap.name} />
                   <div className={cardBodyClass}>
-                    <p className="text-[#64748b] leading-relaxed text-[15px]">{cap.description}</p>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
                   </div>
                 </motion.div>
               );
@@ -402,7 +404,7 @@ export function RingCentralPageClient() {
                 >
                   <CardHeader icon={Icon} title={item.name} titleClassName="text-lg" />
                   <div className={cardBodyClass}>
-                    <p className="text-[#64748b] leading-relaxed text-[15px]">{item.description}</p>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -419,7 +421,7 @@ export function RingCentralPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Three pillars, one platform
             </h2>
-            <p className="text-lg md:text-xl text-[#64748b]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
               RingCentral is built around three product families. Here&apos;s what each one covers — and where a
               separate license comes into play.
             </p>
@@ -439,7 +441,7 @@ export function RingCentralPageClient() {
                 >
                   <CardHeader icon={Icon} title={pillar.name} titleClassName="text-xl lg:text-2xl" />
                   <div className={cardBodyClass}>
-                    <p className="text-[#64748b] leading-relaxed">{pillar.description}</p>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed">{pillar.description}</p>
                   </div>
                 </motion.div>
               );
@@ -464,7 +466,7 @@ export function RingCentralPageClient() {
                 >
                   <CardHeader icon={Icon} title={product.name} level={4} />
                   <div className={cardBodyClass}>
-                    <p className="text-[#64748b] leading-relaxed text-sm">{product.description}</p>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-sm">{product.description}</p>
                   </div>
                 </motion.div>
               );
@@ -483,7 +485,7 @@ export function RingCentralPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: INK }}>
               What RingCentral actually costs — all of it, in one place
             </h2>
-            <p className="text-lg md:text-xl text-[#475569] leading-relaxed">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               RingCentral publishes its pricing across six pages, one for each product family. A real
               deployment usually spans several of them — seats, contact center, the AI you want, and the
               numbers and rooms that go with it. We&apos;ve brought the published rates together here so you
@@ -502,14 +504,14 @@ export function RingCentralPageClient() {
             <TierMathCard />
           </motion.div>
 
-          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[#64748b] text-center leading-relaxed">
+          <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[var(--color-gray-600)] text-center leading-relaxed">
             RingCentral&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
             <a
               href={pricingSourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold hover:underline"
-              style={{ color: AZURE }}
+              style={{ color: PRIMARY_DARK }}
             >
               ringcentral.com
             </a>
@@ -524,7 +526,7 @@ export function RingCentralPageClient() {
             <CardHeader icon={CurrencyDollar} title="Where an advisor actually earns their keep" />
             <div className="p-8 lg:p-10">
               <div>
-                <p className="text-[#475569] leading-relaxed text-lg">
+                <p className="text-[var(--color-gray-600)] leading-relaxed text-lg">
                   We publish RingCentral&apos;s list pricing because you should be able to see it before you
                   talk to anyone. Those rates are RingCentral&apos;s to set. What we add is the fit: requesting
                   pricing on your behalf, structuring the
@@ -532,7 +534,7 @@ export function RingCentralPageClient() {
                   what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
                   {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
                   your number. Curious what you&apos;re overpaying for elsewhere?{' '}
-                  <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: AZURE }}>
+                  <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                     Try our cost estimator
                   </Link>{' '}
                   or just ask for a quote.
@@ -551,10 +553,10 @@ export function RingCentralPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Why source RingCentral through Insero
             </h2>
-            <p className="text-lg md:text-xl text-[#64748b]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
               You can buy RingCentral directly. Here&apos;s why most businesses are better off having an
               independent advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
-              <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: AZURE }}>
+              <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                 every voice project
               </Link>
               .
@@ -577,7 +579,7 @@ export function RingCentralPageClient() {
                 >
                   <CardHeader icon={Icon} title={item.title} titleClassName="text-lg" />
                   <div className={cardBodyClass}>
-                    <p className="text-[#475569] leading-relaxed">{item.description}</p>
+                    <p className="text-[var(--color-gray-600)] leading-relaxed">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -594,7 +596,7 @@ export function RingCentralPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Is RingCentral right for you?
             </h2>
-            <p className="text-lg md:text-xl text-[#64748b]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)]">
               We&apos;d rather you land on the right platform than the one we&apos;re talking about. Here&apos;s
               the straight version.
             </p>
@@ -627,9 +629,9 @@ export function RingCentralPageClient() {
             <CardHeader icon={Scales} title="A quick word on RingCentral vs Zoom" titleClassName="text-lg" />
             <div className={cardBodyClass}>
               <div>
-                <p className="text-[#475569] leading-relaxed">
+                <p className="text-[var(--color-gray-600)] leading-relaxed">
                   If &quot;all the AI included&quot; is your priority, it&apos;s worth comparing.{' '}
-                  <Link href="/zoom" className="font-semibold hover:underline" style={{ color: AZURE }}>
+                  <Link href="/zoom" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                     Zoom
                   </Link>
                   , for example, includes its AI Companion features at no extra charge, which can be more
@@ -658,7 +660,7 @@ export function RingCentralPageClient() {
 
           {/* Related reading */}
           <motion.div {...fadeUp} className="mt-14">
-            <div className="flex items-center gap-2 mb-5" style={{ color: AZURE }}>
+            <div className="flex items-center gap-2 mb-5" style={{ color: PRIMARY_DARK }}>
               <BookOpen weight="fill" className="w-5 h-5" />
               <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
             </div>
@@ -690,15 +692,15 @@ export function RingCentralPageClient() {
       <section className="pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: AZURE }}>
-              <span className="w-8 h-px" style={{ backgroundColor: AZURE }} />
+            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: PRIMARY_DARK }}>
+              <span className="w-8 h-px" style={{ backgroundColor: PRIMARY_DARK }} />
               Let&apos;s Talk
-              <span className="w-8 h-px" style={{ backgroundColor: AZURE }} />
+              <span className="w-8 h-px" style={{ backgroundColor: PRIMARY_DARK }} />
             </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: INK }}>
               Get a free RingCentral quote
             </h2>
-            <p className="text-xl text-[#64748b] max-w-xl mx-auto leading-relaxed">
+            <p className="text-xl text-[var(--color-gray-600)] max-w-xl mx-auto leading-relaxed">
               Zero cost, honest advice. We&apos;ll price your real configuration — and tell you straight if
               something else fits you better.
             </p>
@@ -711,15 +713,15 @@ export function RingCentralPageClient() {
           <div className="mt-8 text-center">
             <a
               href={company.phoneLink}
-              className="inline-flex flex-col items-center text-[#64748b] transition-colors hover:text-[#032B44]"
+              className="inline-flex flex-col items-center text-[var(--color-gray-600)] transition-colors hover:text-secondary"
             >
               <span className="text-lg">or call us at</span>
               <span className="font-bold text-2xl md:text-3xl mt-1" style={{ color: INK }}>{company.phoneFormatted}</span>
             </a>
           </div>
 
-          <div className="mt-14 pt-10 border-t border-[#0684BC]/20">
-            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
+          <div className="mt-14 pt-10 border-t border-primary/20">
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[var(--color-gray-600)] font-medium">
               <TrustItem icon={Handshake}>Independent &mdash; Vendor-Neutral</TrustItem>
               <TrustItem icon={CurrencyDollar}>Same price as going direct</TrustItem>
               <TrustItem icon={Clock}>25+ Years Founder Experience</TrustItem>
@@ -732,7 +734,7 @@ export function RingCentralPageClient() {
       {/* Last block of page content, above the site footer. */}
       <section className="pb-10" style={{ backgroundColor: TINT }}>
         <Container size="md">
-          <p className="text-xs text-slate-500 leading-relaxed text-center">
+          <p className="text-xs text-[var(--color-gray-600)] leading-relaxed text-center">
             RingCentral is a registered trademark of RingCentral, Inc. Other third-party marks referenced
             herein are trademarks of their respective owners.
           </p>
@@ -758,7 +760,7 @@ type PhosphorIcon = typeof Handshake;
 // Every card in the pricing section is built the same way: a 1px slate border
 // on all four sides, a tinted header band clipped by overflow-hidden, and a
 // white body. No card carries a colored rule on a single edge.
-const cardClass = 'rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden';
+const cardClass = 'rounded-xl bg-white border border-[var(--color-gray-200)] shadow-sm overflow-hidden';
 const cardBodyClass = 'p-7 lg:p-8';
 
 // Cards sit on a subgrid so every header band in a row shares the same bottom
@@ -768,36 +770,33 @@ const cardGridRows = 'grid-rows-[auto_1fr]';
 const subgridCard = `row-span-2 grid grid-rows-subgrid ${cardClass}`;
 
 /**
- * Fill for every card header band on the page — the single place this colour
- * is set. Deliberately deeper than the TINT section background so a band on a
- * tinted section still reads as part of the card rather than as a recess in
- * the page. One value everywhere; never conditional on section background.
- *
- * Contrast against this fill (WCAG 2.1): ink title #032B44 is 10.46:1, which
- * clears AA and AAA for text at any size.
+ * Fill for every card header band — the single place this colour is set. One
+ * step deeper than the TINT section background, the same relationship the
+ * page had before, so a band on a tinted section still reads as part of the
+ * card rather than as a recess in the page.
  */
-const CARD_BAND = '#C2DEEF';
+const CARD_BAND = 'var(--color-primary-100)'; // #C6E8D3
 
 /**
- * Text and badge colours that sit on CARD_BAND or on a badge fill. Every value
- * here is chosen to clear WCAG AA (4.5:1) for normal-size text — the badges
- * are 11px, so none of them qualify for the large-text allowance.
+ * Text and badge colours that sit on CARD_BAND or on a badge fill. Measured
+ * against WCAG AA (4.5:1) for normal text — the badges are 11px, so none of
+ * them qualify for the large-text allowance.
  *
- *   BAND_EYEBROW  #04618A on CARD_BAND      4.86:1
- *   BAND_TEXT     #475569 on CARD_BAND      5.41:1
- *   white         on BADGE_SOLID            5.20:1
- *   BADGE_SOFT_TEXT on BADGE_SOFT_BG        5.55:1
+ *   INK             #1a2530 on CARD_BAND     11.76:1
+ *   BAND_EYEBROW    #005C28 on CARD_BAND      6.20:1
+ *   BAND_TEXT       #455563 on CARD_BAND      5.81:1
+ *   white           on BADGE_SOLID            4.59:1
+ *   BADGE_SOFT_TEXT on BADGE_SOFT_BG          7.28:1
  *
- * The soft badge is a solid fill rather than the alpha tint it replaces: 10%
- * orange composited over the azure band produced a grey-blue chip that read
- * neither orange nor legible, and it changed colour depending on whether the
- * badge sat on a band or on a white card body.
+ * Badges are green, not orange: Insero's accent is reserved for CTAs, and an
+ * Insero-orange badge sitting near the RingCentral-orange logo would read as
+ * a mistake rather than a decision.
  */
-const BAND_EYEBROW = '#04618A';
-const BAND_TEXT = '#475569';
-const BADGE_SOLID = '#B34F00';
-const BADGE_SOFT_BG = '#FFE8D6';
-const BADGE_SOFT_TEXT = '#9A4400';
+const BAND_EYEBROW = PRIMARY_DARK;
+const BAND_TEXT = 'var(--color-gray-600)';
+const BADGE_SOLID = PRIMARY;
+const BADGE_SOFT_BG = 'var(--color-primary-50)';
+const BADGE_SOFT_TEXT = PRIMARY_DARK;
 
 /** Tinted band at the top of every card: optional icon, title, optional badge
  *  opposite it, and an optional one-line description beneath. */
@@ -822,7 +821,7 @@ function CardHeader({
 }) {
   const Heading = level === 4 ? 'h4' : 'h3';
   return (
-    <div className="px-7 lg:px-8 py-6 border-b border-slate-200" style={{ backgroundColor: CARD_BAND }}>
+    <div className="px-7 lg:px-8 py-6 border-b border-[var(--color-gray-200)]" style={{ backgroundColor: CARD_BAND }}>
       {eyebrow && (
         <span
           className="block text-xs font-semibold uppercase tracking-wider mb-2"
@@ -838,7 +837,7 @@ function CardHeader({
           {Icon && (
             <span
               className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-white"
-              style={{ color: AZURE }}
+              style={{ color: PRIMARY_DARK }}
             >
               <Icon weight="fill" className="w-5 h-5" />
             </span>
@@ -925,7 +924,7 @@ function PricingTabs() {
         <div
           role="tablist"
           aria-label="RingCentral pricing categories"
-          className="inline-flex flex-wrap justify-center gap-1 p-1.5 rounded-full bg-white border border-slate-200 shadow-sm"
+          className="inline-flex flex-wrap justify-center gap-1 p-1.5 rounded-full bg-white border border-[var(--color-gray-200)] shadow-sm"
         >
           {TABS.map((tab, index) => {
             const selected = active === tab.id;
@@ -944,7 +943,7 @@ function PricingTabs() {
                 onClick={() => setActive(tab.id)}
                 onKeyDown={(event) => handleKeyDown(event, index)}
                 className={`px-5 sm:px-7 py-3 rounded-full text-sm sm:text-base font-semibold transition-colors duration-200 ${
-                  selected ? 'bg-[#F26B00] text-white shadow-sm' : 'text-[#64748b] hover:text-[#032B44]'
+                  selected ? 'bg-primary text-white shadow-sm' : 'text-[var(--color-gray-500)] hover:text-secondary'
                 }`}
               >
                 {tab.label}
@@ -1109,7 +1108,7 @@ function PlanPanel({
         ))}
       </div>
 
-      <p className="mt-10 text-center text-[15px] text-[#64748b] max-w-3xl mx-auto leading-relaxed">
+      <p className="mt-10 text-center text-[15px] text-[var(--color-gray-600)] max-w-3xl mx-auto leading-relaxed">
         {footnote}
       </p>
     </div>
@@ -1133,12 +1132,12 @@ function BillingToggle({
         role="switch"
         aria-checked={annual}
         onClick={() => onToggle(!annual)}
-        className="group inline-flex items-center gap-3 rounded-full px-2 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0684BC] focus-visible:ring-offset-2"
+        className="group inline-flex items-center gap-3 rounded-full px-2 py-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         <span
           aria-hidden="true"
           className={`relative flex-shrink-0 w-12 h-7 rounded-full transition-colors duration-200 ${
-            annual ? 'bg-[#F26B00]' : 'bg-slate-300'
+            annual ? 'bg-primary' : 'bg-[var(--color-gray-300)]'
           }`}
         >
           <span
@@ -1182,10 +1181,10 @@ function PlanCard({
             {formatUsd(annual ? tier.annual : tier.monthly)}
           </span>
           {annual && (
-            <span className="text-xl text-[#94a3b8] line-through">{formatUsd(tier.monthly)}</span>
+            <span className="text-xl text-[var(--color-gray-500)] line-through">{formatUsd(tier.monthly)}</span>
           )}
         </div>
-        <p className="mt-2 text-sm text-[#64748b]">
+        <p className="mt-2 text-sm text-[var(--color-gray-500)]">
           /user/month {annual ? 'paid annually' : 'billed monthly'}
         </p>
 
@@ -1212,7 +1211,7 @@ function QuotePlanCard({
         <span className="font-display font-bold text-3xl tracking-tight leading-tight block" style={{ color: INK }}>
           Contact us for pricing
         </span>
-        <p className="mt-2 text-sm text-[#64748b]">{plan.note}</p>
+        <p className="mt-2 text-sm text-[var(--color-gray-500)]">{plan.note}</p>
 
         {features}
       </div>
@@ -1223,11 +1222,11 @@ function QuotePlanCard({
 function FeatureList({ items }: { items: string[] }) {
   if (items.length === 0) return null;
   return (
-    <div className="mt-8 pt-7 border-t border-slate-100">
+    <div className="mt-8 pt-7 border-t border-[var(--color-gray-100)]">
       <ul className="space-y-3">
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
-            <Check weight="bold" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: AZURE }} />
+          <li key={item} className="flex gap-3 text-[15px] text-[var(--color-gray-600)] leading-snug">
+            <Check weight="bold" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: PRIMARY }} />
             <span>{item}</span>
           </li>
         ))}
@@ -1250,18 +1249,18 @@ function TierFeatureList({ features }: { features: TierFeatures }) {
   const overflow = features.base.length - shown.length;
 
   return (
-    <div className="mt-8 pt-7 border-t border-slate-100">
+    <div className="mt-8 pt-7 border-t border-[var(--color-gray-100)]">
       {features.inheritsFrom && (
         <p className="text-[15px] font-semibold mb-4 leading-snug" style={{ color: INK }}>
           Everything in {features.inheritsFrom}{' '}
-          <span style={{ color: AZURE }}>PLUS:</span>
+          <span style={{ color: PRIMARY_DARK }}>PLUS:</span>
         </p>
       )}
 
       <ul className="space-y-3">
         {shown.map((item) => (
-          <li key={item} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
-            <Check weight="bold" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: AZURE }} />
+          <li key={item} className="flex gap-3 text-[15px] text-[var(--color-gray-600)] leading-snug">
+            <Check weight="bold" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: PRIMARY }} />
             <span>{item}</span>
           </li>
         ))}
@@ -1273,21 +1272,21 @@ function TierFeatureList({ features }: { features: TierFeatures }) {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block mt-3 text-sm font-semibold hover:underline"
-          style={{ color: AZURE }}
+          style={{ color: PRIMARY_DARK }}
         >
           +{overflow} more on RingCentral&apos;s pricing page
         </a>
       )}
 
       {features.ai.length > 0 && (
-        <div className="mt-6 pt-5 border-t border-slate-100">
-          <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: AZURE }}>
+        <div className="mt-6 pt-5 border-t border-[var(--color-gray-100)]">
+          <p className="text-xs font-semibold uppercase tracking-wider mb-4" style={{ color: PRIMARY_DARK }}>
             AI
           </p>
           <ul className="space-y-3">
             {features.ai.map((item) => (
-              <li key={item.name} className="flex gap-3 text-[15px] text-[#475569] leading-snug">
-                <Sparkle weight="fill" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: AZURE }} />
+              <li key={item.name} className="flex gap-3 text-[15px] text-[var(--color-gray-600)] leading-snug">
+                <Sparkle weight="fill" className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: PRIMARY }} />
                 <span>
                   {item.name}
                   {item.addOn && (
@@ -1319,7 +1318,7 @@ function AIReceptionistPanel() {
         <h3 className="text-2xl sm:text-3xl font-display font-bold" style={{ color: INK }}>
           {aiReceptionist.name} ({aiReceptionist.abbreviation}) is not a per-user add-on
         </h3>
-        <p className="mt-4 text-lg text-[#475569] leading-relaxed max-w-2xl mx-auto">
+        <p className="mt-4 text-lg text-[var(--color-gray-600)] leading-relaxed max-w-2xl mx-auto">
           Every other plan on this page is billed per user, per month.{' '}
           {aiReceptionist.abbreviation} is licensed{' '}
           <strong style={{ color: INK }}>{aiReceptionist.billingUnit}</strong>.
@@ -1344,23 +1343,23 @@ function AIReceptionistPanel() {
         <div className={cardBodyClass}>
           <div>
             <ul className="space-y-3 mb-7">
-              <li className="flex gap-3 text-[#475569] leading-relaxed">
-                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
+              <li className="flex gap-3 text-[var(--color-gray-600)] leading-relaxed">
+                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: PRIMARY }} />
                 <span>{aiReceptionist.includedMinutes} minutes included at both price points.</span>
               </li>
-              <li className="flex gap-3 text-[#475569] leading-relaxed">
-                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
+              <li className="flex gap-3 text-[var(--color-gray-600)] leading-relaxed">
+                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: PRIMARY }} />
                 <span>
                   {formatUsd(aiReceptionist.overagePerMinute)} per minute after that.{' '}
                   {aiReceptionist.overageNote}
                 </span>
               </li>
-              <li className="flex gap-3 text-[#475569] leading-relaxed">
-                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: AZURE }} />
+              <li className="flex gap-3 text-[var(--color-gray-600)] leading-relaxed">
+                <Check weight="bold" className="w-4 h-4 mt-1.5 flex-shrink-0" style={{ color: PRIMARY }} />
                 <span>{aiReceptionist.bundleNote}</span>
               </li>
             </ul>
-            <p className="text-[#475569] leading-relaxed text-lg border-t border-slate-100 pt-6">
+            <p className="text-[var(--color-gray-600)] leading-relaxed text-lg border-t border-[var(--color-gray-100)] pt-6">
               <strong style={{ color: INK }}>Worth saying plainly:</strong> people routinely budget{' '}
               {aiReceptionist.abbreviation} as a per-seat cost and it isn&apos;t one. A ten-person business and
               a two-hundred-person business pay the same license fee. What separates their bills is how many
@@ -1391,10 +1390,10 @@ function AirPriceCard({
           <span className="font-display font-bold text-5xl tracking-tight" style={{ color: INK }}>
             {formatUsd(amount)}
           </span>
-          <span className="text-lg text-[#64748b] ml-1">/mo</span>
+          <span className="text-lg text-[var(--color-gray-500)] ml-1">/mo</span>
         </div>
-        <p className="mt-3 text-[15px] text-[#64748b] leading-relaxed">{description}</p>
-        <p className="mt-1 text-sm font-semibold" style={{ color: AZURE }}>
+        <p className="mt-3 text-[15px] text-[var(--color-gray-500)] leading-relaxed">{description}</p>
+        <p className="mt-1 text-sm font-semibold" style={{ color: PRIMARY_DARK }}>
           {aiReceptionist.billingUnit}
         </p>
       </div>
@@ -1466,7 +1465,7 @@ function LineItemGroupHeading({ title, subtitle }: { title: string; subtitle: st
   return (
     <div className="mb-7">
       <h3 className="text-2xl font-display font-bold" style={{ color: INK }}>{title}</h3>
-      <p className="mt-1.5 text-[15px] text-[#64748b]">{subtitle}</p>
+      <p className="mt-1.5 text-[15px] text-[var(--color-gray-600)]">{subtitle}</p>
     </div>
   );
 }
@@ -1487,12 +1486,12 @@ function LineItemCard({
     <div className={subgridCard}>
       <CardHeader title={name} icon={Icon} level={4} />
       <div className={`flex flex-col flex-grow ${cardBodyClass}`}>
-        {description && <p className="text-[15px] text-[#64748b] leading-relaxed mb-6">{description}</p>}
+        {description && <p className="text-[15px] text-[var(--color-gray-500)] leading-relaxed mb-6">{description}</p>}
         {/* mt-auto keeps prices on one baseline across a row even when only
             some cards in that row carry a description. */}
         <div className="mt-auto">
           <span className="font-display font-bold text-2xl" style={{ color: INK }}>{price}</span>
-          {priceNote && <span className="block mt-1 text-sm text-[#64748b]">{priceNote}</span>}
+          {priceNote && <span className="block mt-1 text-sm text-[var(--color-gray-500)]">{priceNote}</span>}
         </div>
       </div>
     </div>
@@ -1509,7 +1508,7 @@ function TierMathCard() {
       <CardHeader title="Sometimes the higher tier costs less" icon={Calculator} />
 
       <div className="p-8 lg:p-10">
-        <p className="text-lg text-[#475569] leading-relaxed mb-8">
+        <p className="text-lg text-[var(--color-gray-600)] leading-relaxed mb-8">
           RingCentral bundles several AI features into the higher {ringCx.name} tiers. That means the tier you
           need sometimes costs less than building up from a lower one. Here&apos;s where that happens.
         </p>
@@ -1529,7 +1528,7 @@ function TierMathCard() {
               ))}
             </ul>
 
-            <div className="mt-5 pt-5 border-t border-slate-200 space-y-4">
+            <div className="mt-5 pt-5 border-t border-[var(--color-gray-200)] space-y-4">
               <EquationTotal
                 label="Built up à la carte"
                 value={`${formatUsd(comparison.buildUpTotal)}/agent/mo`}
@@ -1543,7 +1542,7 @@ function TierMathCard() {
               />
             </div>
 
-            <p className="mt-6 text-[15px] font-semibold leading-relaxed" style={{ color: AZURE }}>
+            <p className="mt-6 text-[15px] font-semibold leading-relaxed" style={{ color: PRIMARY_DARK }}>
               Moving up a tier costs {formatUsd(comparison.savings)}/agent/month less than adding the same
               features onto {comparison.baseTier}.
             </p>
@@ -1551,7 +1550,7 @@ function TierMathCard() {
           ))}
         </div>
 
-        <p className="text-lg text-[#475569] leading-relaxed mt-8">
+        <p className="text-lg text-[var(--color-gray-600)] leading-relaxed mt-8">
           Both examples use the published rates above. Matching the tier to what you&apos;ll actually use is
           part of every quote we put together — it&apos;s usually the quickest place to find savings.
         </p>
@@ -1562,7 +1561,7 @@ function TierMathCard() {
 
 function EquationRow({ label, value }: { label: string; value: string }) {
   return (
-    <li className="flex justify-between items-baseline gap-4 text-[15px] text-[#475569]">
+    <li className="flex justify-between items-baseline gap-4 text-[15px] text-[var(--color-gray-600)]">
       <span>{label}</span>
       <span className="font-semibold whitespace-nowrap" style={{ color: INK }}>{value}</span>
     </li>
@@ -1585,7 +1584,7 @@ function EquationTotal({
       </span>
       <span
         className="font-display font-bold text-xl whitespace-nowrap"
-        style={{ color: highlight ? AZURE : INK }}
+        style={{ color: highlight ? PRIMARY_DARK : INK }}
       >
         {value}
       </span>
@@ -1622,7 +1621,7 @@ function HeroVideo() {
   if (failed) return null;
   return (
     <div className="w-full max-w-[420px] lg:max-w-[480px] mx-auto">
-      <div className="relative overflow-hidden rounded-2xl border border-[#0684BC]/20 shadow-xl shadow-[#032B44]/5">
+      <div className="relative overflow-hidden rounded-2xl border border-primary/20 shadow-xl shadow-secondary/5">
         <video
           autoPlay
           muted
@@ -1697,20 +1696,20 @@ function QuoteForm() {
   };
 
   const inputClass =
-    'w-full px-4 py-3.5 rounded-xl border-2 bg-white text-[#032B44] transition-colors focus:outline-none';
-  const okBorder = 'border-gray-200 focus:border-[#0684BC]';
+    'w-full px-4 py-3.5 rounded-xl border-2 bg-white text-secondary transition-colors focus:outline-none';
+  const okBorder = 'border-[var(--color-gray-200)] focus:border-primary';
   const errBorder = 'border-red-400 focus:border-red-500';
 
   if (isSubmitted) {
     return (
-      <div className="rounded-xl bg-white border border-slate-200 p-8 lg:p-12 shadow-sm text-center">
-        <div className="w-20 h-20 rounded-full bg-[#0684BC]/10 flex items-center justify-center mx-auto mb-6" style={{ color: AZURE }}>
+      <div className="rounded-xl bg-white border border-[var(--color-gray-200)] p-8 lg:p-12 shadow-sm text-center">
+        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6" style={{ color: PRIMARY }}>
           <CheckCircle weight="fill" className="w-10 h-10" />
         </div>
         <h3 className="text-2xl lg:text-3xl font-display font-bold mb-3" style={{ color: INK }}>
           Thanks — we&apos;ve got it
         </h3>
-        <p className="text-[#64748b] max-w-md mx-auto mb-8">
+        <p className="text-[var(--color-gray-500)] max-w-md mx-auto mb-8">
           We&apos;ll price your real RingCentral configuration and get back to you within one business day.
         </p>
         <button
@@ -1720,7 +1719,7 @@ function QuoteForm() {
             reset();
           }}
           className="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full border-2 transition-colors"
-          style={{ color: AZURE, borderColor: AZURE }}
+          style={{ color: PRIMARY_DARK, borderColor: PRIMARY_DARK }}
         >
           Send another request
         </button>
@@ -1729,7 +1728,7 @@ function QuoteForm() {
   }
 
   return (
-    <div className="rounded-xl bg-white border border-slate-200 p-8 lg:p-10 shadow-sm">
+    <div className="rounded-xl bg-white border border-[var(--color-gray-200)] p-8 lg:p-10 shadow-sm">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Honeypot — hidden from real users */}
         <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
@@ -1798,7 +1797,7 @@ function QuoteForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-[#F26B00] text-white font-semibold text-lg rounded-full shadow-lg shadow-[#F26B00]/25 hover:bg-[#D95F00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-semibold text-lg rounded-full shadow-lg shadow-accent/25 hover:bg-[var(--color-accent-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <span>Sending…</span>
@@ -1810,7 +1809,7 @@ function QuoteForm() {
           )}
         </button>
 
-        <p className="text-sm text-[#94a3b8] text-center">
+        <p className="text-sm text-[var(--color-gray-500)] text-center">
           By submitting, you agree to be contacted about your quote. We never share your information.
         </p>
       </form>
@@ -1823,7 +1822,7 @@ function QuoteForm() {
 function SectionEyebrow({
   children,
   centered = false,
-  color = AZURE,
+  color = PRIMARY_DARK,
 }: {
   children: React.ReactNode;
   centered?: boolean;
@@ -1855,8 +1854,8 @@ function RelatedCard({
     <Link href={href} className={`group ${subgridCard} hover:shadow-xl transition-all duration-300`}>
       <CardHeader eyebrow={label} title={title} titleClassName="text-base leading-snug" />
       <div className={`flex flex-col ${cardBodyClass}`}>
-        <p className="text-sm text-[#64748b] leading-relaxed flex-grow">{description}</p>
-        <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: AZURE }}>
+        <p className="text-sm text-[var(--color-gray-500)] leading-relaxed flex-grow">{description}</p>
+        <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: PRIMARY_DARK }}>
           Read more
           <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </span>
@@ -1868,7 +1867,7 @@ function RelatedCard({
 function TrustItem({ icon: Icon, children }: { icon: typeof Handshake; children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <Icon weight="fill" className="w-4 h-4" style={{ color: AZURE }} />
+      <Icon weight="fill" className="w-4 h-4" style={{ color: PRIMARY_DARK }} />
       <span>{children}</span>
     </div>
   );
