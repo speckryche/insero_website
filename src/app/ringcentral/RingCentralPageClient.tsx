@@ -235,40 +235,58 @@ export function RingCentralPageClient() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}
             >
-              {/* Official RingCentral logo, unmodified — no recolour, crop, effect,
-                  or change of proportion. Sized so it stays smaller than the Insero
-                  mark in the site header on BOTH axes at every breakpoint:
-                    Insero header  155x64 (mobile) / 194x80 (lg)
-                    this logo      132x20 (mobile) / 158x24 (lg)
-                  h-8 rendered 211px wide, which was wider than the Insero mark. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/carriers/RingCentral_Logo_%28Color%29.svg"
-                alt="RingCentral"
-                className="h-5 lg:h-6 w-auto mb-10"
-              />
-
               <h1
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
                 style={{ color: INK }}
               >
-                RingCentral<sup className="text-[0.5em] align-super">&reg;</sup> for Business —{' '}
-                <span style={{ color: PRIMARY_DARK }}>AI-Powered Phone, Done Right</span>
+                What RingCentral<sup className="text-[0.5em] align-super">&reg;</sup> actually costs —{' '}
+                <span style={{ color: PRIMARY_DARK }}>and whether it&apos;s right for you</span>
               </h1>
 
-              <p className="text-lg md:text-xl text-[var(--color-gray-600)] mb-10 max-w-3xl leading-relaxed">
-                RingCentral is one of the leading AI business communications platforms — phone, video, messaging,
-                and a deep agentic AI layer. Insero is the independent advisor who sources it for you at zero cost,
-                with honest guidance on whether it&apos;s actually the right fit.
+              <p className="text-lg md:text-xl text-[var(--color-gray-600)] mb-8 max-w-3xl leading-relaxed">
+                RingCentral spreads its pricing across six pages. We put all of it on this one. Insero is an
+                independent advisor who sources it at no cost to you — and if something else fits you better,
+                we&apos;ll say so.
               </p>
 
-              <Link href="/contact">
-                <button className={rcButtonClass}>
-                  <Phone weight="fill" className="w-5 h-5" />
-                  <span>Get a Free Quote</span>
-                  <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
-                </button>
-              </Link>
+              {/* The CTA points at the quote form further down this page rather
+                  than /contact, so the hero doesn't send anyone off-page to fill
+                  out a form we already have here. */}
+              <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+                <a href="#get-a-quote">
+                  <button className={rcButtonClass}>
+                    <Phone weight="fill" className="w-5 h-5" />
+                    <span>Get a Free Quote</span>
+                    <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                  </button>
+                </a>
+                <a
+                  href="#pricing"
+                  className="font-semibold text-lg hover:underline"
+                  style={{ color: PRIMARY_DARK }}
+                >
+                  See the pricing
+                </a>
+              </div>
+
+              {/* Official RingCentral logo, unmodified — no recolour, crop, effect,
+                  or change of proportion. It sits below the copy as a small
+                  attribution row rather than above the H1: RingCentral's orange
+                  wordmark and the Insero-orange CTA read as two attempts at the
+                  same colour when they share the top of the viewport.
+                  Still comfortably smaller than the Insero mark in the site header
+                  on BOTH axes at every breakpoint:
+                    Insero header  155x64 (mobile) / 194x80 (lg)
+                    this logo      105x16 (mobile) / 132x20 (lg) */}
+              <div className="mt-10 flex items-center gap-3">
+                <span className="text-sm text-[var(--color-gray-500)]">Pricing and product details for</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/carriers/RingCentral_Logo_%28Color%29.svg"
+                  alt="RingCentral"
+                  className="h-4 lg:h-5 w-auto"
+                />
+              </div>
             </motion.div>
 
             {/* RC's public product video. Hides itself gracefully if the asset
@@ -478,7 +496,7 @@ export function RingCentralPageClient() {
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated all-in reference. Every figure renders from
           @/data/ringcentral-pricing — nothing here is hardcoded. */}
-      <section className="py-20 lg:py-32" style={{ backgroundColor: TINT }}>
+      <section id="pricing" className="scroll-mt-24 lg:scroll-mt-28 py-20 lg:py-32" style={{ backgroundColor: TINT }}>
         <Container>
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-14 lg:mb-16">
             <SectionEyebrow centered>Honest Pricing</SectionEyebrow>
@@ -689,7 +707,7 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== FINAL CTA — LEAD FORM ===================== */}
-      <section className="pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
+      <section id="get-a-quote" className="scroll-mt-24 lg:scroll-mt-28 pt-24 lg:pt-28 pb-20 lg:pb-24" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
             <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: PRIMARY_DARK }}>
