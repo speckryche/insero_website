@@ -1605,6 +1605,12 @@ function EquationTotal({
 // against the webm's 1.68 MB) and h.264 is universally supported, so the webm
 // is a genuine fallback rather than the default download.
 //
+// mix-blend-multiply drops the clip's pure-white background out against the
+// page, which is what an alpha-channel encode would otherwise be needed for.
+// Multiply only darkens, so this depends on the backdrop staying light — the
+// hero section is bg-white. Moving this onto a dark background would turn the
+// clip into a solid block.
+//
 // Two error handlers, covering the two distinct failure modes:
 //
 //  - LOAD failure fires `error` on the <source> element, and that event does
@@ -1631,7 +1637,7 @@ function HeroVideo() {
           width={776}
           height={700}
           onError={() => setFailed(true)}
-          className="w-full h-auto block"
+          className="w-full h-auto block mix-blend-multiply"
         >
           <source src="/video/rc_hero.mp4" type="video/mp4" />
           <source src="/video/rc_hero.webm" type="video/webm" onError={() => setFailed(true)} />
