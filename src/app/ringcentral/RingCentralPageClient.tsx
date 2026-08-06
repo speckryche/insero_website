@@ -466,7 +466,7 @@ export function RingCentralPageClient() {
               <p>
                 That makes it a strong choice for teams that live on the phone — sales, support, and any
                 business where the contact center is the front door. The catch, which we&apos;re upfront about
-                below, is that the most powerful pieces are priced as add-ons rather than bundled into the base
+                above, is that the most powerful pieces are priced as add-ons rather than bundled into the base
                 seat. Knowing which ones you actually need is most of the battle.
               </p>
             </div>
