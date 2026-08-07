@@ -69,18 +69,18 @@ const TINT = 'var(--color-primary-50)'; // light section background
 
 const aiCapabilities = [
   {
-    stage: 'Included free',
-    name: 'AI Companion',
+    stage: 'Included with the seat',
+    name: 'Zoom AI in Workplace',
     icon: Sparkle,
     description:
-      "Included with eligible paid plans at no extra cost: call and meeting summaries, voicemail prioritization, and task extraction that auto-creates Zoom Tasks with owners and deadlines — plus 'ask AI Companion' for instant answers during and after calls.",
+      'Included with eligible paid Workplace plans at no extra cost: call and meeting summaries, voicemail prioritization, and task extraction that auto-creates Zoom Tasks with owners and deadlines, plus on-demand answers during and after calls.',
   },
   {
     stage: 'Agentic',
-    name: 'AI Companion 3.0',
+    name: 'Agentic workflows',
     icon: Brain,
     description:
-      'The agentic evolution: a cross-platform work surface that pulls context from your files and apps and drives conversation-to-action workflows, instead of just summarizing after the fact.',
+      'Native Workplace AI that pulls context from your files and apps and drives conversation-to-action workflows, rather than only summarizing after the fact.',
   },
   {
     stage: 'Voice AI (add-on)',
@@ -99,10 +99,10 @@ const aiAlsoIncluded = [
       "Sales conversation intelligence: deal insights, risk flags, automatic CRM updates, and coaching built from real calls — so your pipeline reflects what's actually happening, not what got typed in.",
   },
   {
-    name: 'Custom AI Companion (add-on)',
+    name: 'ZoomMate (add-on)',
     icon: PuzzlePiece,
     description:
-      'Vertical- and role-tuned AI agents you can shape to your own workflows — a paid add-on for teams that want AI specialized to how they actually work.',
+      'A separate paid product, launched June 2026, that succeeds Custom AI Companion: an agentic work surface for searching your data and completing tasks. Zoom positions it as an addition to the included AI rather than a replacement for it.',
   },
 ];
 
@@ -412,7 +412,8 @@ export function ZoomPageClient() {
               </p>
               <p>
                 But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
-                AI as a paid upgrade, Zoom Workplace includes AI Companion<Tm>&trade;</Tm> with eligible paid plans at no extra cost.
+                AI as a paid upgrade, Zoom Workplace includes its AI features — formerly branded AI
+                Companion — with eligible paid plans at no extra cost.
                 That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
                 most advanced agentic pieces still available as add-ons when you need them.
               </p>
@@ -433,10 +434,10 @@ export function ZoomPageClient() {
               Capable AI that&apos;s included, not billed as an add-on
             </h2>
             <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
-              The Zoom Workplace standout is that useful AI comes with the seat. AI Companion is included at no extra
-              cost on eligible paid plans — which makes Zoom Phone one of the simplest, most cost-effective ways to
-              put real AI in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
-              add-on.
+              The Zoom Workplace standout is that useful AI comes with the seat. Those AI features are native
+              to Workplace and included at no extra cost on eligible paid plans — which makes Zoom Phone one
+              of the simplest, most cost-effective ways to put real AI in front of your team. Here&apos;s the
+              honest breakdown of what&apos;s included and what&apos;s an add-on.
             </p>
           </motion.div>
 

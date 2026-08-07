@@ -20,6 +20,8 @@ import type { Stat } from '@/components/sections/StatsBand';
 export const lastVerified = '2026-08-07';
 
 const SEATS_RELEASE = 'https://news.zoom.com/zoom-phone-hits-10-million-seats/';
+/** June 2026 rebrand: AI Companion retired, features native under Zoom AI. */
+const REBRAND_POST = 'https://www.zoom.com/en/blog/zoom-ai-companion-zoommate/';
 
 export const zoomStats: Stat[] = [
   {
@@ -33,16 +35,14 @@ export const zoomStats: Stat[] = [
     sourceUrl: SEATS_RELEASE,
   },
   {
-    // ⚠️  UNSOURCED. The "AI Companion at no extra cost" claim appears in this
-    // page's metadata, both FAQ answers and the AI-layer copy, but no source
-    // was ever recorded for it anywhere in the repo — it is not in
-    // zoom-pricing.ts, which covers Zoom Phone and Zoom Contact Center only.
-    // Left empty rather than pointing at the VoIP pricing page, which was not
-    // the basis for the claim. Find where Zoom publishes the AI Companion
-    // entitlement, put the URL here, and re-check the wording against it.
+    // Zoom retired the AI Companion brand in June 2026; the features are now
+    // native Zoom Workplace capabilities under the Zoom AI umbrella. The
+    // entitlement itself is unchanged — still included on paid Workplace plans
+    // at no extra charge — which the post below confirms. The separate paid
+    // agentic product, ZoomMate, is priced in zoom-pricing.ts.
     value: '$0',
-    label: 'Extra cost for AI Companion on paid Zoom Workplace plans',
-    sourceUrl: '',
+    label: 'Extra cost for Zoom AI features on paid Workplace plans',
+    sourceUrl: REBRAND_POST,
   },
 ];
 

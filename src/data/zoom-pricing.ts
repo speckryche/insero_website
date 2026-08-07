@@ -30,6 +30,15 @@ export const lastVerified = '2026-08-06';
 
 export const pricingSourceUrl = 'https://www.zoom.com/en/products/voip-phone/pricing/';
 
+/**
+ * June 2026: Zoom sunset Custom AI Companion on 1 June and ZoomMate succeeds
+ * it — confirmed by Zoom to No Jitter. ZoomMate is a separate paid product and
+ * is explicitly NOT a replacement for the AI features that remain included on
+ * paid Workplace plans.
+ */
+export const zoomMateSourceUrl =
+  'https://www.nojitter.com/digital-workplace/how-zoommate-succeeds-zoom-s-custom-ai-companion';
+
 // --- Shared shapes --------------------------------------------------------
 
 /** A plan tier with published annual and monthly per-user rates. */
@@ -144,6 +153,21 @@ export const addOnGroups: AddOnGroup[] = [
       { name: 'International calling', price: 10 },
       { name: 'Zoom Compliance Manager', price: 6 },
       { name: 'Desk phones and headsets', price: null, note: 'Quote-based.' },
+    ],
+  },
+  {
+    // Workplace-level rather than Phone or Contact Center, so it sits in its
+    // own group. Included here because it is the paid successor to a
+    // capability this page previously described as included.
+    group: 'Zoom Workplace AI add-ons',
+    unit: 'Per user / month',
+    requirement: 'Sold standalone or as a Zoom Workplace add-on.',
+    items: [
+      {
+        name: 'ZoomMate\u2122',
+        price: 20,
+        note: 'Starting at. Launched 1 June 2026. Includes a monthly AI credit allocation; advanced capabilities meter against those credits, so the effective cost depends on usage.',
+      },
     ],
   },
   {
