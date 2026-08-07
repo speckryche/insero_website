@@ -45,6 +45,7 @@ import {
   formatUsd,
   type PlanTier as ZoomPlanTier,
 } from '@/data/zoom-pricing';
+import { zoomPlatformClaims } from '@/data/zoom-platform-claims';
 import { zoomStats, zoomStatsAttribution } from '@/data/zoom-stats';
 import { zoomFaq } from './faq';
 
@@ -405,10 +406,10 @@ export function ZoomPageClient() {
                 system: real business calling, one familiar app, no PBX in a closet.
               </p>
               <p>
-                It&apos;s built to be relied on at scale — a 99.999% uptime SLA, availability across 49+
-                countries, a bring-your-own-carrier (BYOC) option if you want to keep existing carrier
-                relationships, and compliance built in (HIPAA, GDPR, FedRAMP). For a lot of teams the biggest
-                advantage is simply familiarity: adoption is fast because people already know the interface.
+                It&apos;s built to be relied on at scale — {zoomPlatformClaims.uptimeSla.text},{' '}
+                {zoomPlatformClaims.countryCoverage.text}, and {zoomPlatformClaims.byoc.text}. On compliance,{' '}
+                {zoomPlatformClaims.compliance.text}. For a lot of teams the biggest advantage is simply
+                familiarity: adoption is fast because people already know the interface.
               </p>
               <p>
                 But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
