@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useSyncExternalStore } from 'react';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -31,7 +31,6 @@ import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
-import ZoomHeroCards, { usePrefersReducedMotion } from './ZoomHeroCards';
 import { submitContactForm, type ContactFormData } from '../contact/actions';
 import {
   lastVerified,
@@ -173,6 +172,21 @@ const fadeUp = {
 };
 
 // Shared Zoom blue pill CTA
+/**
+ * Trademark symbol. `sup` defaults to vertical-align: super, which at heading
+ * sizes lifts the glyph to near cap height and — with a normal line-height —
+ * grows the line box enough to disturb how the heading wraps. A smaller shift
+ * and a zeroed line-height keep it tucked against the word without affecting
+ * the line it sits on.
+ */
+function Tm({ children }: { children: React.ReactNode }) {
+  return (
+    <sup className="text-[0.55em]" style={{ verticalAlign: '0.38em', lineHeight: 0 }}>
+      {children}
+    </sup>
+  );
+}
+
 const zoomButtonClass =
   'group inline-flex items-center gap-3 px-10 py-5 bg-accent text-white font-semibold text-lg rounded-full hover:bg-[var(--color-accent-dark)] transition-colors duration-200 shadow-lg shadow-accent/25';
 
@@ -189,7 +203,7 @@ export function ZoomPageClient() {
           {/* Copy left, media right, media the wider track (roughly 42/58).
               minmax(0,…) on both so the long H1 cannot push the media column
               past its share. Single column below lg, media underneath. */}
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,42fr)_minmax(0,58fr)] gap-12 lg:gap-14 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,40fr)_minmax(0,60fr)] gap-12 lg:gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -203,15 +217,15 @@ export function ZoomPageClient() {
             <img src="/carriers/Zoom_Logo_Bloom_RGB.png" alt="Zoom" className="h-5 lg:h-6 w-auto mb-10" />
 
             <h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.5rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.875rem] xl:text-[3.125rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
               style={{ color: MIDNIGHT }}
             >
-              What Zoom Phone<sup className="text-[0.5em] align-super">&trade;</sup> actually costs —{' '}
+              What Zoom Phone<Tm>&trade;</Tm> actually costs —{' '}
               <span style={{ color: BLUE_TEXT }}>and whether it&apos;s right for you</span>
             </h1>
 
             <p className="text-lg md:text-xl text-[var(--color-gray-600)] mb-10 leading-relaxed">
-              Zoom<sup className="text-[0.5em] align-super">&reg;</sup> splits phone and contact center pricing
+              Zoom<Tm>&reg;</Tm> splits phone and contact center pricing
               across separate pages. We put all of it on this one. Insero is an independent advisor who
               sources it at no cost to you — and if something else fits you better, we&apos;ll say so.
             </p>
@@ -373,7 +387,7 @@ export function ZoomPageClient() {
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
-              What Zoom Workplace<sup className="text-[0.5em] align-super">&trade;</sup> actually is
+              What Zoom Workplace<Tm>&trade;</Tm> actually is
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               <p>
@@ -393,7 +407,7 @@ export function ZoomPageClient() {
               </p>
               <p>
                 But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
-                AI as a paid upgrade, Zoom Workplace includes AI Companion<sup className="text-[0.5em] align-super">&trade;</sup> with eligible paid plans at no extra cost.
+                AI as a paid upgrade, Zoom Workplace includes AI Companion<Tm>&trade;</Tm> with eligible paid plans at no extra cost.
                 That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
                 most advanced agentic pieces still available as add-ons when you need them.
               </p>
@@ -684,6 +698,22 @@ export function ZoomPageClient() {
   );
 }
 
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+/** Subscribes to the media query; SSR snapshot is false so markup renders the
+ *  clip and hydration corrects it. */
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+      mq.addEventListener('change', onStoreChange);
+      return () => mq.removeEventListener('change', onStoreChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => false,
+  );
+}
+
 // --- Hero media -----------------------------------------------------------
 // 16:9 card holding the desk loop with the Zoom interface cards layered over
 // it. The aspect ratio is declared up front so the box is reserved before any
@@ -738,7 +768,6 @@ function ZoomHeroMedia() {
         </video>
       )}
 
-      <ZoomHeroCards />
     </div>
   );
 }
