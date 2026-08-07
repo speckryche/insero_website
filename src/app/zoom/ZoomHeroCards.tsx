@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 /**
  * Zoom interface cards that launch from the desk phone in the hero clip, ride
@@ -78,17 +78,24 @@ function travelKeyframes(card: HeroCard, w: number, h: number): Keyframe[] {
   return frames;
 }
 
-/** SSR-safe: starts false, corrects on mount, and tracks later changes. */
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+/**
+ * Subscribes to the media query rather than mirroring it into state in an
+ * effect — matchMedia is an external store, which is exactly what
+ * useSyncExternalStore is for. Also keeps it SSR-safe: the server snapshot is
+ * false, so markup renders the animated branch and hydration corrects it.
+ */
 export function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-  return reduced;
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+      mq.addEventListener('change', onStoreChange);
+      return () => mq.removeEventListener('change', onStoreChange);
+    },
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => false,
+  );
 }
 
 const SWAY_CSS = `
