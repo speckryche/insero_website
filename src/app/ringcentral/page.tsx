@@ -3,9 +3,9 @@ import { RingCentralPageClient } from './RingCentralPageClient';
 import { ringCentralFaq } from './faq';
 
 export const metadata: Metadata = {
-  title: 'RingCentral for Business: AI Phone, Contact Center & Pricing',
+  title: 'RingCentral Pricing: What It Actually Costs, All in One Place',
   description:
-    "RingCentral's AI-powered business phone, contact center, and agentic voice AI — explained honestly. Source it through Insero, an independent advisor, at zero cost. Get a free quote.",
+    'RingEX and RingCX list pricing in one place, with the AI add-ons and where a higher tier costs less. Sourced through Insero at zero cost.',
   keywords: [
     'RingCentral',
     'RingCentral for business',
@@ -20,17 +20,17 @@ export const metadata: Metadata = {
     'business phone AI',
   ],
   openGraph: {
-    title: 'RingCentral for Business: AI Phone, Contact Center & Pricing | Insero',
+    title: 'RingCentral Pricing: What It Actually Costs, All in One Place | Insero',
     description:
-      "RingCentral's AI-powered business phone, contact center, and agentic voice AI — explained honestly. Source it through Insero at zero cost.",
+      'RingEX and RingCX list pricing in one place, with the AI add-ons and where a higher tier costs less. Sourced through Insero at zero cost.',
     url: 'https://insero.cloud/ringcentral',
     images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'RingCentral for Business — sourced through Insero' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RingCentral for Business: AI Phone, Contact Center & Pricing | Insero',
+    title: 'RingCentral Pricing: What It Actually Costs, All in One Place | Insero',
     description:
-      "RingCentral's AI-powered business phone and contact center — explained honestly. Source it through Insero at zero cost.",
+      'RingEX and RingCX list pricing in one place, explained honestly. Sourced through Insero at zero cost.',
     images: ['/og-default.png'],
   },
   alternates: {
