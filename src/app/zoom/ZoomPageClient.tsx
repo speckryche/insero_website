@@ -28,6 +28,7 @@ import {
   WarningCircle,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
+import { StatsBand } from '@/components/sections/StatsBand';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
@@ -44,6 +45,7 @@ import {
   formatUsd,
   type PlanTier as ZoomPlanTier,
 } from '@/data/zoom-pricing';
+import { zoomStats, zoomStatsAttribution } from '@/data/zoom-stats';
 import { zoomFaq } from './faq';
 
 // --- Insero design system -------------------------------------------------
@@ -259,6 +261,9 @@ export function ZoomPageClient() {
           </div>
         </Container>
       </section>
+
+      {/* ===================== STATS BAND ===================== */}
+      <StatsBand stats={zoomStats} attribution={zoomStatsAttribution} />
 
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated voice reference. Every figure renders from

@@ -42,6 +42,7 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
+import { StatsBand } from '@/components/sections/StatsBand';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
@@ -61,6 +62,7 @@ import {
   type TierFeatures,
 } from '@/data/ringcentral-pricing';
 import { submitContactForm, type ContactFormData } from '../contact/actions';
+import { ringCentralStats, ringCentralStatsAttribution } from '@/data/ringcentral-stats';
 import { ringCentralFaq } from './faq';
 
 // --- Insero design system -------------------------------------------------
@@ -76,15 +78,6 @@ const PRIMARY_DARK = 'var(--color-primary-dark)'; // all accent text, any backgr
 const TINT = 'var(--color-primary-50)'; // section background
 
 // --- Section data ---------------------------------------------------------
-
-// RingCentral's real published figures — the numbers RC leads with on its
-// own marketing. Big ink numerals, small slate labels.
-const rcStats = [
-  { value: '600,000+', label: 'Businesses run on RingCentral' },
-  { value: '99.999%', label: 'Uptime, 5+ years running' },
-  { value: 'Billions', label: 'AI-enabled minutes processed monthly' },
-  { value: '100+', label: 'Countries supported' },
-];
 
 // Three pillars mirroring RC's own product structure. Descriptions are
 // original — deliberately not lifted from RingCentral's marketing copy.
@@ -330,33 +323,7 @@ export function RingCentralPageClient() {
       </section>
 
       {/* ===================== STATS BAND ===================== */}
-      <section className="py-16 lg:py-20 bg-white border-t border-[var(--color-gray-100)]">
-        <Container>
-          <div className="grid grid-cols-2 lg:grid-cols-4">
-            {rcStats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
-                className={`px-4 py-6 sm:px-8 text-center lg:text-left ${
-                  index > 0 ? 'lg:border-l lg:border-primary/25' : ''
-                }`}
-              >
-                <div className="font-display font-bold text-4xl sm:text-5xl tracking-tight" style={{ color: INK }}>
-                  {stat.value}
-                </div>
-                <div className="mt-2 text-sm sm:text-[15px] text-[var(--color-gray-500)] leading-snug">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* These are RingCentral's own published claims, not Insero's
-              measurements — attributed so they don't read as our findings. */}
-          <p className="mt-6 px-4 sm:px-8 text-xs text-[var(--color-gray-500)]">Figures published by RingCentral.</p>
-        </Container>
-      </section>
+      <StatsBand stats={ringCentralStats} attribution={ringCentralStatsAttribution} />
 
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated all-in reference. Every figure renders from
