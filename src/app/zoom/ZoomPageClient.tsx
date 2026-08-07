@@ -202,14 +202,14 @@ export function ZoomPageClient() {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
               style={{ color: MIDNIGHT }}
             >
-              Zoom Phone for Business —{' '}
-              <span style={{ color: BLUE }}>AI-First Phone, Built In</span>
+              What Zoom Phone<sup className="text-[0.5em] align-super">&trade;</sup> actually costs —{' '}
+              <span style={{ color: BLUE_TEXT }}>and whether it&apos;s right for you</span>
             </h1>
 
             <p className="text-lg md:text-xl lg:text-2xl text-[var(--color-gray-600)] mb-10 max-w-3xl leading-relaxed">
-              Zoom Phone is a leading AI-first cloud phone platform — best known for video, but now a full
-              business communications suite with capable AI included by default. Insero is the independent
-              advisor who sources it for you at zero cost, with honest guidance on whether it actually fits.
+              Zoom<sup className="text-[0.5em] align-super">&reg;</sup> splits phone and contact center pricing
+              across separate pages. We put all of it on this one. Insero is an independent advisor who
+              sources it at no cost to you — and if something else fits you better, we&apos;ll say so.
             </p>
 
             {/* Both calls to action stay on this page — the quote form is in the
@@ -230,154 +230,6 @@ export function ZoomPageClient() {
               </a>
             </div>
           </motion.div>
-        </Container>
-      </section>
-
-      {/* ===================== WHAT ZOOM IS ===================== */}
-      <section className="py-20 lg:py-28 bg-white">
-        <Container size="md">
-          <motion.div {...fadeUp}>
-            <SectionEyebrow>The Overview</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
-              What Zoom Workplace actually is
-            </h2>
-            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
-              <p>
-                Most people know the Zoom brand for video. The fuller picture is Zoom Workplace — a cloud business
-                communications platform that brings phone, meetings, team chat, and a contact center into one
-                place. Zoom Phone is the piece that turns the video tool you already use into a complete{' '}
-                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: BLUE }}>
-                  hosted UCaaS
-                </Link>{' '}
-                system: real business calling, one familiar app, no PBX in a closet.
-              </p>
-              <p>
-                It&apos;s built to be relied on at scale — a 99.999% uptime SLA, availability across 49+
-                countries, a bring-your-own-carrier (BYOC) option if you want to keep existing carrier
-                relationships, and compliance built in (HIPAA, GDPR, FedRAMP). For a lot of teams the biggest
-                advantage is simply familiarity: adoption is fast because people already know the interface.
-              </p>
-              <p>
-                But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
-                AI as a paid upgrade, Zoom Workplace includes AI Companion with eligible paid plans at no extra cost.
-                That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
-                most advanced agentic pieces still available as add-ons when you need them.
-              </p>
-            </div>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* ===================== AI CAPABILITIES (hook) ===================== */}
-      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
-        <Container>
-          <motion.div {...fadeUp} className="max-w-3xl mb-14">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/10" style={{ color: BLUE_HOVER }}>
-              <Sparkle weight="fill" className="w-4 h-4" />
-              <span className="text-sm font-semibold">The AI Layer</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: MIDNIGHT }}>
-              Capable AI that&apos;s included, not billed as an add-on
-            </h2>
-            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
-              The Zoom Workplace standout is that useful AI comes with the seat. AI Companion is included at no extra
-              cost on eligible paid plans — which makes Zoom Phone one of the simplest, most cost-effective ways to
-              put real AI in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
-              add-on.
-            </p>
-          </motion.div>
-
-          {/* Primary AI capabilities */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            {aiCapabilities.map((cap, index) => {
-              const Icon = cap.icon;
-              return (
-                <motion.div
-                  key={cap.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="rounded-3xl p-7 bg-white shadow-sm hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 mb-5" style={{ color: BLUE }}>
-                    <Icon weight="fill" className="w-6 h-6" />
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>
-                    {cap.stage}
-                  </span>
-                  <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: MIDNIGHT }}>{cap.name}</h3>
-                  <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Also notable */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {aiAlsoIncluded.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex gap-4 rounded-3xl p-7 bg-white shadow-sm"
-                >
-                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10" style={{ color: BLUE }}>
-                    <Icon weight="fill" className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>{item.name}</h3>
-                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </Container>
-      </section>
-
-      {/* ===================== CORE PRODUCTS ===================== */}
-      <section className="py-20 lg:py-28 bg-white">
-        <Container>
-          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
-            <SectionEyebrow centered>The Platform</SectionEyebrow>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
-              Everything in the Zoom platform
-            </h2>
-            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
-              The building blocks, in plain terms — so you know what&apos;s standard and what&apos;s a separate
-              license.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {coreProducts.map((product, index) => {
-              const Icon = product.icon;
-              return (
-                <motion.div
-                  key={product.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-60px' }}
-                  transition={{ duration: 0.5, delay: index * 0.07 }}
-                  className="rounded-3xl p-7 shadow-sm hover:shadow-lg transition-all duration-300"
-                  style={{ backgroundColor: TINT }}
-                >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white mb-5" style={{ color: BLUE }}>
-                    <Icon weight="fill" className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
-                    {product.name}
-                  </h3>
-                  <p className="text-[var(--color-gray-600)] leading-relaxed text-[15px]">{product.description}</p>
-                </motion.div>
-              );
-            })}
-          </div>
         </Container>
       </section>
 
@@ -436,18 +288,18 @@ export function ZoomPageClient() {
               </div>
               <div>
                 <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
-                  Where an advisor actually earns their keep
+                  How Insero prices this for you
                 </h3>
                 <p className="text-[var(--color-gray-600)] leading-relaxed text-lg">
                   We publish the list pricing because you should be able to see it before you talk to
                   anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
                   pricing on your behalf, structuring the plan mix and contract term around how
                   you&apos;ll actually use the system, and making sure a licence you are already
-                  paying for is not bought twice. Curious what you&apos;re overpaying for elsewhere?{' '}
-                  <Link href="/tools/pots-cost-estimator" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
-                    Try our cost estimator
+                  paying for is not bought twice.{' '}
+                  <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
+                    Ask us for a quote
                   </Link>{' '}
-                  or just ask for a quote.
+                  and we&apos;ll price your actual configuration.
                 </p>
               </div>
             </div>
@@ -502,8 +354,157 @@ export function ZoomPageClient() {
         </Container>
       </section>
 
-      {/* ===================== IS IT RIGHT FOR YOU ===================== */}
+      {/* ===================== WHAT ZOOM IS ===================== */}
       <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
+        <Container size="md">
+          <motion.div {...fadeUp}>
+            <SectionEyebrow>The Overview</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
+              What Zoom Workplace<sup className="text-[0.5em] align-super">&trade;</sup> actually is
+            </h2>
+            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
+              <p>
+                Most people know the Zoom brand for video. The fuller picture is Zoom Workplace — a cloud business
+                communications platform that brings phone, meetings, team chat, and a contact center into one
+                place. Zoom Phone is the piece that turns the video tool you already use into a complete{' '}
+                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: BLUE }}>
+                  hosted UCaaS
+                </Link>{' '}
+                system: real business calling, one familiar app, no PBX in a closet.
+              </p>
+              <p>
+                It&apos;s built to be relied on at scale — a 99.999% uptime SLA, availability across 49+
+                countries, a bring-your-own-carrier (BYOC) option if you want to keep existing carrier
+                relationships, and compliance built in (HIPAA, GDPR, FedRAMP). For a lot of teams the biggest
+                advantage is simply familiarity: adoption is fast because people already know the interface.
+              </p>
+              <p>
+                But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
+                AI as a paid upgrade, Zoom Workplace includes AI Companion<sup className="text-[0.5em] align-super">&trade;</sup> with eligible paid plans at no extra cost.
+                That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
+                most advanced agentic pieces still available as add-ons when you need them.
+              </p>
+            </div>
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* ===================== AI CAPABILITIES (hook) ===================== */}
+      <section className="py-20 lg:py-28 bg-white">
+        <Container>
+          <motion.div {...fadeUp} className="max-w-3xl mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/10" style={{ color: BLUE_HOVER }}>
+              <Sparkle weight="fill" className="w-4 h-4" />
+              <span className="text-sm font-semibold">The AI Layer</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-6" style={{ color: MIDNIGHT }}>
+              Capable AI that&apos;s included, not billed as an add-on
+            </h2>
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
+              The Zoom Workplace standout is that useful AI comes with the seat. AI Companion is included at no extra
+              cost on eligible paid plans — which makes Zoom Phone one of the simplest, most cost-effective ways to
+              put real AI in front of your team. Here&apos;s the honest breakdown of what&apos;s included and what&apos;s an
+              add-on.
+            </p>
+          </motion.div>
+
+          {/* Primary AI capabilities */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {aiCapabilities.map((cap, index) => {
+              const Icon = cap.icon;
+              return (
+                <motion.div
+                  key={cap.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="rounded-3xl p-7 shadow-sm hover:shadow-lg transition-shadow duration-300"
+                  style={{ backgroundColor: TINT }}
+                >
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 mb-5" style={{ color: BLUE }}>
+                    <Icon weight="fill" className="w-6 h-6" />
+                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>
+                    {cap.stage}
+                  </span>
+                  <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: MIDNIGHT }}>{cap.name}</h3>
+                  <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Also notable */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {aiAlsoIncluded.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="flex gap-4 rounded-3xl p-7 shadow-sm"
+                  style={{ backgroundColor: TINT }}
+                >
+                  <div className="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10" style={{ color: BLUE }}>
+                    <Icon weight="fill" className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>{item.name}</h3>
+                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===================== CORE PRODUCTS ===================== */}
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
+        <Container>
+          <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-14">
+            <SectionEyebrow centered>The Platform</SectionEyebrow>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
+              Everything in the Zoom platform
+            </h2>
+            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
+              The building blocks, in plain terms — so you know what&apos;s standard and what&apos;s a separate
+              license.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {coreProducts.map((product, index) => {
+              const Icon = product.icon;
+              return (
+                <motion.div
+                  key={product.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.5, delay: index * 0.07 }}
+                  className="rounded-3xl p-7 bg-white shadow-sm hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white mb-5" style={{ color: BLUE }}>
+                    <Icon weight="fill" className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>
+                    {product.name}
+                  </h3>
+                  <p className="text-[var(--color-gray-600)] leading-relaxed text-[15px]">{product.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===================== IS IT RIGHT FOR YOU ===================== */}
+      <section className="py-20 lg:py-28 bg-white">
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-12">
             <SectionEyebrow centered>Honest Fit</SectionEyebrow>
@@ -539,7 +540,8 @@ export function ZoomPageClient() {
             />
           </motion.div>
 
-          <motion.div {...fadeUp} className="mt-8 rounded-3xl bg-white p-7 lg:p-8 shadow-sm">
+          <motion.div {...fadeUp} className="mt-8 rounded-3xl p-7 lg:p-8 shadow-sm"
+            style={{ backgroundColor: TINT }}>
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-primary/10" style={{ color: BLUE }}>
                 <Scales weight="fill" className="w-6 h-6" />
@@ -566,7 +568,7 @@ export function ZoomPageClient() {
       </section>
 
       {/* ===================== FAQ ===================== */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-20 lg:py-28" style={{ backgroundColor: TINT }}>
         <Container size="md">
           <motion.div {...fadeUp} className="mb-10">
             <SectionEyebrow>Common Questions</SectionEyebrow>
@@ -598,10 +600,10 @@ export function ZoomPageClient() {
                 description="How we help you compare providers and land the right business phone system at the best price."
               />
               <RelatedCard
-                href="/tools/pots-cost-estimator"
-                label="Free Tool"
-                title="POTS Replacement Cost Estimator"
-                description="See what you're really paying for legacy lines and how much a modern platform could save."
+                href="/resources/how-a-telecom-broker-works"
+                label="Explainer"
+                title="How a Telecom Broker Works"
+                description="What an independent advisor actually does, how they get paid, and why it costs you nothing."
               />
             </div>
           </motion.div>
@@ -611,8 +613,7 @@ export function ZoomPageClient() {
       {/* ===================== FINAL CTA ===================== */}
       <section
         id="get-a-quote"
-        className="pt-24 lg:pt-28 pb-20 lg:pb-24 scroll-mt-24 lg:scroll-mt-28"
-        style={{ backgroundColor: TINT }}
+        className="pt-24 lg:pt-28 pb-20 lg:pb-24 scroll-mt-24 lg:scroll-mt-28 bg-white"
       >
         <Container size="md">
           <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
@@ -656,7 +657,7 @@ export function ZoomPageClient() {
 
       {/* ===================== TRADEMARK CREDIT ===================== */}
       {/* Last block of page content, above the site footer. */}
-      <section className="pb-10" style={{ backgroundColor: TINT }}>
+      <section className="pb-10 bg-white">
         <Container size="md">
           <p className="text-xs text-[var(--color-gray-600)] leading-relaxed text-center">
             Zoom and the Zoom logo are trademarks of Zoom Video Communications, Inc., registered in the
@@ -1383,8 +1384,7 @@ function RelatedCard({
   return (
     <Link
       href={href}
-      className="group rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
-      style={{ backgroundColor: TINT }}
+      className="group rounded-3xl bg-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
     >
       <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE_HOVER }}>{label}</span>
       <h3 className="font-display font-bold text-base mt-2 mb-2 leading-snug" style={{ color: MIDNIGHT }}>

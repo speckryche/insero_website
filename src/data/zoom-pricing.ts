@@ -147,7 +147,7 @@ export const addOnGroups: AddOnGroup[] = [
     ],
   },
   {
-    group: 'Zoom Contact Center add-ons',
+    group: 'Zoom Contact Center\u2122 add-ons',
     unit: 'Per month',
     items: [
       { name: 'AI Expert Assist 2.0', price: 40 },
