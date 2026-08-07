@@ -22,6 +22,9 @@
 
 # misc
 .DS_Store
+
+# Local scratch output (Higgsfield renders, icon exports)
+generated/
 *.pem
 
 # debug
