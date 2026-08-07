@@ -58,7 +58,7 @@ const relatedReading = [
     label: 'Provider',
     title: 'Zoom for Business — AI-First Phone, Built In',
     description:
-      'Zoom Phone with AI Companion included free — explained honestly, sourced through Insero at zero cost.',
+      'Zoom Phone with AI included at no extra cost — explained honestly, sourced through Insero at zero cost.',
   },
   {
     href: '/resources/ucaas-explained',

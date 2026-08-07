@@ -1,11 +1,33 @@
 // Shared FAQ data for the RingCentral landing page.
 // Used by both the client accordion (RingCentralPageClient) and the
 // FAQPage JSON-LD in page.tsx so the two never drift apart.
+//
+// Every rate and seat figure quoted below is interpolated from
+// @/data/ringcentral-pricing, the same source the pricing cards render from.
+// It used to restate them as string literals, which matched the data file by
+// coincidence rather than by construction. That is a worse failure here than
+// anywhere else on the page: these answers are serialized into FAQPage
+// JSON-LD, so a stale price would have shipped to search engines as structured
+// data, and a plain string in a `.ts` file gives no signal when the rate it
+// duplicates moves. annualRate() throws on an unknown tier, so a rename in the
+// data file now fails the build instead.
+
+import {
+  ringEx,
+  ringCx,
+  annualRate,
+  formatUsd,
+  type PlanTier,
+} from '@/data/ringcentral-pricing';
 
 export interface RingCentralFAQ {
   q: string;
   a: string;
 }
+
+/** A published annual per-user rate, formatted for prose. */
+const rate = (tiers: readonly PlanTier[], tierName: string): string =>
+  formatUsd(annualRate(tiers, tierName));
 
 export const ringCentralFaq: RingCentralFAQ[] = [
   {
@@ -14,7 +36,18 @@ export const ringCentralFaq: RingCentralFAQ[] = [
   },
   {
     q: 'How much does RingCentral cost?',
-    a: "RingEX starts at $20 per user, per month on annual billing, $25 for Advanced and $35 for Ultra; the RingCX contact center is licensed separately at $65, $95, or $145 per user, per month. The full published rate card — every tier, the AI add-ons, AI Receptionist, and the per-number and per-message line items — is laid out in the pricing cards on this page, under the Business Phone, Contact Center, AI Receptionist, and Everything Else tabs, so you can add up your own configuration. Two things those cards also make clear: RingCentral publishes no rate above 100 seats, and buying AI features à la carte can cost more than the RingCX tier that already includes them. Those are list prices; ask us for a quote and we'll price your real configuration.",
+    a:
+      `RingEX starts at ${rate(ringEx.tiers, 'Core')} per user, per month on annual billing, ` +
+      `${rate(ringEx.tiers, 'Advanced')} for Advanced and ${rate(ringEx.tiers, 'Ultra')} for Ultra; ` +
+      `the RingCX contact center is licensed separately at ${rate(ringCx.tiers, 'Standard')}, ` +
+      `${rate(ringCx.tiers, 'Professional')}, or ${rate(ringCx.tiers, 'Elite')} per user, per month. ` +
+      'The full published rate card — every tier, the AI add-ons, AI Receptionist, and the per-number ' +
+      'and per-message line items — is laid out in the pricing cards on this page, under the Business ' +
+      'Phone, Contact Center, AI Receptionist, and Everything Else tabs, so you can add up your own ' +
+      'configuration. Two things those cards also make clear: RingCentral publishes no rate above ' +
+      `${ringEx.publishedSeatCap} seats, and buying AI features à la carte can cost more than the ` +
+      "RingCX tier that already includes them. Those are list prices; ask us for a quote and we'll " +
+      'price your real configuration.',
   },
   {
     q: 'What is RingSense / ACE?',
@@ -30,6 +63,6 @@ export const ringCentralFaq: RingCentralFAQ[] = [
   },
   {
     q: 'RingCentral vs Zoom for business?',
-    a: "Both are strong, mature platforms — the honest difference usually comes down to AI packaging and price. RingCentral has one of the deepest agentic voice-AI and contact-center stacks available, but the most advanced pieces are add-ons. Zoom bundles its AI Companion features into its plans at no extra charge, which can be more cost-effective if you want capable AI without assembling add-ons. If you need deep contact-center and conversation intelligence, RingCentral often pulls ahead; if you want solid AI included in the base price, Zoom is worth a look. We'll compare both against your actual needs.",
+    a: "Both are strong, mature platforms — the honest difference usually comes down to AI packaging and price. RingCentral has one of the deepest agentic voice-AI and contact-center stacks available, but the most advanced pieces are add-ons. Zoom includes its AI features at no extra cost on eligible paid Workplace plans, which can be more cost-effective if you want capable AI without assembling add-ons. If you need deep contact-center and conversation intelligence, RingCentral often pulls ahead; if you want solid AI included in the base price, Zoom is worth a look. We'll compare both against your actual needs.",
   },
 ];

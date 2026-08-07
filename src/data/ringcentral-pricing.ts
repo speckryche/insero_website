@@ -232,7 +232,7 @@ export const addOnGroups: AddOnGroup[] = [
     group: 'RingEX add-ons',
     unit: 'Per user / month',
     items: [
-      { name: 'Conversational Intelligence (ACE)', price: 60, note: 'Formerly RingSense.' },
+      { name: 'AI Conversation Expert (ACE)', price: 60, note: 'Formerly RingSense.' },
       { name: 'Call Queues Booster', price: 35 },
       { name: 'Business SMS Booster', price: 25 },
     ],
@@ -249,6 +249,20 @@ export const addOnGroups: AddOnGroup[] = [
     ],
   },
 ];
+
+/**
+ * Look up a published annual per-user rate by tier name.
+ *
+ * Throws rather than returning undefined for the same reason addOnPrice does:
+ * anything quoting a rate outside the pricing cards — the FAQ answers, and the
+ * FAQPage JSON-LD generated from them — has to fail the build if a tier is
+ * renamed here, not silently ship a stale figure to search engines.
+ */
+export function annualRate(tiers: readonly PlanTier[], name: string): number {
+  const match = tiers.find((tier) => tier.name === name);
+  if (!match) throw new Error(`Unknown RingCentral tier: ${name}`);
+  return match.annual;
+}
 
 /** Look up a published add-on price by name. Throws so a typo fails the build. */
 export function addOnPrice(name: string): number {

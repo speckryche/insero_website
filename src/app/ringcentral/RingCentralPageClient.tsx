@@ -652,8 +652,9 @@ export function RingCentralPageClient() {
                   <Link href="/zoom" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                     Zoom
                   </Link>
-                  , for example, includes its AI Companion features at no extra charge, which can be more
-                  cost-effective when you want capable AI without assembling add-ons. RingCentral tends to pull
+                  , for example, includes its AI features at no extra cost on eligible paid Workplace
+                  plans, which can be more cost-effective when you want capable AI without assembling
+                  add-ons. RingCentral tends to pull
                   ahead when you need deep contact-center and conversation intelligence. We&apos;ll compare both
                   against your actual needs — no thumb on the scale.
                 </p>
@@ -1487,7 +1488,7 @@ function AirPriceCard({
 // --- Everything Else tab --------------------------------------------------
 
 const lineItemIcons: Record<string, PhosphorIcon> = {
-  'Conversational Intelligence (ACE)': Brain,
+  'AI Conversation Expert (ACE)': Brain,
   'Call Queues Booster': PhoneCall,
   'Business SMS Booster': DeviceMobile,
   'AI Quality Management': SealCheck,
@@ -1553,6 +1554,20 @@ function LineItemGroupHeading({ title, subtitle }: { title: string; subtitle: st
   );
 }
 
+/**
+ * ACE is a RingCentral trademark, and this card is its first occurrence in
+ * rendered DOM order — the Everything Else panel is mounted above the AI
+ * section, which is the page's other ACE mention. Symbol added here rather
+ * than in the data file for the same reason RingEX™ and RingCX™ carry theirs
+ * in the tab labels: the data file holds RingCentral's published product name,
+ * which is also the key addOnPrice() and lineItemIcons look up. Presentation
+ * owns the symbol; the name stays a name.
+ *
+ * If the panel order ever changes, this moves to whichever mention lands first.
+ * JSON-LD is deliberately excluded — schema values carry no symbols.
+ */
+const ACE_FIRST_USE = 'AI Conversation Expert (ACE)';
+
 function LineItemCard({
   name,
   description,
@@ -1567,7 +1582,7 @@ function LineItemCard({
   const Icon = lineItemIcons[name] ?? PuzzlePiece;
   return (
     <div className={subgridCard}>
-      <CardHeader title={name} icon={Icon} level={4} />
+      <CardHeader title={name === ACE_FIRST_USE ? `${name}™` : name} icon={Icon} level={4} />
       <div className={`flex flex-col flex-grow ${cardBodyClass}`}>
         {description && <p className="text-[15px] text-[var(--color-gray-500)] leading-relaxed mb-6">{description}</p>}
         {/* mt-auto keeps prices on one baseline across a row even when only
