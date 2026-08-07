@@ -66,6 +66,21 @@ const BLUE = 'var(--color-primary)'; // accents on white, icons, fills
 const BLUE_HOVER = 'var(--color-primary-dark)'; // accent text on any tint
 const TINT = 'var(--color-primary-50)'; // light section background
 
+/* Hero wash, carrier end. Zoom Blue at 6% over white — the counterpart to the
+   8% Insero-accent peach on /ringcentral's hero, and the only place on this
+   page the carrier hex appears at all. The palette conversion took Zoom Blue
+   off every solid surface here; a 6% wash is a tint of white, not an adoption
+   of the mark's colour, and nothing renders on top of it but the video.
+
+   6%, not RC's 8%, because the percentage is not the thing being matched — the
+   visible strength of the wash is. Blue is a dark hue, so an identical 8% mix
+   lands at #EBF2FF, CIELAB dE 8.41 from white against the peach's 6.30: a
+   third stronger, which is the difference between a wash and a colour band.
+   6% lands at #F0F5FF, dE 6.30 — the same departure from white as RC's peach,
+   and L* 96.51 against its 96.75. Change the percentage only against that
+   measurement, not by eye. */
+const HERO_WASH = 'color-mix(in srgb, #0B5CFF 6%, #ffffff)';
+
 // --- Section data ---------------------------------------------------------
 
 const aiCapabilities = [
@@ -199,9 +214,31 @@ export function ZoomPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      {/* WHITE page. The standard Insero light header sits above; the Zoom
-          treatment begins here. No dark-hero attribute. */}
-      <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
+      {/* PALE page. The standard Insero light header sits above; the Zoom
+          treatment begins here. No dark-hero attribute, and none is wanted —
+          the header flips to its light-on-dark variant only for a section
+          carrying data-dark-hero, and every stop in this gradient is within
+          dE 8.6 of white. The dark header on it would be unreadable.
+
+          Same two-brand structure as /ringcentral's hero: full-bleed, so the
+          background is on the section and only the Container constrains the
+          content; horizontal at 90deg rather than diagonal; Insero green on the
+          left under the copy, white through the middle, carrier tint on the
+          right under the media. The left stop is primary-50 on both pages,
+          deliberately identical — the two carrier pages should share a left
+          edge and differ only in which brand the right edge belongs to.
+
+          primary-50 is the darkest stop (relative luminance 0.882 against
+          white's 1.000 and the wash's 0.911) and it is also the end the text
+          sits over, so it is the worst case twice over. Measured there: ink H1
+          13.79:1, primary-dark accent and link 7.28:1, gray-600 subhead
+          6.82:1. */}
+      <section
+        className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 overflow-hidden"
+        style={{
+          background: `linear-gradient(90deg, var(--color-primary-50) 0%, #ffffff 50%, ${HERO_WASH} 100%)`,
+        }}
+      >
         <Container className="relative z-10">
           {/* Copy left, media right, media the wider track (roughly 42/58).
               minmax(0,…) on both so the long H1 cannot push the media column
