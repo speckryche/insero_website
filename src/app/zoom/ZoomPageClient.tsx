@@ -31,6 +31,7 @@ import { Container } from '@/components/ui/Container';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
+import ZoomHeroCards, { usePrefersReducedMotion } from './ZoomHeroCards';
 import { submitContactForm, type ContactFormData } from '../contact/actions';
 import {
   lastVerified,
@@ -185,11 +186,14 @@ export function ZoomPageClient() {
           treatment begins here. No dark-hero attribute. */}
       <section className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-white overflow-hidden">
         <Container className="relative z-10">
+          {/* Copy left, media right, media the wider track (roughly 42/58).
+              minmax(0,…) on both so the long H1 cannot push the media column
+              past its share. Single column below lg, media underneath. */}
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,42fr)_minmax(0,58fr)] gap-12 lg:gap-14 items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="max-w-4xl"
           >
             {/* Logo sits directly on white — no pill needed */}
             {/* Partner mark leads and stays more prominent: the Insero lockup in the
@@ -199,14 +203,14 @@ export function ZoomPageClient() {
             <img src="/carriers/Zoom_Logo_Bloom_RGB.png" alt="Zoom" className="h-5 lg:h-6 w-auto mb-10" />
 
             <h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.5rem] font-display font-bold leading-[1.1] tracking-tight mb-6"
               style={{ color: MIDNIGHT }}
             >
               What Zoom Phone<sup className="text-[0.5em] align-super">&trade;</sup> actually costs —{' '}
               <span style={{ color: BLUE_TEXT }}>and whether it&apos;s right for you</span>
             </h1>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-[var(--color-gray-600)] mb-10 max-w-3xl leading-relaxed">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)] mb-10 leading-relaxed">
               Zoom<sup className="text-[0.5em] align-super">&reg;</sup> splits phone and contact center pricing
               across separate pages. We put all of it on this one. Insero is an independent advisor who
               sources it at no cost to you — and if something else fits you better, we&apos;ll say so.
@@ -230,6 +234,15 @@ export function ZoomPageClient() {
               </a>
             </div>
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
+          >
+            <ZoomHeroMedia />
+          </motion.div>
+          </div>
         </Container>
       </section>
 
@@ -661,11 +674,72 @@ export function ZoomPageClient() {
         <Container size="md">
           <p className="text-xs text-[var(--color-gray-600)] leading-relaxed text-center">
             Zoom and the Zoom logo are trademarks of Zoom Video Communications, Inc., registered in the
-            United States and other countries.
+            United States and other countries. The Zoom interface images shown are the property of Zoom
+            Communications, Inc., reproduced to identify the product Insero sources. Other third-party
+            marks referenced herein are trademarks of their respective owners.
           </p>
         </Container>
       </section>
     </>
+  );
+}
+
+// --- Hero media -----------------------------------------------------------
+// 16:9 card holding the desk loop with the Zoom interface cards layered over
+// it. The aspect ratio is declared up front so the box is reserved before any
+// asset arrives — that plus both children being out of flow keeps layout shift
+// at zero.
+//
+// Failure handling mirrors /ringcentral: onError on the video element catches a
+// decode failure, onError on the last <source> catches a load failure (that
+// event fires on the source and does not bubble, so a handler on the video
+// alone would never see it). Either one drops to the poster as a static
+// background rather than leaving a dead player.
+
+function ZoomHeroMedia() {
+  const [failed, setFailed] = useState(false);
+  const reduced = usePrefersReducedMotion();
+  // Under reduced motion the clip is never played, so the poster stands in for
+  // it and the cards render parked. The hero still says the same thing.
+  const showPoster = failed || reduced;
+
+  return (
+    <div
+      className="relative w-full aspect-video overflow-hidden rounded-3xl shadow-xl"
+      style={{ backgroundColor: TINT }}
+    >
+      {showPoster ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src="/video/zoom_hero_poster.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/video/zoom_hero_poster.jpg"
+          width={1920}
+          height={1080}
+          onError={() => setFailed(true)}
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/video/zoom_hero_loop.mp4" type="video/mp4" />
+          <source
+            src="/video/zoom_hero_loop.webm"
+            type="video/webm"
+            onError={() => setFailed(true)}
+          />
+        </video>
+      )}
+
+      <ZoomHeroCards />
+    </div>
   );
 }
 
