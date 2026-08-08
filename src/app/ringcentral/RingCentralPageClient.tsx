@@ -62,6 +62,7 @@ import {
   type TierFeatures,
 } from '@/data/ringcentral-pricing';
 import { submitContactForm, type ContactFormData } from '../contact/actions';
+import { ringCentralAiAvailability } from '@/data/ringcentral-ai-availability';
 import { ringCentralStats, ringCentralStatsAttribution } from '@/data/ringcentral-stats';
 import { ringCentralFaq } from './faq';
 
@@ -102,6 +103,10 @@ const productPillars = [
   },
 ];
 
+// Each card carries its shipping status from the availability data file rather
+// than describing every product as if it were on sale today. Two of the three
+// are generally available and render no note; AVA's agentic half is still
+// early access, and the card says so.
 const aiCapabilities = [
   {
     stage: 'Before the call',
@@ -109,6 +114,7 @@ const aiCapabilities = [
     icon: Robot,
     description:
       'Answers every call 24/7, understands what the caller wants, routes them to the right place, books appointments, and captures lead details — so nothing slips to voicemail at 2am.',
+    availability: ringCentralAiAvailability.aiReceptionist,
   },
   {
     stage: 'During the call',
@@ -116,6 +122,7 @@ const aiCapabilities = [
     icon: Lightning,
     description:
       'Works alongside your team in the moment — real-time prompts, answers, and automation so reps get help while the customer is still on the line, not after.',
+    availability: ringCentralAiAvailability.aiVirtualAssistant,
   },
   {
     stage: 'After the call',
@@ -123,6 +130,7 @@ const aiCapabilities = [
     icon: Brain,
     description:
       'Formerly RingSense. Summarizes calls and meetings, scores conversations for coaching, tracks topics and sentiment, and updates your CRM automatically — turning every conversation into usable insight.',
+    availability: ringCentralAiAvailability.aiConversationExpert,
   },
 ];
 
@@ -491,7 +499,8 @@ export function RingCentralPageClient() {
             <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               RingCentral&apos;s agentic Voice AI suite spans the entire call — an AI that greets and routes
               callers, assists your reps live, and turns finished conversations into coaching and CRM updates.
-              Here&apos;s the honest breakdown of what each piece does.
+              Here&apos;s the honest breakdown of what each piece does, including which parts you can buy today
+              and which are still early access.
             </p>
           </motion.div>
 
@@ -511,6 +520,22 @@ export function RingCentralPageClient() {
                   <CardHeader eyebrow={cap.stage} icon={Icon} title={cap.name} />
                   <div className={cardBodyClass}>
                     <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
+                    {/* Only renders where the source doesn't support describing
+                        the product as generally available. A GA product has an
+                        empty note and this block disappears entirely. */}
+                    {cap.availability.note && (
+                      <p
+                        className="mt-5 pt-5 border-t border-[var(--color-gray-100)] text-[15px] leading-relaxed"
+                        style={{ color: BAND_TEXT }}
+                      >
+                        <Clock
+                          weight="fill"
+                          className="inline w-4 h-4 mr-2 align-text-bottom"
+                          style={{ color: PRIMARY }}
+                        />
+                        {cap.availability.note}
+                      </p>
+                    )}
                   </div>
                 </motion.div>
               );
@@ -907,11 +932,12 @@ function PricedDifferentlyBadge() {
 
 const TABS = [
   // First-use trademark symbols live here: after the pricing section moved
-  // above the AI layer, these tab labels are the first RingEX / RingCX
-  // mentions in DOM order. Later mentions carry no symbol.
+  // above the AI layer, these tab labels are the first RingEX / RingCX /
+  // AI Receptionist mentions in DOM order. Later mentions carry no symbol.
+  // RingCentral's notice names "RingCentral AI Receptionist" among its marks.
   { id: 'ringex', label: `Business Phone (${ringEx.name}™)` },
   { id: 'ringcx', label: `Contact Center (${ringCx.name}™)` },
-  { id: 'air', label: aiReceptionist.name },
+  { id: 'air', label: `${aiReceptionist.name}™` },
   { id: 'other', label: 'Everything Else' },
 ] as const;
 
