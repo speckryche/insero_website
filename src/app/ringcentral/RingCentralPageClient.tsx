@@ -52,6 +52,8 @@ import {
   ringEx,
   ringExTierFeatures,
   ringCx,
+  pricingPages,
+  maxAnnualSavingPercent,
   aiReceptionist,
   addOnGroups,
   otherLineItems,
@@ -209,6 +211,24 @@ const inseroValue = [
   },
 ];
 
+/**
+ * Small counts read as words in prose, not numerals. Falls back to the numeral
+ * past twelve so an added pricing page can never render as an empty string.
+ */
+const NUMBER_WORDS = [
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six',
+  'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve',
+];
+
+function spellOut(count: number): string {
+  return NUMBER_WORDS[count] ?? String(count);
+}
+
+/** How many separate RingCentral pricing pages this page consolidates. Both
+ *  mentions render from the data file's list, so the prose cannot drift from
+ *  the pages actually enumerated there. */
+const pricingPageWord = spellOut(pricingPages.length);
+
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -291,7 +311,7 @@ export function RingCentralPageClient() {
               </h1>
 
               <p className="text-lg md:text-xl text-[var(--color-gray-600)] mb-8 max-w-3xl leading-relaxed">
-                RingCentral spreads its pricing across six pages. We put all of it on this one. Insero is an
+                RingCentral spreads its pricing across {pricingPageWord} pages. We put all of it on this one. Insero is an
                 independent advisor who sources it at no cost to you — and if something else fits you better,
                 we&apos;ll say so.
               </p>
@@ -344,7 +364,7 @@ export function RingCentralPageClient() {
               What RingCentral actually costs — all of it, in one place
             </h2>
             <p className="text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
-              RingCentral publishes its pricing across six pages, one for each product family. A real
+              RingCentral publishes its pricing across {pricingPageWord} pages, one for each product family. A real
               deployment usually spans several of them — seats, contact center, the AI you want, and the
               numbers and rooms that go with it. We&apos;ve brought the published rates together here so you
               can price the whole thing in one place.
@@ -943,12 +963,6 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]['id'];
 
-/** Pull "33%" out of a published savings note so the toggle label never
- *  restates a number the data file already owns. */
-function savingsPercent(note: string): string | null {
-  return note.match(/\d+%/)?.[0] ?? null;
-}
-
 function PricingTabs() {
   const [active, setActive] = useState<TabId>('ringex');
   // Billing choice is shared across the two plan tabs, so switching tabs
@@ -1015,7 +1029,7 @@ function PricingTabs() {
               const tierFeatures = ringExTierFeatures[name];
               return tierFeatures ? <TierFeatureList features={tierFeatures} /> : null;
             }}
-            savingsNote={ringEx.annualSavingsNote}
+            savingsPercent={maxAnnualSavingPercent(ringEx.tiers)}
             annual={annual}
             onToggle={setAnnual}
             notice={<SeatCapNotice />}
@@ -1034,7 +1048,7 @@ function PricingTabs() {
               const items = ringCxFeatures(name);
               return <FeatureList items={items.length > 0 ? items : quotedFeatures} />;
             }}
-            savingsNote={ringCx.annualSavingsNote}
+            savingsPercent={maxAnnualSavingPercent(ringCx.tiers)}
             annual={annual}
             onToggle={setAnnual}
             footnote={`${ringCx.name} is licensed separately from ${ringEx.name}.`}
@@ -1121,7 +1135,7 @@ function PlanPanel({
   quoted,
   descriptions,
   features,
-  savingsNote,
+  savingsPercent,
   annual,
   onToggle,
   footnote,
@@ -1131,7 +1145,8 @@ function PlanPanel({
   quoted: readonly QuotedPlan[];
   descriptions: Record<string, string>;
   features: (tierName: string) => React.ReactNode;
-  savingsNote: string;
+  /** Computed from the tiers above, not read off RingCentral's marketing. */
+  savingsPercent: number;
   annual: boolean;
   onToggle: (next: boolean) => void;
   footnote: string;
@@ -1144,7 +1159,7 @@ function PlanPanel({
 
   return (
     <div>
-      <BillingToggle annual={annual} onToggle={onToggle} savingsNote={savingsNote} />
+      <BillingToggle annual={annual} onToggle={onToggle} savingsPercent={savingsPercent} />
 
       <div className={`grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-7 ${cardGridRows}`}>
         {tiers.map((tier, index) => (
@@ -1228,13 +1243,12 @@ function SeatCapNotice() {
 function BillingToggle({
   annual,
   onToggle,
-  savingsNote,
+  savingsPercent,
 }: {
   annual: boolean;
   onToggle: (next: boolean) => void;
-  savingsNote: string;
+  savingsPercent: number;
 }) {
-  const percent = savingsPercent(savingsNote);
   return (
     <div className="flex justify-center sm:justify-end mb-8">
       <button
@@ -1257,7 +1271,7 @@ function BillingToggle({
           />
         </span>
         <span className="text-[15px] font-semibold" style={{ color: INK }}>
-          {percent ? `Save up to ${percent} by paying annually` : savingsNote}
+          {`Save up to ${savingsPercent}% by paying annually`}
         </span>
       </button>
     </div>

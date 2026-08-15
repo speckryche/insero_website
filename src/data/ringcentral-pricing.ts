@@ -1,9 +1,9 @@
 // RingCentral published US list pricing.
 //
-// RingCentral splits its pricing across six separate pages (RingEX, RingCX,
-// AI Receptionist, Events, Rooms/Webinar, and the numbers/SMS rate card).
-// This file consolidates them so the /ringcentral page can render one all-in
-// reference — and so every number on that page has exactly one source.
+// RingCentral splits its pricing across the separate pages enumerated in
+// `pricingPages` below. This file consolidates them so the /ringcentral page
+// can render one all-in reference — and so every number on that page has
+// exactly one source.
 //
 // Rules for maintaining this file:
 //  - These are RingCentral's OWN published list rates. Do not enter negotiated,
@@ -14,6 +14,35 @@
 export const lastVerified = '2026-08-05';
 
 export const pricingSourceUrl = 'https://www.ringcentral.com/office/plansandpricing.html';
+
+/**
+ * The separate pricing pages this file consolidates.
+ *
+ * The page copy used to say "six pages" as a hardcoded word in two places,
+ * with nothing behind it. The count is now this array's length, so the prose
+ * and the list cannot disagree, and each entry carries the URL that makes it
+ * checkable.
+ *
+ * Enumerated 2026-08-15. Note this is the set of pages we consolidate, which
+ * is the claim the page actually makes — not a census of every pricing page on
+ * RingCentral's site. Two gaps worth knowing about: RingCentral publishes no
+ * standalone Rooms pricing page (the $39/room rate in `otherLineItems` still
+ * needs its own source), and `international-rates.html` is a further rate card
+ * this file does not currently draw from.
+ */
+export interface PricingPage {
+  product: string;
+  url: string;
+}
+
+export const pricingPages: PricingPage[] = [
+  { product: 'RingEX', url: pricingSourceUrl },
+  { product: 'RingCX', url: 'https://www.ringcentral.com/pricing/contact-center.html' },
+  { product: 'AI Receptionist', url: 'https://www.ringcentral.com/pricing/ai-receptionist.html' },
+  { product: 'Events', url: 'https://www.ringcentral.com/pricing/events.html' },
+  { product: 'AI Meetings', url: 'https://www.ringcentral.com/pricing/video.html' },
+  { product: 'SMS rates', url: 'https://www.ringcentral.com/support/new-sms-rates.html' },
+];
 
 // --- Shared shapes --------------------------------------------------------
 
@@ -81,7 +110,9 @@ export const ringEx = {
   /** RingCentral publishes one rate band for 1–100 users; 1–5 and 6–100 match. */
   seatBandNote: 'Same published rate for 1–5 and 6–100 users.',
   aboveBandNote: 'Above 100 users, pricing is quote-based.',
-  annualSavingsNote: 'Annual billing saves up to 33%.',
+  /** RingCentral's own wording. Kept for provenance — see the note on
+   *  maxAnnualSavingPercent for why the page renders a computed figure. */
+  publishedAnnualSavingsClaim: 'Save up to 33% by paying annually',
   tiers: [
     { name: 'Core', annual: 20, monthly: 30 },
     { name: 'Advanced', annual: 25, monthly: 35 },
@@ -132,7 +163,15 @@ export const ringExTierFeatures: Record<string, TierFeatures> = {
       '1,000 toll-free minutes',
       '100 SMS user/month',
     ],
-    ai: [{ name: 'AI Virtual Assistant — adds AI Writer' }],
+    // AIR listed here as well as on Core and Ultra. RingCentral sells it under
+    // "Extend any RingEX plan" — it attaches to any tier rather than being a
+    // per-tier inclusion — so showing it on two cards out of three read as
+    // "not available on Advanced", which is false. Do not remove it to make
+    // the tiers look cumulative; this add-on genuinely spans all of them.
+    ai: [
+      { name: 'AI Receptionist (AIR)', addOn: true },
+      { name: 'AI Virtual Assistant — adds AI Writer' },
+    ],
     sourceNote: publishedTierNote,
   },
   Ultra: {
@@ -166,7 +205,9 @@ export const ringExTierFeatures: Record<string, TierFeatures> = {
 
 export const ringCx = {
   name: 'RingCX',
-  annualSavingsNote: 'Annual billing saves up to 15%.',
+  /** RingCentral's own wording, verified on their RingCX pricing page. It does
+   *  NOT follow from the rates below — see maxAnnualSavingPercent. */
+  publishedAnnualSavingsClaim: 'Save up to 15% by paying annually',
   tiers: [
     { name: 'Standard', annual: 65, monthly: 75 },
     {
@@ -249,6 +290,27 @@ export const addOnGroups: AddOnGroup[] = [
     ],
   },
 ];
+
+/**
+ * The largest annual saving across a set of tiers, as a whole percent.
+ *
+ * The billing toggle used to read its percentage out of RingCentral's own
+ * savings sentence. That is fine for RingEX, where "up to 33%" matches Core's
+ * rate exactly (30 -> 20). It is not fine for RingCX: RingCentral publishes
+ * "Save up to 15% by paying annually", but the three published RingCX rates
+ * top out at 13.64% (Professional, 110 -> 95). Rendering their 15% next to our
+ * rate cards presented their rounding as our arithmetic, against numbers on
+ * the same screen that disproved it.
+ *
+ * So the toggle now computes from the rates the cards render. Rounded DOWN,
+ * so the label can never promise more than the cards deliver — which also
+ * lands RingEX on 33, matching RingCentral exactly.
+ */
+export function maxAnnualSavingPercent(tiers: readonly PlanTier[]): number {
+  return Math.floor(
+    Math.max(...tiers.map((tier) => ((tier.monthly - tier.annual) / tier.monthly) * 100)),
+  );
+}
 
 /**
  * Look up a published annual per-user rate by tier name.
