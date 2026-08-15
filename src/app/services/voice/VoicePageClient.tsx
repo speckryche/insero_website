@@ -49,14 +49,14 @@ const relatedReading = [
   {
     href: '/ringcentral',
     label: 'Provider',
-    title: 'RingCentral for Business — AI-Powered Phone, Done Right',
+    title: 'What RingCentral Actually Costs — And Whether It\'s Right for You',
     description:
-      'RingCentral’s AI phone, contact center, and agentic voice AI — explained honestly, sourced at zero cost.',
+      "RingEX and RingCX list pricing in one place, with the AI add-ons and where a higher tier costs less — explained honestly, sourced at zero cost.",
   },
   {
     href: '/zoom',
     label: 'Provider',
-    title: 'Zoom for Business — AI-First Phone, Built In',
+    title: 'What Zoom Phone Actually Costs — And Whether It\'s Right for You',
     description:
       'Zoom Phone with AI included at no extra cost — explained honestly, sourced through Insero at zero cost.',
   },

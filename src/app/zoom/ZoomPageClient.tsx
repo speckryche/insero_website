@@ -180,7 +180,7 @@ const inseroValue = [
     icon: ShieldCheck,
     title: 'Escalation and advocacy',
     description:
-      'When a ticket stalls, we escalate it and push on your behalf, for as long as you have the service. Front-line support still comes from Zoom&apos;s support team — what we add is someone with leverage.',
+      "When a ticket stalls, we escalate it and push on your behalf, for as long as you have the service. Front-line support still comes from Zoom's support team — what we add is someone with leverage.",
   },
   {
     icon: Handshake,
@@ -408,11 +408,7 @@ export function ZoomPageClient() {
               add is access: we buy through technology services distributors, which surfaces promotions
               and pricing programs that are not always offered to direct buyers. And because we are not 
               Zoom&apos;s sales team, we are free to tell you when something else fits you better —
-              the same approach we bring to 
-              <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: BLUE }}>
-                every voice project
-              </Link>
-              .
+              the same approach we bring to every voice project.
             </p>
           </motion.div>
 
@@ -626,7 +622,7 @@ export function ZoomPageClient() {
                   'You need the deepest contact-center and conversation-intelligence stack — RingCentral tends to pull ahead there',
                   'You want the most advanced agentic voice AI as the core of the system, not as an add-on',
                   'You rely on heavy, specialized contact-center customization out of the box',
-                  'You’d rather assemble best-of-breed point tools than run one unified suite',
+                  "You'd rather assemble best-of-breed point tools than run one unified suite",
                 ],
               }}
             />

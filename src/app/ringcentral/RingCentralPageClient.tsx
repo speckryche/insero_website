@@ -459,11 +459,7 @@ export function RingCentralPageClient() {
               add is access: we buy through technology services distributors, which surfaces promotions
               and pricing programs that are not always offered to direct buyers. And because we are not 
               RingCentral&apos;s sales team, we are free to tell you when something else fits you better —
-              the same approach we bring to 
-              <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-                every voice project
-              </Link>
-              .
+              the same approach we bring to every voice project.
             </p>
           </motion.div>
 
@@ -703,9 +699,9 @@ export function RingCentralPageClient() {
                 title: 'Maybe not if…',
                 points: [
                   'You want all the AI included in the base price rather than as add-ons',
-                  'You’re very price-sensitive at the entry tier',
+                  "You're very price-sensitive at the entry tier",
                   'A simpler, lighter phone system would cover everything you need',
-                  'You’d rather a provider bundle AI in by default',
+                  "You'd rather a provider bundle AI in by default",
                 ],
               }}
             />
