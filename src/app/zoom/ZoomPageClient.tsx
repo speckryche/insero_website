@@ -29,6 +29,7 @@ import {
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
 import { StatsBand } from '@/components/sections/StatsBand';
+import { TrustStrip } from '@/components/sections/TrustStrip';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
@@ -155,30 +156,37 @@ const coreProducts = [
   },
 ];
 
+// What going direct does NOT give you. Mirrors /ringcentral exactly, including
+// what is deliberately absent: the cost answer lives in the trust strip above
+// the pricing and in this section's opening paragraph, and the configuration
+// point is already made by "How Insero prices this for you".
+//
+// Insero escalates and advocates; it is not the support desk. The escalation
+// card says so rather than leaving it to be assumed.
 const inseroValue = [
   {
-    icon: CurrencyDollar,
-    title: 'It costs you nothing',
-    description:
-      'Providers compensate us, so you pay the same as going direct — and often less once current promotions are applied.',
-  },
-  {
     icon: Scales,
-    title: 'Genuinely independent',
+    title: 'Carrier-agnostic by default',
     description:
-      "We're not Zoom's sales team. If it's not the right fit for your business, we'll tell you and point you somewhere better.",
+      "We're not Zoom's sales team. We compare Zoom Phone against the other providers we source, and if one of them is the better fit for you, we say so.",
   },
   {
     icon: CheckCircle,
-    title: 'We price your real configuration',
+    title: 'Through contracting and implementation',
     description:
-      'Seats, license bundling, the add-ons that matter, and contact center if you need it — so the quote you see is the bill you get.',
+      'Paperwork, ordering, number porting, and go-live — we stay on it, so what gets built matches what you signed for.',
   },
   {
     icon: ShieldCheck,
-    title: 'We stay in your corner',
+    title: 'Escalation and advocacy',
     description:
-      'Quoting, contracts, implementation, and ongoing escalation and advocacy — one contact for the life of the account.',
+      'When a ticket stalls, we escalate it and push on your behalf, for as long as you have the service. Front-line support still comes from Zoom&apos;s support team — what we add is someone with leverage.',
+  },
+  {
+    icon: Handshake,
+    title: 'One relationship, not one per carrier',
+    description:
+      'Add a provider later, or change one, and it is the same team and the same contact — not a new account manager and a new process each time.',
   },
 ];
 
@@ -303,6 +311,14 @@ export function ZoomPageClient() {
       {/* ===================== STATS BAND ===================== */}
       <StatsBand stats={zoomStats} attribution={zoomStatsAttribution} />
 
+      {/* ===================== TRUST STRIP ===================== */}
+      {/* The "no cost to you" fact, promoted out of the hero subhead to the
+          moment it actually matters — immediately before the first price. */}
+      <TrustStrip>
+        Insero is paid by the provider, never by you — the rates below are the same published rates
+        you&apos;d pay going direct.
+      </TrustStrip>
+
       {/* ===================== HONEST PRICING ===================== */}
       {/* The consolidated voice reference. Every figure renders from
           @/data/zoom-pricing — nothing here is hardcoded. */}
@@ -380,14 +396,19 @@ export function ZoomPageClient() {
       {/* ===================== WHY SOURCE THROUGH INSERO ===================== */}
       <section className="py-20 lg:py-28 bg-white">
         <Container>
-          <motion.div {...fadeUp} className="max-w-2xl mb-14">
+          <motion.div {...fadeUp} className="max-w-3xl mb-14">
             <SectionEyebrow>The Difference</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
-              Why source Zoom Phone through Insero
+              Why not just go direct?
             </h2>
             <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
-              You can buy Zoom Phone directly. Here&apos;s why most businesses are better off having an independent
-              advisor in the mix — at no extra cost. It&apos;s the same approach we bring to{' '}
+              A fair question, and the honest answer is short. The providers pay us, not you — there is
+              no markup, no fee, and nothing added to your bill for using Insero. The rates above are 
+              Zoom&apos;s published rates, the same ones you would be quoted going direct. What we can
+              add is access: we buy through technology services distributors, which surfaces promotions
+              and pricing programs that are not always offered to direct buyers. And because we are not 
+              Zoom&apos;s sales team, we are free to tell you when something else fits you better —
+              the same approach we bring to 
               <Link href="/services/voice" className="font-semibold hover:underline" style={{ color: BLUE }}>
                 every voice project
               </Link>
