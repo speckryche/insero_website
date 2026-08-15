@@ -145,7 +145,8 @@ export const addOnGroups: AddOnGroup[] = [
   {
     group: 'Zoom Phone add-ons',
     unit: 'Per month',
-    annualSavingsNote: 'Annual billing saves up to 27%.',
+    // No trailing period: this one is joined mid-list with ' \u00b7 '.
+    annualSavingsNote: 'Annual billing saves up to 27%',
     requirement: 'All add-ons require a paid base plan.',
     items: [
       { name: 'Zoom Phone Customer Engagement', price: 25 },
@@ -159,7 +160,7 @@ export const addOnGroups: AddOnGroup[] = [
     // Workplace-level rather than Phone or Contact Center, so it sits in its
     // own group. Included here because it is the paid successor to a
     // capability this page previously described as included.
-    group: 'Zoom Workplace AI add-ons',
+    group: 'Zoom Workplace\u2122 AI add-ons',
     unit: 'Per user / month',
     requirement: 'Sold standalone or as a Zoom Workplace add-on.',
     items: [
@@ -254,7 +255,7 @@ export interface AddOnDelta {
   zoomMonthly: number;
   rcItem: string;
   rcMonthly: number;
-  /** Positive means the Zoom add-on is the dearer of the two. */
+  /** Positive means the Zoom add-on is the more expensive of the two. */
   delta: number;
 }
 
@@ -277,7 +278,7 @@ export const contactCenterAiDeltas: AddOnDelta[] = [
   buildDelta('Workforce management', 'Workforce Management', 'AI Workforce Management'),
 ];
 
-/** The pairs where the Zoom Contact Center add-on is the dearer of the two. */
+/** The pairs where the Zoom Contact Center add-on is the more expensive of the two. */
 export const contactCenterAiDeltasFavouringRc = contactCenterAiDeltas.filter((d) => d.delta > 0);
 
 // --- Formatting -----------------------------------------------------------

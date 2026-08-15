@@ -28,6 +28,7 @@ import {
   WarningCircle,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
+import { formatVerifiedDate } from '@/lib/dates';
 import { StatsBand } from '@/components/sections/StatsBand';
 import { TrustStrip } from '@/components/sections/TrustStrip';
 import { Comparison } from '@/components/mdx/Comparison';
@@ -351,7 +352,7 @@ export function ZoomPageClient() {
           </motion.div>
 
           <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-8 text-sm text-[var(--color-gray-600)] text-center leading-relaxed">
-            Zoom&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
+            Zoom&apos;s published US list pricing, verified {formatVerifiedDate(lastVerified)}. Current pricing at{' '}
             <a
               href={pricingSourceUrl}
               target="_blank"
@@ -380,7 +381,7 @@ export function ZoomPageClient() {
                   We publish the list pricing because you should be able to see it before you talk to
                   anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
                   pricing on your behalf, structuring the plan mix and contract term around how
-                  you&apos;ll actually use the system, and making sure a licence you are already
+                  you&apos;ll actually use the system, and making sure a license you are already
                   paying for is not bought twice.{' '}
                   <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
                     Ask us for a quote
@@ -447,7 +448,7 @@ export function ZoomPageClient() {
           <motion.div {...fadeUp}>
             <SectionEyebrow>The Overview</SectionEyebrow>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-8" style={{ color: MIDNIGHT }}>
-              What Zoom Workplace<Tm>&trade;</Tm> actually is
+              What Zoom Workplace actually is
             </h2>
             <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-600)] leading-relaxed">
               <p>
@@ -469,7 +470,7 @@ export function ZoomPageClient() {
                 But what increasingly sets Zoom Workplace apart is its approach to AI. Where many providers treat capable
                 AI as a paid upgrade, Zoom Workplace includes its AI features — formerly branded AI
                 Companion — with eligible paid plans at no extra cost.
-                That makes it one of the simplest, most cost-effective on-ramps to genuinely useful AI — with the
+                That takes the usual question — is the AI worth paying extra for — off the table, with the
                 most advanced agentic pieces still available as add-ons when you need them.
               </p>
             </div>
@@ -748,10 +749,9 @@ export function ZoomPageClient() {
       <section className="pb-10 bg-white">
         <Container size="md">
           <p className="text-xs text-[var(--color-gray-600)] leading-relaxed text-center">
-            Zoom and the Zoom logo are trademarks of Zoom Video Communications, Inc., registered in the
-            United States and other countries. The Zoom interface images shown are the property of Zoom
-            Communications, Inc., reproduced to identify the product Insero sources. Other third-party
-            marks referenced herein are trademarks of their respective owners.
+            Zoom and the Zoom logo are trademarks of Zoom Communications, Inc., registered in the
+            United States and other countries. Other third-party marks referenced herein are
+            trademarks of their respective owners.
           </p>
         </Container>
       </section>
@@ -1250,7 +1250,7 @@ function AiPackagingCard() {
           <p className="text-lg text-[var(--color-gray-600)] leading-relaxed">
             The two platforms package voice AI differently. Zoom Phone plans bundle the{' '}
             {p.zoomFeature} into the seat; RingCentral licenses its equivalent separately. That is a
-            difference in packaging rather than a verdict on either platform, and it favours buyers
+            difference in packaging rather than a verdict on either platform, and it favors buyers
             who want capable AI without assembling add-ons.
           </p>
         </div>
@@ -1293,7 +1293,7 @@ function AiPackagingCard() {
         <p className="text-[15px] text-[var(--color-gray-600)] leading-relaxed mb-6">
           The included-AI advantage is a Zoom Phone story. Among the contact center AI capabilities
           both vendors publish a rate for, {contactCenterAiDeltasFavouringRc.length} of{' '}
-          {contactCenterAiDeltas.length} are dearer on the Zoom Contact Center side.
+          {contactCenterAiDeltas.length} cost more on the Zoom Contact Center side.
         </p>
         <ul className="space-y-3">
           {contactCenterAiDeltas.map((d) => (

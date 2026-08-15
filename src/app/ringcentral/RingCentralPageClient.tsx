@@ -42,6 +42,7 @@ import {
   UsersThree,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
+import { formatVerifiedDate } from '@/lib/dates';
 import { StatsBand } from '@/components/sections/StatsBand';
 import { TrustStrip } from '@/components/sections/TrustStrip';
 import { Comparison } from '@/components/mdx/Comparison';
@@ -401,7 +402,7 @@ export function RingCentralPageClient() {
           </motion.div>
 
           <motion.p {...fadeUp} className="max-w-5xl mx-auto mt-10 lg:mt-12 text-sm text-[var(--color-gray-600)] text-center leading-relaxed">
-            RingCentral&apos;s published US list pricing, verified {lastVerified}. Current pricing at{' '}
+            RingCentral&apos;s published US list pricing, verified {formatVerifiedDate(lastVerified)}. Current pricing at{' '}
             <a
               href={pricingSourceUrl}
               target="_blank"
@@ -433,7 +434,7 @@ export function RingCentralPageClient() {
               pricing on your behalf, structuring the
               contract term and plan mix around how you actually use the system, and matching each tier to
               what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
-              {ringEx.publishedSeatCap} seats pricing is quote-based, so a quote is the only way to see
+              {ringEx.publishedSeatCap} seats, pricing is quote-based, so a quote is the only way to see
               your number.{' '}
               <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                 Ask us for a quote
