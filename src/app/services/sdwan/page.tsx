@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   // keeps its own suffix.
   title: { absolute: 'SD-WAN for Business: Redundancy Without the Guesswork' },
   description:
-    'Compare SD-WAN providers for failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
+    'Compare SD-WAN providers for failover, traffic prioritization, and multi-site connectivity. Run sites on commodity broadband, not MPLS circuits.',
   keywords: [
     'SD-WAN solutions for business',
     'SD-WAN consultant',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'SD-WAN Solutions for Business | Insero',
     description:
-      'Compare SD-WAN providers for automatic failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
+      'Compare SD-WAN providers for automatic failover, traffic prioritization, and multi-site connectivity. Run sites on commodity broadband, not MPLS circuits.',
     url: 'https://insero.cloud/services/sdwan',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },

@@ -28,13 +28,13 @@ const painPoints = [
     icon: CurrencyDollar,
     title: "You're Probably Overpaying",
     description:
-      "Most businesses haven't reviewed their telecom in years. Rate increases, unused features, and outdated plans add up. We typically find $200\u2013$500/month in wasted spend.",
+      "Most businesses haven't reviewed their telecom in years. We look for services still being billed that nobody uses, circuits paid for twice, features bundled in and never switched on, and contracts that quietly rolled past their renewal date.",
   },
   {
     icon: ShieldWarning,
     title: 'You Have a Single Point of Failure',
     description:
-      'If your internet goes down, so do your phones, payment processing, and cloud apps. 73% of SMBs have zero redundancy.',
+      'If your internet goes down, so do your phones, payment processing, and cloud apps. Plenty of businesses run a single connection without realising everything depends on it.',
   },
   {
     icon: Lightbulb,
@@ -46,7 +46,7 @@ const painPoints = [
 
 const auditIncludes = [
   'Line-by-line bill analysis across all your telecom services',
-  'Price benchmarking against 25+ carriers (Comcast, Spectrum, RingCentral, Nextiva, AT&T, and more)',
+  'Price benchmarking across every major carrier (Comcast, Spectrum, RingCentral, Nextiva, AT&T, and more)',
   'Redundancy risk assessment with a clear Red/Yellow/Green score',
   'Technology gap analysis \u2014 are you missing features your competitors use?',
   'Custom recommendations with projected savings',
@@ -192,7 +192,7 @@ export function AuditPageClient() {
             </h1>
             <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto mb-10">
               Find out in 15 minutes. Our free Telecom Cost &amp; Risk Assessment compares your
-              current setup against 25+ carriers to find savings and eliminate risk.
+              current setup across every major carrier to find savings and eliminate risk.
             </p>
 
             <button

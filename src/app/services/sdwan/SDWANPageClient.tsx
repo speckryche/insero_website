@@ -37,7 +37,7 @@ const features = [
 
 const benefits = [
   'Eliminate single points of failure',
-  'Reduce WAN costs by 30-50%',
+  'Commodity broadband instead of dedicated MPLS circuits',
   'Improve application performance',
   'Centralized management for all sites',
   'Built-in security features',
