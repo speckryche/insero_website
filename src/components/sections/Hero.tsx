@@ -142,7 +142,7 @@ export function Hero() {
           >
             <Link href="/contact">
               <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
-                <span>Schedule Your Free Consultation</span>
+                <span>Get Started</span>
                 <ArrowRight
                   weight="bold"
                   className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200"

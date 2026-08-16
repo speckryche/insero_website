@@ -14,7 +14,7 @@ export function ArticleCTA() {
       </p>
       <Link href="/contact">
         <button className="inline-flex items-center gap-2 px-6 py-3 bg-[#008838] text-white font-semibold rounded-xl hover:bg-[#005C28] transition-colors shadow-md shadow-[#008838]/20">
-          <span>Get a Free Quote</span>
+          <span>Get Started</span>
           <ArrowRight weight="bold" className="w-4 h-4" />
         </button>
       </Link>

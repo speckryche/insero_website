@@ -7,7 +7,6 @@ import { useRef } from 'react';
 import {
   ArrowDown,
   Play,
-  Phone,
   CaretRight
 } from '@phosphor-icons/react';
 
@@ -132,8 +131,7 @@ export function HeroImage() {
                 className="group flex items-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-full shadow-2xl transition-all duration-300"
                 style={{ backgroundColor: '#3498db', boxShadow: '0 25px 50px -12px rgba(52,152,219,0.4)' }}
               >
-                <Phone weight="fill" className="w-5 h-5" />
-                <span>Schedule Your Free Consultation</span>
+                <span>Get Started</span>
                 <CaretRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>

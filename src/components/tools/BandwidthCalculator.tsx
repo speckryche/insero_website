@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Phone, ArrowRight, WifiHigh, Monitor, Cloud, VideoCamera, Headset, FilmStrip, HardDrives, Users } from '@phosphor-icons/react';
+import { ArrowRight, WifiHigh, Monitor, Cloud, VideoCamera, Headset, FilmStrip, HardDrives, Users } from '@phosphor-icons/react';
 
 const ACTIVITIES = [
   { id: 'baseline' as const, label: 'Email, browsing, basic office work', icon: Monitor, always: true },
@@ -320,8 +320,7 @@ export function BandwidthCalculator() {
         </p>
         <Link href="/contact">
           <button className="group inline-flex items-center gap-3 px-8 py-4 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors shadow-lg shadow-[#008838]/20">
-            <Phone weight="fill" className="w-5 h-5" />
-            <span>Get a Free Quote</span>
+            <span>Get Started</span>
             <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </Link>

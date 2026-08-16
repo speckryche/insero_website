@@ -53,7 +53,7 @@ export function PotsCostEstimator() {
   }, [lines, costPerLine]);
 
   const urgencyCta: Record<UrgencyId, string> = {
-    researching: "Want a real quote for your specific situation? We'll pull pricing from compliant replacement options. Free, no commitment.",
+    researching: "Want real numbers for your specific situation? Tell us your setup and we'll pull pricing from compliant replacement options. Free, no commitment.",
     sixMonths: "Pricing is rising fast on POTS lines. Let's get ahead of it before your next carrier price hike.",
     ninetyDays: 'Time to move. We can have replacement options for you within a week.',
     rightNow: "Let's go. We can have replacement options for you within 48 hours.",
@@ -197,7 +197,7 @@ export function PotsCostEstimator() {
             )}
             <Link href="/contact">
               <button className="group inline-flex items-center gap-3 px-8 py-4 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors shadow-lg shadow-[#008838]/20">
-                <span>Get a Free Quote</span>
+                <span>Get Started</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>

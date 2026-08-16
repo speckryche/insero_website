@@ -290,7 +290,7 @@ export function EcentialLanding() {
             whileTap={{ scale: 0.98 }}
             className="px-6 py-3 bg-[var(--ec-blue)] text-white text-base font-semibold rounded-lg hover:bg-[var(--ec-blue-dark)] transition-colors shadow-sm"
           >
-            Get Your Free Quote
+            Get Started
           </motion.button>
         </div>
       </header>
@@ -327,7 +327,7 @@ export function EcentialLanding() {
                 whileTap={{ scale: 0.98 }}
                 className="group inline-flex items-center gap-3 px-10 py-4.5 bg-[var(--ec-blue)] text-white font-semibold text-lg md:text-xl rounded-xl shadow-lg shadow-[var(--ec-blue)]/25 hover:shadow-xl hover:shadow-[var(--ec-blue)]/35 transition-all duration-300"
               >
-                <span>Get a Free Quote</span>
+                <span>Get Started</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
               <motion.button

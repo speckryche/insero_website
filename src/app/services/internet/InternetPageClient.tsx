@@ -84,7 +84,7 @@ export function InternetPageClient() {
       relatedReading={relatedReading}
       image="/images/services/internet_service_page.png"
       ctaTitle="Ready to Upgrade Your Internet?"
-      ctaDescription="Get a free quote comparison from multiple carriers. See all your options in one place."
+      ctaDescription="Tell us what you need and we'll compare options from multiple carriers, so you can see them all in one place."
     />
   );
 }

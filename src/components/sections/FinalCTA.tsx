@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import { trackContactClick } from '@/lib/analytics';
 import Link from 'next/link';
 import { useRef } from 'react';
-import { Phone, ArrowRight } from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 import { company } from '@/config/company';
 
 export function FinalCTA() {
@@ -62,8 +62,7 @@ export function FinalCTA() {
           >
             <Link href="/contact">
               <button className="group inline-flex items-center gap-4 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
-                <Phone weight="fill" className="w-5 h-5" />
-                <span>Schedule Your Free Consultation</span>
+                <span>Get Started</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </button>
             </Link>
