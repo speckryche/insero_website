@@ -6,6 +6,7 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { company } from '@/config/company';
+import { carrierAccessPhrase } from '@/data/carrier-access';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     template: '%s | Insero',
   },
   description:
-    'Vendor-agnostic telecom broker comparing 100+ carriers for voice, internet, SD-WAN, and security. Zero cost to you.',
+    `Vendor-agnostic telecom broker comparing ${carrierAccessPhrase} for voice, internet, SD-WAN, and security. Zero cost to you.`,
   keywords: [
     'telecom broker',
     'telecom consultant',
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     siteName: 'Insero',
     title: 'Telecom Broker & Connectivity Consultant | Insero',
     description:
-      'Vendor-agnostic telecom broker that compares 100+ carriers. Zero cost to you — we\'re paid by carriers, not clients.',
+      `Vendor-agnostic telecom broker that compares ${carrierAccessPhrase}. Zero cost to you — we're paid by carriers, not clients.`,
     images: [
       {
         url: '/og-default.png',
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Telecom Broker & Connectivity Consultant | Insero',
     description:
-      'Vendor-agnostic telecom broker that compares 100+ carriers. Voice, internet, SD-WAN, and security solutions at zero cost to you.',
+      `Vendor-agnostic telecom broker that compares ${carrierAccessPhrase}. Voice, internet, SD-WAN, and security solutions at zero cost to you.`,
     images: ['/og-default.png'],
   },
 };
@@ -112,7 +113,7 @@ const organizationSchema = {
   },
   image: `${baseUrl}/og-image.png`,
   description:
-    'Vendor-agnostic telecom broker comparing 100+ carriers to find the best voice, internet, SD-WAN, and security solutions for businesses at zero cost.',
+    `Vendor-agnostic telecom broker comparing ${carrierAccessPhrase} to find the best voice, internet, SD-WAN, and security solutions for businesses at zero cost.`,
   contactPoint: {
     '@type': 'ContactPoint',
     telephone: '+1-844-252-3185',

@@ -1,5 +1,6 @@
 'use client';
 
+import { carrierAccessPhrase } from '@/data/carrier-access';
 import { motion, useInView } from 'framer-motion';
 import { trackContactClick } from '@/lib/analytics';
 import Link from 'next/link';
@@ -96,7 +97,7 @@ export function FinalCTA() {
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
-                <span>100+ Carriers Compared</span>
+                <span>{carrierAccessPhrase} Compared</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />

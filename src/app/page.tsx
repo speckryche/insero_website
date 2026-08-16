@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Hero } from '@/components/sections/Hero';
+import { carrierAccessPhrase } from '@/data/carrier-access';
 import { PainPoints } from '@/components/sections/PainPoints';
 import { Services } from '@/components/sections/Services';
 import { HowItWorks } from '@/components/sections/HowItWorks';
@@ -12,7 +13,7 @@ import { FAQ } from '@/components/sections/FAQ';
 export const metadata: Metadata = {
   title: 'Insero — Independent Telecom & Technology Advisors | Zero Cost',
   description:
-    'Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, 100+ carriers, honest guidance. Based in Oregon, serving the US.',
+    `Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, ${carrierAccessPhrase}, honest guidance. Based in Oregon, serving the US.`,
   keywords: [
     'telecom broker',
     'telecom consultant',
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Insero — Independent Telecom & Technology Advisors',
     description:
-      'Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, 100+ carriers, honest guidance. Based in Oregon, serving the US.',
+      `Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, ${carrierAccessPhrase}, honest guidance. Based in Oregon, serving the US.`,
     url: 'https://insero.cloud',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },

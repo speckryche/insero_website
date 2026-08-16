@@ -1,5 +1,6 @@
 'use client';
 
+import { carrierCountLabel } from '@/data/carrier-access';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import {
@@ -43,7 +44,7 @@ const benefits = [
 ];
 
 const stats = [
-  { value: '100+', label: 'Carriers and providers accessed', icon: Handshake },
+  { value: carrierCountLabel, label: 'Carriers and providers accessed', icon: Handshake },
   { value: '25+ Years', label: 'Founder telecom experience', icon: Trophy },
   { value: 'Vendor-Neutral', label: 'Independent, not owned by any carrier', icon: ShieldCheck },
   { value: '$0', label: 'Cost to customers — providers pay us', icon: CurrencyDollar },

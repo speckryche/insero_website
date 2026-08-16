@@ -1,5 +1,6 @@
 'use client';
 
+import { carrierAccessPhrase } from '@/data/carrier-access';
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -46,7 +47,7 @@ const painPoints = [
 
 const auditIncludes = [
   'Line-by-line bill analysis across all your telecom services',
-  'Price benchmarking across every major carrier (Comcast, Spectrum, RingCentral, Nextiva, AT&T, and more)',
+  `Price benchmarking across ${carrierAccessPhrase} (Comcast, Spectrum, RingCentral, Nextiva, AT&T, and more)`,
   'Redundancy risk assessment with a clear Red/Yellow/Green score',
   'Technology gap analysis \u2014 are you missing features your competitors use?',
   'Custom recommendations with projected savings',
@@ -192,7 +193,7 @@ export function AuditPageClient() {
             </h1>
             <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto mb-10">
               Find out in 15 minutes. Our free Telecom Cost &amp; Risk Assessment compares your
-              current setup across every major carrier to find savings and eliminate risk.
+              current setup across {carrierAccessPhrase} to find savings and eliminate risk.
             </p>
 
             <button
