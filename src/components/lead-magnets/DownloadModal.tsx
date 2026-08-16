@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, ArrowRight, DownloadSimple } from '@phosphor-icons/react';
 import { submitLeadMagnetDownload } from '@/app/api/lead-magnets/download/actions';
@@ -76,7 +77,30 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
     }, 300);
   };
 
-  return (
+  // Rendered into document.body rather than where it is mounted.
+  //
+  // This is load-bearing, not tidiness. GuideDownload is an MDX component, so
+  // in an article this modal was a DOM descendant of
+  // `<article class="article-body">` — position:fixed moves where a box paints,
+  // not where it sits in the tree, and the cascade only cares about the tree.
+  // globals.css has `.article-body a { color: #008838 }` at specificity (0,1,1),
+  // which outranks Tailwind's `.text-white` at (0,1,0). The success state's
+  // download button is a green-filled anchor, so its label and its
+  // currentColor icon both rendered #008838 on #008838: a 1.00:1 green pill
+  // with the text present in the DOM and invisible on screen.
+  //
+  // The anchor was the visible casualty; it was not the only one. `.article-body`
+  // also restyles h3 (24px with a 32px top margin against the modal's intended
+  // 20px and none), p (a 20px bottom margin the layout never asked for) and
+  // strong. Portalling fixes the whole class at once, which pinning one colour
+  // would not have — and it is what makes `text-white` win here, so do not
+  // un-portal this and expect the button to survive.
+  //
+  // Guarded on `document` rather than a mounted flag in an effect: the effect
+  // version trips react-hooks/set-state-in-effect, and this needs no state.
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -114,14 +138,26 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                   <p className="text-sm text-[#64748b] mb-6">
                     We&apos;ve sent <strong>{guideTitle}</strong> to <strong>{email}</strong>. It may take a minute.
                   </p>
-                  {downloadUrl && (
+                  {/* Always rendered with its label. It used to be wrapped in
+                      `downloadUrl && (...)`, which hid the whole control rather
+                      than explaining itself on the one path where the action
+                      can answer success without a URL. */}
+                  {downloadUrl ? (
                     <a
                       href={downloadUrl}
                       className="inline-flex items-center gap-2 px-6 py-3 bg-[#008838] text-white font-semibold rounded-xl hover:bg-[#005C28] transition-colors"
                     >
                       <DownloadSimple weight="bold" className="w-5 h-5" />
-                      Download Now
+                      <span>Download now</span>
                     </a>
+                  ) : (
+                    <span
+                      aria-disabled="true"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-[#008838] text-white font-semibold rounded-xl opacity-60 cursor-not-allowed"
+                    >
+                      <DownloadSimple weight="bold" className="w-5 h-5" />
+                      <span>Download now</span>
+                    </span>
                   )}
                   <p className="text-xs text-[#94a3b8] mt-4">Or download from the link in your email within 7 days.</p>
                 </div>
@@ -185,8 +221,11 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                       </span>
                     </label>
 
+                    {/* red-700, not red-600: measured in the browser, red-600 on
+                        red-50 is 4.36:1, which misses AA for 14px text. red-700
+                        is 5.87:1 on the same fill. */}
                     {error && (
-                      <p className="text-sm text-red-600 bg-red-50 p-3 rounded-xl">{error}</p>
+                      <p className="text-sm text-red-700 bg-red-50 p-3 rounded-xl">{error}</p>
                     )}
 
                     <button
@@ -208,6 +247,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
