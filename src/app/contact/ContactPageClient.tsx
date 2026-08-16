@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useForm } from 'react-hook-form';
+import { usePathname } from 'next/navigation';
+import { trackLead, trackContactClick } from '@/lib/analytics';
 import {
   Phone,
   EnvelopeSimple,
@@ -43,6 +45,7 @@ const expectations = [
 
 export function ContactPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const pathname = usePathname();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [formLoadedAt] = useState(() => Date.now());
   const heroRef = useRef(null);
@@ -73,6 +76,16 @@ export function ContactPageClient() {
     };
     const result = await submitContactForm(formData);
     if (result.success) {
+      // `ref`, not `success`: the action also answers success for blocked spam
+      // and when Supabase is unconfigured, and neither wrote a lead. Fired here
+      // rather than from the success view, which handleSendAnother can re-enter.
+      if (result.ref) {
+        trackLead({
+          form_name: 'contact',
+          lead_source: selectedServices.join(', ') || undefined,
+          page_path: pathname,
+        });
+      }
       setIsSubmitted(true);
     } else {
       setSubmitError(result.error || 'An unexpected error occurred. Please try again.');
@@ -132,6 +145,7 @@ export function ContactPageClient() {
               <div className="space-y-4">
                 <a
                   href={company.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}
                   className="group flex items-center gap-4 p-4 rounded-xl hover:bg-[#f8fafb] transition-colors"
                 >
                   <div className="w-12 h-12 bg-[#008838]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#008838] transition-colors">
@@ -147,6 +161,7 @@ export function ContactPageClient() {
 
                 <a
                   href={company.emailLink}
+                onClick={() => trackContactClick({ method: 'email' })}
                   className="group flex items-center gap-4 p-4 rounded-xl hover:bg-[#f8fafb] transition-colors"
                 >
                   <div className="w-12 h-12 bg-[#008838]/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#008838] transition-colors">

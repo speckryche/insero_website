@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
+import { trackContactClick } from '@/lib/analytics';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { Phone, ArrowRight } from '@phosphor-icons/react';
@@ -76,6 +77,7 @@ export function FinalCTA() {
           >
             <a
               href={company.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}
               className="inline-flex flex-col items-center text-[#64748b] hover:text-[#1e293b] transition-colors"
             >
               <span className="text-lg md:text-xl">or call us at</span>

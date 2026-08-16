@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useForm } from 'react-hook-form';
+import { usePathname } from 'next/navigation';
+import { trackLead, trackContactClick } from '@/lib/analytics';
 import {
   CheckCircle,
   WarningCircle,
@@ -133,6 +135,7 @@ function scrollToForm() {
 
 export function AuditPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const pathname = usePathname();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [formLoadedAt] = useState(() => Date.now());
 
@@ -171,6 +174,10 @@ export function AuditPageClient() {
     };
     const result = await submitAuditForm(payload);
     if (result.success) {
+      // See the contact form: success alone covers spam and unconfigured runs.
+      if (result.ref) {
+        trackLead({ form_name: 'audit', lead_source: 'audit-page', page_path: pathname });
+      }
       setIsSubmitted(true);
     } else {
       setSubmitError(result.error || 'An unexpected error occurred. Please try again.');
@@ -572,6 +579,7 @@ export function AuditPageClient() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <a
                 href={company.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}
                 className="inline-flex items-center gap-3 text-[#1e293b] font-semibold text-lg hover:text-[#008838] transition-colors"
               >
                 <div className="w-10 h-10 bg-[#008838]/10 rounded-xl flex items-center justify-center">
@@ -581,6 +589,7 @@ export function AuditPageClient() {
               </a>
               <a
                 href={company.emailLink}
+                onClick={() => trackContactClick({ method: 'email' })}
                 className="inline-flex items-center gap-3 text-[#1e293b] font-semibold text-lg hover:text-[#008838] transition-colors"
               >
                 <div className="w-10 h-10 bg-[#008838]/10 rounded-xl flex items-center justify-center">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { trackContactClick } from '@/lib/analytics';
 import Link from 'next/link';
 import { Phone, ArrowRight, CurrencyDollar, Info } from '@phosphor-icons/react';
 import { company } from '@/config/company';
@@ -186,7 +187,8 @@ export function PotsCostEstimator() {
           <p className="text-[#475569] mb-6 max-w-xl mx-auto">{urgencyCta[urgency]}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             {urgency === 'rightNow' && (
-              <a href={company.phoneLink}>
+              <a href={company.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}>
                 <button className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#008838] font-semibold rounded-xl border-2 border-[#008838] hover:bg-[#008838] hover:text-white transition-colors">
                   <Phone weight="fill" className="w-5 h-5" />
                   <span>Call {company.phoneFormatted}</span>

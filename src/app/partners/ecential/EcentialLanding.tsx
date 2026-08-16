@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { useForm } from 'react-hook-form';
+import { usePathname } from 'next/navigation';
+import { trackLead } from '@/lib/analytics';
 import {
   CheckCircle,
   WarningCircle,
@@ -202,6 +204,7 @@ interface FormData {
 
 export function EcentialLanding() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const pathname = usePathname();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [formLoadedAt] = useState(() => Date.now());
@@ -254,6 +257,10 @@ export function EcentialLanding() {
     };
     const result = await submitEcentialForm(payload);
     if (result.success) {
+      // See the contact form: success alone covers spam and unconfigured runs.
+      if (result.ref) {
+        trackLead({ form_name: 'partner', lead_source: 'ecential', page_path: pathname });
+      }
       setIsSubmitted(true);
     } else {
       setSubmitError(result.error || 'An unexpected error occurred. Please try again.');

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Script from 'next/script';
+import { PageViewTracker } from '@/components/analytics/PageViewTracker';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -217,13 +218,17 @@ export default function RootLayout({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${GA_ID}');
+                // Page views are reported by PageViewTracker instead, so that
+                // client-side navigations are counted too. Without this the
+                // first view of each session would be double-counted.
+                gtag('config', '${GA_ID}', { send_page_view: false });
               `}
             </Script>
           </>
         )}
       </head>
       <body className="font-sans antialiased">
+        {GA_ID && <PageViewTracker />}
         <Header />
         <main>{children}</main>
         <Footer />

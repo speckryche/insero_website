@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { trackContactClick } from '@/lib/analytics';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
 import {
   Phone,
   ArrowRight,
@@ -24,7 +24,6 @@ import {
   Clock,
   Lightning,
   BookOpen,
-  PaperPlaneRight,
   WarningCircle,
   Calculator,
   Check,
@@ -65,7 +64,7 @@ import {
   type QuotedPlan,
   type TierFeatures,
 } from '@/data/ringcentral-pricing';
-import { submitContactForm, type ContactFormData } from '../contact/actions';
+import { QuoteForm } from '@/components/sections/QuoteForm';
 import { ringCentralAiAvailability } from '@/data/ringcentral-ai-availability';
 import { ringCentralStats, ringCentralStatsAttribution } from '@/data/ringcentral-stats';
 import { ringCentralFaq } from './faq';
@@ -795,12 +794,20 @@ export function RingCentralPageClient() {
           </motion.div>
 
           <motion.div {...fadeUp}>
-            <QuoteForm />
+            <QuoteForm
+              idPrefix="rc"
+              serviceTag="RingCentral (source: ringcentral-page)"
+              leadSource="ringcentral-page"
+              submitLabel="Get My Free RingCentral Quote"
+              successBody="We'll price your real RingCentral configuration and get back to you within one business day."
+              messagePlaceholder="Seats, add-ons you're weighing, contact center needs — anything that helps us price it right."
+            />
           </motion.div>
 
           <div className="mt-8 text-center">
             <a
               href={company.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}
               className="inline-flex flex-col items-center text-[var(--color-gray-600)] transition-colors hover:text-secondary"
             >
               <span className="text-lg">or call us at</span>
@@ -1922,181 +1929,6 @@ function HeroVideo() {
   );
 }
 
-// --- On-page quote form ---------------------------------------------------
-// Reuses the exact /contact submission path (submitContactForm → Supabase
-// insert + email + portal opportunity). Source is tagged through the existing
-// `service` column since the schema has no dedicated source field.
-
-interface QuoteFormValues {
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  message: string;
-  _hp?: string;
-}
-
-function QuoteForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formLoadedAt] = useState(() => Date.now());
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<QuoteFormValues>();
-
-  const onSubmit = async (data: QuoteFormValues) => {
-    setSubmitError(null);
-    const trimmedName = data.name.trim();
-    const firstSpace = trimmedName.indexOf(' ');
-    const firstName = firstSpace === -1 ? trimmedName : trimmedName.slice(0, firstSpace);
-    const lastName = firstSpace === -1 ? '' : trimmedName.slice(firstSpace + 1).trim();
-
-    const formData: ContactFormData = {
-      firstName,
-      lastName,
-      email: data.email,
-      phone: data.phone || undefined,
-      company: data.company || undefined,
-      // Tag the lead source through the existing service field.
-      services: ['RingCentral (source: ringcentral-page)'],
-      message: data.message || undefined,
-      _hp: data._hp,
-      _t: formLoadedAt,
-    };
-
-    const result = await submitContactForm(formData);
-    if (result.success) {
-      setIsSubmitted(true);
-    } else {
-      setSubmitError(result.error || 'An unexpected error occurred. Please try again.');
-    }
-  };
-
-  const inputClass =
-    'w-full px-4 py-3.5 rounded-xl border-2 bg-white text-secondary transition-colors focus:outline-none';
-  const okBorder = 'border-[var(--color-gray-200)] focus:border-primary';
-  const errBorder = 'border-red-400 focus:border-red-500';
-
-  if (isSubmitted) {
-    return (
-      <div className="rounded-xl bg-white border border-[var(--color-gray-200)] p-8 lg:p-12 shadow-sm text-center">
-        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6" style={{ color: PRIMARY }}>
-          <CheckCircle weight="fill" className="w-10 h-10" />
-        </div>
-        <h3 className="text-2xl lg:text-3xl font-display font-bold mb-3" style={{ color: INK }}>
-          Thanks — we&apos;ve got it
-        </h3>
-        <p className="text-[var(--color-gray-500)] max-w-md mx-auto mb-8">
-          We&apos;ll price your real RingCentral configuration and get back to you within one business day.
-        </p>
-        <button
-          onClick={() => {
-            setIsSubmitted(false);
-            setSubmitError(null);
-            reset();
-          }}
-          className="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full border-2 transition-colors"
-          style={{ color: PRIMARY_DARK, borderColor: PRIMARY_DARK }}
-        >
-          Send another request
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-xl bg-white border border-[var(--color-gray-200)] p-8 lg:p-10 shadow-sm">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {/* Honeypot — hidden from real users */}
-        <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
-          <label htmlFor="rc-website">Website</label>
-          <input type="text" id="rc-website" tabIndex={-1} autoComplete="off" {...register('_hp')} />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="rc-name" className="block text-sm font-semibold mb-2" style={{ color: INK }}>Name *</label>
-            <input
-              type="text" id="rc-name"
-              {...register('name', { required: 'Name is required' })}
-              className={`${inputClass} ${errors.name ? errBorder : okBorder}`}
-              placeholder="Jane Smith"
-            />
-            {errors.name && <p className="mt-1.5 text-sm text-red-500">{errors.name.message}</p>}
-          </div>
-          <div>
-            <label htmlFor="rc-email" className="block text-sm font-semibold mb-2" style={{ color: INK }}>Email *</label>
-            <input
-              type="email" id="rc-email"
-              {...register('email', { required: 'Email is required', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' } })}
-              className={`${inputClass} ${errors.email ? errBorder : okBorder}`}
-              placeholder="jane@company.com"
-            />
-            {errors.email && <p className="mt-1.5 text-sm text-red-500">{errors.email.message}</p>}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="rc-phone" className="block text-sm font-semibold mb-2" style={{ color: INK }}>Phone</label>
-            <input
-              type="tel" id="rc-phone" {...register('phone')}
-              className={`${inputClass} ${okBorder}`}
-              placeholder="(123) 456-7890"
-            />
-          </div>
-          <div>
-            <label htmlFor="rc-company" className="block text-sm font-semibold mb-2" style={{ color: INK }}>Company</label>
-            <input
-              type="text" id="rc-company" {...register('company')}
-              className={`${inputClass} ${okBorder}`}
-              placeholder="Your Company Inc."
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="rc-message" className="block text-sm font-semibold mb-2" style={{ color: INK }}>How can we help?</label>
-          <textarea
-            id="rc-message" {...register('message')} rows={3}
-            className={`${inputClass} ${okBorder} resize-none`}
-            placeholder="Seats, add-ons you're weighing, contact center needs — anything that helps us price it right."
-          />
-        </div>
-
-        {submitError && (
-          <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
-            <WarningCircle weight="fill" className="w-5 h-5 text-red-500 flex-shrink-0" />
-            <p className="text-red-700 text-sm">{submitError}</p>
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-accent-cta text-white font-semibold text-lg rounded-full shadow-lg shadow-accent-cta/25 hover:bg-[var(--color-accent-cta-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <span>Sending…</span>
-          ) : (
-            <>
-              <span>Get My Free RingCentral Quote</span>
-              <PaperPlaneRight weight="fill" className="w-5 h-5" />
-            </>
-          )}
-        </button>
-
-        <p className="text-sm text-[var(--color-gray-500)] text-center">
-          By submitting, you agree to be contacted about your quote. We never share your information.
-        </p>
-      </form>
-    </div>
-  );
-}
 
 // --- Small presentational helpers ----------------------------------------
 

@@ -4,6 +4,7 @@ import { supabaseServer } from '@/lib/supabase-server';
 import { WebsiteLead } from '@/lib/supabase';
 import { sendAuditLeadNotification } from '@/lib/email';
 import { checkForSpam, logSpamSubmission } from '@/lib/spam';
+import { newLeadRef } from '@/lib/lead-ref';
 
 export type AuditFormData = {
   fullName: string;
@@ -22,9 +23,18 @@ export type AuditFormData = {
 export type SubmitResult = {
   success: boolean;
   error?: string;
+  /**
+   * Present only when a lead row was actually written. Absent on the
+   * spam-blocked and Supabase-unconfigured paths, which both report success
+   * without persisting anything. Conversion tracking keys off this field —
+   * see src/lib/lead-ref.ts.
+   */
+  ref?: string;
 };
 
 export async function submitAuditForm(data: AuditFormData): Promise<SubmitResult> {
+  let ref: string | undefined;
+
   try {
     // Spam detection
     const spamCheck = checkForSpam({
@@ -77,6 +87,9 @@ export async function submitAuditForm(data: AuditFormData): Promise<SubmitResult
           error: 'Failed to save your information. Please try again.',
         };
       }
+
+      // Only now is this a real lead.
+      ref = newLeadRef();
     } else {
       console.warn('Supabase not configured - skipping database insert');
     }
@@ -89,7 +102,7 @@ export async function submitAuditForm(data: AuditFormData): Promise<SubmitResult
       console.error('Email notification failed:', emailError);
     }
 
-    return { success: true };
+    return ref ? { success: true, ref } : { success: true };
   } catch (error) {
     console.error('Audit form submission error:', error);
     return {

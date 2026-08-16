@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { trackContactClick } from '@/lib/analytics';
 import {
   Phone,
   EnvelopeSimple,
@@ -162,6 +163,7 @@ export function Footer() {
               <li>
                 <a
                   href={companyInfo.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}
                   className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                 >
                   <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
@@ -173,6 +175,7 @@ export function Footer() {
               <li>
                 <a
                   href={companyInfo.emailLink}
+                onClick={() => trackContactClick({ method: 'email' })}
                   className="flex items-center gap-3 text-white/70 hover:text-white transition-colors"
                 >
                   <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">

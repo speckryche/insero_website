@@ -3,6 +3,7 @@
 import { supabaseServer } from '@/lib/supabase-server';
 import { Resend } from 'resend';
 import { generateToken } from '@/lib/lead-magnets/token';
+import { newLeadRef } from '@/lib/lead-ref';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
@@ -42,6 +43,13 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
   success: boolean;
   downloadUrl?: string;
   error?: string;
+  /**
+   * Present only when the download row was actually written. The insert below
+   * is deliberately non-fatal — a visitor still gets their guide if the write
+   * fails — so success alone does not mean a lead was captured. Conversion
+   * tracking keys off this field. See src/lib/lead-ref.ts.
+   */
+  ref?: string;
 }> {
   const { firstName, lastName, company, email, phone, guideSlug, sourceUrl } = data;
   const name = `${firstName} ${lastName}`.trim();
@@ -57,10 +65,14 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
     return { success: false, error: 'Please enter a valid email address.' };
   }
 
-  // Insert into Supabase
+  // Insert into Supabase. Non-fatal on purpose: a failed write must not cost
+  // the visitor the guide they just asked for.
+  let ref: string | undefined;
   try {
     if (!supabaseServer) throw new Error('Supabase not configured');
-    await supabaseServer.from('lead_magnet_downloads').insert({
+    // The error is returned rather than thrown, so it has to be checked
+    // explicitly — otherwise a rejected insert reads as a successful one.
+    const { error: dbError } = await supabaseServer.from('lead_magnet_downloads').insert({
       name,
       company,
       email,
@@ -68,6 +80,8 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
       guide_slug: guideSlug,
       source_url: sourceUrl || null,
     });
+    if (dbError) throw dbError;
+    ref = newLeadRef();
   } catch (err) {
     console.error('Failed to insert lead magnet download:', err);
   }
@@ -111,5 +125,5 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
     console.error('Failed to send lead magnet email:', err);
   }
 
-  return { success: true, downloadUrl };
+  return ref ? { success: true, downloadUrl, ref } : { success: true, downloadUrl };
 }

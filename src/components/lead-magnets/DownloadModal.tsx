@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, ArrowRight, DownloadSimple } from '@phosphor-icons/react';
 import { submitLeadMagnetDownload } from '@/app/api/lead-magnets/download/actions';
+import { trackDownload } from '@/lib/analytics';
 
 interface DownloadModalProps {
   isOpen: boolean;
@@ -31,6 +32,8 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
     setError(null);
     setSubmitting(true);
 
+    const sourceUrl = typeof window !== 'undefined' ? window.location.href : undefined;
+
     const result = await submitLeadMagnetDownload({
       firstName,
       lastName,
@@ -38,11 +41,18 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
       email,
       phone: phone || undefined,
       guideSlug,
-      sourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
+      sourceUrl,
     });
 
     setSubmitting(false);
     if (result.success) {
+      // `ref`, not `success`: the download row is written non-fatally, so a
+      // visitor still gets the guide when the insert fails — that is not a
+      // captured lead. Fired from the handler, not the success view, which
+      // re-renders whenever the modal reopens.
+      if (result.ref) {
+        trackDownload({ file_name: guideSlug, page_path: sourceUrl });
+      }
       setSuccess(true);
       setDownloadUrl(result.downloadUrl || null);
     } else {

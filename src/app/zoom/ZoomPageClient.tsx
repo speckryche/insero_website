@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useSyncExternalStore } from 'react';
-import { useForm } from 'react-hook-form';
+import { trackContactClick } from '@/lib/analytics';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -24,8 +24,6 @@ import {
   Clock,
   Lightning,
   BookOpen,
-  PaperPlaneRight,
-  WarningCircle,
 } from '@phosphor-icons/react';
 import { Container } from '@/components/ui/Container';
 import { formatVerifiedDate } from '@/lib/dates';
@@ -34,7 +32,7 @@ import { TrustStrip } from '@/components/sections/TrustStrip';
 import { Comparison } from '@/components/mdx/Comparison';
 import { ArticleFAQ } from '@/components/mdx/ArticleFAQ';
 import { company } from '@/config/company';
-import { submitContactForm, type ContactFormData } from '../contact/actions';
+import { QuoteForm } from '@/components/sections/QuoteForm';
 import {
   lastVerified,
   pricingSourceUrl,
@@ -721,11 +719,22 @@ export function ZoomPageClient() {
           </motion.div>
 
           <motion.div {...fadeUp}>
-            <QuoteForm />
+            <QuoteForm
+              idPrefix="zm"
+              serviceTag="Zoom (source: zoom-page)"
+              leadSource="zoom-page"
+              submitLabel="Get My Free Zoom Phone Quote"
+              successBody="We'll price your real Zoom Phone configuration and get back to you within one business day."
+              messagePlaceholder="Seats, contact center needs, and whether you already use Zoom Meetings — anything that helps us price it right."
+              cardClassName="rounded-3xl bg-white shadow-sm"
+              successIconBgClassName=""
+              successIconBgColor="var(--color-primary-50)"
+            />
 
             <div className="mt-8">
               <a
                 href={company.phoneLink}
+                onClick={() => trackContactClick({ method: 'phone' })}
                 className="inline-flex flex-col items-center text-[var(--color-gray-600)] transition-colors hover:text-secondary"
               >
                 <span className="text-lg">or call us at</span>
@@ -1324,193 +1333,6 @@ function AiPackagingCard() {
   );
 }
 
-// --- On-page quote form ---------------------------------------------------
-// Same submission path as /contact and /ringcentral (submitContactForm →
-// Supabase insert + email + portal opportunity), so leads from this page land
-// where every other lead does. Source is tagged through the existing `service`
-// column since the schema has no dedicated source field.
-//
-// Keeping the form here rather than linking to /contact also means the call to
-// action resolves on a partner-owned landing page.
-
-interface QuoteFormValues {
-  name: string;
-  email: string;
-  phone: string;
-  company: string;
-  message: string;
-  _hp?: string;
-}
-
-function QuoteForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formLoadedAt] = useState(() => Date.now());
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<QuoteFormValues>();
-
-  const onSubmit = async (data: QuoteFormValues) => {
-    setSubmitError(null);
-    const trimmedName = data.name.trim();
-    const firstSpace = trimmedName.indexOf(' ');
-    const firstName = firstSpace === -1 ? trimmedName : trimmedName.slice(0, firstSpace);
-    const lastName = firstSpace === -1 ? '' : trimmedName.slice(firstSpace + 1).trim();
-
-    const formData: ContactFormData = {
-      firstName,
-      lastName,
-      email: data.email,
-      phone: data.phone || undefined,
-      company: data.company || undefined,
-      // Tag the lead source through the existing service field.
-      services: ['Zoom (source: zoom-page)'],
-      message: data.message || undefined,
-      _hp: data._hp,
-      _t: formLoadedAt,
-    };
-
-    const result = await submitContactForm(formData);
-    if (result.success) {
-      setIsSubmitted(true);
-    } else {
-      setSubmitError(result.error || 'An unexpected error occurred. Please try again.');
-    }
-  };
-
-  const inputClass =
-    'w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors focus:outline-none';
-  const okBorder = 'border-[var(--color-gray-200)] focus:border-primary';
-  const errBorder = 'border-red-400 focus:border-red-500';
-
-  if (isSubmitted) {
-    return (
-      <div className="rounded-3xl bg-white p-8 lg:p-12 shadow-sm text-center">
-        <div
-          className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
-          style={{ backgroundColor: TINT, color: BLUE }}
-        >
-          <CheckCircle weight="fill" className="w-10 h-10" />
-        </div>
-        <h3 className="text-2xl lg:text-3xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
-          Thanks — we&apos;ve got it
-        </h3>
-        <p className="text-[var(--color-gray-500)] max-w-md mx-auto mb-8">
-          We&apos;ll price your real Zoom Phone configuration and get back to you within one business day.
-        </p>
-        <button
-          onClick={() => {
-            setIsSubmitted(false);
-            setSubmitError(null);
-            reset();
-          }}
-          className="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-full border-2 transition-colors"
-          style={{ color: BLUE_TEXT, borderColor: BLUE_TEXT }}
-        >
-          Send another request
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-3xl bg-white p-8 lg:p-10 shadow-sm">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        {/* Honeypot — hidden from real users */}
-        <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
-          <label htmlFor="zm-website">Website</label>
-          <input type="text" id="zm-website" tabIndex={-1} autoComplete="off" {...register('_hp')} />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="zm-name" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Name *</label>
-            <input
-              type="text" id="zm-name"
-              {...register('name', { required: 'Name is required' })}
-              className={`${inputClass} ${errors.name ? errBorder : okBorder}`}
-              placeholder="Jane Smith"
-              style={{ color: MIDNIGHT }}
-            />
-            {errors.name && <p className="mt-1.5 text-sm text-red-500">{errors.name.message}</p>}
-          </div>
-          <div>
-            <label htmlFor="zm-email" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Email *</label>
-            <input
-              type="email" id="zm-email"
-              {...register('email', { required: 'Email is required', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' } })}
-              className={`${inputClass} ${errors.email ? errBorder : okBorder}`}
-              placeholder="jane@company.com"
-              style={{ color: MIDNIGHT }}
-            />
-            {errors.email && <p className="mt-1.5 text-sm text-red-500">{errors.email.message}</p>}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="zm-phone" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Phone</label>
-            <input
-              type="tel" id="zm-phone" {...register('phone')}
-              className={`${inputClass} ${okBorder}`}
-              placeholder="(123) 456-7890"
-              style={{ color: MIDNIGHT }}
-            />
-          </div>
-          <div>
-            <label htmlFor="zm-company" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>Company</label>
-            <input
-              type="text" id="zm-company" {...register('company')}
-              className={`${inputClass} ${okBorder}`}
-              placeholder="Your Company Inc."
-              style={{ color: MIDNIGHT }}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="zm-message" className="block text-sm font-semibold mb-2" style={{ color: MIDNIGHT }}>How can we help?</label>
-          <textarea
-            id="zm-message" {...register('message')} rows={3}
-            className={`${inputClass} ${okBorder} resize-none`}
-            placeholder="Seats, contact center needs, and whether you already use Zoom Meetings — anything that helps us price it right."
-            style={{ color: MIDNIGHT }}
-          />
-        </div>
-
-        {submitError && (
-          <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl">
-            <WarningCircle weight="fill" className="w-5 h-5 text-red-500 flex-shrink-0" />
-            <p className="text-red-700 text-sm">{submitError}</p>
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-accent-cta text-white font-semibold text-lg rounded-full shadow-lg shadow-accent-cta/25 hover:bg-[var(--color-accent-cta-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <span>Sending…</span>
-          ) : (
-            <>
-              <span>Get My Free Zoom Phone Quote</span>
-              <PaperPlaneRight weight="fill" className="w-5 h-5" />
-            </>
-          )}
-        </button>
-
-        <p className="text-sm text-[var(--color-gray-500)] text-center">
-          By submitting, you agree to be contacted about your quote. We never share your information.
-        </p>
-      </form>
-    </div>
-  );
-}
 
 // --- Small presentational helpers ----------------------------------------
 
