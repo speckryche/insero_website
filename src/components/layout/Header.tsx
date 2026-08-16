@@ -108,6 +108,20 @@ export function Header() {
     };
   }, [pathname, checkDarkHero]);
 
+  // Lock body scroll while the mobile panel is open, and restore whatever was
+  // there before rather than assuming ''. Paired with overscroll-contain on the
+  // panel: iOS Safari will chain a scroll past the panel's own bounds through to
+  // the body even when the body is overflow:hidden, and only overscroll-behavior
+  // stops that.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isMobileMenuOpen]);
+
   // Close mobile menu on resize
   useEffect(() => {
     const handleResize = () => {
@@ -120,7 +134,32 @@ export function Header() {
   }, []);
 
   return (
-    <motion.header
+    <>
+      {/* Backdrop, deliberately OUTSIDE <header>.
+          Two reasons, either of which alone would justify it. First, <header>
+          is `fixed z-50`, which makes it a stacking context; inside it a
+          positioned child with z-index:auto paints in DOM order, so a backdrop
+          declared after the nav painted over the logo and the toggle — the
+          toggle was rendering its X correctly and was simply buried.
+          Second, framer-motion animates the header with a transform, and a
+          transformed ancestor makes position:fixed resolve against that
+          ancestor rather than the viewport. That is not firing today because
+          the transform is cleared once the entry animation settles, but it is
+          not a behaviour to depend on. Out here the backdrop is a sibling at
+          z-40, under the header's z-50, and fixed means fixed. */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
@@ -326,22 +365,13 @@ export function Header() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm lg:hidden"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-
             {/* Menu Panel */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="absolute top-full left-0 right-0 lg:hidden bg-white shadow-2xl border-t border-gray-100 overflow-hidden"
+              className="absolute top-full left-0 right-0 lg:hidden bg-white shadow-2xl border-t border-gray-100 overflow-hidden overscroll-contain"
             >
               <div className="container-custom py-6 space-y-2">
                 {navLinks.map((link, index) => (
@@ -409,7 +439,8 @@ export function Header() {
           </>
         )}
       </AnimatePresence>
-    </motion.header>
+      </motion.header>
+    </>
   );
 }
 

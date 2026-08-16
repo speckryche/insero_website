@@ -80,7 +80,12 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-extrabold text-[#1e293b] mb-8 leading-[1.1] tracking-tight whitespace-nowrap inline-block"
+            /* whitespace-nowrap stays unconditional. Below sm the line is broken
+               deliberately by the <br /> further down rather than by wrapping,
+               so nowrap now protects BOTH lines from breaking mid-phrase.
+               max-sm:text-center centres the two stacked lines and is inert at
+               sm and up, where the headline is a single line again. */
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-extrabold text-[#1e293b] mb-8 leading-[1.1] tracking-tight whitespace-nowrap inline-block max-sm:text-center"
           >
             Your{' '}
             <span
@@ -107,7 +112,17 @@ export function Hero() {
                 marginLeft: '4px',
                 marginRight: '4px',
               }}
-            />{' '}
+            />
+            {/* Forced break below sm, so the headline is two fixed lines rather
+                than one that overflows a 390px viewport by ~70px and gets
+                clipped by the section's overflow-hidden.
+                A <br> breaks even under white-space: nowrap — nowrap only
+                suppresses AUTOMATIC wrapping — and display:none at sm removes
+                the break entirely, restoring the single-line layout untouched.
+                Putting the break before the space keeps that space out of line
+                2's leading edge below sm, while still separating the caret from
+                "Sourcing" at sm and up. */}
+            <br aria-hidden="true" className="sm:hidden" />{' '}
             Sourcing Experts
           </motion.h1>
         </div>
