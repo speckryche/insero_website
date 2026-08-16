@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { SDWANPageClient } from './SDWANPageClient';
 
 export const metadata: Metadata = {
-  title: 'SD-WAN Solutions for Business | Network Redundancy & WAN Optimization',
+  // `absolute` bypasses the root layout's '%s | Insero' template. A plain
+  // string here would render with the suffix appended; this title is meant
+  // to stand alone. openGraph.title below is untemplated either way and
+  // keeps its own suffix.
+  title: { absolute: 'SD-WAN for Business: Redundancy Without the Guesswork' },
   description:
     'Compare SD-WAN providers for failover, traffic prioritization, and multi-site connectivity. Cut WAN costs 30-50%.',
   keywords: [

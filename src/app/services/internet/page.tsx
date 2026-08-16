@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { InternetPageClient } from './InternetPageClient';
 
 export const metadata: Metadata = {
-  title: 'Business Internet Provider Comparison | Fiber, DIA & Broadband Solutions',
+  // `absolute` bypasses the root layout's '%s | Insero' template. A plain
+  // string here would render with the suffix appended; this title is meant
+  // to stand alone. openGraph.title below is untemplated either way and
+  // keeps its own suffix.
+  title: { absolute: 'Business Internet: Compare Fiber, DIA & Broadband' },
   description:
     'Compare business internet providers across fiber, DIA, broadband, and 5G. Best pricing from 100+ carriers — free consultation.',
   keywords: [

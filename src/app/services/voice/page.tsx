@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import { VoicePageClient } from './VoicePageClient';
 
 export const metadata: Metadata = {
-  title: 'Business Phone Systems | Hosted PBX, VoIP & UCaaS Provider Comparison',
+  // `absolute` bypasses the root layout's '%s | Insero' template. A plain
+  // string here would render with the suffix appended; this title is meant
+  // to stand alone. openGraph.title below is untemplated either way and
+  // keeps its own suffix.
+  title: { absolute: 'Business Phone Systems: Hosted PBX, VoIP & UCaaS' },
   description:
     'Compare hosted PBX, VoIP, and UCaaS providers to find the best business phone system. Expert guidance, zero cost. Often significant savings vs. going direct.',
   keywords: [
