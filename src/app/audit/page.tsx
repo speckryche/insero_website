@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { AuditPageClient } from './AuditPageClient';
 
 export const metadata: Metadata = {
-  title: 'Free Telecom Cost Assessment | Find Savings on Internet & Phone',
+  title: 'Free Telecom Cost & Risk Assessment',
   description:
-    'Free telecom cost and risk assessment. We compare 100+ carriers to find savings on internet, phone, and network services.',
+    'Free telecom cost and risk assessment. We compare every major carrier to find savings on your internet, phone, and network services. Takes 15 minutes.',
   keywords: [
     'free telecom assessment',
     'telecom cost assessment',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Free Telecom Cost Assessment | Insero',
     description:
-      'Free telecom cost and risk assessment. We compare 100+ carriers to find savings on internet, phone, and network services.',
+      'Free telecom cost and risk assessment. We compare every major carrier to find savings on your internet, phone, and network services. Takes 15 minutes.',
     url: 'https://insero.cloud/audit',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
@@ -33,7 +33,7 @@ const auditPageSchema = [
     '@type': 'WebPage',
     name: 'Free Telecom Cost & Risk Assessment',
     description:
-      'Get a free telecom cost & risk assessment for your business. We compare 100+ carriers to find savings on internet, phone, and network services.',
+      'Get a free telecom cost and risk assessment for your business. We compare every major carrier to find savings on internet, phone, and network services.',
     url: 'https://insero.cloud/audit',
     provider: {
       '@type': 'Organization',
@@ -46,7 +46,7 @@ const auditPageSchema = [
     '@type': 'Service',
     name: 'Telecom Cost & Risk Assessment',
     description:
-      'Free assessment of your business telecom services including line-by-line bill analysis, price benchmarking against 100+ carriers, and redundancy risk assessment.',
+      'Free assessment of your business telecom services including line-by-line bill analysis, price benchmarking across every major carrier, and redundancy risk assessment.',
     provider: {
       '@type': 'Organization',
       name: 'Insero',
