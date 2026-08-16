@@ -9,7 +9,7 @@ import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
 
 export const metadata: Metadata = {
-  title: 'Demo - Hero Image Test | Insero',
+  title: 'Demo - Hero Image Test',
   robots: {
     index: false,
     follow: false,

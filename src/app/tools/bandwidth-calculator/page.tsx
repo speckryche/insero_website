@@ -3,7 +3,7 @@ import { BandwidthCalculator } from '@/components/tools/BandwidthCalculator';
 import { RelatedArticles } from '@/components/tools/RelatedArticles';
 
 export const metadata: Metadata = {
-  title: 'Business Internet Bandwidth Calculator | Insero',
+  title: 'Business Internet Bandwidth Calculator',
   description:
     'Calculate how much business internet bandwidth your team actually needs. Free tool from Insero — get a personalized estimate in under a minute.',
   alternates: { canonical: 'https://insero.cloud/tools/bandwidth-calculator' },

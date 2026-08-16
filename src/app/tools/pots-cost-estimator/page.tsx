@@ -4,7 +4,7 @@ import { PlaybookPromo } from '@/components/lead-magnets/PlaybookPromo';
 import { RelatedArticles } from '@/components/tools/RelatedArticles';
 
 export const metadata: Metadata = {
-  title: 'POTS Replacement Cost Estimator | Insero',
+  title: 'POTS Replacement Cost Estimator',
   description:
     "Estimate what it costs to replace your POTS lines — and how much you're overpaying now. Free tool. Get a personalized estimate in under two minutes.",
   alternates: { canonical: 'https://insero.cloud/tools/pots-cost-estimator' },

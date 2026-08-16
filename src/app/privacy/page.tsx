@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { company } from '@/config/company';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Insero',
+  title: 'Privacy Policy',
   description: 'Privacy Policy for Insero - Learn how we collect, use, and protect your personal information.',
   openGraph: {
     title: 'Privacy Policy | Insero',

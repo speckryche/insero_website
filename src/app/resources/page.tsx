@@ -3,7 +3,7 @@ import { getAllArticles } from '@/lib/articles';
 import { ResourcesClient } from './ResourcesClient';
 
 export const metadata: Metadata = {
-  title: 'Resources | Insero',
+  title: 'Resources',
   description:
     'Guides, comparisons, and expert advice on voice, internet, SD-WAN, and security solutions for your business.',
   alternates: { canonical: 'https://insero.cloud/resources' },

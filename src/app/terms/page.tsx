@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { company } from '@/config/company';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Insero',
+  title: 'Terms of Service',
   description: 'Terms of Service for Insero - Read our terms and conditions for using our website and services.',
   openGraph: {
     title: 'Terms of Service | Insero',
