@@ -12,7 +12,7 @@ Nothing in this directory is read by the build. Open the files directly from
 disk (`file://`) — the style guide is self-contained apart from two Google
 Fonts links, so it renders the same from here as it did when it was served.
 
-The two live style-guide routes, `/style-guide` and `/icon-preview`, are
+The internal routes `/style-guide`, `/icon-preview` and `/demo` are
 handled differently: they stay in `src/app` and return 404 in production via a
 `notFound()` guard in each route's `layout.tsx`. They work normally under
 `next dev` and on preview deployments.
