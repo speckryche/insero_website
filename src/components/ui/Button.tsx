@@ -17,7 +17,7 @@ const variants: Record<ButtonVariant, string> = {
   primary: 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] shadow-md hover:shadow-lg',
   secondary: 'bg-[var(--color-dark)] text-white hover:bg-[var(--color-dark-muted)] shadow-md hover:shadow-lg',
   ghost: 'bg-transparent text-white border-2 border-white/30 hover:border-white hover:bg-white/10',
-  accent: 'bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)] shadow-md hover:shadow-lg',
+  accent: 'bg-[var(--color-accent-cta)] text-white hover:bg-[var(--color-accent-cta-hover)] shadow-md hover:shadow-lg',
 };
 
 const sizes: Record<ButtonSize, string> = {

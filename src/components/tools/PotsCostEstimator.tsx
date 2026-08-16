@@ -174,8 +174,8 @@ export function PotsCostEstimator() {
         </div>
 
         {/* Section 5: Compliance note */}
-        <div className="flex gap-3 p-4 bg-[#FFF7ED] border border-[#F97316]/20 rounded-xl">
-          <Info weight="fill" className="w-5 h-5 text-[#F97316] flex-shrink-0 mt-0.5" />
+        <div className="flex gap-3 p-4 bg-[#FFF7ED] border border-[var(--color-accent-cta)]/20 rounded-xl">
+          <Info weight="fill" className="w-5 h-5 text-[var(--color-accent-cta)] flex-shrink-0 mt-0.5" />
           <p className="text-sm text-[#475569] leading-relaxed">
             If any of your lines support fire alarms, elevator emergency phones, or credit card terminals, those have specific compliance requirements (UL, NFPA, PCI). We make sure replacement equipment meets these requirements as part of the quote.
           </p>

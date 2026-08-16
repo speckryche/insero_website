@@ -30,9 +30,28 @@
   --color-secondary-dark: #0D1419;
 
   /* Accent - Tangerine */
+  /* Brand orange. DECORATIVE USE ONLY — it is 2.80:1 against white, so it
+     fails AA as a fill behind white text (4.5:1) and fails even the 3:1
+     non-text threshold as a shape against the page. Keep it for things no
+     rule applies to: the 5%-opacity glow behind the testimonials and the 1px
+     gradient rule under the header. Anything a user reads or clicks takes
+     --color-accent-cta below. */
   --color-accent: #F97316;
-  --color-accent-dark: #C4590C;
   --color-accent-light: #FFB02C;
+
+  /* The same orange, dark enough to be usable. Derived by locking the brand
+     hue and taking the most chromatic sRGB colour that still clears 4.5:1
+     against white: hue 52.8° against the brand's 55.2°, C* 75 against 82.
+     Perceptibly deeper — burnt rather than safety orange — but unmistakably
+     the same colour. Used for every button fill and for icons and borders
+     that carry meaning.
+       white on --color-accent-cta        4.53:1  (AA text)
+       fill vs white / tint / band        4.53 / 4.02 / 3.43:1  (AA non-text)
+     --color-accent-cta-hover is the hover partner. The old --color-accent-dark
+     (#C4590C) was removed rather than reused: at 4.39:1 it missed AA itself,
+     so every hover state in the codebase was failing too. */
+  --color-accent-cta: #C95000;
+  --color-accent-cta-hover: #9A3412;
 
   /* Neutrals */
   --color-white: #ffffff;
@@ -118,6 +137,8 @@
   --color-primary-light: var(--color-primary-light);
   --color-secondary: var(--color-secondary);
   --color-accent: var(--color-accent);
+  --color-accent-cta: var(--color-accent-cta);
+  --color-accent-cta-hover: var(--color-accent-cta-hover);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
 }

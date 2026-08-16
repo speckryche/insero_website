@@ -215,7 +215,7 @@ function Tm({ children }: { children: React.ReactNode }) {
 }
 
 const zoomButtonClass =
-  'group inline-flex items-center gap-3 px-10 py-5 bg-accent text-white font-semibold text-lg rounded-full hover:bg-[var(--color-accent-dark)] transition-colors duration-200 shadow-lg shadow-accent/25';
+  'group inline-flex items-center gap-3 px-10 py-5 bg-accent-cta text-white font-semibold text-lg rounded-full hover:bg-[var(--color-accent-cta-hover)] transition-colors duration-200 shadow-lg shadow-accent-cta/25';
 
 // --- Page -----------------------------------------------------------------
 
@@ -1492,7 +1492,7 @@ function QuoteForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-accent text-white font-semibold text-lg rounded-full shadow-lg shadow-accent/25 hover:bg-[var(--color-accent-dark)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-accent-cta text-white font-semibold text-lg rounded-full shadow-lg shadow-accent-cta/25 hover:bg-[var(--color-accent-cta-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? (
             <span>Sending…</span>

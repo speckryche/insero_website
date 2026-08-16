@@ -12,7 +12,11 @@ const C = {
   greenLight: '#1FA855',
   greenTint: '#E6F5EC',
   charcoal: '#1a2530',
-  orange: '#F97316',
+  // react-pdf resolves no CSS custom properties, so these have to be literals.
+  // This whole block already mirrors globals.css by hand — orange is not a
+  // special case. Kept in step with --color-accent-cta so the warning callout
+  // looks the same in the PDF as its web counterpart in Callout.tsx.
+  orange: '#C95000',
   orangeTint: '#FFF7ED',
   gray: '#475569',
   grayLight: '#f0f4f8',

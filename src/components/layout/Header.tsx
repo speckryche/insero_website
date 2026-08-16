@@ -270,8 +270,11 @@ export function Header() {
                 whileTap={{ scale: 0.98 }}
                 className="group flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[16px] transition-all duration-300 text-white shadow-lg"
                 style={{
-                  backgroundColor: headerCtaColor || '#008838',
-                  boxShadow: `0 10px 15px -3px ${headerCtaColor || '#008838'}40`,
+                  backgroundColor: headerCtaColor || 'var(--color-primary)',
+                  // color-mix rather than appending "40" for the alpha: that
+                  // string trick only works on a literal hex, and pages now
+                  // hand this a var() so the colour has one definition.
+                  boxShadow: `0 10px 15px -3px color-mix(in srgb, ${headerCtaColor || 'var(--color-primary)'} 25%, transparent)`,
                 }}
               >
                 <Phone weight="fill" className="w-4 h-4" />
@@ -397,7 +400,7 @@ export function Header() {
                   <Link
                     href="/contact"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--color-accent)] text-white font-semibold rounded-xl shadow-lg shadow-[var(--color-accent)]/25"
+                    className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--color-accent-cta)] text-white font-semibold rounded-xl shadow-lg shadow-[var(--color-accent-cta)]/25"
                   >
                     <Phone weight="fill" className="w-5 h-5" />
                     <span>Schedule a Call</span>

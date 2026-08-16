@@ -252,9 +252,10 @@ export default function StyleGuidePage() {
               <div className="mb-8">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Accent</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  <ColorSwatch name="Accent" variable="--color-accent" value="#1abc9c" />
-                  <ColorSwatch name="Accent Dark" variable="--color-accent-dark" value="#16a085" />
-                  <ColorSwatch name="Accent Light" variable="--color-accent-light" value="#48c9b0" />
+                  <ColorSwatch name="Accent (decorative only)" variable="--color-accent" value="#F97316" />
+                  <ColorSwatch name="Accent Light" variable="--color-accent-light" value="#FFB02C" />
+                  <ColorSwatch name="Accent CTA" variable="--color-accent-cta" value="#C95000" />
+                  <ColorSwatch name="Accent CTA Hover" variable="--color-accent-cta-hover" value="#9A3412" />
                 </div>
               </div>
 
@@ -454,10 +455,10 @@ export default function StyleGuidePage() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">Accent Buttons (CTAs)</h3>
                   <div className="flex flex-wrap gap-4 items-center">
-                    <button className="px-6 py-3 bg-[var(--color-accent)] hover:bg-[var(--color-accent-dark)] text-white font-semibold rounded-lg transition-colors">
+                    <button className="px-6 py-3 bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] text-white font-semibold rounded-lg transition-colors">
                       Get Started
                     </button>
-                    <button className="px-6 py-3 bg-[var(--color-accent)] hover:bg-[var(--color-accent-dark)] text-white font-semibold rounded-full transition-colors">
+                    <button className="px-6 py-3 bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] text-white font-semibold rounded-full transition-colors">
                       Rounded CTA
                     </button>
                   </div>
@@ -538,7 +539,7 @@ export default function StyleGuidePage() {
                   <p className="text-gray-600 text-sm mb-4">
                     Card with an icon for feature highlights.
                   </p>
-                  <a href="#" className="text-[var(--color-accent)] font-semibold text-sm inline-flex items-center gap-1 hover:gap-2 transition-all">
+                  <a href="#" className="text-[var(--color-accent-cta)] font-semibold text-sm inline-flex items-center gap-1 hover:gap-2 transition-all">
                     Learn more
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -570,7 +571,7 @@ export default function StyleGuidePage() {
                   <p className="text-gray-300 text-sm mb-4">
                     Card with dark background for contrast sections.
                   </p>
-                  <button className="px-4 py-2 bg-[var(--color-accent)] text-white font-semibold rounded-lg text-sm">
+                  <button className="px-4 py-2 bg-[var(--color-accent-cta)] text-white font-semibold rounded-lg text-sm">
                     Action
                   </button>
                 </div>
@@ -649,7 +650,7 @@ export default function StyleGuidePage() {
                 </div>
 
                 {/* Submit Button */}
-                <button className="w-full px-6 py-3 bg-[var(--color-accent)] hover:bg-[var(--color-accent-dark)] text-white font-semibold rounded-lg transition-colors">
+                <button className="w-full px-6 py-3 bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] text-white font-semibold rounded-lg transition-colors">
                   Submit Form
                 </button>
               </div>

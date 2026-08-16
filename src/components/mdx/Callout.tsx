@@ -4,7 +4,7 @@ import { Info, Lightbulb, Warning } from '@phosphor-icons/react';
 
 const styles = {
   tip: { bg: 'bg-[#E6F5EC]', border: 'border-[#008838]', icon: Lightbulb, iconColor: 'text-[#008838]' },
-  warning: { bg: 'bg-orange-50', border: 'border-[#F97316]', icon: Warning, iconColor: 'text-[#F97316]' },
+  warning: { bg: 'bg-orange-50', border: 'border-[var(--color-accent-cta)]', icon: Warning, iconColor: 'text-[var(--color-accent-cta)]' },
   note: { bg: 'bg-blue-50', border: 'border-[#3b82f6]', icon: Info, iconColor: 'text-[#3b82f6]' },
 };
 
