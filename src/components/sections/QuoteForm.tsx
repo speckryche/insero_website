@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { CheckCircle, PaperPlaneRight, WarningCircle } from '@phosphor-icons/react';
 import { submitContactForm, type ContactFormData } from '@/app/contact/actions';
-import { trackLead } from '@/lib/analytics';
+import { trackLead, trackContactClick } from '@/lib/analytics';
+import { company } from '@/config/company';
 
 // --- Shared on-page quote form --------------------------------------------
 //
@@ -36,7 +37,12 @@ export interface QuoteFormProps {
   /** GA4 `lead_source` parameter, e.g. 'zoom-page'. */
   leadSource: string;
   submitLabel: string;
-  successBody: string;
+  /**
+   * The carrier this form is for, e.g. 'RingCentral'. Interpolated into the
+   * confirmation copy, which is otherwise identical on both pages — a prop
+   * rather than a whole passed-in string so the two cannot drift apart.
+   */
+  carrierName: string;
   messagePlaceholder: string;
   /** Wrapper shape. Defaults to the bordered rounded-xl card /ringcentral uses. */
   cardClassName?: string;
@@ -57,7 +63,7 @@ export function QuoteForm({
   serviceTag,
   leadSource,
   submitLabel,
-  successBody,
+  carrierName,
   messagePlaceholder,
   cardClassName = DEFAULT_CARD,
   successIconBgClassName = 'bg-primary/10',
@@ -125,9 +131,28 @@ export function QuoteForm({
           <CheckCircle weight="fill" className="w-10 h-10" />
         </div>
         <h3 className="text-2xl lg:text-3xl font-display font-bold mb-3" style={{ color: INK }}>
-          Thanks — we&apos;ve got it
+          Got it — thanks.
         </h3>
-        <p className="text-[var(--color-gray-500)] max-w-md mx-auto mb-8">{successBody}</p>
+        {/* gray-600, not gray-500: this is the only copy on the screen once the
+            form is gone, and gray-500 on white is 4.42:1, under AA. gray-600 is
+            7.06:1. */}
+        <p className="text-[var(--color-gray-600)] max-w-md mx-auto mb-5 leading-relaxed">
+          We will reach out within one business day to learn about your specific needs, and wish
+          list. Once we have these details we will provide you with {carrierName} options and
+          negotiate the best pricing for your exact requirements.
+        </p>
+        <p className="text-[var(--color-gray-600)] mb-8">
+          In a hurry? Call{' '}
+          <a
+            href={company.phoneLink}
+            onClick={() => trackContactClick({ method: 'phone' })}
+            className="font-semibold hover:underline"
+            style={{ color: PRIMARY_DARK }}
+          >
+            {company.phoneFormatted}
+          </a>
+          .
+        </p>
         <button
           onClick={() => {
             setIsSubmitted(false);
@@ -226,7 +251,7 @@ export function QuoteForm({
         </button>
 
         <p className="text-sm text-[var(--color-gray-500)] text-center">
-          By submitting, you agree to be contacted about your quote. We never share your information.
+          By submitting, you agree to be contacted about your request. We never share your information.
         </p>
       </form>
     </div>

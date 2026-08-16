@@ -282,7 +282,7 @@ export function ZoomPageClient() {
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
               <a href="#get-a-quote" className={zoomButtonClass}>
                 <Phone weight="fill" className="w-5 h-5" />
-                <span>Get a Free Quote</span>
+                <span>Ask a Zoom Expert</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
               </a>
               <a
@@ -382,9 +382,9 @@ export function ZoomPageClient() {
                   you&apos;ll actually use the system, and making sure a license you are already
                   paying for is not bought twice.{' '}
                   <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
-                    Ask us for a quote
+                    Tell us what you need
                   </Link>{' '}
-                  and we&apos;ll price your actual configuration.
+                  and we&apos;ll work out the right configuration with you, then price it.
                 </p>
               </div>
             </div>
@@ -710,11 +710,11 @@ export function ZoomPageClient() {
               <span className="w-8 h-px" style={{ backgroundColor: BLUE_HOVER }} />
             </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: MIDNIGHT }}>
-              Get a free Zoom Phone quote
+              Talk to a Zoom expert
             </h2>
             <p className="text-xl text-[var(--color-gray-600)] leading-relaxed">
-              Zero cost, honest advice. We&apos;ll price your real configuration — and tell you straight if
-              something else fits you better.
+              Zero cost, honest advice. Tell us what you need and we&apos;ll come back with options and
+              pricing — and tell you straight if something else fits you better.
             </p>
           </motion.div>
 
@@ -723,9 +723,9 @@ export function ZoomPageClient() {
               idPrefix="zm"
               serviceTag="Zoom (source: zoom-page)"
               leadSource="zoom-page"
-              submitLabel="Get My Free Zoom Phone Quote"
-              successBody="We'll price your real Zoom Phone configuration and get back to you within one business day."
-              messagePlaceholder="Seats, contact center needs, and whether you already use Zoom Meetings — anything that helps us price it right."
+              submitLabel="Ask a Zoom Expert"
+              carrierName="Zoom"
+              messagePlaceholder="Seats, contact center needs, and whether you already use Zoom Meetings — anything that helps us understand your setup."
               cardClassName="rounded-3xl bg-white shadow-sm"
               successIconBgClassName=""
               successIconBgColor="var(--color-primary-50)"

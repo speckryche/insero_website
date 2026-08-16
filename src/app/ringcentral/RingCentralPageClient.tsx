@@ -333,7 +333,7 @@ export function RingCentralPageClient() {
                 <a href="#get-a-quote">
                   <button className={rcButtonClass}>
                     <Phone weight="fill" className="w-5 h-5" />
-                    <span>Get a Free Quote</span>
+                    <span>Ask a RingCentral Expert</span>
                     <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
                   </button>
                 </a>
@@ -436,9 +436,9 @@ export function RingCentralPageClient() {
               {ringEx.publishedSeatCap} seats, pricing is quote-based, so a quote is the only way to see
               your number.{' '}
               <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-                Ask us for a quote
+                Tell us what you need
               </Link>{' '}
-              and we&apos;ll price your actual configuration.
+              and we&apos;ll work out the right configuration with you, then price it.
             </p>
           </motion.div>
         </Container>
@@ -785,11 +785,11 @@ export function RingCentralPageClient() {
               <span className="w-8 h-px" style={{ backgroundColor: PRIMARY_DARK }} />
             </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: INK }}>
-              Get a free RingCentral quote
+              Talk to a RingCentral expert
             </h2>
             <p className="text-xl text-[var(--color-gray-600)] max-w-xl mx-auto leading-relaxed">
-              Zero cost, honest advice. We&apos;ll price your real configuration — and tell you straight if
-              something else fits you better.
+              Zero cost, honest advice. Tell us what you need and we&apos;ll come back with options and
+              pricing — and tell you straight if something else fits you better.
             </p>
           </motion.div>
 
@@ -798,9 +798,9 @@ export function RingCentralPageClient() {
               idPrefix="rc"
               serviceTag="RingCentral (source: ringcentral-page)"
               leadSource="ringcentral-page"
-              submitLabel="Get My Free RingCentral Quote"
-              successBody="We'll price your real RingCentral configuration and get back to you within one business day."
-              messagePlaceholder="Seats, add-ons you're weighing, contact center needs — anything that helps us price it right."
+              submitLabel="Ask a RingCentral Expert"
+              carrierName="RingCentral"
+              messagePlaceholder="Seats, add-ons you're weighing, contact center needs — anything that helps us understand your setup."
             />
           </motion.div>
 
@@ -1259,7 +1259,7 @@ function SeatCapNotice() {
         publishes no rate at all, so a quote is the only way to know your number &mdash; it is not the
         published price with a discount applied.{' '}
         <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-          Get a quote for your seat count
+          Talk to us about your seat count
         </Link>
         .
       </p>
