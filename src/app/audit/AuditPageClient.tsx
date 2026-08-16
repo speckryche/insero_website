@@ -15,9 +15,6 @@ import {
   ClipboardText,
   EnvelopeSimple,
   ChartBar,
-  Handshake,
-  Trophy,
-  PiggyBank,
   Phone,
 } from '@phosphor-icons/react';
 import { company } from '@/config/company';
@@ -79,13 +76,6 @@ const steps = [
   },
 ];
 
-const stats = [
-  { value: '38%', label: 'Average Savings Found', icon: PiggyBank },
-  { value: '500+', label: 'Businesses Assessed', icon: Handshake },
-  { value: '25+', label: 'Carrier Partners Compared', icon: Trophy },
-  { value: '$2M+', label: 'Client Savings Identified', icon: CurrencyDollar },
-];
-
 const faqItems = [
   {
     question: 'What does the assessment cost?',
@@ -143,14 +133,12 @@ export function AuditPageClient() {
   const painRef = useRef(null);
   const includesRef = useRef(null);
   const howRef = useRef(null);
-  const statsRef = useRef(null);
   const formRef = useRef(null);
 
   const heroInView = useInView(heroRef, { once: true });
   const painInView = useInView(painRef, { once: true, margin: '-80px' });
   const includesInView = useInView(includesRef, { once: true, margin: '-80px' });
   const howInView = useInView(howRef, { once: true, margin: '-80px' });
-  const statsInView = useInView(statsRef, { once: true, margin: '-80px' });
   const formInView = useInView(formRef, { once: true, margin: '-80px' });
 
   const {
@@ -217,7 +205,7 @@ export function AuditPageClient() {
 
             {/* Trust badges */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[#64748b] text-sm">
-              {['Free', 'No Obligation', 'Carrier-Agnostic', '500+ Businesses Served'].map((badge) => (
+              {['Free', 'No Obligation', 'Carrier-Agnostic'].map((badge) => (
                 <div key={badge} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
                   <span>{badge}</span>
@@ -361,31 +349,6 @@ export function AuditPageClient() {
           </div>
         </div>
       </section>
-
-      {/* ── Stats — Green Bar ────────────────────────── */}
-      <motion.div
-        ref={statsRef}
-        initial={{ opacity: 0, y: 16 }}
-        animate={statsInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.5 }}
-        className="bg-[#008838] py-6"
-      >
-        <div className="container-custom">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16 lg:gap-x-24">
-            {stats.map((stat, index) => (
-              <div key={index} className="flex items-center gap-x-12">
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">{stat.value}</div>
-                  <div className="text-sm text-white/80 mt-1">{stat.label}</div>
-                </div>
-                {index < stats.length - 1 && (
-                  <div className="hidden sm:block w-px h-12 bg-white/30" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.div>
 
       {/* ── Audit Form ───────────────────────────────── */}
       <section

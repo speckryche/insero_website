@@ -21,10 +21,6 @@ import {
   UserSound,
   MoonStars,
   SmileyNervous,
-  Handshake,
-  Trophy,
-  PiggyBank,
-  CurrencyDollar,
   CaretDown,
   ShieldCheck,
   WifiHigh,
@@ -103,13 +99,6 @@ const steps = [
     title: 'Go Live',
     description: 'Professional setup, number porting, and training. You\'re live in days, not weeks.',
   },
-];
-
-const stats = [
-  { value: '500+', label: 'Businesses Served', icon: Handshake },
-  { value: '38%', label: 'Average Savings', icon: PiggyBank },
-  { value: '25+', label: 'Years Experience', icon: Trophy },
-  { value: '$2M+', label: 'Savings Identified', icon: CurrencyDollar },
 ];
 
 const faqItems = [
@@ -215,7 +204,6 @@ export function EcentialLanding() {
   const solutionsRef = useRef(null);
   const howRef = useRef(null);
   const trustRef = useRef(null);
-  const statsRef = useRef(null);
   const formRef = useRef(null);
   const faqRef = useRef(null);
   const ctaRef = useRef(null);
@@ -225,7 +213,6 @@ export function EcentialLanding() {
   const solutionsInView = useInView(solutionsRef, { once: true, margin: '-80px' });
   const howInView = useInView(howRef, { once: true, margin: '-80px' });
   const trustInView = useInView(trustRef, { once: true, margin: '-80px' });
-  const statsInView = useInView(statsRef, { once: true, margin: '-80px' });
   const formInView = useInView(formRef, { once: true, margin: '-80px' });
   const faqInView = useInView(faqRef, { once: true, margin: '-80px' });
   const ctaInView = useInView(ctaRef, { once: true, margin: '-80px' });
@@ -557,34 +544,6 @@ export function EcentialLanding() {
               </p>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* ── 7. Stats Bar ────────────────────────────────── */}
-      <section ref={statsRef} className="ec-stats-gradient py-16 lg:py-20">
-        <div className="ec-container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={statsInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={statsInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.4, delay: 0.15 + index * 0.1 }}
-                className="text-center"
-              >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-xl mb-3">
-                  <stat.icon weight="fill" className="w-6 h-6 text-[var(--ec-blue-light)]" />
-                </div>
-                <div className="text-3xl lg:text-5xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-white/60 text-base font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
