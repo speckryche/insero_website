@@ -277,8 +277,7 @@ export function Header() {
                   boxShadow: `0 10px 15px -3px color-mix(in srgb, ${headerCtaColor || 'var(--color-primary)'} 25%, transparent)`,
                 }}
               >
-                <Phone weight="fill" className="w-4 h-4" />
-                <span>Schedule a Call</span>
+                <span>Get Started</span>
               </motion.button>
             </Link>
           </div>
@@ -402,8 +401,7 @@ export function Header() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--color-accent-cta)] text-white font-semibold rounded-xl shadow-lg shadow-[var(--color-accent-cta)]/25"
                   >
-                    <Phone weight="fill" className="w-5 h-5" />
-                    <span>Schedule a Call</span>
+                    <span>Get Started</span>
                   </Link>
                 </motion.div>
               </div>

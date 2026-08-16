@@ -91,7 +91,7 @@ const steps = [
   {
     number: '01',
     title: 'Tell Us About Your Center',
-    description: 'Quick call. We learn your setup, pain points, and what matters most to you.',
+    description: 'A short conversation, by email or phone. We learn your setup, pain points, and what matters most to you.',
   },
   {
     number: '02',

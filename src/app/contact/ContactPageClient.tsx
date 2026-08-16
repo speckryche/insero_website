@@ -37,7 +37,7 @@ const services = [
 ];
 
 const expectations = [
-  '15-minute discovery call to understand your needs',
+  'A short conversation to understand your needs — email or phone, your choice',
   'Custom recommendations based on your situation',
   'No obligation, no pressure sales tactics',
   'Zero cost to you - carriers pay us directly',
@@ -115,10 +115,10 @@ export function ContactPageClient() {
             className="text-center max-w-4xl mx-auto"
           >
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold mb-6 leading-tight text-[#1e293b]">
-              Schedule Your <span className="text-[#008838]">Free</span> Consultation
+              Let&apos;s Figure Out How We Can <span className="text-[#008838]">Help</span>
             </h1>
             <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto">
-              Ready to simplify your tech stack and save money? Let&apos;s talk. No pressure, no obligation, no cost.
+              Tell us about your setup and we&apos;ll come back with options. No pressure, no obligation, no cost.
             </p>
           </motion.div>
         </div>
@@ -192,9 +192,12 @@ export function ContactPageClient() {
                   <Sparkle weight="fill" className="w-5 h-5 text-[#008838]" />
                   <h3 className="font-bold text-[#1e293b]">What to Expect</h3>
                 </div>
+                {/* #475569, not #64748b: this panel is #e2e8ec, where #64748b
+                    measures 3.85:1 and misses AA for 14px text. #475569 is
+                    6.13:1 on the same fill. */}
                 <ul className="space-y-3">
                   {expectations.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3 text-[#64748b] text-sm">
+                    <li key={index} className="flex items-start gap-3 text-[#475569] text-sm">
                       <CheckCircle weight="fill" className="w-5 h-5 text-[#008838] flex-shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>

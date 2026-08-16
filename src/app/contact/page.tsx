@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { ContactPageClient } from './ContactPageClient';
 
 export const metadata: Metadata = {
-  title: 'Schedule a Free Telecom Consultation',
+  title: 'Contact Insero — Free Telecom Advice, No Obligation',
   description:
-    'Schedule a free consultation with a vendor-agnostic telecom broker. Expert guidance on voice, internet, SD-WAN, and security.',
+    'Tell us about your setup and get free, vendor-agnostic advice on voice, internet, SD-WAN, and security. Email or phone, your choice.',
   keywords: [
     'free telecom consultation',
     'telecom consultant',
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     'telecom cost reduction',
   ],
   openGraph: {
-    title: 'Schedule a Free Telecom Consultation | Insero',
+    title: 'Contact Insero — Free Telecom Advice, No Obligation | Insero',
     description:
-      'Schedule a free consultation with a vendor-agnostic telecom broker. Expert guidance at zero cost to you.',
+      'Tell us about your setup and get free, vendor-agnostic advice at zero cost to you.',
     url: 'https://insero.cloud/contact',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
@@ -31,7 +31,7 @@ const contactPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
   name: 'Contact Insero',
-  description: 'Schedule a free consultation with Insero for cloud and connectivity consulting.',
+  description: 'Get in touch with Insero for free cloud and connectivity advice.',
   url: 'https://insero.cloud/contact',
   mainEntity: {
     '@type': 'Organization',

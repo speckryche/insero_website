@@ -4,7 +4,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import Link from 'next/link';
 import {
-  CalendarCheck,
+  ChatCircleText,
   MagnifyingGlass,
   PiggyBank,
   ArrowRight,
@@ -13,12 +13,12 @@ import {
 
 const steps = [
   {
-    icon: CalendarCheck,
+    icon: ChatCircleText,
     step: '01',
-    title: 'Schedule a Call',
+    title: 'Get in Touch',
     description:
       'Tell us about your business, current setup, and pain points. We listen first.',
-    details: ['15-minute intro call', 'No commitment required', 'Discover your needs']
+    details: ['Email or phone, your choice', 'No commitment required', 'A short first conversation']
   },
   {
     icon: MagnifyingGlass,
@@ -147,7 +147,7 @@ export function HowItWorks() {
         >
           <Link href="/contact">
             <button className="group inline-flex items-center gap-3 px-8 py-4 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
-              <span>Schedule a Call</span>
+              <span>Get Started</span>
               <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
             </button>
           </Link>
