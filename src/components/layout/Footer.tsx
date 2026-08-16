@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useSyncExternalStore } from 'react';
 import { trackContactClick } from '@/lib/analytics';
 import {
   Phone,
@@ -20,13 +21,37 @@ import {
 } from '@phosphor-icons/react';
 import { company as companyInfo } from '@/config/company';
 
+/**
+ * The copyright year, correct without a redeploy.
+ *
+ * This file is a client component on statically prerendered pages, so a bare
+ * `new Date().getFullYear()` bakes the BUILD year into the HTML and serves it
+ * until someone ships again — wrong from every January 1st, and a hydration
+ * mismatch the moment the two disagree.
+ *
+ * useSyncExternalStore is the sanctioned way to hold a value that legitimately
+ * differs between server and client: React hydrates with the server snapshot,
+ * then re-renders with the client one, and treats the difference as expected
+ * rather than as a mismatch. Crawlers still get a year in the HTML. Nothing is
+ * subscribed because the value cannot change within a session that matters.
+ */
+const NO_SUBSCRIBE = () => () => {};
+const readYear = () => new Date().getFullYear();
+
+function useCurrentYear(): number {
+  return useSyncExternalStore(NO_SUBSCRIBE, readYear, readYear);
+}
+
 const services = [
   { name: 'Voice Connectivity', href: '/services/voice', icon: Microphone },
   { name: 'Internet Connectivity', href: '/services/internet', icon: Globe },
   { name: 'SD-WAN & Redundancy', href: '/services/sdwan', icon: GitBranch },
   { name: 'Security', href: '/services/security', icon: ShieldCheck },
-  { name: 'RingCentral', href: '/ringcentral', icon: Phone },
-  { name: 'Zoom', href: '/zoom', icon: Phone },
+  // No icon on these two. They navigate to landing pages; the Phone icon they
+  // used to carry read as a call control. The row keeps its alignment through
+  // the spacer below rather than by borrowing an icon that means something else.
+  { name: 'RingCentral', href: '/ringcentral' },
+  { name: 'Zoom', href: '/zoom' },
 ];
 
 const resourceLinks = [
@@ -44,6 +69,8 @@ const companyLinks = [
 ];
 
 export function Footer() {
+  const year = useCurrentYear();
+
   return (
     <footer className="concept-footer bg-[#1a2530] text-white">
       {/* Green accent bar at top */}
@@ -96,7 +123,11 @@ export function Footer() {
                       href={service.href}
                       className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group"
                     >
-                      <Icon weight="fill" className="w-4 h-4 text-[#1FA855]" />
+                      {Icon ? (
+                        <Icon weight="fill" className="w-4 h-4 text-[#1FA855]" />
+                      ) : (
+                        <span aria-hidden="true" className="w-4 h-4 flex-shrink-0" />
+                      )}
                       <span>{service.name}</span>
                       <ArrowRight weight="bold" className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                     </Link>
@@ -202,7 +233,7 @@ export function Footer() {
         <div className="container-custom py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-white/40 text-sm">
-              &copy; {new Date().getFullYear()} Insero. All rights reserved.
+              &copy; {year} Insero, LLC. All rights reserved.
             </p>
             <div className="flex gap-6">
               <Link

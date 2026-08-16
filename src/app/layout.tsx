@@ -5,6 +5,7 @@ import { PageViewTracker } from '@/components/analytics/PageViewTracker';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { company } from '@/config/company';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -79,17 +80,38 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD Organization Schema
+// JSON-LD Organization Schema — the single canonical entity for insero.cloud.
+//
+// This absorbed the separate LocalBusiness node that used to sit alongside it.
+// Two schema types is not a matter of taste here: LocalBusiness describes a
+// place customers visit, so it expects a street address, a postal code and
+// coordinates, and all three were shipping as literal PLACEHOLDER strings on
+// every page of the site. Insero sells nationally and has no public office, so
+// the type was wrong and the fields it demanded could never be filled in
+// honestly. Organization carries no such expectation.
+//
+// Merged rather than retyped, so there is one Organization for this domain
+// instead of two with conflicting @ids describing the same company.
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${baseUrl}/#organization`,
   name: 'Insero',
+  /** Canonical registered name. Always carries the comma. */
+  legalName: 'Insero, LLC',
   url: baseUrl,
+  telephone: '+1-844-252-3185',
+  email: company.email,
+  sameAs: [company.social.linkedin],
+  // insero-logo-dark.png does not exist and returns 404 in production, which
+  // fails Google's Organization logo requirement outright. Pointed at the file
+  // the footer actually renders, with its real measured dimensions rather than
+  // the 200x60 that was declared for the missing one.
   logo: {
     '@type': 'ImageObject',
-    url: `${baseUrl}/insero-logo-dark.png`,
-    width: 200,
-    height: 60,
+    url: `${baseUrl}/insero-logo-dark-with-tagline-retina.png`,
+    width: 1646,
+    height: 678,
   },
   image: `${baseUrl}/og-image.png`,
   description:
@@ -144,43 +166,6 @@ const websiteSchema = {
   },
 };
 
-// JSON-LD LocalBusiness Schema — fields with 'PLACEHOLDER' suffix need to be filled in
-const localBusinessSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
-  '@id': `${baseUrl}/#localbusiness`,
-  name: 'Insero',
-  url: baseUrl,
-  image: `${baseUrl}/og-default.png`,
-  logo: `${baseUrl}/insero-logo-dark-with-tagline-retina.png`,
-  telephone: '+1-844-252-3185',
-  email: 'sales@insero.cloud',
-  priceRange: 'Free consultation',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'STREET_ADDRESS_PLACEHOLDER',
-    addressLocality: 'Jacksonville',
-    addressRegion: 'OR',
-    postalCode: 'POSTAL_CODE_PLACEHOLDER',
-    addressCountry: 'US',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 'LATITUDE_PLACEHOLDER',
-    longitude: 'LONGITUDE_PLACEHOLDER',
-  },
-  areaServed: {
-    '@type': 'Country',
-    name: 'United States',
-  },
-  openingHoursSpecification: {
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    opens: '08:00',
-    closes: '17:00',
-  },
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -199,12 +184,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(websiteSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema),
           }}
         />
         {GA_ID && (
