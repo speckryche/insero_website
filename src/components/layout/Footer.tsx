@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Logo } from '@/components/ui/Logo';
 import { useSyncExternalStore } from 'react';
 import { trackContactClick } from '@/lib/analytics';
 import {
@@ -82,12 +83,8 @@ export function Footer() {
           {/* Brand Column */}
           <div>
             <Link href="/" className="inline-block mb-6">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/insero-logo-dark-with-tagline-retina.png"
-                alt="Insero"
-                className="h-16 w-auto"
-              />
+              {/* No `priority` — the footer mark is always below the fold. */}
+              <Logo variant="dark" alt="Insero" className="h-16 w-auto" />
             </Link>
             <p className="text-white/60 leading-relaxed mb-8 text-sm">
               Expert cloud and connectivity consulting at zero cost to you. We simplify complexity.

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { Logo } from '@/components/ui/Logo';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   List,
@@ -180,18 +181,24 @@ export function Header() {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/insero-logo-light-with-tagline-retina.png"
+              {/* Both variants are `priority`. Neither is decorative: on a
+                  light hero the first is the visible mark, on a dark hero the
+                  second is, and either way the other has to be decoded before
+                  the crossfade runs or the swap flashes an empty box. Lazy
+                  loading the pair would defer the site's own logo below the
+                  fold logic and leave the header blank on first paint. */}
+              <Logo
+                variant="light"
                 alt="Insero - light bg"
+                priority
                 className={`h-16 lg:h-[80px] w-auto transition-all duration-300 ${
                   !isScrolled && !hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
               />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/insero-logo-dark-with-tagline-retina.png"
+              <Logo
+                variant="dark"
                 alt="Insero - dark bg"
+                priority
                 className={`h-16 lg:h-[80px] w-auto absolute left-0 top-0 transition-all duration-300 ${
                   isScrolled || hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                 }`}
