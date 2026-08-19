@@ -172,7 +172,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                       <div>
                         <label className="block text-xs font-semibold text-[#1e293b] mb-1">First Name *</label>
                         <input
-                          type="text" required value={firstName} onChange={e => setFirstName(e.target.value)}
+                          type="text" autoComplete="given-name" required value={firstName} onChange={e => setFirstName(e.target.value)}
                           className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:border-[#008838] focus:outline-none"
                           placeholder="John"
                         />
@@ -180,7 +180,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                       <div>
                         <label className="block text-xs font-semibold text-[#1e293b] mb-1">Last Name *</label>
                         <input
-                          type="text" required value={lastName} onChange={e => setLastName(e.target.value)}
+                          type="text" autoComplete="family-name" required value={lastName} onChange={e => setLastName(e.target.value)}
                           className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:border-[#008838] focus:outline-none"
                           placeholder="Doe"
                         />
@@ -189,7 +189,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                     <div>
                       <label className="block text-xs font-semibold text-[#1e293b] mb-1">Company *</label>
                       <input
-                        type="text" required value={company} onChange={e => setCompany(e.target.value)}
+                        type="text" autoComplete="organization" required value={company} onChange={e => setCompany(e.target.value)}
                         className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:border-[#008838] focus:outline-none"
                         placeholder="Your Company"
                       />
@@ -197,7 +197,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                     <div>
                       <label className="block text-xs font-semibold text-[#1e293b] mb-1">Email *</label>
                       <input
-                        type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                        type="email" autoComplete="email" required value={email} onChange={e => setEmail(e.target.value)}
                         className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:border-[#008838] focus:outline-none"
                         placeholder="john@company.com"
                       />
@@ -205,7 +205,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                     <div>
                       <label className="block text-xs font-semibold text-[#1e293b] mb-1">Phone <span className="text-[var(--color-gray-500)] font-normal">(optional)</span></label>
                       <input
-                        type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+                        type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)}
                         className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:border-[#008838] focus:outline-none"
                         placeholder="(123) 456-7890"
                       />

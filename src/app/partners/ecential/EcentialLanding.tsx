@@ -612,6 +612,7 @@ export function EcentialLanding() {
                     <input
                       type="text"
                       id="fullName"
+                      autoComplete="name"
                       {...register('fullName', { required: 'Full name is required' })}
                       className={`ec-input ${errors.fullName ? 'error' : ''}`}
                       placeholder="Jane Smith"
@@ -629,6 +630,7 @@ export function EcentialLanding() {
                     <input
                       type="text"
                       id="centerName"
+                      autoComplete="organization"
                       {...register('centerName', { required: 'Center name is required' })}
                       className={`ec-input ${errors.centerName ? 'error' : ''}`}
                       placeholder="Sunshine Learning Center"
@@ -647,6 +649,7 @@ export function EcentialLanding() {
                       <input
                         type="email"
                         id="email"
+                        autoComplete="email"
                         {...register('email', {
                           required: 'Email is required',
                           pattern: {
@@ -668,6 +671,7 @@ export function EcentialLanding() {
                       <input
                         type="tel"
                         id="phone"
+                        autoComplete="tel"
                         {...register('phone', { required: 'Phone number is required' })}
                         className={`ec-input ${errors.phone ? 'error' : ''}`}
                         placeholder="(555) 123-4567"

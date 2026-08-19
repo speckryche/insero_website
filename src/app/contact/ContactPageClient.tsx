@@ -248,7 +248,7 @@ export function ContactPageClient() {
                       <div>
                         <label htmlFor="firstName" className="block text-sm font-semibold text-[#1e293b] mb-2">First Name *</label>
                         <input
-                          type="text" id="firstName"
+                          type="text" id="firstName" autoComplete="given-name"
                           {...register('firstName', { required: 'First name is required' })}
                           className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${errors.firstName ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#008838]'} focus:outline-none`}
                           placeholder="John"
@@ -258,7 +258,7 @@ export function ContactPageClient() {
                       <div>
                         <label htmlFor="lastName" className="block text-sm font-semibold text-[#1e293b] mb-2">Last Name *</label>
                         <input
-                          type="text" id="lastName"
+                          type="text" id="lastName" autoComplete="family-name"
                           {...register('lastName', { required: 'Last name is required' })}
                           className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${errors.lastName ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#008838]'} focus:outline-none`}
                           placeholder="Doe"
@@ -271,7 +271,7 @@ export function ContactPageClient() {
                       <div>
                         <label htmlFor="email" className="block text-sm font-semibold text-[#1e293b] mb-2">Email *</label>
                         <input
-                          type="email" id="email"
+                          type="email" id="email" autoComplete="email"
                           {...register('email', { required: 'Email is required', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' } })}
                           className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${errors.email ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#008838]'} focus:outline-none`}
                           placeholder="john@company.com"
@@ -281,7 +281,7 @@ export function ContactPageClient() {
                       <div>
                         <label htmlFor="phone" className="block text-sm font-semibold text-[#1e293b] mb-2">Phone</label>
                         <input
-                          type="tel" id="phone" {...register('phone')}
+                          type="tel" id="phone" autoComplete="tel" {...register('phone')}
                           className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[#008838] focus:outline-none transition-colors"
                           placeholder="(123) 456-7890"
                         />
@@ -291,7 +291,7 @@ export function ContactPageClient() {
                     <div>
                       <label htmlFor="companyName" className="block text-sm font-semibold text-[#1e293b] mb-2">Company Name</label>
                       <input
-                        type="text" id="companyName" {...register('company')}
+                        type="text" id="companyName" autoComplete="organization" {...register('company')}
                         className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[#008838] focus:outline-none transition-colors"
                         placeholder="Your Company Inc."
                       />

@@ -156,7 +156,7 @@ export function BandwidthCalculator() {
               className="flex-grow accent-[#008838] h-2"
             />
             <input
-              type="number"
+              type="number" inputMode="numeric"
               min={1} max={500} value={users}
               onChange={e => setUsers(Math.min(500, Math.max(1, Number(e.target.value) || 1)))}
               className="w-20 px-3 py-2 border-2 border-gray-200 rounded-xl text-center font-semibold focus:border-[#008838] focus:outline-none"
@@ -211,7 +211,7 @@ export function BandwidthCalculator() {
                 className="flex-grow accent-[#008838] h-2"
               />
               <input
-                type="number"
+                type="number" inputMode="numeric"
                 min={0} max={50} value={videoCalls}
                 onChange={e => setVideoCalls(Math.min(50, Math.max(0, Number(e.target.value) || 0)))}
                 className="w-20 px-3 py-2 border-2 border-gray-200 rounded-xl text-center font-semibold focus:border-[#008838] focus:outline-none"
@@ -233,7 +233,7 @@ export function BandwidthCalculator() {
               className="flex-grow accent-[#008838] h-2"
             />
             <input
-              type="number"
+              type="number" inputMode="numeric"
               min={0} max={200} value={guestUsers}
               onChange={e => setGuestUsers(Math.min(200, Math.max(0, Number(e.target.value) || 0)))}
               className="w-20 px-3 py-2 border-2 border-gray-200 rounded-xl text-center font-semibold focus:border-[#008838] focus:outline-none"

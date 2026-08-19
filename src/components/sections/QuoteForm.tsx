@@ -181,7 +181,7 @@ export function QuoteForm({
           <div>
             <label htmlFor={`${idPrefix}-name`} className="block text-sm font-semibold mb-2" style={{ color: INK }}>Name *</label>
             <input
-              type="text" id={`${idPrefix}-name`}
+              type="text" id={`${idPrefix}-name`} autoComplete="name"
               {...register('name', { required: 'Name is required' })}
               className={`${inputClass} ${errors.name ? errBorder : okBorder}`}
               placeholder="Jane Smith"
@@ -191,7 +191,7 @@ export function QuoteForm({
           <div>
             <label htmlFor={`${idPrefix}-email`} className="block text-sm font-semibold mb-2" style={{ color: INK }}>Email *</label>
             <input
-              type="email" id={`${idPrefix}-email`}
+              type="email" id={`${idPrefix}-email`} autoComplete="email"
               {...register('email', { required: 'Email is required', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' } })}
               className={`${inputClass} ${errors.email ? errBorder : okBorder}`}
               placeholder="jane@company.com"
@@ -204,7 +204,7 @@ export function QuoteForm({
           <div>
             <label htmlFor={`${idPrefix}-phone`} className="block text-sm font-semibold mb-2" style={{ color: INK }}>Phone</label>
             <input
-              type="tel" id={`${idPrefix}-phone`} {...register('phone')}
+              type="tel" id={`${idPrefix}-phone`} autoComplete="tel" {...register('phone')}
               className={`${inputClass} ${okBorder}`}
               placeholder="(123) 456-7890"
             />
@@ -212,7 +212,7 @@ export function QuoteForm({
           <div>
             <label htmlFor={`${idPrefix}-company`} className="block text-sm font-semibold mb-2" style={{ color: INK }}>Company</label>
             <input
-              type="text" id={`${idPrefix}-company`} {...register('company')}
+              type="text" id={`${idPrefix}-company`} autoComplete="organization" {...register('company')}
               className={`${inputClass} ${okBorder}`}
               placeholder="Your Company Inc."
             />

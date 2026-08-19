@@ -68,7 +68,7 @@ export function PotsCostEstimator() {
           <label className="block font-display font-bold text-[#1e293b] mb-2 text-lg">How many POTS lines do you currently have?</label>
           <div className="flex items-center gap-4">
             <input type="range" min={1} max={50} value={lines} onChange={e => setLines(Number(e.target.value))} className="flex-grow accent-[#008838] h-2" />
-            <input type="number" min={1} max={50} value={lines} onChange={e => setLines(Math.min(50, Math.max(1, Number(e.target.value) || 1)))} className="w-20 px-3 py-2 border-2 border-gray-200 rounded-xl text-center font-semibold focus:border-[#008838] focus:outline-none" />
+            <input type="number" inputMode="numeric" min={1} max={50} value={lines} onChange={e => setLines(Math.min(50, Math.max(1, Number(e.target.value) || 1)))} className="w-20 px-3 py-2 border-2 border-gray-200 rounded-xl text-center font-semibold focus:border-[#008838] focus:outline-none" />
           </div>
         </div>
 
@@ -78,7 +78,7 @@ export function PotsCostEstimator() {
           <p className="text-sm text-[#64748b] mb-3">If you don&apos;t know, $100–$200 is typical in 2026.</p>
           <div className="flex items-center gap-3">
             <span className="text-lg font-semibold text-[#1e293b]">$</span>
-            <input type="number" min={0} max={500} value={costPerLine} onChange={e => setCostPerLine(Math.min(500, Math.max(0, Number(e.target.value) || 0)))} className="w-28 px-4 py-2 border-2 border-gray-200 rounded-xl font-semibold focus:border-[#008838] focus:outline-none" />
+            <input type="number" inputMode="numeric" min={0} max={500} value={costPerLine} onChange={e => setCostPerLine(Math.min(500, Math.max(0, Number(e.target.value) || 0)))} className="w-28 px-4 py-2 border-2 border-gray-200 rounded-xl font-semibold focus:border-[#008838] focus:outline-none" />
             <span className="text-sm text-[#64748b]">/ line / month</span>
           </div>
         </div>

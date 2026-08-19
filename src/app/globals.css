@@ -200,6 +200,35 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
 }
 
+/* Number inputs never render spinner arrows.
+ *
+ * Every type="number" on the site sits beside a range slider that already
+ * covers stepping, so the arrows are a second control for the same value in
+ * about 20px of width -- a fat-finger target on a phone, and they clip the
+ * digits in the narrow w-20 boxes the calculators use. Both halves are needed:
+ * WebKit and Blink draw the arrows as a shadow pseudo-element, Firefox draws
+ * them as part of the input's own appearance.
+ *
+ * Deliberately inside @layer base, unlike the heading rule above it. Unlayered
+ * CSS outranks @layer utilities no matter the source order, which is what makes
+ * that heading rule silently eat any text-* utility put on an h1-h6. Keeping
+ * this in base means an `appearance-auto` utility could still opt a single
+ * input back in, and nothing here can shadow a utility by accident.
+ */
+@layer base {
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
+}
+
 
 /* ═══════════════════════════════════════════════════════════
    CUSTOM CLASSES

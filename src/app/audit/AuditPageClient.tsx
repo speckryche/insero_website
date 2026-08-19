@@ -404,7 +404,7 @@ export function AuditPageClient() {
                   <div>
                     <label htmlFor="fullName" className="block text-sm font-semibold text-[#1e293b] mb-2">Full Name *</label>
                     <input
-                      type="text" id="fullName"
+                      type="text" id="fullName" autoComplete="name"
                       {...register('fullName', { required: 'Full name is required' })}
                       className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${errors.fullName ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#008838]'} focus:outline-none`}
                       placeholder="John Doe"
@@ -415,7 +415,7 @@ export function AuditPageClient() {
                   <div>
                     <label htmlFor="auditCompany" className="block text-sm font-semibold text-[#1e293b] mb-2">Company Name *</label>
                     <input
-                      type="text" id="auditCompany"
+                      type="text" id="auditCompany" autoComplete="organization"
                       {...register('company', { required: 'Company name is required' })}
                       className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${errors.company ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#008838]'} focus:outline-none`}
                       placeholder="Your Company Inc."
@@ -427,7 +427,7 @@ export function AuditPageClient() {
                     <div>
                       <label htmlFor="auditEmail" className="block text-sm font-semibold text-[#1e293b] mb-2">Email *</label>
                       <input
-                        type="email" id="auditEmail"
+                        type="email" id="auditEmail" autoComplete="email"
                         {...register('email', { required: 'Email is required', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address' } })}
                         className={`w-full px-4 py-3.5 rounded-xl border-2 bg-white transition-colors ${errors.email ? 'border-red-400 focus:border-red-500' : 'border-gray-200 focus:border-[#008838]'} focus:outline-none`}
                         placeholder="john@company.com"
@@ -437,7 +437,7 @@ export function AuditPageClient() {
                     <div>
                       <label htmlFor="auditPhone" className="block text-sm font-semibold text-[#1e293b] mb-2">Phone</label>
                       <input
-                        type="tel" id="auditPhone" {...register('phone')}
+                        type="tel" id="auditPhone" autoComplete="tel" {...register('phone')}
                         className="w-full px-4 py-3.5 rounded-xl border-2 border-gray-200 bg-white focus:border-[#008838] focus:outline-none transition-colors"
                         placeholder="(123) 456-7890"
                       />
