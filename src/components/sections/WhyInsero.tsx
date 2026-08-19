@@ -31,7 +31,11 @@ const benefits = [
     description:
       'We recommend what\'s best for you, not who pays us the most. Your interests come first.',
     highlight: 'Unbiased',
-    color: '#8b5cf6',
+    // --color-sdwan-text, written as a literal because the icon tile below
+    // concatenates an alpha pair onto this value. White on #8b5cf6 is 4.23:1
+    // and this badge is 12px w700, so it needs 4.5:1; this gives 5.58:1 while
+    // staying in the same violet family.
+    color: '#7946E0',
     features: ['Top carrier partners', 'Objective analysis', 'Your goals first']
   },
   {
