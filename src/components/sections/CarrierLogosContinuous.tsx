@@ -172,20 +172,20 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
         transition={{ duration: 0.5, delay: 0.2 }}
         className="mt-14 bg-[#008838] py-5 lg:py-6"
       >
-        <div className="container-custom">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 md:gap-x-16 lg:gap-x-24">
+        <div className="mx-auto w-full max-w-[var(--container-max)] px-4 md:px-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-6 md:gap-x-16 lg:gap-x-24">
             <div className="text-center">
-              <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Top</div>
+              <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Top</div>
               <div className="text-sm md:text-base text-white/80 mt-1">Carrier Partners</div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
-              <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Best Pricing</div>
+              <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Best Pricing</div>
               <div className="text-sm md:text-base text-white/80 mt-1">Guaranteed</div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
-              <div className="text-2xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Zero</div>
+              <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Zero</div>
               <div className="text-sm md:text-base text-white/80 mt-1">Carrier Bias</div>
             </div>
           </div>
