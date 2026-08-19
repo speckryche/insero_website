@@ -69,6 +69,7 @@ export function SecurityPageClient() {
       description="Protection without complexity. Enterprise-grade security made accessible for businesses of all sizes. Don't let your business become a statistic."
       icon={ShieldCheck}
       color="var(--color-security)"
+      textColor="var(--color-security-text)"
       gradient="from-[var(--color-secondary)] via-red-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}

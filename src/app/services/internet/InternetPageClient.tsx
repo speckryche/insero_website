@@ -76,6 +76,7 @@ export function InternetPageClient() {
       description="Speed and reliability optimized for your specific needs. We compare options from multiple carriers to find you the perfect connection at the best price."
       icon={Globe}
       color="var(--color-internet)"
+      textColor="var(--color-internet-text)"
       ctaColor="var(--color-accent-cta)"
       headerCtaColor="var(--color-accent-cta)"
       gradient="from-[var(--color-secondary)] via-emerald-900 to-[var(--color-secondary-dark)]"

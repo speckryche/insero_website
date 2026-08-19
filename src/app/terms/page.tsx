@@ -22,7 +22,11 @@ export default function TermsOfServicePage() {
   return (
     <main className="min-h-screen bg-[var(--color-background)]">
       {/* Header */}
-      <section className="relative py-20 lg:py-28 overflow-hidden">
+      {/* The dark fill is painted by the absolutely-positioned .hero-gradient
+          below, not by this section, so the header has nothing to detect unless
+          the marker is declared here. Without it Header.tsx renders the
+          light-background wordmark — black on dark navy. */}
+      <section data-dark-hero="true" className="relative py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
 
@@ -41,7 +45,7 @@ export default function TermsOfServicePage() {
       {/* Content */}
       <section className="py-16 lg:py-24">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto prose prose-lg prose-invert">
+          <div className="max-w-3xl mx-auto prose prose-lg">
 
             <div className="bg-white rounded-2xl p-8 md:p-12 shadow-xl text-[var(--color-secondary)]">
 

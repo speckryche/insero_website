@@ -90,6 +90,7 @@ export function VoicePageClient() {
       description="Modern phone systems that scale with your business. From VoIP to unified communications, we help you find the perfect solution at the best price."
       icon={Microphone}
       color="var(--color-voice)"
+      textColor="var(--color-voice-text)"
       gradient="from-[var(--color-secondary)] via-blue-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}

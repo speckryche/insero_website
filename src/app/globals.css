@@ -68,10 +68,32 @@
   --color-gray-900: #0d1419;
 
   /* Service Colors */
+  /* DECORATIVE USE ONLY — icon fills, badge backgrounds, borders, glows.
+     None of these four clears AA as small text: against --color-gray-50, the
+     harder of the two backgrounds they sit on, they measure 2.98 / 3.15 / 3.43
+     / 3.04. Anything a user reads takes the -text variant below. */
   --color-voice: #3b82f6;
   --color-internet: #0B9182;
   --color-sdwan: #8b5cf6;
   --color-security: #ef4444;
+
+  /* The same four, dark enough to read. Derived the way --color-accent-cta was:
+     lock the hue in OKLCH, hold chroma at the in-gamut maximum, and lower
+     lightness until the colour clears 4.5:1 against --color-gray-50 (#e2e8ec).
+     Targeting the darker background means white is cleared automatically —
+     each lands at 5.57-5.63 there. Hue is preserved to within a degree, so the
+     four stay as distinguishable from each other as the originals were: the
+     closest pair, voice and sdwan, remain 32.9 deg apart in OKLCH.
+
+                       on #e2e8ec   on #fff
+       voice-text         4.55         5.63
+       internet-text      4.53         5.60
+       sdwan-text         4.51         5.58
+       security-text      4.50         5.57 */
+  --color-voice-text: #1A62D3;
+  --color-internet-text: #007569;
+  --color-sdwan-text: #7946E0;
+  --color-security-text: #CD1A27;
 
   /* ═══════════════════════════════════════════════════════════
      TYPOGRAPHY

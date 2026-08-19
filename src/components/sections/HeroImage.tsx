@@ -24,6 +24,10 @@ export function HeroImage() {
   return (
     <section
       ref={containerRef}
+      /* Photographic hero behind a dark scrim — the header needs the reversed
+         wordmark over it, same as every other dark hero. Only /demo renders
+         this component. */
+      data-dark-hero="true"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Hero Image Background */}

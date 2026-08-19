@@ -31,6 +31,13 @@ interface ServicePageProps {
   description: string;
   icon: ComponentType<IconProps>;
   color: string;
+  /**
+   * The readable variant of `color`. `color` itself is decorative-only — none
+   * of the four service colours clears 4.5:1 as small text on either background
+   * this component uses. Everything a user reads takes this instead; fills,
+   * borders and glows keep `color`.
+   */
+  textColor: string;
   gradient: string;
   features: Feature[];
   benefits: string[];
@@ -47,6 +54,7 @@ export function ServicePage({
   description,
   icon: Icon,
   color,
+  textColor,
   gradient,
   features,
   benefits,
@@ -158,7 +166,7 @@ export function ServicePage({
               animate={featuresInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-              style={{ backgroundColor: `${color}15`, color }}
+              style={{ backgroundColor: `${color}15`, color: textColor }}
             >
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">Our Solutions</span>
@@ -204,7 +212,7 @@ export function ServicePage({
                     <h3 className="relative text-xl lg:text-2xl font-bold text-[var(--color-secondary)] mb-4">
                       {feature.title}
                     </h3>
-                    <p className="relative text-[var(--color-gray-500)] leading-relaxed">
+                    <p className="relative text-[var(--color-gray-600)] leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -353,7 +361,7 @@ export function ServicePage({
       {relatedReading && relatedReading.length > 0 && (
         <section className="py-16 lg:py-24 bg-white">
           <div className="container-custom">
-            <div className="flex items-center gap-2 mb-3" style={{ color }}>
+            <div className="flex items-center gap-2 mb-3" style={{ color: textColor }}>
               <BookOpen weight="fill" className="w-5 h-5" />
               <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
             </div>
@@ -367,16 +375,16 @@ export function ServicePage({
                   href={item.href}
                   className="group bg-[var(--color-gray-50)] rounded-2xl p-6 border border-gray-100 hover:shadow-xl hover:border-transparent transition-all duration-300 flex flex-col"
                 >
-                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color }}>
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: textColor }}>
                     {item.label}
                   </span>
                   <h3 className="font-display font-bold text-lg text-[var(--color-secondary)] mt-2 mb-2 leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-[var(--color-gray-500)] leading-relaxed flex-grow">
+                  <p className="text-sm text-[var(--color-gray-600)] leading-relaxed flex-grow">
                     {item.description}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color }}>
+                  <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold" style={{ color: textColor }}>
                     Read more
                     <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>

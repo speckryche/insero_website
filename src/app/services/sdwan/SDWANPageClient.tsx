@@ -75,6 +75,7 @@ export function SDWANPageClient() {
       description="Never lose connection again. Intelligent network management that keeps your business running no matter what happens to any single connection."
       icon={GitBranch}
       color="var(--color-sdwan)"
+      textColor="var(--color-sdwan-text)"
       gradient="from-[var(--color-secondary)] via-violet-900 to-[var(--color-secondary-dark)]"
       features={features}
       benefits={benefits}

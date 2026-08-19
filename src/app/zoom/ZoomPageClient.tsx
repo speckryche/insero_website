@@ -516,7 +516,7 @@ export function ZoomPageClient() {
                     {cap.stage}
                   </span>
                   <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: MIDNIGHT }}>{cap.name}</h3>
-                  <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{cap.description}</p>
+                  <p className="text-[var(--color-gray-600)] leading-relaxed text-[15px]">{cap.description}</p>
                 </motion.div>
               );
             })}
@@ -541,7 +541,7 @@ export function ZoomPageClient() {
                   </div>
                   <div>
                     <h3 className="text-lg font-display font-bold mb-2" style={{ color: MIDNIGHT }}>{item.name}</h3>
-                    <p className="text-[var(--color-gray-500)] leading-relaxed text-[15px]">{item.description}</p>
+                    <p className="text-[var(--color-gray-600)] leading-relaxed text-[15px]">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -558,7 +558,7 @@ export function ZoomPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: MIDNIGHT }}>
               Everything in the Zoom platform
             </h2>
-            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
+            <p className="text-lg md:text-xl text-[var(--color-gray-600)]">
               The building blocks, in plain terms — so you know what&apos;s standard and what&apos;s a separate
               license.
             </p>
