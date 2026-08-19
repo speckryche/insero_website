@@ -23,7 +23,7 @@ export function FinalCTA() {
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <span className="inline-flex items-center gap-2 text-[#008838] text-sm font-semibold tracking-widest uppercase">
+            <span className="inline-flex items-center gap-2 text-[#005C28] text-sm font-semibold tracking-widest uppercase">
               <span className="w-8 h-px bg-[#008838]" />
               Let&apos;s Talk
               <span className="w-8 h-px bg-[#008838]" />
@@ -47,7 +47,7 @@ export function FinalCTA() {
             initial={{ opacity: 0, y: 16 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xl text-[#64748b] mb-12 max-w-2xl mx-auto leading-relaxed"
+            className="text-xl text-[var(--color-gray-600)] mb-12 max-w-2xl mx-auto leading-relaxed"
           >
             15 minutes. Zero cost. No commitment.
             <br className="hidden sm:block" />
@@ -78,7 +78,7 @@ export function FinalCTA() {
             <a
               href={company.phoneLink}
                 onClick={() => trackContactClick({ method: 'phone' })}
-              className="inline-flex flex-col items-center text-[#64748b] hover:text-[#1e293b] transition-colors"
+              className="inline-flex flex-col items-center text-[var(--color-gray-600)] hover:text-[#1e293b] transition-colors"
             >
               <span className="text-lg md:text-xl">or call us at</span>
               <span className="font-bold text-[#1e293b] text-2xl md:text-3xl mt-1">
@@ -94,7 +94,7 @@ export function FinalCTA() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="mt-20 pt-10 border-t-2 border-[#008838]/30"
           >
-            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[#64748b] font-medium">
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base md:text-lg text-[var(--color-gray-600)] font-medium">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
                 <span>{carrierAccessPhrase} Compared</span>

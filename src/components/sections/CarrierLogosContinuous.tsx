@@ -93,7 +93,7 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
         >
           {/* Eyebrow */}
           <div className="mb-5">
-            <span className="inline-flex items-center gap-3 text-[#008838] text-sm font-semibold tracking-widest uppercase">
+            <span className="inline-flex items-center gap-3 text-[#005C28] text-sm font-semibold tracking-widest uppercase">
               <span className="w-8 h-px bg-[#008838]" />
               Our Partners
               <span className="w-8 h-px bg-[#008838]" />
@@ -176,17 +176,17 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
           <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-6 md:gap-x-16 lg:gap-x-24">
             <div className="text-center">
               <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Top</div>
-              <div className="text-sm md:text-base text-white/80 mt-1">Carrier Partners</div>
+              <div className="text-sm md:text-base text-white mt-1">Carrier Partners</div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
               <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Best Pricing</div>
-              <div className="text-sm md:text-base text-white/80 mt-1">Guaranteed</div>
+              <div className="text-sm md:text-base text-white mt-1">Guaranteed</div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
               <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Zero</div>
-              <div className="text-sm md:text-base text-white/80 mt-1">Carrier Bias</div>
+              <div className="text-sm md:text-base text-white mt-1">Carrier Bias</div>
             </div>
           </div>
         </div>

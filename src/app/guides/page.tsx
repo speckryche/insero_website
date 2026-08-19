@@ -42,7 +42,7 @@ export default function GuidesPage() {
                     <DownloadSimple weight="fill" className="w-7 h-7 text-[#008838]" />
                   </div>
                   <div>
-                    <span className="text-xs font-semibold text-[#008838] uppercase tracking-wider">{guide.category}</span>
+                    <span className="text-xs font-semibold text-[#005C28] uppercase tracking-wider">{guide.category}</span>
                     <h2 className="font-display font-bold text-xl text-[#1e293b] mt-1 mb-2 group-hover:text-[#008838] transition-colors">
                       {guide.title}
                     </h2>

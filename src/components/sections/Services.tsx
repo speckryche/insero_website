@@ -128,7 +128,7 @@ export function Services() {
         >
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#008838] text-[#008838] font-semibold rounded-xl hover:bg-[#008838] hover:text-white transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-[#008838] text-[#005C28] font-semibold rounded-xl hover:bg-[#008838] hover:text-white transition-colors duration-200"
           >
             <span>View All Services</span>
             <ArrowRight weight="bold" className="w-4 h-4" />

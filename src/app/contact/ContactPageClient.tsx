@@ -152,7 +152,7 @@ export function ContactPageClient() {
                     <Phone weight="fill" className="w-5 h-5 text-[#008838] group-hover:text-white transition-colors" />
                   </div>
                   <div>
-                    <div className="text-sm text-[#94a3b8]">Phone</div>
+                    <div className="text-sm text-[var(--color-gray-500)]">Phone</div>
                     <div className="font-semibold text-[#1e293b] group-hover:text-[#008838] transition-colors">
                       {company.phoneFormatted}
                     </div>
@@ -168,7 +168,7 @@ export function ContactPageClient() {
                     <EnvelopeSimple weight="fill" className="w-5 h-5 text-[#008838] group-hover:text-white transition-colors" />
                   </div>
                   <div>
-                    <div className="text-sm text-[#94a3b8]">Email</div>
+                    <div className="text-sm text-[var(--color-gray-500)]">Email</div>
                     <div className="font-semibold text-[#1e293b] group-hover:text-[#008838] transition-colors">
                       {company.email}
                     </div>
@@ -180,7 +180,7 @@ export function ContactPageClient() {
                     <MapPin weight="fill" className="w-5 h-5 text-[#008838]" />
                   </div>
                   <div>
-                    <div className="text-sm text-[#94a3b8]">Location</div>
+                    <div className="text-sm text-[var(--color-gray-500)]">Location</div>
                     <div className="font-semibold text-[#1e293b]">{company.location.full}</div>
                   </div>
                 </div>
@@ -349,7 +349,7 @@ export function ContactPageClient() {
                       )}
                     </button>
 
-                    <p className="text-sm text-[#94a3b8] text-center">
+                    <p className="text-sm text-[var(--color-gray-600)] text-center">
                       By submitting this form, you agree to be contacted about our services.
                       We respect your privacy and will never share your information.
                     </p>

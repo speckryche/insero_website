@@ -453,7 +453,7 @@ export function ZoomPageClient() {
                 Most people know the Zoom brand for video. The fuller picture is Zoom Workplace — a cloud business
                 communications platform that brings phone, meetings, team chat, and a contact center into one
                 place. Zoom Phone is the piece that turns the video tool you already use into a complete{' '}
-                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: BLUE }}>
+                <Link href="/resources/ucaas-explained" className="font-semibold hover:underline" style={{ color: BLUE_HOVER }}>
                   hosted UCaaS
                 </Link>{' '}
                 system: real business calling, one familiar app, no PBX in a closet.
@@ -512,7 +512,7 @@ export function ZoomPageClient() {
                   <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 mb-5" style={{ color: BLUE }}>
                     <Icon weight="fill" className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE }}>
+                  <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: BLUE_HOVER }}>
                     {cap.stage}
                   </span>
                   <h3 className="text-xl font-display font-bold mt-1 mb-3" style={{ color: MIDNIGHT }}>{cap.name}</h3>
@@ -643,7 +643,7 @@ export function ZoomPageClient() {
                   Zoom Meetings. RingCentral&apos;s advantage is the depth of its contact-center and
                   conversation-intelligence stack, though its most powerful AI comes as add-ons. Read our honest
                   take on{' '}
-                  <Link href="/ringcentral" className="font-semibold hover:underline" style={{ color: BLUE }}>
+                  <Link href="/ringcentral" className="font-semibold hover:underline" style={{ color: BLUE_HOVER }}>
                     RingCentral
                   </Link>
                   , and we&apos;ll compare both against your actual needs — no thumb on the scale.
@@ -669,7 +669,7 @@ export function ZoomPageClient() {
 
           {/* Related reading */}
           <motion.div {...fadeUp} className="mt-14">
-            <div className="flex items-center gap-2 mb-5" style={{ color: BLUE }}>
+            <div className="flex items-center gap-2 mb-5" style={{ color: BLUE_HOVER }}>
               <BookOpen weight="fill" className="w-5 h-5" />
               <span className="text-sm font-semibold tracking-widest uppercase">Related Reading</span>
             </div>

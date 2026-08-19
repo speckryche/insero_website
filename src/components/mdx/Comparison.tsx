@@ -35,7 +35,7 @@ export function Comparison({ left, right }: ComparisonProps) {
                   <CheckCircle
                     weight="fill"
                     className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
-                      i === 0 ? 'text-[#94a3b8]' : 'text-[#008838]'
+                      i === 0 ? 'text-[var(--color-gray-500)]' : 'text-[#008838]'
                     }`}
                   />
                   <span>{point}</span>

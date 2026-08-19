@@ -129,7 +129,12 @@ export function PotsCostEstimator() {
         {/* Section 2: Replacement cost */}
         <div className="rounded-2xl overflow-hidden border border-[#008838]/20 shadow-sm">
           <div className="bg-[#008838] px-6 lg:px-8 py-4">
-            <h3 className="font-display font-bold text-white">Replacement Cost Estimate</h3>
+            {/* text-white! with the important modifier, not plain text-white: globals.css
+                sets `h1..h6 { color: var(--color-secondary) }` outside any layer, and
+                unlayered CSS beats @layer utilities no matter the source order. The
+                plain utility was already here and was being silently dropped, which
+                rendered this heading #1a2530 on #008838 -- 3.39:1. */}
+            <h3 className="font-display font-bold text-white!">Replacement Cost Estimate</h3>
           </div>
           <div className="bg-white px-6 lg:px-8 py-5">
             <div className="grid grid-cols-3 gap-4 mb-4">
@@ -205,7 +210,7 @@ export function PotsCostEstimator() {
         </div>
 
         {/* Disclaimer */}
-        <p className="text-xs text-[#94a3b8] text-center max-w-xl mx-auto">
+        <p className="text-xs text-[var(--color-gray-500)] text-center max-w-xl mx-auto">
           Replacement pricing is a conservative estimate based on Insero&apos;s typical pricing for POTS replacement solutions. Actual quotes may vary based on line counts, hardware needs, and compliance requirements. We&apos;ll provide an exact quote on request.
         </p>
       </div>

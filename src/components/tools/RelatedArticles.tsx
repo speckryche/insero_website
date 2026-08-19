@@ -24,14 +24,14 @@ export function RelatedArticles({ heading = 'Related reading', articles }: Relat
             href={article.href}
             className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm hover:shadow-md hover:border-[#008838]/30 transition-all group"
           >
-            <span className="text-xs font-semibold text-[#008838] uppercase tracking-wider">
+            <span className="text-xs font-semibold text-[#005C28] uppercase tracking-wider">
               {article.category}
             </span>
             <h3 className="font-display font-bold text-[#1e293b] mt-2 mb-2 group-hover:text-[#008838] transition-colors text-sm leading-snug">
               {article.title}
             </h3>
             <p className="text-xs text-[#64748b] leading-relaxed">{article.description}</p>
-            <span className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-[#008838]">
+            <span className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold text-[#005C28]">
               Read the guide
               <ArrowRight weight="bold" className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>

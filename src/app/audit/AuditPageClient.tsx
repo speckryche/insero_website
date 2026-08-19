@@ -537,7 +537,7 @@ export function AuditPageClient() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-[#1e293b] mb-6">
               Still have questions?
             </h2>
-            <p className="text-lg text-[#64748b] mb-8">
+            <p className="text-lg text-[var(--color-gray-600)] mb-8">
               We&apos;re happy to chat. Reach out anytime.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">

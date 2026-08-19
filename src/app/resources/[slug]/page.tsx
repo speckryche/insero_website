@@ -99,7 +99,7 @@ export default async function ArticlePage({ params }: PageProps) {
             </Link>
 
             <div className="mb-4">
-              <span className="inline-block px-3 py-1 bg-[#E6F5EC] text-[#008838] text-xs font-semibold rounded-full uppercase tracking-wider">
+              <span className="inline-block px-3 py-1 bg-[#E6F5EC] text-[#005C28] text-xs font-semibold rounded-full uppercase tracking-wider">
                 {frontmatter.category}
               </span>
             </div>
@@ -150,7 +150,7 @@ export default async function ArticlePage({ params }: PageProps) {
                     href={`/resources/${r.frontmatter.slug}`}
                     className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow group"
                   >
-                    <span className="text-xs font-semibold text-[#008838] uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-[#005C28] uppercase tracking-wider">
                       {r.frontmatter.category}
                     </span>
                     <h3 className="font-display font-bold text-[#1e293b] mt-2 mb-2 group-hover:text-[#008838] transition-colors text-sm leading-snug">

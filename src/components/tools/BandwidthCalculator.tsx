@@ -189,7 +189,7 @@ export function BandwidthCalculator() {
                     onChange={() => toggleActivity(act.id)}
                     className="w-5 h-5 rounded border-gray-300 text-[#008838] focus:ring-[#008838] cursor-pointer"
                   />
-                  <Icon weight="fill" className={`w-5 h-5 flex-shrink-0 ${checked ? 'text-[#008838]' : 'text-[#94a3b8]'}`} />
+                  <Icon weight="fill" className={`w-5 h-5 flex-shrink-0 ${checked ? 'text-[#008838]' : 'text-[var(--color-gray-500)]'}`} />
                   <span className="text-sm text-[#1e293b]">{act.label}</span>
                 </label>
               );
@@ -327,7 +327,7 @@ export function BandwidthCalculator() {
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-6 text-xs text-[#94a3b8] text-center max-w-xl mx-auto">
+      <p className="mt-6 text-xs text-[var(--color-gray-500)] text-center max-w-xl mx-auto">
         This is a starting estimate. Actual needs vary based on real-world usage patterns. We can refine this with a quick conversation about your business.
       </p>
     </div>

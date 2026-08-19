@@ -123,7 +123,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
             className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
           >
             {/* Close button */}
-            <button onClick={handleClose} className="absolute top-4 right-4 p-1 text-[#94a3b8] hover:text-[#1e293b] transition-colors">
+            <button onClick={handleClose} className="absolute top-4 right-4 p-1 text-[var(--color-gray-500)] hover:text-[#1e293b] transition-colors">
               <X weight="bold" className="w-5 h-5" />
             </button>
 
@@ -159,7 +159,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                       <span>Download now</span>
                     </span>
                   )}
-                  <p className="text-xs text-[#94a3b8] mt-4">Or download from the link in your email within 7 days.</p>
+                  <p className="text-xs text-[var(--color-gray-500)] mt-4">Or download from the link in your email within 7 days.</p>
                 </div>
               ) : (
                 /* Form */
@@ -203,7 +203,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-[#1e293b] mb-1">Phone <span className="text-[#94a3b8] font-normal">(optional)</span></label>
+                      <label className="block text-xs font-semibold text-[#1e293b] mb-1">Phone <span className="text-[var(--color-gray-500)] font-normal">(optional)</span></label>
                       <input
                         type="tel" value={phone} onChange={e => setPhone(e.target.value)}
                         className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:border-[#008838] focus:outline-none"

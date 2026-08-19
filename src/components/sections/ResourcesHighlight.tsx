@@ -37,7 +37,7 @@ export function ResourcesHighlight() {
     <section className="py-16 lg:py-24 bg-white">
       <div className="container-custom">
         <div className="max-w-2xl mx-auto text-center mb-12">
-          <span className="inline-flex items-center gap-2 text-[#008838] text-sm font-semibold tracking-widest uppercase mb-4">
+          <span className="inline-flex items-center gap-2 text-[#005C28] text-sm font-semibold tracking-widest uppercase mb-4">
             <span className="w-8 h-px bg-[#008838]" />
             Learn
             <span className="w-8 h-px bg-[#008838]" />
@@ -57,14 +57,14 @@ export function ResourcesHighlight() {
               href={article.href}
               className="bg-[#f8fafb] rounded-xl p-6 border border-gray-200 shadow-sm hover:shadow-md hover:border-[#008838]/30 transition-all group"
             >
-              <span className="text-xs font-semibold text-[#008838] uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#005C28] uppercase tracking-wider">
                 {article.category}
               </span>
               <h3 className="font-display font-bold text-[#1e293b] mt-2 mb-2 group-hover:text-[#008838] transition-colors leading-snug">
                 {article.title}
               </h3>
               <p className="text-sm text-[#64748b] leading-relaxed">{article.excerpt}</p>
-              <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-[#008838]">
+              <span className="inline-flex items-center gap-1.5 mt-4 text-sm font-semibold text-[#005C28]">
                 Read the guide
                 <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
