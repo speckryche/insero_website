@@ -46,16 +46,50 @@ export function Hero() {
   const currentWidth = wordWidths[wordIndex] || 0;
 
   return (
-    <section className="relative bg-white pt-32 pb-0 lg:pt-36 lg:pb-0 overflow-hidden min-h-[90vh] flex items-center">
-      {/* Right half — background image */}
-      <div className="absolute top-0 right-0 w-full lg:w-[40%] h-full">
-        <Image
-          src="/hero-image.jpg"
-          alt="Modern office with city skyline view"
-          fill
-          className="object-cover"
-          priority
-        />
+    <section className="relative bg-white pt-32 pb-0 lg:pt-36 lg:pb-0 overflow-hidden min-h-hero flex items-center">
+      {/* Right half — background image. lg and up only.
+          Below lg this container was full-bleed behind every line of hero copy,
+          and the mask over it runs left-to-right, so the right end of each line
+          sat on unmasked photograph. Measured against the darkest pixel behind
+          text — which is pure black — body copy came out at 1.00:1, meaning the
+          text and its background were the same luminance. No scrim value fixes
+          that while leaving the image recognisable, so below lg it does not
+          render at all and the section's own bg-white shows through.
+
+          `hidden lg:block` alone would not have been enough: display:none on an
+          ancestor does not stop the browser fetching an <img>, so a phone would
+          still have paid for a 5879x5057 JPEG it never shows. The <source> below
+          is what actually prevents it — under <picture> the first matching
+          <source> wins outright and the <img>'s own srcset is never consulted,
+          so below lg the browser resolves a 1x1 transparent GIF held inline and
+          makes no request. At lg the media query stops matching, nothing
+          intercepts, and Next's optimised srcset is used exactly as before.
+
+          `priority` is gone with it, leaving Next's default loading="lazy",
+          and that default is load-bearing rather than incidental. It emitted a
+          preload <link>, which is not subject to <picture> rules and would have
+          re-introduced the mobile download outright. loading="eager" was tried
+          as a replacement and reintroduced it too, by a subtler route: eager
+          lets Chrome's preload scanner speculatively fetch srcset candidates
+          during parsing, before <picture> selection has resolved. Measured at
+          390px that was three requests for w=2048, w=1080 and w=828 — discarded
+          once the data URI won, but issued. Under lazy the scanner does not
+          speculate and the count is zero. Do not add eager or fetchPriority
+          here without re-measuring. */}
+      <div className="hidden lg:block absolute top-0 right-0 w-full lg:w-[40%] h-full">
+        <picture>
+          <source
+            media="(max-width: 1023.98px)"
+            srcSet="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          />
+          <Image
+            src="/hero-image.jpg"
+            alt="Modern office with city skyline view"
+            fill
+            sizes="40vw"
+            className="object-cover"
+          />
+        </picture>
         {/* Gradient overlay: fades image into white on the left edge */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent lg:via-white/40" />
         {/* Bottom fade to white for clean transition to next section */}

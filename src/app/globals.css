@@ -391,6 +391,24 @@ h1, h2, h3, h4, h5, h6 {
    UTILITIES
    ═══════════════════════════════════════════════════════════ */
 
+/* Hero height.
+   90vh resolves against the LARGE viewport on iOS Safari — the height with the
+   address bar hidden — so on load, with the bar visible, the hero is taller than
+   the screen and pushes the CTA below the fold. svh is the small viewport, which
+   is what is actually on screen at that moment. Declared as a plain vh rule with
+   an @supports override rather than two Tailwind arbitrary values, because
+   `min-h-[90vh] min-h-[90svh]` resolves by stylesheet order, not by the order the
+   classes appear in the attribute. */
+.min-h-hero {
+  min-height: 90vh;
+}
+
+@supports (min-height: 1svh) {
+  .min-h-hero {
+    min-height: 90svh;
+  }
+}
+
 .container-custom {
   max-width: var(--container-max);
   margin-left: auto;
