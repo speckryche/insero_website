@@ -1831,6 +1831,10 @@ function HeroVideo() {
 
   useEffect(() => {
     const video = videoRef.current;
+    // Null is a normal state, not a failure: below lg the element is never
+    // rendered, and on a failed clip it is gone. Either way no timeupdate can
+    // fire, `segment` stays 0, and backdrop 1 — which is also the poster —
+    // remains the one showing.
     if (!video) return;
     const onTimeUpdate = () => {
       const next = heroSegmentAt(video.currentTime);
@@ -1842,10 +1846,10 @@ function HeroVideo() {
     return () => video.removeEventListener('timeupdate', onTimeUpdate);
   }, []);
 
-  // Every early return has to come after the hooks above, so this sits here
-  // rather than at the top. Returning null takes the backdrops with it — they
-  // are inside this tree, so a failed clip cannot strand an image behind.
-  if (failed) return null;
+  // The card and its backdrops render either way. This used to `return null`
+  // on failure, which emptied the whole right-hand column; keeping the card
+  // means a clip that cannot decode degrades to the still it was already
+  // showing behind itself, rather than to a hole.
   return (
     // 6/5 (1.2:1) rather than 16:9. The clip is 1.109:1, so a 16:9 card left a
     // wide empty margin down both sides that read as dead space; at 1.2 the
@@ -1901,30 +1905,60 @@ function HeroVideo() {
           back to the containing block, stretching the box to the panel's 16:9
           (measured 506x285 instead of 316x285). An explicit ratio holds 776:700
           from first paint, through the poster, and after load. */}
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        // Same URL the first <picture> resolves to on any browser that can
-        // decode either alpha encode, so the poster costs no extra bytes: one
-        // fetch shared with backdrop 1, which is also the one showing at t=0.
-        // Pointing it at a .jpg instead pulled a second copy of the same image.
-        poster="/images/bg_01_receptionist.webp"
-        width={776}
-        height={700}
-        onError={() => setFailed(true)}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[94%] w-auto aspect-[776/700] max-w-full block"
-      >
-        <source src="/video/rc_hero_alpha.webm" type="video/webm" />
-        <source
-          src="/video/rc_hero_alpha.mp4"
-          type='video/mp4; codecs="hvc1"'
+      {/* Desktop only, for two independent reasons.
+
+          Weight: the HEVC encode is 7.0 MB and the VP9 2.1 MB, on a page whose
+          entire non-video payload is about 1.1 MB. `media` on each <source> is
+          what actually prevents the fetch — the resource-selection algorithm
+          skips a source whose media query does not match, so below lg the
+          element ends at NETWORK_NO_SOURCE with an empty currentSrc and never
+          opens a connection. display:none alone would still download.
+
+          Correctness: on iOS Safari the alpha is not applied. The clip's green
+          matte renders as a solid green screen inside a black letterbox — the
+          asset itself is fine, AVFoundation reports ContainsAlphaChannel=1 and
+          decodes 70% of frame one as transparent, so this is a WebKit
+          compositing failure rather than a bad encode. Until that is resolved
+          mobile is better served by the still.
+
+          hidden lg:block on top of the media queries because a <video> with no
+          selected source still paints its poster, and the poster stretched into
+          this 776x700 box would sit over the backdrop at the wrong scale.
+
+          Caveat: `media` is evaluated once, during resource selection. A window
+          resized across 1024px does not swap; a reload at the new width does.
+          That is the accepted trade for never shipping the bytes. */}
+      {!failed && (
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          // Same URL the first <picture> resolves to on any browser that can
+          // decode either alpha encode, so the poster costs no extra bytes: one
+          // fetch shared with backdrop 1, which is also the one showing at t=0.
+          // Pointing it at a .jpg instead pulled a second copy of the same image.
+          poster="/images/bg_01_receptionist.webp"
+          width={776}
+          height={700}
           onError={() => setFailed(true)}
-        />
-      </video>
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[94%] w-auto aspect-[776/700] max-w-full hidden lg:block"
+        >
+          <source
+            media="(min-width: 1024px)"
+            src="/video/rc_hero_alpha.webm"
+            type="video/webm"
+          />
+          <source
+            media="(min-width: 1024px)"
+            src="/video/rc_hero_alpha.mp4"
+            type='video/mp4; codecs="hvc1"'
+            onError={() => setFailed(true)}
+          />
+        </video>
+      )}
     </div>
   );
 }
