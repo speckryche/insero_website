@@ -1824,10 +1824,48 @@ function heroSegmentAt(time: number): number {
   return index;
 }
 
+/**
+ * True when the engine actually composites the alpha channel of a WebM/VP9
+ * clip, rather than decoding it and throwing the alpha away.
+ *
+ * This cannot be asked with canPlayType. Safari answers "probably" for
+ * `video/webm; codecs="vp9"` and then reaches readyState 4 on this very file —
+ * it decodes it fine. Drawing a frame to a canvas is what exposes the problem:
+ * Chrome yields the expected transparency, Safari yields 100% opaque, so the
+ * clip's matte paints as a solid field instead of dropping out. That is the
+ * green screen on iOS and the magenta/olive corruption on desktop Safari — one
+ * bug with two appearances, and it is WebKit's compositor, not the asset.
+ * AVFoundation decodes the same content with 70% of frame one transparent.
+ *
+ * The check is on the engine rather than a decoded probe frame on purpose. A
+ * probe has to load and paint before it can answer, and a browser will not
+ * decode media in a background tab — the answer would come back "no alpha"
+ * for anyone who opened the page in a background tab, costing them the video
+ * for the rest of the session. navigator.vendor is synchronous and cannot
+ * misfire that way: "Apple Computer, Inc." in Safari, "Google Inc." in Chrome,
+ * empty in Firefox. It also correctly captures every iOS browser, since all of
+ * them are WebKit underneath and all of them drop the alpha.
+ *
+ * Revisit if WebKit ships VP9 alpha compositing: this will keep them on the
+ * still until the test is loosened.
+ */
+function useCompositesVideoAlpha(): boolean {
+  // Starts false so the server render and the first client render agree, and —
+  // more importantly — so the <video> is never in the server HTML. A source in
+  // the initial markup starts fetching at parse time, which would put 2.1 MB on
+  // a Safari user's connection before any check could run.
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    setOk(!/apple/i.test(navigator.vendor || ''));
+  }, []);
+  return ok;
+}
+
 function HeroVideo() {
   const [failed, setFailed] = useState(false);
   const [segment, setSegment] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const compositesAlpha = useCompositesVideoAlpha();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -1844,7 +1882,10 @@ function HeroVideo() {
     };
     video.addEventListener('timeupdate', onTimeUpdate);
     return () => video.removeEventListener('timeupdate', onTimeUpdate);
-  }, []);
+    // The element mounts on the client, one render after this component does,
+    // so this has to re-run when that happens or the listener never attaches
+    // and the choreography never advances.
+  }, [compositesAlpha, failed]);
 
   // The card and its backdrops render either way. This used to `return null`
   // on failure, which emptied the whole right-hand column; keeping the card
@@ -1905,30 +1946,26 @@ function HeroVideo() {
           back to the containing block, stretching the box to the panel's 16:9
           (measured 506x285 instead of 316x285). An explicit ratio holds 776:700
           from first paint, through the poster, and after load. */}
-      {/* Desktop only, for two independent reasons.
+      {/* Two gates, and the clip only plays when both open.
 
-          Weight: the HEVC encode is 7.0 MB and the VP9 2.1 MB, on a page whose
-          entire non-video payload is about 1.1 MB. `media` on each <source> is
-          what actually prevents the fetch — the resource-selection algorithm
-          skips a source whose media query does not match, so below lg the
-          element ends at NETWORK_NO_SOURCE with an empty currentSrc and never
-          opens a connection. display:none alone would still download.
+          Engine: WebKit renders this opaque, so it never mounts there at all —
+          see useCompositesVideoAlpha above.
 
-          Correctness: on iOS Safari the alpha is not applied. The clip's green
-          matte renders as a solid green screen inside a black letterbox — the
-          asset itself is fine, AVFoundation reports ContainsAlphaChannel=1 and
-          decodes 70% of frame one as transparent, so this is a WebKit
-          compositing failure rather than a bad encode. Until that is resolved
-          mobile is better served by the still.
+          Width: below lg the still is enough, and the 2.1 MB is not worth
+          spending on a phone. `media` on the <source> is what prevents the
+          fetch, not the display:none beside it — resource selection skips a
+          source whose media query does not match, so the element ends at
+          NETWORK_NO_SOURCE with an empty currentSrc and never opens a
+          connection. display:none alone would still download.
 
-          hidden lg:block on top of the media queries because a <video> with no
-          selected source still paints its poster, and the poster stretched into
-          this 776x700 box would sit over the backdrop at the wrong scale.
+          hidden lg:block on top of that because a <video> with no selected
+          source still paints its poster, and the poster stretched into this
+          776x700 box would sit over the full-bleed backdrop at the wrong scale.
 
           Caveat: `media` is evaluated once, during resource selection. A window
           resized across 1024px does not swap; a reload at the new width does.
           That is the accepted trade for never shipping the bytes. */}
-      {!failed && (
+      {!failed && compositesAlpha && (
         <video
           ref={videoRef}
           autoPlay
@@ -1950,11 +1987,6 @@ function HeroVideo() {
             media="(min-width: 1024px)"
             src="/video/rc_hero_alpha.webm"
             type="video/webm"
-          />
-          <source
-            media="(min-width: 1024px)"
-            src="/video/rc_hero_alpha.mp4"
-            type='video/mp4; codecs="hvc1"'
             onError={() => setFailed(true)}
           />
         </video>
