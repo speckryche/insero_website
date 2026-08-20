@@ -1714,7 +1714,11 @@ function TierMathCard() {
             </ul>
 
             {/* 3 — the setup: what building it up costs. Deliberately quiet. */}
-            <div className="flex justify-between items-baseline gap-4 border-t border-[var(--color-gray-200)] pt-5 text-lg text-[var(--color-gray-600)]">
+            {/* Stacked below sm. The price is whitespace-nowrap and wins the
+                space fight, so on one row the label absorbed every pixel the
+                price did not need — at 375 "Built à la carte" broke after
+                "la", which reads as two fragments rather than one label. */}
+            <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-baseline sm:gap-4 border-t border-[var(--color-gray-200)] pt-5 text-lg text-[var(--color-gray-600)]">
               <span>Built à la carte</span>
               <span className="font-semibold tabular-nums whitespace-nowrap">
                 {formatUsd(comparison.buildUpTotal)}/agent/mo
@@ -1725,7 +1729,12 @@ function TierMathCard() {
                 which is what makes the punchline findable without reading the
                 stack above it. */}
             <div className="rounded-xl p-5" style={{ backgroundColor: 'var(--color-primary-50)' }}>
-              <div className="flex justify-between items-baseline gap-4">
+              {/* Same stack as the à-la-carte row above, and the more visible
+                  case of it: at 390 the name had 107px against a 149px nowrap
+                  price, so "RingCX Professional" split across two lines and the
+                  tier read as two separate items. The chip is the punchline of
+                  the card, so it is the one row that most needs to read whole. */}
+              <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:items-baseline sm:gap-4">
                 <span className="font-display font-semibold text-lg leading-snug" style={{ color: PRIMARY_DARK }}>
                   {ringCx.name} {comparison.targetTier}
                 </span>
