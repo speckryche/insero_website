@@ -18,7 +18,7 @@ const services = [
     description: 'Modern phone systems that scale with your business and reduce costs.',
     features: ['VoIP Solutions', 'Unified Communications', 'Call Analytics'],
     href: '/services/voice',
-    color: '#3b82f6',
+    color: 'var(--color-voice)',
   },
   {
     icon: Globe,
@@ -26,7 +26,7 @@ const services = [
     description: 'Speed and reliability optimized for your specific needs and budget.',
     features: ['Fiber & Broadband', 'Dedicated Internet', 'Multi-carrier Options'],
     href: '/services/internet',
-    color: '#10b981',
+    color: 'var(--color-internet)',
   },
   {
     icon: GitBranch,
@@ -34,7 +34,7 @@ const services = [
     description: 'Never lose connection again with intelligent network management.',
     features: ['Failover Protection', 'Traffic Optimization', 'Multi-site Connectivity'],
     href: '/services/sdwan',
-    color: '#8b5cf6',
+    color: 'var(--color-sdwan)',
   },
   {
     icon: ShieldCheck,
@@ -42,7 +42,7 @@ const services = [
     description: 'Protection without complexity. Enterprise security made accessible.',
     features: ['Firewall Solutions', 'Threat Detection', 'Compliance Support'],
     href: '/services/security',
-    color: '#ef4444',
+    color: 'var(--color-security)',
   },
 ];
 
@@ -84,7 +84,14 @@ export function Services() {
                   <div className="mb-6">
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${service.color}12`, color: service.color }}
+                      style={{
+                        // color-mix, not `${service.color}12`: these are var()
+                        // references now, and a var() with two hex digits stuck on
+                        // the end is invalid CSS that computes to transparent. 7%
+                        // reproduces what the old `12` suffix resolved to.
+                        backgroundColor: `color-mix(in srgb, ${service.color} 7%, transparent)`,
+                        color: service.color,
+                      }}
                     >
                       <service.icon weight="fill" className="w-6 h-6" />
                     </div>

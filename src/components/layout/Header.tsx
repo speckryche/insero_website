@@ -50,14 +50,22 @@ const services = [
     href: '/ringcentral',
     description: 'AI-powered business phone',
     icon: Phone,
-    color: 'var(--color-voice)'
+    // Insero green, not --color-voice. These two are partner products, not
+    // service categories, and the Voice token is a category signal -- it says
+    // "this is the Voice service" everywhere else on the site. Both pages
+    // render in green anyway: /ringcentral in PRIMARY_DARK, /zoom in constants
+    // named BLUE/BLUE_HOVER that resolve to the primary pair.
+    // primary-dark rather than primary because these are 20px marks on white:
+    // 8.20:1 against 4.59:1, the same reasoning as c9a9808.
+    color: 'var(--color-primary-dark)'
   },
   {
     name: 'Zoom',
     href: '/zoom',
     description: 'AI-first business phone',
     icon: Phone,
-    color: 'var(--color-voice)'
+    // See RingCentral above.
+    color: 'var(--color-primary-dark)'
   },
 ];
 
