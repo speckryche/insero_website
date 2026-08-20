@@ -796,6 +796,12 @@ function usePrefersReducedMotion() {
 // alone would never see it). Either one drops to the poster as a static
 // background rather than leaving a dead player.
 
+// lg in this project's Tailwind scale is 1024px, so everything below it is
+// 1023.98px and under. Written out rather than inlined twice because the poster
+// and the clip must agree: if they ever disagreed a phone would show one
+// framing and download the other.
+const HERO_MOBILE_MEDIA = '(max-width: 1023.98px)';
+
 function ZoomHeroMedia() {
   const [failed, setFailed] = useState(false);
   const reduced = usePrefersReducedMotion();
@@ -808,27 +814,72 @@ function ZoomHeroMedia() {
       className="relative w-full aspect-video overflow-hidden rounded-3xl shadow-xl"
       style={{ backgroundColor: TINT }}
     >
-      {showPoster ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
+      {/* The still, always mounted, with the clip laid over it when there is a
+          clip to play. It used to be the <video>'s own `poster`, and it moved
+          out here for one reason: `poster` takes a URL, not a media query, so
+          a phone had no way to avoid the 1920x1080 JPEG that desktop wants.
+          Inside <picture> the same still can be width-selected, and a phone
+          takes a 716x403 WebP at 15 KB instead of 133 KB.
+
+          Desktop is untouched by the move. The <img> fallback is the same
+          zoom_hero_poster.jpg the poster attribute pointed at, so lg and up
+          fetches the identical bytes; only the element holding it changed.
+          Visually it behaves the same either way — the still covers the card
+          until the clip paints over it, which is exactly what a poster does. */}
+      <picture>
+        <source
+          media={HERO_MOBILE_MEDIA}
+          srcSet="/video/zoom_hero_poster_mobile.webp"
+          type="image/webp"
+        />
+        {/* No eslint-disable needed: no-img-element does not fire on an <img>
+            that is the fallback child of a <picture>. */}
         <img
           src="/video/zoom_hero_poster.jpg"
           alt=""
           aria-hidden="true"
+          width={1920}
+          height={1080}
           className="absolute inset-0 w-full h-full object-cover"
         />
-      ) : (
+      </picture>
+
+      {/* Below lg the 1920x1080 master is 5.5x more picture than the 348px box
+          can show, so a phone gets a 716x402 re-encode instead: 337 KB rather
+          than 1,314 KB, same 20s and same 24fps, so the motion is unchanged.
+
+          `media` on the <source> is what stops the desktop file downloading,
+          not any CSS beside it — resource selection skips a source whose query
+          does not match, so those two entries do not exist as far as a phone is
+          concerned. The mobile pair sits first and repeats the desktop pair's
+          mp4-then-webm order, so each width negotiates codecs the same way.
+
+          Caveat, same as /ringcentral: `media` is evaluated once during
+          resource selection. A window dragged across 1024px keeps whichever
+          file it started with; a reload at the new width swaps. That is the
+          accepted trade for never shipping the bytes. */}
+      {!showPoster && (
         <video
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
-          poster="/video/zoom_hero_poster.jpg"
           width={1920}
           height={1080}
           onError={() => setFailed(true)}
           className="absolute inset-0 w-full h-full object-cover"
         >
+          <source
+            media={HERO_MOBILE_MEDIA}
+            src="/video/zoom_hero_loop_mobile.mp4"
+            type="video/mp4"
+          />
+          <source
+            media={HERO_MOBILE_MEDIA}
+            src="/video/zoom_hero_loop_mobile.webm"
+            type="video/webm"
+          />
           <source src="/video/zoom_hero_loop.mp4" type="video/mp4" />
           <source
             src="/video/zoom_hero_loop.webm"
