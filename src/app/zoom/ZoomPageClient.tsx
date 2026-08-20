@@ -817,15 +817,19 @@ function ZoomHeroMedia() {
       {/* The still, always mounted, with the clip laid over it when there is a
           clip to play. It used to be the <video>'s own `poster`, and it moved
           out here for one reason: `poster` takes a URL, not a media query, so
-          a phone had no way to avoid the 1920x1080 JPEG that desktop wants.
-          Inside <picture> the same still can be width-selected, and a phone
-          takes a 716x403 WebP at 15 KB instead of 133 KB.
+          a phone had no way to avoid the full-size still that desktop wants.
+          Inside <picture> the still can be width-selected, and a phone takes a
+          716x403 WebP at 15 KB rather than the 1920x1080 one.
 
-          Desktop is untouched by the move. The <img> fallback is the same
-          zoom_hero_poster.jpg the poster attribute pointed at, so lg and up
-          fetches the identical bytes; only the element holding it changed.
-          Visually it behaves the same either way — the still covers the card
-          until the clip paints over it, which is exactly what a poster does. */}
+          Both entries are WebP now, cut from the same frame at the same q72, so
+          the two widths are the same picture at two sizes and neither is a
+          different-looking still. The 1920x1080 JPEG this replaced was 133 KB
+          against 47 KB here.
+
+          No JPEG fallback beneath them. Every current engine decodes WebP, and
+          this is already how the rest of the site ships stills — the
+          /ringcentral hero, the five segment backdrops and the wordmark are all
+          WebP with nothing behind them. */}
       <picture>
         <source
           media={HERO_MOBILE_MEDIA}
@@ -835,7 +839,7 @@ function ZoomHeroMedia() {
         {/* No eslint-disable needed: no-img-element does not fire on an <img>
             that is the fallback child of a <picture>. */}
         <img
-          src="/video/zoom_hero_poster.jpg"
+          src="/video/zoom_hero_poster.webp"
           alt=""
           aria-hidden="true"
           width={1920}
