@@ -1946,6 +1946,36 @@ function HeroVideo() {
           back to the containing block, stretching the box to the panel's 16:9
           (measured 506x285 instead of 316x285). An explicit ratio holds 776:700
           from first paint, through the poster, and after load. */}
+      {/* The clip's stand-in, and on WebKit and below lg the only thing in this
+          box. It is a frame lifted from the clip with its alpha intact, so it
+          composites against the card gradient the way the video does — still
+          alpha is fine in WebKit, it is only video alpha that is dropped.
+
+          Same 776x700 intrinsics and the same box as the <video> below, so the
+          two are interchangeable and swapping one for the other moves nothing.
+          Sized by height with an explicit ratio for the same reason the video
+          is: w-auto has nothing to resolve against until the bytes arrive, and
+          would otherwise stretch to the card. object-fit is left alone — the
+          frame carries deliberate padding around the subject, content sitting
+          inside (37, 95)-(697, 640), and any cover/crop would eat the alpha
+          margin.
+
+          It renders at every width and hides at lg only when the clip is
+          actually going to play. That ordering matters: the server has no way
+          to know the engine, so it emits the still, and Chrome then lays the
+          video over it and hides it at lg. Because the poster is this same
+          file, nothing changes visually at the moment of the swap. */}
+      <img
+        src="/images/rc_hero_static.webp"
+        alt="RingCX agent dashboard on a laptop, showing an AI contact center view analyzing customer satisfaction."
+        width={776}
+        height={700}
+        fetchPriority="high"
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[94%] w-auto aspect-[776/700] max-w-full${
+          compositesAlpha && !failed ? ' lg:hidden' : ''
+        }`}
+      />
+
       {/* Two gates, and the clip only plays when both open.
 
           Engine: WebKit renders this opaque, so it never mounts there at all —
@@ -1973,11 +2003,12 @@ function HeroVideo() {
           loop
           playsInline
           preload="metadata"
-          // Same URL the first <picture> resolves to on any browser that can
-          // decode either alpha encode, so the poster costs no extra bytes: one
-          // fetch shared with backdrop 1, which is also the one showing at t=0.
-          // Pointing it at a .jpg instead pulled a second copy of the same image.
-          poster="/images/bg_01_receptionist.webp"
+          // The same file the still below uses, so the frame shown before the
+          // clip decodes is the frame the still would have shown, and the two
+          // share one fetch. Backdrop 1 used to serve here, but it is an
+          // out-of-focus background plate — as a poster it put a small
+          // letterboxed blur on top of the full-bleed blur behind it.
+          poster="/images/rc_hero_static.webp"
           width={776}
           height={700}
           onError={() => setFailed(true)}
