@@ -214,7 +214,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                     <label className="flex items-start gap-3 p-3 bg-[#f8fafb] rounded-xl cursor-pointer">
                       <input
                         type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)}
-                        className="w-5 h-5 mt-0.5 rounded border-gray-300 text-[#008838] focus:ring-[#008838] cursor-pointer"
+                        className="w-5 h-5 mt-0.5 shrink-0 rounded border-gray-300 text-[#008838] focus:ring-[#008838] cursor-pointer"
                       />
                       <span className="text-xs text-[#64748b] leading-relaxed">
                         I agree to receive this guide and occasional related emails from Insero. Unsubscribe anytime.

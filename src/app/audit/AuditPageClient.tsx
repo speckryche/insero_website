@@ -456,7 +456,7 @@ export function AuditPageClient() {
                           <input
                             type="radio" value={option}
                             {...register('employeeCount', { required: 'Please select employee count' })}
-                            className="w-4 h-4 text-[#008838] focus:ring-[#008838] cursor-pointer"
+                            className="w-4 h-4 shrink-0 text-[#008838] focus:ring-[#008838] cursor-pointer"
                           />
                           <span className="text-sm text-[#1e293b]">{option}</span>
                         </label>
@@ -477,7 +477,7 @@ export function AuditPageClient() {
                           <input
                             type="radio" value={option}
                             {...register('telecomSpend', { required: 'Please select spend range' })}
-                            className="w-4 h-4 text-[#008838] focus:ring-[#008838] cursor-pointer"
+                            className="w-4 h-4 shrink-0 text-[#008838] focus:ring-[#008838] cursor-pointer"
                           />
                           <span className="text-sm text-[#1e293b]">{option}</span>
                         </label>

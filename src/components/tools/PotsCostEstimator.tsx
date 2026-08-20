@@ -89,7 +89,7 @@ export function PotsCostEstimator() {
           <div className="space-y-2">
             {URGENCY_OPTIONS.map(opt => (
               <label key={opt.id} className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-colors ${urgency === opt.id ? 'border-[#008838] bg-[#E6F5EC]' : 'border-gray-200 hover:border-[#008838]/50'}`}>
-                <input type="radio" name="urgency" checked={urgency === opt.id} onChange={() => setUrgency(opt.id)} className="w-5 h-5 text-[#008838] focus:ring-[#008838] cursor-pointer" />
+                <input type="radio" name="urgency" checked={urgency === opt.id} onChange={() => setUrgency(opt.id)} className="w-5 h-5 shrink-0 text-[#008838] focus:ring-[#008838] cursor-pointer" />
                 <span className="text-sm text-[#1e293b]">{opt.label}</span>
               </label>
             ))}
@@ -109,7 +109,7 @@ export function PotsCostEstimator() {
             </div>
           </div>
           <div className="bg-white px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <div className="text-sm text-[#64748b]">Monthly</div>
                 <div className="text-2xl font-display font-extrabold text-red-600">{fmt(result.curMonthly)}</div>
@@ -137,7 +137,7 @@ export function PotsCostEstimator() {
             <h3 className="font-display font-bold text-white!">Replacement Cost Estimate</h3>
           </div>
           <div className="bg-white px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-3 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
               <div>
                 <div className="text-sm text-[#64748b]">Monthly</div>
                 <div className="text-2xl font-display font-extrabold text-[#008838]">{fmt(result.replMonthly)}</div>

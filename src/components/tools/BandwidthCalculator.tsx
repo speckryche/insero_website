@@ -187,7 +187,7 @@ export function BandwidthCalculator() {
                     checked={checked}
                     disabled={act.always}
                     onChange={() => toggleActivity(act.id)}
-                    className="w-5 h-5 rounded border-gray-300 text-[#008838] focus:ring-[#008838] cursor-pointer"
+                    className="w-5 h-5 shrink-0 rounded border-gray-300 text-[#008838] focus:ring-[#008838] cursor-pointer"
                   />
                   <Icon weight="fill" className={`w-5 h-5 flex-shrink-0 ${checked ? 'text-[#008838]' : 'text-[var(--color-gray-500)]'}`} />
                   <span className="text-sm text-[#1e293b]">{act.label}</span>
@@ -261,7 +261,7 @@ export function BandwidthCalculator() {
                   name="tolerance"
                   checked={tolerance === opt.id}
                   onChange={() => setTolerance(opt.id)}
-                  className="w-5 h-5 text-[#008838] focus:ring-[#008838] cursor-pointer"
+                  className="w-5 h-5 shrink-0 text-[#008838] focus:ring-[#008838] cursor-pointer"
                 />
                 <span className="text-sm text-[#1e293b]">{opt.label}</span>
               </label>
@@ -282,7 +282,15 @@ export function BandwidthCalculator() {
 
         <div className="bg-white px-6 lg:px-8 py-6 space-y-6">
           {/* Speed numbers */}
-          <div className="grid grid-cols-2 gap-6">
+          {/* Stacked below sm rather than shrunk. At 360 the two-up cell is
+              114px and "100 Mbps" needs ~132px at this size, so side-by-side
+              wrapped the download figure to two lines while upload stayed on
+              one and the pair sat at different heights. Dropping the figure a
+              size fixed 390 but still wrapped at 360, and would break again on
+              a wider tier -- "250 Mbps" is the same width and 10 Gbps exists.
+              Full width holds for every tier at every phone width, and keeps
+              the number at the size the payoff deserves. */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <div className="text-sm text-[#64748b] mb-1">Recommended Download</div>
               <div className="text-3xl lg:text-4xl font-display font-extrabold text-[#1e293b]">

@@ -310,7 +310,7 @@ export function ContactPageClient() {
                             <input
                               type="checkbox" value={service} aria-label={service}
                               {...register('services')}
-                              className="w-5 h-5 rounded border-gray-300 text-[#008838] focus:ring-[#008838] focus:ring-offset-0 cursor-pointer"
+                              className="w-5 h-5 shrink-0 rounded border-gray-300 text-[#008838] focus:ring-[#008838] focus:ring-offset-0 cursor-pointer"
                             />
                             <span className="text-sm text-[#1e293b]">{service}</span>
                           </label>
