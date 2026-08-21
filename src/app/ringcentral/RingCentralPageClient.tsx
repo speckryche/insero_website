@@ -462,15 +462,25 @@ export function RingCentralPageClient() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-5" style={{ color: INK }}>
               Why not just go direct?
             </h2>
-            <p className="text-lg md:text-xl text-[var(--color-gray-500)]">
-              A fair question, and the honest answer is short. The providers pay us, not you — there is
-              no markup, no fee, and nothing added to your bill for using Insero. The rates above are 
-              RingCentral&apos;s published rates, the same ones you would be quoted going direct. What we can
-              add is access: we buy through technology services distributors, which surfaces promotions
-              and pricing programs that are not always offered to direct buyers. And because we are not 
-              RingCentral&apos;s sales team, we are free to tell you when something else fits you better —
-              the same approach we bring to every voice project.
-            </p>
+            <div className="space-y-5 text-lg md:text-xl text-[var(--color-gray-500)]">
+              <p>
+                A fair question, and the honest answer is short. The providers pay us, not you — there is
+                no markup, no fee, and nothing added to your bill for using Insero. The rates above are
+                RingCentral&apos;s published rates, the same ones you would be quoted going direct.
+              </p>
+              <p>
+                What we add is everything around those rates. We gather the requirements, run the quote, and
+                handle the service agreement, so none of that lands on your plate. We negotiate the
+                number — using RingCentral&apos;s current promotions, pricing programs that are not always
+                offered to direct buyers, and where it helps, competing quotes from other platforms.
+                And we stay on after signature, through install and for as long as you are a customer,
+                to escalate on your behalf when you need someone in your corner.
+              </p>
+              <p>
+                Because we are not RingCentral&apos;s sales team, we are free to tell you when something else fits you
+                better — the same approach we bring to every voice project.
+              </p>
+            </div>
           </motion.div>
 
           {/* Also formerly tinted cards on a white section — white body, tinted
