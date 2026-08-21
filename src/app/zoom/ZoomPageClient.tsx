@@ -380,7 +380,10 @@ export function ZoomPageClient() {
                   anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
                   pricing on your behalf, structuring the plan mix and contract term around how
                   you&apos;ll actually use the system, and making sure a license you are already
-                  paying for is not bought twice.{' '}
+                  paying for is not bought twice. Phone service is also only as good as the circuit
+                  underneath it. We source that too — the internet, a backup connection, SD-WAN — so
+                  one team owns the whole path instead of two vendors pointing at each other when a
+                  call drops.{' '}
                   <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
                     Tell us what you need
                   </Link>{' '}

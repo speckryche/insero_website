@@ -434,7 +434,9 @@ export function RingCentralPageClient() {
               contract term and plan mix around how you actually use the system, and matching each tier to
               what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
               {ringEx.publishedSeatCap} seats, pricing is quote-based, so a quote is the only way to see
-              your number.{' '}
+              your number. Phone service is also only as good as the circuit underneath it. We source
+              that too — the internet, a backup connection, SD-WAN — so one team owns the whole path
+              instead of two vendors pointing at each other when a call drops.{' '}
               <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
                 Tell us what you need
               </Link>{' '}
