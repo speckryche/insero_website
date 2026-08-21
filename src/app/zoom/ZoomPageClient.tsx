@@ -421,7 +421,9 @@ export function ZoomPageClient() {
                 number — using Zoom&apos;s current promotions and, where it helps, competing
                 quotes from other platforms. We also source through national distributors, which
                 opens pricing programs that are not always offered to direct buyers.
-                And we stay on after signature, through install and for as long as you are a customer,
+              </p>
+              <p>
+                We stay on after signature, through install and for as long as you are a customer,
                 to escalate on your behalf when you need someone in your corner.
               </p>
               <p>
