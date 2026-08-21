@@ -427,21 +427,29 @@ export function RingCentralPageClient() {
             <p className="text-base font-bold mb-3" style={{ color: INK }}>
               How Insero prices this for you
             </p>
-            <p className="text-lg text-[var(--color-gray-600)] leading-relaxed">
-              We publish RingCentral&apos;s list pricing because you should be able to see it before you
-              talk to anyone. Those rates are RingCentral&apos;s to set. What we add is the fit: requesting
-              pricing on your behalf, structuring the
-              contract term and plan mix around how you actually use the system, and matching each tier to
-              what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
-              {ringEx.publishedSeatCap} seats, pricing is quote-based, so a quote is the only way to see
-              your number. Phone service is also only as good as the circuit underneath it. We source
-              that too — the internet, a backup connection, SD-WAN — so one team owns the whole path
-              instead of two vendors pointing at each other when a call drops.{' '}
-              <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
-                Tell us what you need
-              </Link>{' '}
-              and we&apos;ll work out the right configuration with you, then price it.
-            </p>
+            {/* space-y-5 on a wrapper with the type hoisted onto it, which is how
+                every other stacked-paragraph block on this page and on /zoom is
+                built — see "What RingCentral actually is" above. */}
+            <div className="space-y-5 text-lg text-[var(--color-gray-600)] leading-relaxed">
+              <p>
+                We publish RingCentral&apos;s list pricing because you should be able to see it before you
+                talk to anyone. Those rates are RingCentral&apos;s to set. What we add is the fit: requesting
+                pricing on your behalf, structuring the
+                contract term and plan mix around how you actually use the system, and matching each tier to
+                what you&apos;ll use so you&apos;re not licensing the same capability twice. Above{' '}
+                {ringEx.publishedSeatCap} seats, pricing is quote-based, so a quote is the only way to see
+                your number.
+              </p>
+              <p>
+                Phone service is only as good as the circuit underneath it. We source that too — the
+                internet, a backup connection, SD-WAN — sized and configured for what your network and
+                phone system actually need.{' '}
+                <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: PRIMARY_DARK }}>
+                  Tell us what you need
+                </Link>{' '}
+                and we&apos;ll work out the right configuration with you, then price it.
+              </p>
+            </div>
           </motion.div>
         </Container>
       </section>

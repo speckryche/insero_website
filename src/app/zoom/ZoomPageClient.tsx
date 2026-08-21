@@ -375,20 +375,26 @@ export function ZoomPageClient() {
                 <h3 className="text-xl lg:text-2xl font-display font-bold mb-3" style={{ color: MIDNIGHT }}>
                   How Insero prices this for you
                 </h3>
-                <p className="text-[var(--color-gray-600)] leading-relaxed text-lg">
-                  We publish the list pricing because you should be able to see it before you talk to
-                  anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
-                  pricing on your behalf, structuring the plan mix and contract term around how
-                  you&apos;ll actually use the system, and making sure a license you are already
-                  paying for is not bought twice. Phone service is also only as good as the circuit
-                  underneath it. We source that too — the internet, a backup connection, SD-WAN — so
-                  one team owns the whole path instead of two vendors pointing at each other when a
-                  call drops.{' '}
-                  <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
-                    Tell us what you need
-                  </Link>{' '}
-                  and we&apos;ll work out the right configuration with you, then price it.
-                </p>
+                {/* space-y-5 wrapper with the type hoisted, matching the stacked
+                    paragraphs in "What Zoom Workplace actually is" above. */}
+                <div className="space-y-5 text-[var(--color-gray-600)] leading-relaxed text-lg">
+                  <p>
+                    We publish the list pricing because you should be able to see it before you talk to
+                    anyone. Those rates are Zoom&apos;s to set. What we add is the fit: requesting
+                    pricing on your behalf, structuring the plan mix and contract term around how
+                    you&apos;ll actually use the system, and making sure a license you are already
+                    paying for is not bought twice.
+                  </p>
+                  <p>
+                    Phone service is only as good as the circuit underneath it. We source that too — the
+                    internet, a backup connection, SD-WAN — sized and configured for what your network
+                    and phone system actually need.{' '}
+                    <Link href="#get-a-quote" className="font-semibold hover:underline" style={{ color: BLUE_TEXT }}>
+                      Tell us what you need
+                    </Link>{' '}
+                    and we&apos;ll work out the right configuration with you, then price it.
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
