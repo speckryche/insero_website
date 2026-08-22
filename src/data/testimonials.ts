@@ -47,8 +47,10 @@ export interface Testimonial {
    * is what the eye reads as size — nearly two to one apart.
    *
    * So the display heights are tuned to land on roughly equal rendered width
-   * instead: 28px gives Kelley Create 99.6px, 48px gives RPS 93.0px. Recompute
-   * these if a logo file is ever replaced.
+   * instead: 34px gives Kelley Create 120.9px, 62px gives RPS 120.1px. Under a
+   * pixel apart, so the two read as the same visual weight even though one is
+   * nearly twice as tall as the other. Recompute these if a logo file is ever
+   * replaced — matching the height instead would undo the whole point.
    *
    * logoWidth/logoHeight are the file's real pixel dimensions and are passed
    * straight to next/image so the box is reserved at the correct ratio before
@@ -73,7 +75,7 @@ export const testimonials = [
   {
     id: 'scott-anderson',
     quote:
-      'We have over 100 reps across multiple states, and they all go to Insero for internet and redundancy. They find the carrier options, sort out speeds, and negotiate the pricing. It means our people can walk into a client meeting with real answers instead of guesses. Easy to work with, and they actually pick up the phone.',
+      'Insero has been a valuable partner in helping us deliver bandwidth connectivity and cloud voice solutions to our clients. We have over 100 sales reps across multiple states, and they all go to Insero. Speck and his team find the carrier options, sort out speeds, and negotiate the pricing — which means our team stays focused on growing our MSP business instead of chasing carriers. Easy to work with, and they add real value to our customer base.',
     name: 'Scott Anderson',
     title: 'Owner',
     company: 'Kelley Create',
@@ -81,9 +83,10 @@ export const testimonials = [
     logo: '/images/testimonials/kelley-create-logo.png',
     logoWidth: 569,
     logoHeight: 160,
-    logoDisplayHeight: 28,
+    logoDisplayHeight: 34,
     disclosure: 'Kelley Create is a partner of Insero, LLC.',
-    approved: false,
+    approved: true,
+    approvedOn: '2026-08-22',
   },
   {
     id: 'tom-pepple',
@@ -96,8 +99,9 @@ export const testimonials = [
     logo: '/images/testimonials/rps-logo.png',
     logoWidth: 310,
     logoHeight: 160,
-    logoDisplayHeight: 48,
-    approved: false,
+    logoDisplayHeight: 62,
+    approved: true,
+    approvedOn: '2026-08-22',
   },
   {
     id: 'placeholder-3',

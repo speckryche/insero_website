@@ -55,17 +55,15 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
        and it lets the name live in <figcaption>, outside the <blockquote>. A
        screen reader then reads the quote as the quote and the attribution as
        attribution, instead of running the customer's name into their sentence.
-
-       `group` is here for the logo, which desaturates until the card is
-       hovered — group-hover has nothing to hook onto without it. */
-    <figure className="group bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
-      {/* A fixed 48px rail, rendered on every card whether or not there is a
+ */
+    <figure className="bg-white rounded-2xl p-10 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
+      {/* A fixed 64px rail, rendered on every card whether or not there is a
           logo in it. Per-entry display heights mean the marks are deliberately
           different heights, and without a fixed rail each card's quote would
           start at a different y — the logo would be setting the layout instead
           of sitting in it. items-center hangs each mark on the rail's midline;
-          the rail is as tall as the tallest display height in use (48px). */}
-      <div className="h-12 flex items-center mb-6">
+          the rail clears the tallest display height in use (62px). */}
+      <div className="h-16 flex items-center mb-6">
         {logo && (
           /* width/height are the file's real pixel dimensions, so the reserved
              box has the right aspect before the bytes land. The rendered size
@@ -79,7 +77,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             height={logoHeight ?? 32}
             unoptimized={logo.endsWith('.svg')}
             style={{ height: `${logoDisplayHeight ?? 32}px`, width: 'auto' }}
-            className="object-contain grayscale opacity-70 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+            className="object-contain"
           />
         )}
       </div>
@@ -90,7 +88,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           its divider sits higher than its neighbour's — measured at 32px, the
           disclosure line plus its margin. Worth knowing before assuming the
           rule is broken. */}
-      <blockquote className="text-lg leading-relaxed text-[#334155] flex-grow">
+      <blockquote className="text-xl leading-relaxed text-[#334155] flex-grow">
         &ldquo;{quote}&rdquo;
       </blockquote>
 
@@ -100,10 +98,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             <Image
               src={headshot}
               alt=""
-              width={56}
-              height={56}
-              sizes="56px"
-              className="rounded-[10px] object-cover flex-shrink-0"
+              width={72}
+              height={72}
+              sizes="72px"
+              className="rounded-[12px] object-cover flex-shrink-0"
             />
           ) : (
             /* Initials stand in until a headshot is dropped in. aria-hidden
@@ -111,7 +109,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
                be noise. */
             <div
               aria-hidden="true"
-              className="flex-shrink-0 w-14 h-14 rounded-[10px] bg-[#008838]/10 text-[#005C28] font-semibold flex items-center justify-center"
+              className="flex-shrink-0 w-18 h-18 rounded-[12px] bg-[#008838]/10 text-[#005C28] font-semibold text-lg flex items-center justify-center"
             >
               {initialsOf(name)}
             </div>
