@@ -7,6 +7,7 @@ import { HowItWorks } from '@/components/sections/HowItWorks';
 import { WhyInsero } from '@/components/sections/WhyInsero';
 import { CarrierLogosContinuous } from '@/components/sections/CarrierLogosContinuousServer';
 import { ResourcesHighlight } from '@/components/sections/ResourcesHighlight';
+import { Testimonials } from '@/components/sections/Testimonials';
 import { FinalCTA } from '@/components/sections/FinalCTA';
 import { FAQ } from '@/components/sections/FAQ';
 
@@ -158,6 +159,8 @@ export default function HomePage() {
       </div>
 
       <ResourcesHighlight />
+
+      <Testimonials />
 
       <FinalCTA />
     </>
