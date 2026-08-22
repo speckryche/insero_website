@@ -67,9 +67,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             <Image
               src={headshot}
               alt=""
-              width={48}
-              height={48}
-              className="rounded-full object-cover flex-shrink-0"
+              width={56}
+              height={56}
+              sizes="56px"
+              className="rounded-[10px] object-cover flex-shrink-0"
             />
           ) : (
             /* Initials stand in until a headshot is dropped in. aria-hidden
@@ -77,7 +78,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
                be noise. */
             <div
               aria-hidden="true"
-              className="flex-shrink-0 w-12 h-12 rounded-full bg-[#008838]/10 text-[#005C28] font-semibold flex items-center justify-center"
+              className="flex-shrink-0 w-14 h-14 rounded-[10px] bg-[#008838]/10 text-[#005C28] font-semibold flex items-center justify-center"
             >
               {initialsOf(name)}
             </div>
