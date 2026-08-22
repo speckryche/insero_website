@@ -98,13 +98,19 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
       <figcaption className="border-t border-gray-200 pt-5 mt-6">
         <div className="flex items-center gap-4">
           {headshot ? (
+            /* ring-1 ring-inset rather than a border: an inset box-shadow
+               follows the 14px radius exactly, where a border would need the
+               radius recomputed for its own box and can leave the corner
+               looking squared. The two headshots sit on very different
+               backgrounds — one dark, one near-white — and without an edge the
+               pale one dissolves into the card. */
             <Image
               src={headshot}
               alt=""
               width={88}
               height={88}
               sizes="88px"
-              className="rounded-[14px] object-cover flex-shrink-0"
+              className="rounded-[14px] object-cover flex-shrink-0 ring-1 ring-inset ring-black/10"
             />
           ) : (
             /* Initials stand in until a headshot is dropped in. aria-hidden
@@ -112,12 +118,25 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
                be noise. */
             <div
               aria-hidden="true"
-              className="flex-shrink-0 w-22 h-22 rounded-[14px] bg-[#008838]/10 text-[#005C28] font-semibold text-xl flex items-center justify-center"
+              className="flex-shrink-0 w-22 h-22 rounded-[14px] ring-1 ring-inset ring-black/10 bg-[#008838]/10 text-[#005C28] font-semibold text-xl flex items-center justify-center"
             >
               {initialsOf(name)}
             </div>
           )}
-          <div>
+          {/* Capped at the avatar's own height, and clipped.
+
+              The row is a flex row with items-center, so its height is whichever
+              of the two children is taller. Leaving this column free to grow is
+              what let a three-line disclosure push it past the 88px avatar and
+              drag that card's divider 16px out of line with its neighbour —
+              measured, not theorised. max-h-22 is the same 88px the avatar is,
+              so the column can no longer be the taller child whatever goes in
+              it, and the row height stops depending on content length.
+
+              overflow-hidden is the backstop; line-clamp-2 on the disclosure is
+              what makes it degrade in a way somebody notices, since a clamped
+              line ends in an ellipsis rather than just vanishing. */}
+          <div className="max-h-22 overflow-hidden">
             <div className="font-semibold text-[#1e293b]">{name}</div>
             <div className="text-sm text-[#475569]">
               {title}, {company}
@@ -127,15 +146,11 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
                 under the avatar it read as a stray caption belonging to the
                 card instead of to the person.
 
-                Still always rendered, and still reserving its line when empty.
-                That reservation is now belt-and-braces rather than the only
-                thing holding the row: the avatar is 88px and this column comes
-                to roughly 68px with the disclosure in it, so the row is
-                avatar-height either way and the dividers align regardless. It
-                stays because the column would overtake the avatar if a
-                disclosure ever ran to three lines, and because a slot that
-                only sometimes reserves space is the harder thing to reason
-                about later.
+                Still always rendered, and still reserving its line when empty,
+                so an undisclosed card holds the same space as a disclosed one.
+                The column above is capped at the avatar's height and this text
+                is clamped to two lines, so neither the reservation nor a long
+                disclosure can move the row any more.
 
                 mt-2 rather than mt-4: it is part of a tight block now, not a
                 separate element being held away from one.
@@ -143,7 +158,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
                 aria-hidden only when empty — no text node to announce, and an
                 empty div should not read as a blank paragraph. */}
             <div className="mt-2 min-h-4" aria-hidden={disclosure ? undefined : true}>
-              {disclosure && <p className="text-xs text-[#64748b]">{disclosure}</p>}
+              {disclosure && <p className="text-xs text-[#64748b] line-clamp-2">{disclosure}</p>}
             </div>
           </div>
         </div>
