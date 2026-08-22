@@ -103,20 +103,34 @@ export const testimonials = [
     approved: true,
     approvedOn: '2026-08-22',
   },
+  // The two below are placeholders, sized to the length a real testimonial runs
+  // to rather than a one-liner, so the card height and the divider position in
+  // review match what the finished section will do. A two-line stub made the
+  // second row look shorter than it will ever actually be.
+  //
+  // They are also deliberately unequal — one long, one short — because equal
+  // stubs hide whether the equal-height stretching is working.
+  //
+  // approved stays false on both, so they exist for layout review and cannot
+  // reach production. Anything real replaces the whole entry, name and title
+  // included; do not edit the quote and leave "Placeholder Three" attached to
+  // it.
   {
     id: 'placeholder-3',
-    quote: 'Placeholder — awaiting customer quote and written approval.',
-    name: 'Pending',
-    title: 'Pending',
-    company: 'Pending',
+    quote:
+      'This is placeholder text sized to roughly match a real testimonial. It runs about sixty words so the card height and the divider position reflect what an actual quote will produce once the real one lands, rather than collapsing to two lines and making the row look shorter than it will be.',
+    name: 'Placeholder Three',
+    title: 'Operations Director',
+    company: 'Example Company',
     approved: false,
   },
   {
     id: 'placeholder-4',
-    quote: 'Placeholder — awaiting customer quote and written approval.',
-    name: 'Pending',
-    title: 'Pending',
-    company: 'Pending',
+    quote:
+      'A shorter placeholder, closer to the length of the RPS quote, so the grid shows both a long and a short card side by side and any equal-height stretching is visible during review.',
+    name: 'Placeholder Four',
+    title: 'General Manager',
+    company: 'Second Example',
     approved: false,
   },
 ] satisfies readonly Testimonial[];
