@@ -36,6 +36,28 @@ export interface Testimonial {
   headshot?: string;
   /** Path under /images/testimonials/. Omitted entirely when absent. */
   logo?: string;
+  /**
+   * Logo sizing, per entry rather than global, because these marks are not the
+   * same shape: Kelley Create is 569x160 (3.56:1) and RPS is 310x160 (1.94:1).
+   *
+   * Rendering both at one height is the obvious approach and the wrong one. At
+   * a shared 32px the stacked RPS mark reads as roughly half the size of the
+   * wide Kelley Create wordmark and its tagline stops being legible, because
+   * matching height on marks of different aspect leaves their WIDTHS — which
+   * is what the eye reads as size — nearly two to one apart.
+   *
+   * So the display heights are tuned to land on roughly equal rendered width
+   * instead: 28px gives Kelley Create 99.6px, 48px gives RPS 93.0px. Recompute
+   * these if a logo file is ever replaced.
+   *
+   * logoWidth/logoHeight are the file's real pixel dimensions and are passed
+   * straight to next/image so the box is reserved at the correct ratio before
+   * the bytes land.
+   */
+  logoWidth?: number;
+  logoHeight?: number;
+  /** Rendered height in px. Defaults to 32 when absent. */
+  logoDisplayHeight?: number;
   /** Required wherever a financial relationship exists. Renders with the quote. */
   disclosure?: string;
   /** False until written approval is on file. Gates production rendering. */
@@ -57,6 +79,9 @@ export const testimonials = [
     company: 'Kelley Create',
     headshot: '/images/testimonials/scott-anderson.jpg',
     logo: '/images/testimonials/kelley-create-logo.png',
+    logoWidth: 569,
+    logoHeight: 160,
+    logoDisplayHeight: 28,
     disclosure: 'Kelley Create is a partner of Insero, LLC.',
     approved: false,
   },
@@ -69,6 +94,9 @@ export const testimonials = [
     company: 'Retail Profit Systems',
     headshot: '/images/testimonials/tom-pepple.jpg',
     logo: '/images/testimonials/rps-logo.png',
+    logoWidth: 310,
+    logoHeight: 160,
+    logoDisplayHeight: 48,
     approved: false,
   },
   {

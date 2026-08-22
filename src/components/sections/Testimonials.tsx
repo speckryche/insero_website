@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import Image from 'next/image';
 import { testimonials, type Testimonial } from '@/data/testimonials';
 
@@ -15,6 +17,25 @@ import { testimonials, type Testimonial } from '@/data/testimonials';
  * placeholders.
  */
 
+/**
+ * A public path that actually resolves to a file, or undefined.
+ *
+ * Without this a typo in a path renders a broken image: the initials fallback
+ * only fires when the field is absent from the data, and "present but wrong" is
+ * the more likely mistake. Treating a missing file as a missing field collapses
+ * the two cases, so a bad path degrades the same way an empty one does.
+ *
+ * Safe to touch the filesystem here because this is a server component and the
+ * homepage is statically prerendered — the check runs at build, not per
+ * request. If this section is ever moved to a dynamically rendered page, note
+ * that public/ is not guaranteed to exist in a serverless bundle at runtime,
+ * and every asset would then silently fall back.
+ */
+function existingAsset(path?: string): string | undefined {
+  if (!path) return undefined;
+  return existsSync(join(process.cwd(), 'public', path)) ? path : undefined;
+}
+
 /** First letter of the first and last word. One word yields one letter. */
 function initialsOf(name: string): string {
   const words = name.trim().split(/\s+/).filter(Boolean);
@@ -24,7 +45,10 @@ function initialsOf(name: string): string {
 }
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-  const { quote, name, title, company, headshot, logo, disclosure } = testimonial;
+  const { quote, name, title, company, disclosure, logoWidth, logoHeight, logoDisplayHeight } =
+    testimonial;
+  const headshot = existingAsset(testimonial.headshot);
+  const logo = existingAsset(testimonial.logo);
 
   return (
     /* <figure> rather than a bare div: this is a quotation with an attribution,
@@ -35,21 +59,30 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
        `group` is here for the logo, which desaturates until the card is
        hovered — group-hover has nothing to hook onto without it. */
     <figure className="group bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
-      {logo && (
-        /* Sized by height with w-auto, so a wordmark and a square badge both
-           land on the same 32px optical line. width/height here only set the
-           box reserved before the file loads; the real ratio takes over once
-           it does. unoptimized for SVG, matching ui/Logo.tsx — /_next/image
-           answers 400 for SVG unless dangerouslyAllowSVG is set. */
-        <Image
-          src={logo}
-          alt={`${company} logo`}
-          width={160}
-          height={32}
-          unoptimized={logo.endsWith('.svg')}
-          className="h-8 w-auto object-contain grayscale opacity-70 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100 mb-6"
-        />
-      )}
+      {/* A fixed 48px rail, rendered on every card whether or not there is a
+          logo in it. Per-entry display heights mean the marks are deliberately
+          different heights, and without a fixed rail each card's quote would
+          start at a different y — the logo would be setting the layout instead
+          of sitting in it. items-center hangs each mark on the rail's midline;
+          the rail is as tall as the tallest display height in use (48px). */}
+      <div className="h-12 flex items-center mb-6">
+        {logo && (
+          /* width/height are the file's real pixel dimensions, so the reserved
+             box has the right aspect before the bytes land. The rendered size
+             comes from the inline height with width:auto — a class cannot carry
+             a per-entry value. unoptimized for SVG, matching ui/Logo.tsx:
+             /_next/image answers 400 for SVG unless dangerouslyAllowSVG is set. */
+          <Image
+            src={logo}
+            alt={`${company} logo`}
+            width={logoWidth ?? 160}
+            height={logoHeight ?? 32}
+            unoptimized={logo.endsWith('.svg')}
+            style={{ height: `${logoDisplayHeight ?? 32}px`, width: 'auto' }}
+            className="object-contain grayscale opacity-70 transition duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+          />
+        )}
+      </div>
 
       {/* flex-grow so the attribution pins to the bottom of every card
           regardless of quote length. Note this aligns the card *bottoms*, not
@@ -91,7 +124,17 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           </div>
         </div>
 
-        {disclosure && <p className="text-xs text-[#64748b] mt-4">{disclosure}</p>}
+        {/* Always rendered, so the divider above it lands at the same height on
+            every card in a row. Previously this was `disclosure && <p>`, which
+            made a disclosed card's figcaption 32px taller — one text-xs line
+            plus its margin — and since flex-grow aligns card bottoms rather
+            than dividers, the rule on that card sat 32px higher than its
+            neighbour's. min-h-4 reserves exactly that line.
+            aria-hidden only when empty: there is no text node to announce, and
+            an empty div should not read as a blank paragraph. */}
+        <div className="mt-4 min-h-4" aria-hidden={disclosure ? undefined : true}>
+          {disclosure && <p className="text-xs text-[#64748b]">{disclosure}</p>}
+        </div>
       </figcaption>
     </figure>
   );
