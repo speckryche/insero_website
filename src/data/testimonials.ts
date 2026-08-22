@@ -40,17 +40,17 @@ export interface Testimonial {
    * Logo sizing, per entry rather than global, because these marks are not the
    * same shape: Kelley Create is 569x160 (3.56:1) and RPS is 310x160 (1.94:1).
    *
-   * Rendering both at one height is the obvious approach and the wrong one. At
-   * a shared 32px the stacked RPS mark reads as roughly half the size of the
-   * wide Kelley Create wordmark and its tagline stops being legible, because
-   * matching height on marks of different aspect leaves their WIDTHS — which
-   * is what the eye reads as size — nearly two to one apart.
+   * These are matched on optical AREA, which is neither of the two obvious
+   * choices, because Kelley Create is a wide horizontal lockup and RPS is a
+   * stacked mark. Match on height and Kelley runs 220px wide against RPS's
+   * 120px, which reads as one logo shouting. Match on width and Kelley — being
+   * the flatter of the two — looks stunted next to a mark three times its
+   * height. Area is what the eye actually weighs when the shapes differ this
+   * much.
    *
-   * So the display heights are tuned to land on roughly equal rendered width
-   * instead: 34px gives Kelley Create 120.9px, 62px gives RPS 120.1px. Under a
-   * pixel apart, so the two read as the same visual weight even though one is
-   * nearly twice as tall as the other. Recompute these if a logo file is ever
-   * replaced — matching the height instead would undo the whole point.
+   * At 46px and 62px the rendered boxes are 163.6x46 and 120.1x62, so 7,525
+   * against 7,448 square pixels: within about 1%. Recompute if a logo file is
+   * ever replaced, and recompute the area rather than reaching for the height.
    *
    * logoWidth/logoHeight are the file's real pixel dimensions and are passed
    * straight to next/image so the box is reserved at the correct ratio before
@@ -77,13 +77,13 @@ export const testimonials = [
     quote:
       'Insero has been a valuable partner in helping us deliver bandwidth connectivity and cloud voice solutions to our clients. We have over 100 sales reps across multiple states, and they all go to Insero. Speck and his team find the carrier options, sort out speeds, and negotiate the pricing — which means our team stays focused on growing our MSP business instead of chasing carriers. Easy to work with, and they add real value to our customer base.',
     name: 'Scott Anderson',
-    title: 'Owner',
+    title: 'Senior Vice President',
     company: 'Kelley Create',
     headshot: '/images/testimonials/scott-anderson.jpg',
     logo: '/images/testimonials/kelley-create-logo.png',
     logoWidth: 569,
     logoHeight: 160,
-    logoDisplayHeight: 34,
+    logoDisplayHeight: 46,
     disclosure: 'Kelley Create is a partner of Insero, LLC.',
     approved: true,
     approvedOn: '2026-08-22',

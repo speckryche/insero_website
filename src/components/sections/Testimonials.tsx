@@ -61,9 +61,12 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           logo in it. Per-entry display heights mean the marks are deliberately
           different heights, and without a fixed rail each card's quote would
           start at a different y — the logo would be setting the layout instead
-          of sitting in it. items-center hangs each mark on the rail's midline;
-          the rail clears the tallest display height in use (62px). */}
-      <div className="h-16 flex items-center mb-6">
+          of sitting in it. items-center hangs each mark on the rail's midline.
+
+          h-20 rather than h-16: RPS renders 62px tall and a 64px rail left it
+          1px of air per side, which is a clipping incident waiting for the next
+          logo swap. 80px gives both marks room. */}
+      <div className="h-20 flex items-center mb-6">
         {logo && (
           /* width/height are the file's real pixel dimensions, so the reserved
              box has the right aspect before the bytes land. The rendered size
@@ -98,10 +101,10 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             <Image
               src={headshot}
               alt=""
-              width={72}
-              height={72}
-              sizes="72px"
-              className="rounded-[12px] object-cover flex-shrink-0"
+              width={88}
+              height={88}
+              sizes="88px"
+              className="rounded-[14px] object-cover flex-shrink-0"
             />
           ) : (
             /* Initials stand in until a headshot is dropped in. aria-hidden
@@ -109,7 +112,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
                be noise. */
             <div
               aria-hidden="true"
-              className="flex-shrink-0 w-18 h-18 rounded-[12px] bg-[#008838]/10 text-[#005C28] font-semibold text-lg flex items-center justify-center"
+              className="flex-shrink-0 w-22 h-22 rounded-[14px] bg-[#008838]/10 text-[#005C28] font-semibold text-xl flex items-center justify-center"
             >
               {initialsOf(name)}
             </div>
@@ -178,7 +181,13 @@ export function Testimonials() {
             is the default and it is deliberate: no col-span on the last child,
             and nothing centring the final row. A quote stretched to twice the
             width of its neighbours reads as the important one. */}
-        <div className="grid gap-6 md:grid-cols-2 items-stretch max-w-5xl mx-auto">
+        {/* No max-width. The grid fills .container-custom, which is exactly how
+            the green stats panel in WhyInsero gets its width — a plain child of
+            container-custom with nothing constraining it. Measured at 1280:
+            both span 1222px from x=24 to x=1246. Matching the mechanism rather
+            than the number means the two stay locked together if
+            --container-max or --container-padding is ever retuned. */}
+        <div className="grid gap-6 md:grid-cols-2 items-stretch">
           {visible.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
