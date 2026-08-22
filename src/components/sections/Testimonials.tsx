@@ -122,19 +122,30 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             <div className="text-sm text-[#475569]">
               {title}, {company}
             </div>
-          </div>
-        </div>
+            {/* Inside the text column, not below the row, so it lines up with
+                the name rather than with the card's left padding — sitting
+                under the avatar it read as a stray caption belonging to the
+                card instead of to the person.
 
-        {/* Always rendered, so the divider above it lands at the same height on
-            every card in a row. Previously this was `disclosure && <p>`, which
-            made a disclosed card's figcaption 32px taller — one text-xs line
-            plus its margin — and since flex-grow aligns card bottoms rather
-            than dividers, the rule on that card sat 32px higher than its
-            neighbour's. min-h-4 reserves exactly that line.
-            aria-hidden only when empty: there is no text node to announce, and
-            an empty div should not read as a blank paragraph. */}
-        <div className="mt-4 min-h-4" aria-hidden={disclosure ? undefined : true}>
-          {disclosure && <p className="text-xs text-[#64748b]">{disclosure}</p>}
+                Still always rendered, and still reserving its line when empty.
+                That reservation is now belt-and-braces rather than the only
+                thing holding the row: the avatar is 88px and this column comes
+                to roughly 68px with the disclosure in it, so the row is
+                avatar-height either way and the dividers align regardless. It
+                stays because the column would overtake the avatar if a
+                disclosure ever ran to three lines, and because a slot that
+                only sometimes reserves space is the harder thing to reason
+                about later.
+
+                mt-2 rather than mt-4: it is part of a tight block now, not a
+                separate element being held away from one.
+
+                aria-hidden only when empty — no text node to announce, and an
+                empty div should not read as a blank paragraph. */}
+            <div className="mt-2 min-h-4" aria-hidden={disclosure ? undefined : true}>
+              {disclosure && <p className="text-xs text-[#64748b]">{disclosure}</p>}
+            </div>
+          </div>
         </div>
       </figcaption>
     </figure>
