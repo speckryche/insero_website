@@ -45,7 +45,7 @@ function initialsOf(name: string): string {
 }
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-  const { quote, name, title, company, disclosure, logoWidth, logoHeight, logoDisplayHeight } =
+  const { quote, name, title, company, relationshipNote, logoWidth, logoHeight, logoDisplayHeight } =
     testimonial;
   const headshot = existingAsset(testimonial.headshot);
   const logo = existingAsset(testimonial.logo);
@@ -87,10 +87,8 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 
       {/* flex-grow so the attribution pins to the bottom of every card
           regardless of quote length. Note this aligns the card *bottoms*, not
-          the dividers: a card carrying a disclosure has a taller figcaption, so
-          its divider sits higher than its neighbour's — measured at 32px, the
-          disclosure line plus its margin. Worth knowing before assuming the
-          rule is broken. */}
+          the dividers — those stay level because every attribution column
+          reserves the same space, not because of anything happening here. */}
       <blockquote className="text-xl leading-relaxed text-[#334155] flex-grow">
         &ldquo;{quote}&rdquo;
       </blockquote>
@@ -123,42 +121,47 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
               {initialsOf(name)}
             </div>
           )}
-          {/* Capped at the avatar's own height, and clipped.
+          {/* Capped at the avatar's 88px from md up, where cards sit beside each
+              other and the row height has to be identical across the pair. The
+              cap is lifted below md: there the grid is one column, every card is
+              its own row, and there is nothing to align against — so a note that
+              wraps on a narrow screen should be allowed to, rather than being
+              clipped to protect an alignment that does not exist.
 
-              The row is a flex row with items-center, so its height is whichever
-              of the two children is taller. Leaving this column free to grow is
-              what let a three-line disclosure push it past the 88px avatar and
-              drag that card's divider 16px out of line with its neighbour —
-              measured, not theorised. max-h-22 is the same 88px the avatar is,
-              so the column can no longer be the taller child whatever goes in
-              it, and the row height stops depending on content length.
-
-              overflow-hidden is the backstop; line-clamp-2 on the disclosure is
-              what makes it degrade in a way somebody notices, since a clamped
-              line ends in an ellipsis rather than just vanishing. */}
-          <div className="max-h-22 overflow-hidden">
+              overflow-hidden is the backstop and line-clamp-2 is what makes any
+              overflow visible, since a clamped line ends in an ellipsis rather
+              than silently vanishing. */}
+          <div className="md:max-h-22 md:overflow-hidden">
             <div className="font-semibold text-[#1e293b]">{name}</div>
             <div className="text-sm text-[#475569]">
               {title}, {company}
             </div>
-            {/* Inside the text column, not below the row, so it lines up with
-                the name rather than with the card's left padding — sitting
-                under the avatar it read as a stray caption belonging to the
-                card instead of to the person.
+            {/* The relationship line, in the attribution itself rather than in
+                small print underneath it. Same 14px and same #475569 as the
+                title line above — a note about who is connected to whom is not
+                worth stating if it is set smaller and fainter than everything
+                around it.
 
-                Still always rendered, and still reserving its line when empty,
-                so an undisclosed card holds the same space as a disclosed one.
-                The column above is capped at the avatar's height and this text
-                is clamped to two lines, so neither the reservation nor a long
-                disclosure can move the row any more.
-
-                mt-2 rather than mt-4: it is part of a tight block now, not a
-                separate element being held away from one.
+                Always rendered, reserving one line when empty, so a card with a
+                note and a card without still produce the same column height and
+                the dividers stay level across a row.
 
                 aria-hidden only when empty — no text node to announce, and an
                 empty div should not read as a blank paragraph. */}
-            <div className="mt-2 min-h-4" aria-hidden={disclosure ? undefined : true}>
-              {disclosure && <p className="text-xs text-[#64748b] line-clamp-2">{disclosure}</p>}
+            <div className="mt-2 min-h-5" aria-hidden={relationshipNote ? undefined : true}>
+              {relationshipNote && (
+                /* Unclamped below md and clamped from md up, mirroring the
+                   max-height above it. At 375 the column is 133px wide and this
+                   note wants three lines; clamping it there truncated a
+                   relationship disclosure mid-sentence on every phone, which is
+                   the one place it must not be abbreviated. Below md nothing
+                   needs aligning, so it simply wraps. From md up it fits on one
+                   line — measured — and the clamp is the guard that pairs with
+                   the cap if a longer note is ever written. */
+                <p className="text-sm text-[#475569] line-clamp-none md:line-clamp-2">
+                  {relationshipNote}
+                </p>
+              )}
             </div>
           </div>
         </div>

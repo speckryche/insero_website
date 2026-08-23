@@ -20,9 +20,11 @@
 //    the quote was given and not the date it was added here.
 //  - No star ratings. No savings percentages. No outcome figures of any kind,
 //    unless the customer stated them and they are independently verifiable.
-//  - If a customer has a financial relationship with Insero, `disclosure` is
-//    required and renders next to the quote. It is not a footnote and it does
-//    not live at the bottom of the section.
+//  - If a customer's company has a relationship with Insero, `relationshipNote`
+//    is required. It renders as its own line in the attribution, at the same
+//    size and colour as the title line — not as small print, not behind a
+//    hover, not as a link to somewhere else. Write it so it stands on its own
+//    without the line above it.
 //  - Update `testimonialsLastVerified` in the same edit as any change here.
 
 export interface Testimonial {
@@ -63,8 +65,15 @@ export interface Testimonial {
   logoHeight?: number;
   /** Rendered height in px. Defaults to 32 when absent. */
   logoDisplayHeight?: number;
-  /** Required wherever a financial relationship exists. Renders with the quote. */
-  disclosure?: string;
+  /**
+   * A relationship between the customer's company and Insero, stated in the
+   * attribution rather than in small print. Unset renders nothing.
+   *
+   * Deliberately self-contained — "Kelley Create — an Insero partner company"
+   * rather than "an Insero partner company" — so it reads correctly on its own
+   * and does not depend on the line above it to make sense.
+   */
+  relationshipNote?: string;
   /** False until written approval is on file. Gates production rendering. */
   approved: boolean;
   /** Date the written approval was received. */
@@ -87,7 +96,7 @@ export const testimonials = [
     logoWidth: 569,
     logoHeight: 160,
     logoDisplayHeight: 46,
-    disclosure: 'Kelley Create is a partner of Insero, LLC.',
+    relationshipNote: 'Kelley Create — an Insero partner company',
     approved: true,
     approvedOn: '2026-08-22',
   },
