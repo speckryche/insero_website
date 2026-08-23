@@ -48,9 +48,12 @@ export interface Testimonial {
    * height. Area is what the eye actually weighs when the shapes differ this
    * much.
    *
-   * At 46px and 62px the rendered boxes are 163.6x46 and 120.1x62, so 7,525
-   * against 7,448 square pixels: within about 1%. Recompute if a logo file is
-   * ever replaced, and recompute the area rather than reaching for the height.
+   * At 46px and 60px the rendered boxes are 163.6x46 and 124.4x60, so 7,525
+   * against 7,463 square pixels: 0.83% apart. Recompute if a logo file is ever
+   * replaced, and recompute the AREA rather than reaching for the height — the
+   * RPS file was swapped for a 398x192 version and holding its old 62px would
+   * have put it 5.9% over Kelley Create instead. Solve it: the height that
+   * equalises area is sqrt(kelleyArea / newAspect), here 60.25.
    *
    * logoWidth/logoHeight are the file's real pixel dimensions and are passed
    * straight to next/image so the box is reserved at the correct ratio before
@@ -97,9 +100,9 @@ export const testimonials = [
     company: 'Retail Profit Systems',
     headshot: '/images/testimonials/tom-pepple.jpg',
     logo: '/images/testimonials/rps-logo.png',
-    logoWidth: 310,
-    logoHeight: 160,
-    logoDisplayHeight: 62,
+    logoWidth: 398,
+    logoHeight: 192,
+    logoDisplayHeight: 60,
     approved: true,
     approvedOn: '2026-08-22',
   },
