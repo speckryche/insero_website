@@ -81,7 +81,7 @@ export interface Testimonial {
 }
 
 /** When the entries below were last reviewed against their approvals. */
-export const testimonialsLastVerified = '2026-08-22';
+export const testimonialsLastVerified = '2026-08-23';
 
 export const testimonials = [
   {
@@ -103,7 +103,7 @@ export const testimonials = [
   {
     id: 'tom-pepple',
     quote:
-      "We needed a phone system that integrated with our CRM, and I didn't have time to figure out which providers could actually do it. Insero did the legwork and came back with Nextiva — the integration works the way we needed it to. They set up our fiber internet at the same time. It cost us nothing to use them, which I still find surprising.",
+      "We needed a phone system that integrated with our CRM, and I didn't have time to figure out which providers could actually do it. Insero did the legwork and came back with Nextiva — the integration works the way we needed it to. They set up our fiber internet at the same time. It cost us nothing for Insero to do that work, which I still find surprising.",
     name: 'Tom Pepple',
     title: 'Owner',
     company: 'Retail Profit Systems',
@@ -113,7 +113,7 @@ export const testimonials = [
     logoHeight: 192,
     logoDisplayHeight: 60,
     approved: true,
-    approvedOn: '2026-08-22',
+    approvedOn: '2026-08-23',
   },
   // The two below are placeholders, sized to the length a real testimonial runs
   // to rather than a one-liner, so the card height and the divider position in
