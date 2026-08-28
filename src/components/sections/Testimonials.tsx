@@ -57,16 +57,19 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
        attribution, instead of running the customer's name into their sentence.
  */
     <figure className="bg-white rounded-2xl p-10 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col">
-      {/* A fixed 64px rail, rendered on every card whether or not there is a
-          logo in it. Per-entry display heights mean the marks are deliberately
+      {/* A fixed rail, rendered on every card whether or not there is a logo in
+          it. Per-entry display heights mean the marks are deliberately
           different heights, and without a fixed rail each card's quote would
           start at a different y — the logo would be setting the layout instead
           of sitting in it. items-center hangs each mark on the rail's midline.
 
-          h-20 rather than h-16: RPS renders 62px tall and a 64px rail left it
-          1px of air per side, which is a clipping incident waiting for the next
-          logo swap. 80px gives both marks room. */}
-      <div className="h-20 flex items-center mb-6">
+          h-24 (96px), sized off the tallest mark rather than the average. The
+          rail went 64 -> 80 when RPS came in at 62px and had 1px of air per
+          side; Coming Attractions renders 80px, which filled an 80px rail
+          exactly and left none. 96px puts 8px per side under the tallest of the
+          three and keeps the other two comfortably clear. Raise it again if a
+          logoDisplayHeight ever exceeds 80. */}
+      <div className="h-24 flex items-center mb-6">
         {logo && (
           /* width/height are the file's real pixel dimensions, so the reserved
              box has the right aspect before the bytes land. The rendered size
