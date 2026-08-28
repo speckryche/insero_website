@@ -108,7 +108,7 @@ export const testimonials = [
   {
     id: 'tom-pepple',
     quote:
-      "We needed a phone system that integrated with our CRM, and I didn't have time to figure out which providers could actually do it. Insero did the legwork and came back with Nextiva — the integration works the way we needed it to. They set up our fiber internet at the same time. It cost us nothing for Insero to do that work, which I still find surprising.",
+      'We needed a phone system that integrated with our CRM, and I didn’t have time to figure out which providers could actually do it. Insero did the legwork and came back with Nextiva — the integration works the way we needed it to. They set up our fiber internet at the same time. It cost us nothing for Insero to do that work, which I still find surprising.',
     name: 'Tom Pepple',
     title: 'Owner',
     company: 'Retail Profit Systems',
