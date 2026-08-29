@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // keeps its own suffix.
   title: { absolute: 'Business Internet: Compare Fiber, DIA & Broadband' },
   description:
-    `Compare business internet providers across fiber, DIA, broadband, and 5G. Compare pricing from ${carrierAccessPhrase} — free consultation.`,
+    `Compare business internet providers across fiber, DIA, broadband, and 5G. See pricing from ${carrierAccessPhrase} — free consultation.`,
   keywords: [
     'business internet provider comparison',
     'dedicated internet access for business',
