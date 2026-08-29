@@ -34,7 +34,7 @@ const steps = [
     title: 'Save Money',
     description:
       'Implement the best solution for your business. Pay nothing for our expert guidance.',
-    details: ['Zero consulting fees', 'Ongoing support', 'Guaranteed savings']
+    details: ['Zero consulting fees', 'Ongoing support', 'No cost to you, ever']
   },
 ];
 

@@ -180,8 +180,8 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
             </div>
             <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
-              <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Best Pricing</div>
-              <div className="text-sm md:text-base text-white mt-1">Guaranteed</div>
+              <div className="text-xl md:text-3xl lg:text-4xl font-display font-extrabold text-white">Multi-Carrier</div>
+              <div className="text-sm md:text-base text-white mt-1">Comparison</div>
             </div>
             <div className="hidden sm:block w-px h-12 bg-white/30" />
             <div className="text-center">
