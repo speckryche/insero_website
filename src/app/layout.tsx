@@ -125,7 +125,7 @@ const organizationSchema = {
   },
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Jacksonville',
+    addressLocality: 'Medford',
     addressRegion: 'OR',
     addressCountry: 'US',
   },

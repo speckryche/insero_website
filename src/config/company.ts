@@ -8,9 +8,9 @@ export const company = {
   email: 'sales@insero.cloud',
   emailLink: 'mailto:sales@insero.cloud',
   location: {
-    city: 'Jacksonville',
+    city: 'Medford',
     state: 'OR',
-    full: 'Jacksonville, OR',
+    full: 'Medford, OR',
   },
   // Social media links - add when ready
   social: {
