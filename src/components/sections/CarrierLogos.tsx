@@ -218,9 +218,9 @@ export function CarrierLogosClient({ logos }: CarrierLogosClientProps) {
             <div className="hidden sm:block w-px h-10 bg-white/20" />
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-display font-bold text-white">
-                Best Fit
+                Multi-Carrier
               </div>
-              <div className="text-sm text-white/50 mt-1">Guaranteed</div>
+              <div className="text-sm text-white/50 mt-1">Comparison</div>
             </div>
           </div>
         </motion.div>
