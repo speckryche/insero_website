@@ -2,12 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { renderToBuffer } from '@react-pdf/renderer';
 import React from 'react';
 import { PotsReplacementPlaybook } from '@/lib/lead-magnets/pots-replacement-playbook';
+import { PotsReplacementOnePager } from '@/lib/lead-magnets/pots-replacement-one-pager';
 import { validateToken } from '@/lib/lead-magnets/token';
 
 const GUIDES: Record<string, { title: string; component: () => React.ReactElement }> = {
   'pots-replacement-playbook': {
     title: 'The POTS Replacement Playbook',
     component: () => React.createElement(PotsReplacementPlaybook),
+  },
+  'pots-replacement-one-pager': {
+    title: 'POTS Replacement: One-Page Summary',
+    component: () => React.createElement(PotsReplacementOnePager),
   },
 };
 
