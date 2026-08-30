@@ -26,7 +26,7 @@ export function PlaybookPromo() {
       <DownloadModal
         isOpen={open}
         onClose={() => setOpen(false)}
-        guideSlug="pots-replacement-playbook"
+        guideSlug="pots-replacement-field-guide"
         guideTitle="The POTS Replacement Playbook"
         guideDescription="A step-by-step guide for replacing your POTS lines — inventory, compliance, pricing, and execution."
       />

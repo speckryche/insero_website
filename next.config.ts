@@ -3,6 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   transpilePackages: ['next-mdx-remote'],
   trailingSlash: false,
+  // Gated lead-magnet PDFs live outside public/ so they cannot be fetched
+  // directly, and the route reads them via a process.cwd() path that
+  // @vercel/nft cannot trace. Without this they are absent from the
+  // serverless bundle and every download 500s in production while working
+  // fine locally. See src/app/api/lead-magnets/[slug]/route.ts.
+  outputFileTracingIncludes: {
+    '/api/lead-magnets/[slug]': ['./src/assets/collateral/**'],
+  },
   async headers() {
     return [
       {

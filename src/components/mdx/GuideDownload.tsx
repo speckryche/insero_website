@@ -5,7 +5,7 @@ import { DownloadSimple } from '@phosphor-icons/react';
 import { DownloadModal } from '@/components/lead-magnets/DownloadModal';
 
 const GUIDES: Record<string, { title: string; description: string }> = {
-  'pots-replacement-playbook': {
+  'pots-replacement-field-guide': {
     title: 'The POTS Replacement Playbook',
     description: 'A step-by-step guide covering inventory, prioritization, compliance, pricing, and execution for replacing your POTS lines.',
   },

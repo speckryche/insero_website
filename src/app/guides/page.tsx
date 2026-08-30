@@ -6,7 +6,7 @@ import { DownloadModal } from '@/components/lead-magnets/DownloadModal';
 
 const guides = [
   {
-    slug: 'pots-replacement-playbook',
+    slug: 'pots-replacement-field-guide',
     title: 'The POTS Replacement Playbook',
     description: 'A step-by-step guide for businesses still on copper phone lines. Covers inventory, prioritization, compliance requirements, pricing, and execution — everything you need to plan your POTS migration.',
     category: 'POTS Replacement',
