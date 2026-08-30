@@ -235,7 +235,7 @@ export function DownloadModal({ isOpen, onClose, guideSlug, guideTitle, guideDes
                     >
                       {submitting ? 'Sending...' : (
                         <>
-                          <span>Get the Playbook</span>
+                          <span>Get the Field Guide</span>
                           <ArrowRight weight="bold" className="w-4 h-4" />
                         </>
                       )}

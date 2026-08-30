@@ -9,8 +9,8 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 
 const GUIDE_META: Record<string, { title: string; subject: string }> = {
   'pots-replacement-field-guide': {
-    title: 'The POTS Replacement Playbook',
-    subject: 'Your POTS Replacement Playbook',
+    title: 'The POTS Replacement Field Guide',
+    subject: 'Your POTS Replacement Field Guide',
   },
 };
 
@@ -107,7 +107,7 @@ export async function submitLeadMagnetDownload(data: LeadMagnetFormData): Promis
             <p>Hi ${firstName},</p>
             <p>Thanks for downloading <strong>${guide.title}</strong>. Here's your link:</p>
             <p style="margin: 24px 0;">
-              <a href="${downloadUrl}" style="display: inline-block; padding: 12px 24px; background-color: #008838; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600;">Download Your Playbook</a>
+              <a href="${downloadUrl}" style="display: inline-block; padding: 12px 24px; background-color: #008838; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 600;">Download Your Field Guide</a>
             </p>
             <p>This link expires in 7 days. If you need it again, just reply to this email.</p>
             <hr style="border: none; border-top: 1px solid #e2e8ec; margin: 24px 0;" />

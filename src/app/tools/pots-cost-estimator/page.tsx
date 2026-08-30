@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { PotsCostEstimator } from '@/components/tools/PotsCostEstimator';
-import { PlaybookPromo } from '@/components/lead-magnets/PlaybookPromo';
+import { FieldGuidePromo } from '@/components/lead-magnets/FieldGuidePromo';
 import { RelatedArticles } from '@/components/tools/RelatedArticles';
 
 export const metadata: Metadata = {
@@ -60,7 +60,7 @@ export default function PotsCostEstimatorPage() {
       <section className="pb-20 bg-white">
         <div className="container-custom">
           <PotsCostEstimator />
-          <PlaybookPromo />
+          <FieldGuidePromo />
           <RelatedArticles
             articles={[
               {

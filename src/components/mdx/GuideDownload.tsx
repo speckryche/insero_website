@@ -6,7 +6,7 @@ import { DownloadModal } from '@/components/lead-magnets/DownloadModal';
 
 const GUIDES: Record<string, { title: string; description: string }> = {
   'pots-replacement-field-guide': {
-    title: 'The POTS Replacement Playbook',
+    title: 'The POTS Replacement Field Guide',
     description: 'A step-by-step guide covering inventory, prioritization, compliance, pricing, and execution for replacing your POTS lines.',
   },
 };
@@ -24,14 +24,14 @@ export function GuideDownload({ guide }: { guide: string }) {
             <DownloadSimple weight="bold" className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h4 className="font-display font-bold text-[#1e293b] text-lg mb-1">Want this as a downloadable playbook?</h4>
-            <p className="text-sm text-[#475569] mb-3">Get the full POTS Replacement Playbook as a PDF — inventory templates, compliance checklists, and pricing guides included.</p>
+            <h4 className="font-display font-bold text-[#1e293b] text-lg mb-1">Want this as a downloadable field guide?</h4>
+            <p className="text-sm text-[#475569] mb-3">Get the full POTS Replacement Field Guide as a PDF — inventory templates, compliance checklists, and pricing guides included.</p>
             <button
               onClick={() => setOpen(true)}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#008838] text-white font-semibold text-sm rounded-xl hover:bg-[#005C28] transition-colors"
             >
               <DownloadSimple weight="bold" className="w-4 h-4" />
-              Download Free Playbook
+              Download Free Field Guide
             </button>
           </div>
         </div>
