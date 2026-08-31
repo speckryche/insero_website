@@ -60,7 +60,7 @@ const PANE_SRCS = [
  * GAP_TO_PANE further from the pane than from the viewport edge, which is
  * exactly the left-heavy look this replaces.
  */
-const GAP_TO_PANE = 48;
+const GAP_TO_PANE = 44;
 
 /** Floor for the gap between the viewport's left edge and the type column. */
 const MIN_EDGE_GAP = 32;
