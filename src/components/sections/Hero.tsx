@@ -442,7 +442,7 @@ export function Hero() {
             mobile layout is untouched. The var falls back to fit-content for the
             pre-hydration frame, before the measurement has run. */}
         <div
-          className="lg:w-[var(--hero-col)] lg:text-center"
+          className="text-center lg:w-[var(--hero-col)] lg:text-center"
           style={{ '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content' } as React.CSSProperties}
         >
           {/* Hidden measurement container — same type classes as the h1 */}
@@ -488,7 +488,13 @@ export function Hero() {
                 marginLeft: '0.22em',
                 marginRight: '0.18em',
               }}
-            />{' '}
+            />
+            {/* The h1's forced break, mirrored. Without it this clone measures
+                one unbroken line at every width — right at lg, but far too wide
+                below sm where the headline is actually two lines, which is the
+                width the mobile block is centred on. `sm:hidden` means lg is
+                measured exactly as before. */}
+            <br aria-hidden="true" className="sm:hidden" />{' '}
             Sourcing Experts
           </span>
 
@@ -502,7 +508,19 @@ export function Hero() {
                inline-block inside a text-center column it would re-centre itself
                every time the accordion collapsed, and "Sourcing Experts" would
                breathe inward instead of sliding along the line. */
-            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block lg:block lg:text-left`}
+            /* Below lg the block is pinned to --hero-col — the widest state,
+               buffer included — and centred by the column's text-center. Pinned
+               rather than shrink-wrapped because the accordion changes the h1's
+               own width on every swap, and a shrink-wrapped centred block would
+               slide horizontally each time. text-left keeps the two lines laid
+               out as they are today inside that fixed block, so line one's left
+               edge never moves. max-w-full is the escape hatch: if the widest
+               state ever exceeds the container the block just fills it and the
+               old left-aligned overflow behaviour returns, rather than
+               overflowing symmetrically off both edges.
+               Width rides a class, not the style attribute — an inline width
+               outranks lg:w-auto, which is how 150% leaked into desktop before. */
+            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block w-[var(--hero-col)] max-w-full text-left lg:block lg:w-auto lg:max-w-none lg:text-left`}
           >
             Your{' '}
             <span
@@ -579,7 +597,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl lg:mx-auto"
+            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl mx-auto"
           >
             Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
             We&apos;re paid by carriers, not clients.
@@ -589,7 +607,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl lg:mx-auto"
+            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl mx-auto"
           >
             Insero is your technology broker, advising you on solutions, services,
             and the right vendors to meet all your technology needs.
