@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from '@phosphor-icons/react';
@@ -53,6 +53,48 @@ const PANE_SRCS = [
 ];
 
 /**
+ * Gap held between the type column's right edge and the pane's left edge, in
+ * px. The column is centred in what is left of the viewport once this is
+ * subtracted, so raising it moves the copy left.
+ */
+const GAP_TO_PANE = 48;
+
+/** Floor for the gap between the viewport's left edge and the type column. */
+const MIN_EDGE_GAP = 32;
+
+/**
+ * The pane's left edge as a fraction of the plate's width, derived from
+ * PANE_BOX rather than restated. Where the copy sits depends on where the pane
+ * is, so a second hardcoded 0.38 here would silently drift out of agreement the
+ * first time PANE_BOX is tuned.
+ */
+const PANE_LEFT_FRACTION = parseFloat(PANE_BOX.left) / 100;
+
+/**
+ * Middle term of the headline's fluid clamp, in vw, held in a CSS variable so
+ * the measurement pass can lower it. It only ever moves if the widest headline
+ * state ("Redundancy") would otherwise overrun the free zone, which is a real
+ * possibility on a wide-but-short viewport where the plate is narrow and the
+ * free zone is therefore large but the headline is sized off vw regardless.
+ * Steps down 0.1vw at a time and stops at the floor rather than shrinking
+ * without bound.
+ */
+const HEADLINE_VW_DEFAULT = 3;
+const HEADLINE_VW_STEP = 0.1;
+const HEADLINE_VW_MIN = 1.8;
+
+/** lg breakpoint, matching the Tailwind utilities used throughout this file. */
+const LG = 1024;
+
+/**
+ * useLayoutEffect on the client, useEffect on the server. The layout pass has to
+ * land before paint or the column visibly jumps from its pre-measurement
+ * position to its measured one on every load; plain useEffect runs after paint
+ * and would show that jump.
+ */
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+/**
  * Shared by the h1 and the hidden measurement span. They MUST stay identical:
  * the accordion animates to a width measured off that span, so any type change
  * applied to one and not the other silently mis-sizes the word.
@@ -63,7 +105,7 @@ const PANE_SRCS = [
  * resize — see the effect below.
  */
 const HEADLINE_TYPE =
-  'text-3xl sm:text-4xl md:text-5xl lg:text-[clamp(2.25rem,3vw,4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
+  'text-3xl sm:text-4xl md:text-5xl lg:text-[clamp(2.25rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
 
 type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
@@ -80,32 +122,100 @@ export function Hero() {
    * drift left and right forever.
    */
   const [headlineMaxWidth, setHeadlineMaxWidth] = useState<number | null>(null);
+  /**
+   * lg+ placement of the type column, measured rather than assumed. Null until
+   * the first measurement and below lg, where the mobile layout is untouched.
+   *
+   * `freeZone` is the width from the viewport's left edge to GAP_TO_PANE short
+   * of the pane. The column is centred in it, which is the whole point: the
+   * plate's width comes from the section's HEIGHT via its locked aspect ratio,
+   * not from the viewport's width, so on a wide-but-short window the plate is
+   * narrow and the free zone is wide. A fixed margin cannot serve both that and
+   * a 2560x1440 monitor; a measured one can.
+   */
+  const [layout, setLayout] = useState<{
+    freeZone: number;
+    mode: 'center' | 'left';
+  } | null>(null);
+  /** Middle term of the headline clamp. Only lowered, and only if it overruns. */
+  const [headlineVw, setHeadlineVw] = useState(HEADLINE_VW_DEFAULT);
   const measureRef = useRef<HTMLSpanElement>(null);
+  const fullMeasureRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const accordionRef = useRef<HTMLSpanElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const plateRef = useRef<HTMLDivElement>(null);
 
-  // Measure every word on mount, and again on resize. The mount-only version
-  // was fine at fixed type sizes; with a fluid clamp the widths go stale the
-  // moment the window changes, which would leave the accordion animating to a
-  // width the word no longer occupies.
-  useEffect(() => {
+  // Measures the words, the headline's widest state, and the free zone the
+  // column is centred in. All three go stale on resize — the widths because the
+  // clamp is fluid, the free zone because the plate is sized off section height
+  // — so this re-runs from a ResizeObserver on the section as well as the
+  // debounced window handler. The observer is what catches height-only changes,
+  // which move the plate's width without firing a useful window resize.
+  //
+  // Every setState is guarded against no-op writes. The observer watches an
+  // element whose size this effect can influence, so writing unconditionally
+  // would risk an observe -> render -> observe loop.
+  useIsomorphicLayoutEffect(() => {
     const measure = () => {
       if (!measureRef.current) return;
       const spans = measureRef.current.querySelectorAll('span');
       const widths = Array.from(spans).map((span) => span.offsetWidth);
-      setWordWidths(widths);
+      setWordWidths((prev) =>
+        prev.length === widths.length && prev.every((w, i) => w === widths[i]) ? prev : widths,
+      );
 
-      // The h1's own width contains whatever the accordion currently is, so
-      // subtracting that and adding the widest word gives the Redundancy-state
-      // width regardless of which word happens to be showing when this runs.
-      const h1 = headlineRef.current;
-      const acc = accordionRef.current;
-      if (h1 && acc && widths.length) {
-        const base = h1.offsetWidth - acc.offsetWidth;
-        setHeadlineMaxWidth(base + Math.max(...widths));
+      // Measured off the out-of-flow clone below, never off the h1. The h1 is
+      // lg:block inside a column this value then sizes, so reading its
+      // offsetWidth reports the column's width back — fine on the first pass
+      // while the column is still fit-content, a feedback loop on every pass
+      // after. It pinned the column at 2044px at 1280x800 and drove the clamp
+      // to its floor before this was measured from a box nothing else sizes.
+      const full = fullMeasureRef.current;
+      if (!full || !widths.length) return;
+      const colWidth = Math.ceil(full.getBoundingClientRect().width);
+      setHeadlineMaxWidth((prev) => (prev === colWidth ? prev : colWidth));
+
+      // Below lg the plate is a static block under the copy and none of this
+      // applies.
+      if (window.innerWidth < LG) {
+        setLayout((prev) => (prev === null ? prev : null));
+        return;
       }
+
+      const plate = plateRef.current;
+      if (!plate) return;
+      const rect = plate.getBoundingClientRect();
+      // rect.left rather than innerWidth - width. Identical while the plate is
+      // right-anchored, but it does not depend on that being true, and it is not
+      // thrown off by a classic scrollbar — innerWidth counts it, rects do not.
+      const paneLeft = rect.left + rect.width * PANE_LEFT_FRACTION;
+      const freeZone = Math.round(paneLeft - GAP_TO_PANE);
+
+      // Guard rail: the column's right edge must not cross the free zone. If the
+      // widest headline state cannot fit beside a MIN_EDGE_GAP left margin, take
+      // the clamp down a step and let the re-render measure again.
+      const overruns = colWidth > freeZone - MIN_EDGE_GAP;
+      if (overruns && headlineVw > HEADLINE_VW_MIN) {
+        setHeadlineVw(Math.round((headlineVw - HEADLINE_VW_STEP) * 10) / 10);
+        return;
+      }
+
+      // Centre when there is room for MIN_EDGE_GAP on both sides, otherwise pin
+      // to MIN_EDGE_GAP and let the right-hand gap take the remainder. If the
+      // clamp is already at its floor and the headline still overruns, this
+      // still commits to the left-pinned layout: a visible overrun is a bug
+      // someone can see, where bailing out would silently drop back to the
+      // unmeasured layout and hide it.
+      const mode = !overruns && (freeZone - colWidth) / 2 >= MIN_EDGE_GAP ? 'center' : 'left';
+      setLayout((prev) =>
+        prev && prev.freeZone === freeZone && prev.mode === mode ? prev : { freeZone, mode },
+      );
     };
     measure();
+
+    const observer = new ResizeObserver(() => measure());
+    if (sectionRef.current) observer.observe(sectionRef.current);
 
     let timer: ReturnType<typeof setTimeout>;
     const onResize = () => {
@@ -114,10 +224,11 @@ export function Hero() {
     };
     window.addEventListener('resize', onResize);
     return () => {
+      observer.disconnect();
       clearTimeout(timer);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [headlineVw]);
 
   const startTransition = useCallback(() => {
     setPhase('swipe-left');
@@ -142,13 +253,44 @@ export function Hero() {
   const currentWidth = wordWidths[wordIndex] || 0;
 
   return (
-    <section className="relative bg-white overflow-hidden min-h-hero lg:min-h-[85vh]! pt-28 pb-16 lg:pt-0 lg:pb-0 lg:flex lg:items-center">
+    <section
+      ref={sectionRef}
+      className="relative bg-white overflow-hidden min-h-hero lg:min-h-[85vh]! pt-28 pb-16 lg:pt-0 lg:pb-0 lg:flex lg:items-center"
+      /* Set here rather than on the h1 so the hidden measurement span inherits
+         the same value — the two must resolve to identical type or the
+         accordion animates to a width the word does not occupy. */
+      style={{ '--hero-headline-vw': `${headlineVw}vw` } as React.CSSProperties}
+    >
       {/* ── Type column ───────────────────────────────────────────────
           Hero-only wrapper, deliberately wider than the site container so
           the headline can use the whitespace on the left. The global
           --container-max is untouched. z-10 keeps the copy above the plate,
           which bleeds leftward underneath it on desktop. */}
-      <div className="relative z-10 w-full mx-auto max-w-[1680px] px-6 lg:px-8">
+      <div
+        /* Until the first measurement this is exactly what it was before: the
+           1680px centred wrapper. The swap to the measured free zone happens in
+           a layout effect, so it lands before paint and there is no jump to
+           transition away.
+
+           Once measured, at lg this stops being a centred container and becomes
+           the free zone itself — anchored to the viewport's left edge, as wide
+           as the space before the pane, with the column centred inside it. Below
+           lg every one of those overrides is inert. */
+        className={`relative z-10 w-full mx-auto max-w-[1680px] px-6 ${
+          layout
+            ? `lg:mx-0 lg:max-w-none lg:w-[var(--hero-free)] lg:flex ${
+                layout.mode === 'center'
+                  ? 'lg:justify-center lg:px-0'
+                  : 'lg:justify-start lg:pl-8 lg:pr-0'
+              }`
+            : 'lg:px-8'
+        }`}
+        style={
+          layout
+            ? ({ '--hero-free': `${layout.freeZone}px` } as React.CSSProperties)
+            : undefined
+        }
+      >
         {/* lg+: the column is pinned to the headline's widest state and its
             contents centred on that axis. Below lg nothing here applies and the
             mobile layout is untouched. The var falls back to fit-content for the
@@ -166,6 +308,35 @@ export function Hero() {
             {rotatingWords.map((word) => (
               <span key={word} className="inline-block">{word}</span>
             ))}
+          </span>
+
+          {/* The headline in its widest state, out of flow so its width is its
+              own and not whatever box it sits in. This is what the column is
+              sized from.
+
+              It mirrors the h1's inline content exactly — same type classes,
+              same widest word, same cursor with the same margins. Change one
+              and you must change the other, the same rule the word-measurement
+              span above already carries. */}
+          <span
+            ref={fullMeasureRef}
+            aria-hidden="true"
+            className={`absolute opacity-0 pointer-events-none ${HEADLINE_TYPE}`}
+          >
+            Your{' '}
+            <span className="whitespace-nowrap">
+              {rotatingWords.reduce((a, b) => (b.length > a.length ? b : a))}
+            </span>
+            <span
+              className="inline-block w-[3px]"
+              style={{
+                height: '1.2em',
+                verticalAlign: 'middle',
+                marginLeft: '4px',
+                marginRight: '4px',
+              }}
+            />{' '}
+            Sourcing Experts
           </span>
 
           <motion.h1
@@ -273,6 +444,9 @@ export function Hero() {
         style={{ top: PLATE_TOP_OFFSET }}
       >
         <div
+          /* The panes are positioned against this box, so this is the box the
+             free-zone maths has to measure — not the wrapper around it. */
+          ref={plateRef}
           className="relative w-full lg:w-auto lg:h-full"
           style={{ aspectRatio: PLATE_ASPECT }}
         >
