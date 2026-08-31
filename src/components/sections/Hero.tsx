@@ -133,7 +133,7 @@ const HEADLINE_VW_MIN = 1.8;
  * getBoundingClientRect fixes the first by measuring sub-pixel; this covers the
  * second. The cursor's 4px left margin absorbs it, so nothing shifts visibly.
  */
-const WORD_WIDTH_BUFFER = 2;
+const WORD_WIDTH_BUFFER = 3;
 
 /** lg breakpoint, matching the Tailwind utilities used throughout this file. */
 const LG = 1024;
@@ -197,6 +197,8 @@ export function Hero() {
   const accordionRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const plateRef = useRef<HTMLDivElement>(null);
+  /** Reused across measurement passes; the guard below is the only consumer. */
+  const inkCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Measures the words, the headline's widest state, and the free zone the
   // column is centred in. All three go stale on resize — the widths because the
@@ -215,6 +217,47 @@ export function Hero() {
       const widths = Array.from(spans).map(
         (span) => Math.ceil(span.getBoundingClientRect().width) + WORD_WIDTH_BUFFER,
       );
+
+      // Regression guard. The stored width is what the accordion's box becomes,
+      // and the box clips at its right edge, so a width that does not clear the
+      // word's INK — not its advance width, which is a different number for
+      // glyphs like y — slices the last letter flat. That failure is silent:
+      // the layout stays correct and only the glyph looks wrong, which is how it
+      // survived a review pass before. One canvas measure per word per
+      // measurement pass, and it says which word and by how much.
+      if (typeof document !== 'undefined') {
+        const canvas =
+          inkCanvasRef.current ?? (inkCanvasRef.current = document.createElement('canvas'));
+        const ctx = canvas.getContext('2d');
+        // Measured off the h1, not off the measurement clone. They do not
+        // resolve to the same type: an unlayered `h1` rule wins over the
+        // font-extrabold utility, so the h1 computes 700 where the clone
+        // computes 800. The clone is therefore the heavier, wider face, and a
+        // guard reading it would be checking a font nothing renders in.
+        const probe = headlineRef.current;
+        if (ctx && probe) {
+          const cs = window.getComputedStyle(probe);
+          ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+          // Chrome-only, and it matters: the headline is tracking-tight, so
+          // ignoring it would under-measure every word.
+          try {
+            (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing =
+              cs.letterSpacing;
+          } catch {
+            /* not supported — the measurement is still close enough to catch a real slice */
+          }
+          rotatingWords.forEach((word, i) => {
+            const ink = ctx.measureText(word).actualBoundingBoxRight;
+            if (widths[i] < ink + 1) {
+              console.error(
+                `[Hero] "${word}" box is ${widths[i]}px against ${ink.toFixed(2)}px of ink at ` +
+                  `${cs.fontSize} — short by ${(ink + 1 - widths[i]).toFixed(2)}px. ` +
+                  'The last glyph will render sliced. Raise WORD_WIDTH_BUFFER.',
+              );
+            }
+          });
+        }
+      }
       setWordWidths((prev) =>
         prev.length === widths.length && prev.every((w, i) => w === widths[i]) ? prev : widths,
       );
@@ -441,7 +484,18 @@ export function Hero() {
             Your{' '}
             <span
               ref={accordionRef}
-              className="inline-flex items-baseline overflow-hidden"
+              /* overflow-hidden is what makes the collapse read as a wipe, and
+                 it is also what clips a glyph whose ink reaches past its
+                 advance width. That is safe once a measured width is applied,
+                 because the measurement carries WORD_WIDTH_BUFFER. It is NOT
+                 safe on the `auto` fallback below, where the box shrink-wraps
+                 to the advance exactly and the buffer does not exist — so the
+                 clipping is turned off for precisely that case. */
+              className={`inline-flex items-baseline ${
+                currentWidth > 0 || phase === 'swipe-left'
+                  ? 'overflow-hidden'
+                  : 'overflow-visible'
+              }`}
               style={{
                 width: phase === 'swipe-left'
                   ? '0px'
