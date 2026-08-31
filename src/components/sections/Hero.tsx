@@ -45,6 +45,21 @@ const PLATE_TOP_OFFSET = 88;
  */
 const PLATE_ASPECT = '1712 / 1152';
 
+/**
+ * Index-aligned with rotatingWords, so the word takes the colour of the pane it
+ * appears with. Driven by the same wordIndex as PANE_SRCS below, which means the
+ * colour swaps at the accordion's midpoint — the moment the width is 0 and the
+ * word is not on screen — so no transition is needed and none would be visible.
+ *
+ * ACCESSIBILITY: #F97316 measures 2.80:1 on white. That is below AA for large
+ * text (3.0:1), not only below the 4.5:1 normal-text bar, so "Internet" does not
+ * meet AA in any size it renders at. It is the same value globals.css marks
+ * DECORATIVE USE ONLY for exactly this reason. --color-accent-cta (#C95000) is
+ * the accessible member of the same hue family at 4.53:1 and would be a drop-in.
+ * Kept as specified; flagged here so it is not mistaken for an oversight.
+ */
+const WORD_COLORS = ['#008838', '#F97316', '#008838'];
+
 /** Index-aligned with rotatingWords — 0 Voice, 1 Internet, 2 Redundancy. */
 const PANE_SRCS = [
   '/hero/pane-voice.png',
@@ -393,7 +408,10 @@ export function Hero() {
                 lineHeight: 'inherit',
               }}
             >
-              <span className="text-[#008838] whitespace-nowrap leading-[inherit]">
+              <span
+                className="whitespace-nowrap leading-[inherit]"
+                style={{ color: WORD_COLORS[wordIndex] }}
+              >
                 {rotatingWords[wordIndex]}
               </span>
             </span>
