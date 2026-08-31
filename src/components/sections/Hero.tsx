@@ -67,6 +67,29 @@ const PLATE_TOP_OFFSET = 88;
 const PLATE_ASPECT = '1712 / 1152';
 
 /**
+ * Mobile zoom-crop. Below lg the full landscape plate at container width leaves
+ * INZO tiny inside empty loft, so a crop frame shows only part of an oversized
+ * plate: the plate is MOBILE_PLATE_WIDTH of the frame, pinned right and bottom,
+ * and the frame's own aspect decides how much height survives.
+ *
+ * The two numbers are locked together tighter than they look. Anchored right,
+ * the frame shows the rightmost 1/k of the plate, so the leftmost visible point
+ * is at (1 - 1/k) of plate width; the pane starts at PANE_BOX.left (38%), so
+ * k must stay under ~1.54 or the pane's left edge falls outside the frame.
+ * Anchored bottom, the frame shows the bottom (1.4861 / (A*k)) of plate height,
+ * and the pane's top sits at 9%, so A*k must stay under ~1.58 or the pane is
+ * cut off the top. A also cannot go below 1.4861/k, or the plate is shorter
+ * than the frame and a blank band opens above it.
+ *
+ * 150% + 1/1 sits inside all three: the pane clears the left edge by ~4.7% of
+ * plate width, the top crop is under 1%, and INZO is whole from halo to tracks.
+ * A more aggressive zoom is not available at PANE_BOX.left = 38% — raising k
+ * pushes the pane out of frame on the left before it buys any useful size.
+ */
+const MOBILE_CROP_ASPECT = '1 / 1';
+const MOBILE_PLATE_WIDTH = '150%';
+
+/**
  * Index-aligned with rotatingWords, so the word takes the colour of the pane it
  * appears with. Driven by the same wordIndex as PANE_SRCS below, which means the
  * colour swaps at the accordion's midpoint — the moment the width is 0 and the
@@ -605,48 +628,65 @@ export function Hero() {
                    lg:absolute lg:right-0 lg:bottom-0 lg:z-0"
         style={{ top: PLATE_TOP_OFFSET }}
       >
+        {/* Crop frame — below lg only. `lg:contents` makes it generate no box
+            at all at lg and up, so the plate box below becomes a direct child
+            of the wrapper again and desktop layout is untouched, not merely
+            restored. aspect-ratio and overflow are both inert under
+            display:contents, so neither needs an lg reset. */}
         <div
-          /* The panes are positioned against this box, so this is the box the
-             free-zone maths has to measure — not the wrapper around it. */
-          ref={plateRef}
-          className="relative w-full lg:w-auto lg:h-full"
-          style={{ aspectRatio: PLATE_ASPECT }}
+          className="relative w-full overflow-hidden rounded-2xl lg:contents"
+          style={{ aspectRatio: MOBILE_CROP_ASPECT }}
         >
-          <Image
-            src="/hero/inzo-hero-base-loft-fade.jpg"
-            alt="INZO, the Insero robot, working at a desk in a loft office"
-            fill
-            priority
-            sizes="(min-width: 1024px) 128vh, 100vw"
-            className="object-cover"
-          />
+          <div
+            /* The panes are positioned against this box, so this is the box the
+               free-zone maths has to measure — not the wrapper around it.
+               Below lg it is oversized and pinned to the crop frame's right and
+               bottom; the panes ride along untouched because they are
+               positioned as percentages OF this box. */
+            ref={plateRef}
+            /* The mobile width rides in on a CSS variable rather than the
+               style attribute: an inline `width` outranks every class, so
+               `lg:w-auto` could not override it and the 150% leaked into the
+               desktop layout — measured as a 1.5x wider plate at 1718. */
+            className="absolute right-0 bottom-0 w-[var(--plate-w)] lg:relative lg:right-auto lg:bottom-auto lg:w-auto lg:h-full"
+            style={{ aspectRatio: PLATE_ASPECT, ['--plate-w' as string]: MOBILE_PLATE_WIDTH } as React.CSSProperties}
+          >
+            <Image
+              src="/hero/inzo-hero-base-loft-fade.jpg"
+              alt="INZO, the Insero robot, working at a desk in a loft office"
+              fill
+              priority
+              sizes="(min-width: 1024px) 128vh, 150vw"
+              className="object-cover"
+            />
 
-          {/* All three panes are mounted for the life of the component and
-              only ever cross-fade opacity — never unmount, never swap src,
-              never move. The base plate underneath is untouched by a word
-              change, so it never re-renders or re-decodes. */}
-          {PANE_SRCS.map((src, i) => (
-            <div
-              key={src}
-              aria-hidden="true"
-              className="absolute"
-              style={{
-                ...PANE_BOX,
-                opacity: i === wordIndex ? 1 : 0,
-                // Same duration and easing as the word accordion, so the pane
-                // and the word resolve together.
-                transition: `opacity ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-              }}
-            >
-              <Image
-                src={src}
-                alt=""
-                fill
-                sizes="(min-width: 1024px) 30vh, 23vw"
-                className="object-contain"
-              />
-            </div>
-          ))}
+            {/* All three panes are mounted for the life of the component and
+                only ever cross-fade opacity — never unmount, never swap src,
+                never move. The base plate underneath is untouched by a word
+                change, so it never re-renders or re-decodes. */}
+            {PANE_SRCS.map((src, i) => (
+              <div
+                key={src}
+                aria-hidden="true"
+                className="absolute"
+                style={{
+                  ...PANE_BOX,
+                  opacity: i === wordIndex ? 1 : 0,
+                  // Same duration and easing as the word accordion, so the pane
+                  // and the word resolve together.
+                  transition: `opacity ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+                }}
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="(min-width: 1024px) 30vh, 33vw"
+                  className="object-contain"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
