@@ -86,6 +86,19 @@ const HEADLINE_VW_DEFAULT = 3;
 const HEADLINE_VW_STEP = 0.1;
 const HEADLINE_VW_MIN = 1.8;
 
+/**
+ * Padding added to every measured word width, in px.
+ *
+ * The accordion is overflow-hidden and its width is set from these numbers, so
+ * a word measured even a fraction of a pixel short has its last letter sliced —
+ * which is what was cutting the y in "Redundancy". Two separate causes:
+ * offsetWidth rounds to whole pixels and can round DOWN past the true extent,
+ * and a glyph's ink can reach past the advance width the box reports anyway.
+ * getBoundingClientRect fixes the first by measuring sub-pixel; this covers the
+ * second. The cursor's 4px left margin absorbs it, so nothing shifts visibly.
+ */
+const WORD_WIDTH_BUFFER = 2;
+
 /** lg breakpoint, matching the Tailwind utilities used throughout this file. */
 const LG = 1024;
 
@@ -163,7 +176,9 @@ export function Hero() {
     const measure = () => {
       if (!measureRef.current) return;
       const spans = measureRef.current.querySelectorAll('span');
-      const widths = Array.from(spans).map((span) => span.offsetWidth);
+      const widths = Array.from(spans).map(
+        (span) => Math.ceil(span.getBoundingClientRect().width) + WORD_WIDTH_BUFFER,
+      );
       setWordWidths((prev) =>
         prev.length === widths.length && prev.every((w, i) => w === widths[i]) ? prev : widths,
       );
@@ -176,7 +191,11 @@ export function Hero() {
       // to its floor before this was measured from a box nothing else sizes.
       const full = fullMeasureRef.current;
       if (!full || !widths.length) return;
-      const colWidth = Math.ceil(full.getBoundingClientRect().width);
+      // Same buffer as the words above. The clone renders its word inline at the
+      // natural width, but the live accordion renders it buffered — so without
+      // this the column would be pinned 2px narrower than the headline it has to
+      // hold, and a whitespace-nowrap h1 would overhang it.
+      const colWidth = Math.ceil(full.getBoundingClientRect().width) + WORD_WIDTH_BUFFER;
       setHeadlineMaxWidth((prev) => (prev === colWidth ? prev : colWidth));
 
       // Below lg the plate is a static block under the copy and none of this
