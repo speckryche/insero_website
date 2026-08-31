@@ -16,15 +16,26 @@ const SWIPE_DURATION = 400;
  * native aspect ratio, so the pane keeps the same spot relative to INZO at
  * every size — full-bleed on desktop, container-width on mobile.
  *
- * Starting position is the empty air to the left of INZO's raised hand. Nudge
- * these four values to move it; nothing else needs to change.
+ * Tuned to sit just left of INZO's raised hand while clearing the right edge
+ * of the one-line headline. Nudge these four values to move it; nothing else
+ * needs to change. Raising `left` moves the pane toward the hand and buys
+ * clearance from the headline.
  */
 const PANE_BOX = {
-  left: '31%',
-  top: '8%',
-  width: '26%',
-  height: '34%',
+  left: '44%',
+  top: '9%',
+  width: '23%',
+  height: '31%',
 } as const;
+
+/**
+ * Gap between the top of the section and the top of the plate, in px, at lg and
+ * up. Without it the plate runs under the transparent header and INZO's halo
+ * and the glass pane crowd the nav. The plate is pinned top/bottom, so raising
+ * this shortens the plate and — because PLATE_ASPECT is preserved — narrows it
+ * slightly too. Below lg the wrapper is static and this is ignored.
+ */
+const PLATE_TOP_OFFSET = 88;
 
 /**
  * The plate's true intrinsic size, measured off the file. The wrapper is locked
@@ -41,11 +52,18 @@ const PANE_SRCS = [
   '/hero/pane-redundancy.png',
 ];
 
-/** Shared by the h1 and the hidden measurement span. They MUST stay identical:
- *  the accordion animates to a width measured off that span, so any type-scale
- *  change applied to one and not the other silently mis-sizes the word. */
+/**
+ * Shared by the h1 and the hidden measurement span. They MUST stay identical:
+ * the accordion animates to a width measured off that span, so any type change
+ * applied to one and not the other silently mis-sizes the word.
+ *
+ * The lg+ size is fluid, which is what keeps "Your [WORD] Sourcing Experts" on
+ * one line from 1024px up to very wide screens without ever breaking. Because
+ * the size now depends on the viewport, the measurement has to re-run on
+ * resize — see the effect below.
+ */
 const HEADLINE_TYPE =
-  'text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-display font-extrabold tracking-tight whitespace-nowrap';
+  'text-3xl sm:text-4xl md:text-5xl lg:text-[clamp(2.25rem,3vw,4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
 
 type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
@@ -55,13 +73,28 @@ export function Hero() {
   const [wordWidths, setWordWidths] = useState<number[]>([]);
   const measureRef = useRef<HTMLSpanElement>(null);
 
-  // Measure all word widths on mount
+  // Measure every word on mount, and again on resize. The mount-only version
+  // was fine at fixed type sizes; with a fluid clamp the widths go stale the
+  // moment the window changes, which would leave the accordion animating to a
+  // width the word no longer occupies.
   useEffect(() => {
-    if (!measureRef.current) return;
-    const container = measureRef.current;
-    const spans = container.querySelectorAll('span');
-    const widths = Array.from(spans).map((span) => span.offsetWidth);
-    setWordWidths(widths);
+    const measure = () => {
+      if (!measureRef.current) return;
+      const spans = measureRef.current.querySelectorAll('span');
+      setWordWidths(Array.from(spans).map((span) => span.offsetWidth));
+    };
+    measure();
+
+    let timer: ReturnType<typeof setTimeout>;
+    const onResize = () => {
+      clearTimeout(timer);
+      timer = setTimeout(measure, 150);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   const startTransition = useCallback(() => {
@@ -89,10 +122,12 @@ export function Hero() {
   return (
     <section className="relative bg-white overflow-hidden min-h-hero lg:min-h-[85vh]! pt-28 pb-16 lg:pt-0 lg:pb-0 lg:flex lg:items-center">
       {/* ── Type column ───────────────────────────────────────────────
-          Stays inside the site's max-width container. z-10 puts it above
-          the plate, which bleeds leftward underneath it on desktop. */}
-      <div className="relative z-10 w-full mx-auto max-w-[var(--container-max)] px-6">
-        <div className="lg:w-[45%]">
+          Hero-only wrapper, deliberately wider than the site container so
+          the headline can use the whitespace on the left. The global
+          --container-max is untouched. z-10 keeps the copy above the plate,
+          which bleeds leftward underneath it on desktop. */}
+      <div className="relative z-10 w-full mx-auto max-w-[1680px] px-8">
+        <div className="lg:max-w-[64vw]">
           {/* Hidden measurement container — same type classes as the h1 */}
           <span
             ref={measureRef}
@@ -108,11 +143,6 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            /* whitespace-nowrap stays unconditional; both line breaks are
-               forced by the <br /> below rather than left to wrapping. An
-               automatic wrap would reflow line 2 every time the accordion
-               collapses the word to 0px, making the headline jump on each
-               rotation. */
             className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block`}
           >
             Your{' '}
@@ -141,20 +171,23 @@ export function Hero() {
                 marginRight: '4px',
               }}
             />
-            {/* Forced break below sm (a 390px viewport clips the single line)
-                and again at lg and up, where the type column is ~45% wide. A
-                <br> breaks even under white-space: nowrap — nowrap suppresses
-                only AUTOMATIC wrapping. Putting the break before the space
-                keeps that space off line 2's leading edge. */}
-            <br aria-hidden="true" className="sm:hidden lg:inline" />{' '}
+            {/* Break below sm only — a 390px viewport clips the single line.
+                From sm up the headline is ONE line at every width: the
+                accordion reads as "Sourcing Experts" sliding along the same
+                line as the collapsing word, which a break would destroy. The
+                fluid clamp above is what keeps that line fitting. */}
+            <br aria-hidden="true" className="sm:hidden" />{' '}
             Sourcing Experts
           </motion.h1>
 
+          {/* Paragraphs keep their own measure. The column is now up to 64vw
+              wide for the headline's benefit; letting body copy run that far
+              would push line length well past readable. */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium"
+            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl"
           >
             Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
             We&apos;re paid by carriers, not clients.
@@ -164,7 +197,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-lg md:text-xl text-[#475569] mb-12"
+            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl"
           >
             Insero is your technology broker, advising you on solutions, services,
             and the right vendors to meet all your technology needs.
@@ -189,17 +222,19 @@ export function Hero() {
       </div>
 
       {/* ── INZO plate ────────────────────────────────────────────────
-          Below lg: a normal block after the type column, held to the
-          container's width and padding so it lines up with the copy.
-          At lg and up: breaks out of the container entirely and anchors to
-          the section's right and bottom edges at full section height, with
-          its width falling out of the locked aspect ratio. It extends
-          leftward under the type column by design — the JPG's left third
-          fades to white, and the copy sits above it at z-10. */}
+          Below lg: a normal block after the type column, held to the hero
+          wrapper's width and padding so it lines up with the copy.
+          At lg and up: breaks out of the wrapper and pins to the section's
+          right edge, from PLATE_TOP_OFFSET down to the bottom. Height comes
+          from that top/bottom pair rather than height:100%, and the width
+          falls out of the locked aspect ratio — so clearing the nav also
+          narrows the plate slightly, which is intended.
+          `top` is inert below lg, where the wrapper is static. */}
       <div
-        className="mt-10 w-full mx-auto max-w-[var(--container-max)] px-6
+        className="mt-10 w-full mx-auto max-w-[1680px] px-8
                    lg:mt-0 lg:mx-0 lg:max-w-none lg:w-auto lg:px-0
-                   lg:absolute lg:right-0 lg:bottom-0 lg:h-full lg:z-0"
+                   lg:absolute lg:right-0 lg:bottom-0 lg:z-0"
+        style={{ top: PLATE_TOP_OFFSET }}
       >
         <div
           className="relative w-full lg:w-auto lg:h-full"
@@ -235,7 +270,7 @@ export function Hero() {
                 src={src}
                 alt=""
                 fill
-                sizes="(min-width: 1024px) 34vh, 26vw"
+                sizes="(min-width: 1024px) 30vh, 23vw"
                 className="object-contain"
               />
             </div>
