@@ -7,11 +7,21 @@ import { newLeadRef } from '@/lib/lead-ref';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
+const FIELD_GUIDE_META = {
+  title: 'The POTS Replacement Field Guide',
+  subject: 'Your POTS Replacement Field Guide',
+};
+
 const GUIDE_META: Record<string, { title: string; subject: string }> = {
-  'pots-replacement-field-guide': {
-    title: 'The POTS Replacement Field Guide',
-    subject: 'Your POTS Replacement Field Guide',
-  },
+  'pots-replacement-field-guide': FIELD_GUIDE_META,
+  // NOT DEAD CODE. The front end only ever submits the field-guide slug, but a
+  // browser running a cached client bundle from before the rename still posts
+  // 'pots-replacement-playbook' here — and an unknown slug is rejected with
+  // 'Unknown guide.' before a token is ever minted, so the visitor gets nothing.
+  // Sharing FIELD_GUIDE_META keeps the alias identical to the canonical slug.
+  // The matching alias in src/app/api/lead-magnets/[slug]/route.ts is what then
+  // serves the file; both are needed, since the slug is part of the signed token.
+  'pots-replacement-playbook': FIELD_GUIDE_META,
 };
 
 export type LeadMagnetFormData = {

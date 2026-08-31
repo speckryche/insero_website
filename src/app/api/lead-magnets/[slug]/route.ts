@@ -14,12 +14,23 @@ import { validateToken } from '@/lib/lead-magnets/token';
  * outputFileTracingIncludes in next.config.ts. Adding a guide here without
  * adding it there yields a 500 in production and a clean 200 locally.
  */
+const FIELD_GUIDE = {
+  title: 'The POTS Replacement Field Guide',
+  file: path.join('src', 'assets', 'collateral', 'pots-replacement-field-guide.pdf'),
+  downloadName: 'insero-pots-replacement-field-guide.pdf',
+};
+
 const GUIDES: Record<string, { title: string; file: string; downloadName: string }> = {
-  'pots-replacement-field-guide': {
-    title: 'The POTS Replacement Field Guide',
-    file: path.join('src', 'assets', 'collateral', 'pots-replacement-field-guide.pdf'),
-    downloadName: 'insero-pots-replacement-field-guide.pdf',
-  },
+  'pots-replacement-field-guide': FIELD_GUIDE,
+  // NOT DEAD CODE. 'pots-replacement-playbook' is the retired slug this guide
+  // shipped under before the rename. It stays registered for two live cases:
+  // download links already emailed to visitors (tokens last 7 days, and people
+  // keep the mail far longer), and browsers still running a cached client
+  // bundle from before the rename, which post the old slug. Both share the one
+  // FIELD_GUIDE object above, so the alias cannot drift from the canonical
+  // slug — same file, same Content-Disposition filename. Removing this makes
+  // those requests 404.
+  'pots-replacement-playbook': FIELD_GUIDE,
 };
 
 export async function GET(
