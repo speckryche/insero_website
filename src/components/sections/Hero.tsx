@@ -53,9 +53,12 @@ const PANE_SRCS = [
 ];
 
 /**
- * Gap held between the type column's right edge and the pane's left edge, in
- * px. The column is centred in what is left of the viewport once this is
- * subtracted, so raising it moves the copy left.
+ * Minimum gap between the type column's right edge and the pane's left edge, in
+ * px. A floor, not an inset: the column centres on the pane's edge itself, and
+ * this only decides when centring has to give way to left-pinning. Centring
+ * inside `paneLeft - GAP_TO_PANE` instead would leave the column permanently
+ * GAP_TO_PANE further from the pane than from the viewport edge, which is
+ * exactly the left-heavy look this replaces.
  */
 const GAP_TO_PANE = 48;
 
@@ -126,15 +129,15 @@ export function Hero() {
    * lg+ placement of the type column, measured rather than assumed. Null until
    * the first measurement and below lg, where the mobile layout is untouched.
    *
-   * `freeZone` is the width from the viewport's left edge to GAP_TO_PANE short
-   * of the pane. The column is centred in it, which is the whole point: the
+   * `zone` is the width from the viewport's left edge to the pane's left edge.
+   * The column is centred in it, which is the whole point: the
    * plate's width comes from the section's HEIGHT via its locked aspect ratio,
    * not from the viewport's width, so on a wide-but-short window the plate is
    * narrow and the free zone is wide. A fixed margin cannot serve both that and
    * a 2560x1440 monitor; a measured one can.
    */
   const [layout, setLayout] = useState<{
-    freeZone: number;
+    zone: number;
     mode: 'center' | 'left';
   } | null>(null);
   /** Middle term of the headline clamp. Only lowered, and only if it overruns. */
@@ -190,26 +193,33 @@ export function Hero() {
       // right-anchored, but it does not depend on that being true, and it is not
       // thrown off by a classic scrollbar — innerWidth counts it, rects do not.
       const paneLeft = rect.left + rect.width * PANE_LEFT_FRACTION;
-      const freeZone = Math.round(paneLeft - GAP_TO_PANE);
+      const zone = Math.round(paneLeft);
 
-      // Guard rail: the column's right edge must not cross the free zone. If the
-      // widest headline state cannot fit beside a MIN_EDGE_GAP left margin, take
-      // the clamp down a step and let the re-render measure again.
-      const overruns = colWidth > freeZone - MIN_EDGE_GAP;
+      // Guard rail, unchanged: left-pinned at MIN_EDGE_GAP, the column still has
+      // to clear the pane by GAP_TO_PANE. If the widest headline state cannot,
+      // take the clamp down a step and let the re-render measure again.
+      const overruns = colWidth > zone - GAP_TO_PANE - MIN_EDGE_GAP;
       if (overruns && headlineVw > HEADLINE_VW_MIN) {
         setHeadlineVw(Math.round((headlineVw - HEADLINE_VW_STEP) * 10) / 10);
         return;
       }
 
-      // Centre when there is room for MIN_EDGE_GAP on both sides, otherwise pin
-      // to MIN_EDGE_GAP and let the right-hand gap take the remainder. If the
-      // clamp is already at its floor and the headline still overruns, this
-      // still commits to the left-pinned layout: a visible overrun is a bug
-      // someone can see, where bailing out would silently drop back to the
-      // unmeasured layout and hide it.
-      const mode = !overruns && (freeZone - colWidth) / 2 >= MIN_EDGE_GAP ? 'center' : 'left';
+      // Centred on the pane's edge, so the gap to the pane and the gap to the
+      // viewport edge come out the same number. Both minimums are checked
+      // explicitly even though the two gaps are equal here and GAP_TO_PANE is
+      // the larger of the pair — stating both means neither floor can be lost
+      // if either constant is retuned.
+      const centredGap = (zone - colWidth) / 2;
+      const canCentre =
+        !overruns && centredGap >= GAP_TO_PANE && centredGap >= MIN_EDGE_GAP;
+
+      // Falling back to left-pinned rather than bailing out. If the clamp is
+      // already at its floor and the headline still overruns, a visible overrun
+      // is a bug someone can see, where reverting to the unmeasured layout would
+      // hide it.
+      const mode = canCentre ? 'center' : 'left';
       setLayout((prev) =>
-        prev && prev.freeZone === freeZone && prev.mode === mode ? prev : { freeZone, mode },
+        prev && prev.zone === zone && prev.mode === mode ? prev : { zone, mode },
       );
     };
     measure();
@@ -272,13 +282,13 @@ export function Hero() {
            a layout effect, so it lands before paint and there is no jump to
            transition away.
 
-           Once measured, at lg this stops being a centred container and becomes
-           the free zone itself — anchored to the viewport's left edge, as wide
-           as the space before the pane, with the column centred inside it. Below
-           lg every one of those overrides is inert. */
+           Once measured, at lg this stops being a centred container and spans
+           from the viewport's left edge to the pane's left edge, with the column
+           centred inside it — so the copy sits the same distance from the pane
+           as from the edge. Below lg every one of those overrides is inert. */
         className={`relative z-10 w-full mx-auto max-w-[1680px] px-6 ${
           layout
-            ? `lg:mx-0 lg:max-w-none lg:w-[var(--hero-free)] lg:flex ${
+            ? `lg:mx-0 lg:max-w-none lg:w-[var(--hero-zone)] lg:flex ${
                 layout.mode === 'center'
                   ? 'lg:justify-center lg:px-0'
                   : 'lg:justify-start lg:pl-8 lg:pr-0'
@@ -287,7 +297,7 @@ export function Hero() {
         }`}
         style={
           layout
-            ? ({ '--hero-free': `${layout.freeZone}px` } as React.CSSProperties)
+            ? ({ '--hero-zone': `${layout.zone}px` } as React.CSSProperties)
             : undefined
         }
       >
