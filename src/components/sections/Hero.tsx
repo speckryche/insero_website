@@ -376,8 +376,15 @@ export function Hero() {
               style={{
                 height: '1.2em',
                 verticalAlign: 'middle',
-                marginLeft: '4px',
-                marginRight: '4px',
+                // em, not px: these resolve against the headline's own font
+                // size, so the gap tracks the fluid clamp instead of staying at
+                // a value tuned for small type. At 4px the rule sat on top of
+                // ink that reaches right at 51-64px — the e in Voice and the y
+                // in Redundancy, whose tail measures 0.73px past its advance
+                // width. Internet only escaped because the t curves away.
+                // Asymmetric on purpose: the left side carries the overhang.
+                marginLeft: '0.22em',
+                marginRight: '0.18em',
               }}
             />{' '}
             Sourcing Experts
@@ -421,8 +428,15 @@ export function Hero() {
                 height: '1.2em',
                 backgroundColor: '#1e293b',
                 verticalAlign: 'middle',
-                marginLeft: '4px',
-                marginRight: '4px',
+                // em, not px: these resolve against the headline's own font
+                // size, so the gap tracks the fluid clamp instead of staying at
+                // a value tuned for small type. At 4px the rule sat on top of
+                // ink that reaches right at 51-64px — the e in Voice and the y
+                // in Redundancy, whose tail measures 0.73px past its advance
+                // width. Internet only escaped because the t curves away.
+                // Asymmetric on purpose: the left side carries the overhang.
+                marginLeft: '0.22em',
+                marginRight: '0.18em',
               }}
             />
             {/* Break below sm only — a 390px viewport clips the single line.
