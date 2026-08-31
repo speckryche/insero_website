@@ -22,10 +22,10 @@ const SWIPE_DURATION = 400;
  * clearance from the headline.
  */
 const PANE_BOX = {
-  left: '44%',
+  left: '38%',
   top: '9%',
-  width: '23%',
-  height: '31%',
+  width: '22%',
+  height: '30%',
 } as const;
 
 /**
@@ -71,7 +71,18 @@ export function Hero() {
   const [wordIndex, setWordIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>('visible');
   const [wordWidths, setWordWidths] = useState<number[]>([]);
+  /**
+   * Width of the headline in its widest ("Redundancy") state. The copy block is
+   * centred on the headline's axis, so the column has to be pinned to this.
+   * w-fit would not do: the h1 is inline-block, so its shrink-to-fit width
+   * INCLUDES the accordion span, which animates to 0 and back on every rotation
+   * — a fit-content column would breathe with it and the centred subcopy would
+   * drift left and right forever.
+   */
+  const [headlineMaxWidth, setHeadlineMaxWidth] = useState<number | null>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const accordionRef = useRef<HTMLSpanElement>(null);
 
   // Measure every word on mount, and again on resize. The mount-only version
   // was fine at fixed type sizes; with a fluid clamp the widths go stale the
@@ -81,7 +92,18 @@ export function Hero() {
     const measure = () => {
       if (!measureRef.current) return;
       const spans = measureRef.current.querySelectorAll('span');
-      setWordWidths(Array.from(spans).map((span) => span.offsetWidth));
+      const widths = Array.from(spans).map((span) => span.offsetWidth);
+      setWordWidths(widths);
+
+      // The h1's own width contains whatever the accordion currently is, so
+      // subtracting that and adding the widest word gives the Redundancy-state
+      // width regardless of which word happens to be showing when this runs.
+      const h1 = headlineRef.current;
+      const acc = accordionRef.current;
+      if (h1 && acc && widths.length) {
+        const base = h1.offsetWidth - acc.offsetWidth;
+        setHeadlineMaxWidth(base + Math.max(...widths));
+      }
     };
     measure();
 
@@ -127,7 +149,14 @@ export function Hero() {
           --container-max is untouched. z-10 keeps the copy above the plate,
           which bleeds leftward underneath it on desktop. */}
       <div className="relative z-10 w-full mx-auto max-w-[1680px] px-6 lg:px-8">
-        <div className="lg:max-w-[64vw]">
+        {/* lg+: the column is pinned to the headline's widest state and its
+            contents centred on that axis. Below lg nothing here applies and the
+            mobile layout is untouched. The var falls back to fit-content for the
+            pre-hydration frame, before the measurement has run. */}
+        <div
+          className="lg:w-[var(--hero-col)] lg:text-center"
+          style={{ '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content' } as React.CSSProperties}
+        >
           {/* Hidden measurement container — same type classes as the h1 */}
           <span
             ref={measureRef}
@@ -143,10 +172,17 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block`}
+            ref={headlineRef}
+            /* lg:block + lg:text-left keeps the headline's LEFT edge pinned to
+               the column while the block below it centres. If the h1 stayed
+               inline-block inside a text-center column it would re-centre itself
+               every time the accordion collapsed, and "Sourcing Experts" would
+               breathe inward instead of sliding along the line. */
+            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block lg:block lg:text-left`}
           >
             Your{' '}
             <span
+              ref={accordionRef}
               className="inline-flex items-baseline overflow-hidden"
               style={{
                 width: phase === 'swipe-left'
@@ -187,7 +223,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl"
+            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl lg:mx-auto"
           >
             Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
             We&apos;re paid by carriers, not clients.
@@ -197,7 +233,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl"
+            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl lg:mx-auto"
           >
             Insero is your technology broker, advising you on solutions, services,
             and the right vendors to meet all your technology needs.
