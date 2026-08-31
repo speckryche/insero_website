@@ -11,6 +11,27 @@ const HOLD_DURATION = 2500;
 const SWIPE_DURATION = 400;
 
 /**
+ * The word's own fade, derived from SWIPE_DURATION rather than set beside it so
+ * the two cannot drift.
+ *
+ * The accordion collapses by animating width against overflow:hidden, which
+ * slices the word down its right edge — at full opacity that reads as a chopped
+ * glyph ("Your Intern|") rather than as motion. The fade hides the cut: the word
+ * is gone before enough of it has been eaten to notice, and the swap at the
+ * midpoint happens at opacity 0.
+ *
+ * 60% of the swipe, so the fade finishes at 240ms of the 400ms collapse, well
+ * before the text changes. On the way back it is delayed by the remaining 40%,
+ * starting at 160ms and landing exactly as the width finishes — the word arrives
+ * with the box rather than ahead of it.
+ */
+const WORD_FADE_MS = Math.round(SWIPE_DURATION * 0.6);
+const WORD_FADE_IN_DELAY_MS = SWIPE_DURATION - WORD_FADE_MS;
+
+/** Same curve the width animation uses, so the two read as one movement. */
+const SWIPE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
+
+/**
  * Where the glass pane sits on the base plate, as percentages of the plate
  * wrapper. Percentage-based on purpose: the wrapper always holds the plate's
  * native aspect ratio, so the pane keeps the same spot relative to INZO at
@@ -432,7 +453,18 @@ export function Hero() {
             >
               <span
                 className="whitespace-nowrap leading-[inherit]"
-                style={{ color: WORD_COLORS[wordIndex] }}
+                style={{
+                  color: WORD_COLORS[wordIndex],
+                  // Driven off the same phase as the width, so there is no
+                  // second timer and nothing new to keep in step with the
+                  // shared index.
+                  opacity: phase === 'swipe-left' ? 0 : 1,
+                  // Out immediately on the collapse; back in on a delay so it
+                  // completes with the expansion rather than ahead of it.
+                  transition: `opacity ${WORD_FADE_MS}ms ${SWIPE_EASING} ${
+                    phase === 'swipe-right' ? WORD_FADE_IN_DELAY_MS : 0
+                  }ms`,
+                }}
               >
                 {rotatingWords[wordIndex]}
               </span>
