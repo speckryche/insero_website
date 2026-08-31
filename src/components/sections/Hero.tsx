@@ -126,7 +126,7 @@ export function Hero() {
           the headline can use the whitespace on the left. The global
           --container-max is untouched. z-10 keeps the copy above the plate,
           which bleeds leftward underneath it on desktop. */}
-      <div className="relative z-10 w-full mx-auto max-w-[1680px] px-8">
+      <div className="relative z-10 w-full mx-auto max-w-[1680px] px-6 lg:px-8">
         <div className="lg:max-w-[64vw]">
           {/* Hidden measurement container — same type classes as the h1 */}
           <span
@@ -231,7 +231,7 @@ export function Hero() {
           narrows the plate slightly, which is intended.
           `top` is inert below lg, where the wrapper is static. */}
       <div
-        className="mt-10 w-full mx-auto max-w-[1680px] px-8
+        className="mt-10 w-full mx-auto max-w-[1680px] px-6
                    lg:mt-0 lg:mx-0 lg:max-w-none lg:w-auto lg:px-0
                    lg:absolute lg:right-0 lg:bottom-0 lg:z-0"
         style={{ top: PLATE_TOP_OFFSET }}
