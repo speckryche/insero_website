@@ -320,7 +320,22 @@ export function Hero() {
            from the viewport's left edge to the pane's left edge, with the column
            centred inside it — so the copy sits the same distance from the pane
            as from the edge. Below lg every one of those overrides is inert. */
-        className={`relative z-10 w-full mx-auto max-w-[1680px] px-6 ${
+        /* lg:pt-24 lg:pb-11 is the vertical balance, and it is on the flex item
+           rather than the section because the section's padding box is what the
+           plate's `top` is measured from — padding there would move the plate.
+
+           The section centres this item in its FULL height, but the fixed nav
+           covers the top 96px of that, so an item centred in the box sits 96px
+           of dead space high in the band anyone can actually see: 110px above
+           the headline against 206px below it. pt-24 is the nav's own height
+           (h-24 at lg), which hands that 96px back and centres the copy in the
+           band below the nav.
+
+           pb-11 then biases it up. An item padded top-only lands on 51/49, and
+           the eye reads dead centre as slightly low, so 44px of bottom padding
+           shifts the content up by half that — 22px — to the 45/55 the design
+           calls for. Both are inert below lg. */
+        className={`relative z-10 w-full mx-auto max-w-[1680px] px-6 lg:pt-24 lg:pb-11 ${
           layout
             ? `lg:mx-0 lg:max-w-none lg:w-[var(--hero-zone)] lg:flex ${
                 layout.mode === 'center'
