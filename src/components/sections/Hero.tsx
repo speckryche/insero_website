@@ -73,10 +73,13 @@ const CONTENT_TOP = 0.155;
  * ~1.6% white by 30.7%, because the failure sits at the end stop itself. With
  * this ramp the subcopy only holds 4.5:1 out to ~17% of the plate.
  *
- * The fix is not in this constant. Either the subcopy stops short of ~18% of
- * the plate at 1280, or the free zone is measured against COPY_FADE_CLEAR_PCT
- * instead of CONTENT_LEFT so the copy is laid out inside the washed band
- * rather than merely left of INZO.
+ * RESOLVED, copy-side rather than here. The type column carries its own
+ * backdrop — a blurred radial of white behind the text, extending 4rem past it
+ * — so legibility no longer depends on how far this wash reaches, and subcopy 2
+ * moved from #475569 to #1e293b to stop leaning on a colour that failed AA over
+ * the artwork even at 1920. These stops are therefore free to stay clear of
+ * INZO. Do not widen them to chase contrast: that is the backdrop's job now,
+ * and moving the end stop right is what put white over him in the first place.
  */
 const COPY_FADE_SOLID_PCT = 14;
 const COPY_FADE_CLEAR_PCT = 31;
@@ -707,9 +710,37 @@ export function Hero() {
             mobile layout is untouched. The var falls back to fit-content for the
             pre-hydration frame, before the measurement has run. */}
         <div
-          className="xl:w-[var(--hero-col)] xl:text-center"
+          className="relative xl:w-[var(--hero-col)] xl:text-center"
           style={{ '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content' } as React.CSSProperties}
         >
+          {/* ── Copy backdrop ─────────────────────────────────────────
+              Soft light behind the copy, not a card. This is what makes the
+              text legible over the artwork now that the plate's own wash stops
+              at 31% and no longer reaches under the copy's right end.
+
+              -inset-16 so it extends 4rem past the content on every side, and
+              the radial reaches full transparency at 72% of the way to the
+              farthest corner — inside the box, so the blur has clean falloff to
+              work with and no edge can appear at any width. The blur is what
+              turns a gradient into light.
+
+              -z-10 rather than DOM order: an absolutely positioned child paints
+              AFTER its in-flow siblings, so without it this would cover the
+              copy it is meant to sit behind. It resolves inside the wrapper's
+              z-10 stacking context, so it stays above the plate.
+
+              xl only. Below xl the stack is on plain white and needs none of
+              this. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-16 -z-10 hidden xl:block"
+            style={{
+              background:
+                'radial-gradient(ellipse at center, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.82) 42%, rgba(255,255,255,0) 72%)',
+              filter: 'blur(28px)',
+            }}
+          />
+
           {/* Hidden measurement container — same type classes as the h1 */}
           <span
             ref={measureRef}
@@ -861,7 +892,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-base md:text-xl text-[#475569] mb-6 xl:mb-12 leading-snug xl:leading-normal max-w-xl xl:mx-auto"
+            className="text-base md:text-xl text-[#1e293b] mb-6 xl:mb-12 leading-snug xl:leading-normal max-w-xl xl:mx-auto"
           >
             Insero is your technology broker, advising you on solutions, services,
             and the right vendors to meet all your technology needs.
