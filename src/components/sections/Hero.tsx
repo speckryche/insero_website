@@ -528,6 +528,18 @@ export function Hero() {
   // starts downloading at parse time — spending ~1.3 MB on the one visitor who
   // asked for less motion, before hydration can unmount it.
   const videoMounted = isClient && introMounted && !reducedMotion;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  /**
+   * Arms the opacity transition one painted frame AFTER the clip mounts.
+   *
+   * The transition used to be on the element from its first commit, which is
+   * what produced the ghost: INZO faded up from transparent instead of rolling
+   * in. Mounting with no transition means the clip paints instantly at full
+   * opacity — invisible, because its frame 0 is pixel-identical to the start
+   * frame underneath — and arming it a frame later changes nothing on screen
+   * while still having it in place for the fade-out at handoff.
+   */
+  const [fadeArmed, setFadeArmed] = useState(false);
 
   // One timer, one index. wordIndex drives both the headline word and which
   // pane is opaque, so the two can never drift apart.
@@ -542,6 +554,63 @@ export function Hero() {
     const interval = setInterval(startTransition, HOLD_DURATION + SWIPE_DURATION * 2);
     return () => clearInterval(interval);
   }, [startTransition, reducedMotion, handedOff]);
+
+  /**
+   * Start the clip only once it is genuinely on screen at full opacity.
+   *
+   * `autoPlay` is gone. It began playback the moment the element could play,
+   * with nothing tying that to the element having been painted — so the clip
+   * accumulated currentTime while it was not yet on screen and was then
+   * revealed part-way in, with INZO already inside the frame instead of
+   * entering from off-screen.
+   *
+   * Two rAFs, not one: the first runs after the commit that inserts the
+   * element, the second after the frame that actually paints it. Only then is
+   * currentTime reset to 0 and play() called, so the first advancing frame is
+   * also the first frame anyone sees.
+   */
+  useEffect(() => {
+    if (!videoMounted || handedOff) return;
+    const el = videoRef.current;
+    if (!el) return;
+
+    let cancelled = false;
+    let raf1 = 0;
+    let raf2 = 0;
+
+    const startWhenPainted = () => {
+      raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => {
+          const v = videoRef.current;
+          if (cancelled || !v) return;
+          setFadeArmed(true);
+          try {
+            v.currentTime = 0;
+          } catch {
+            // Seeking before metadata throws in some engines; playback from
+            // its natural 0 is the same thing here.
+          }
+          const played = v.play();
+          // A blocked or failed play must hand off rather than strand the
+          // rotation behind an intro that will never end.
+          if (played && typeof played.catch === 'function') {
+            played.catch(() => setIntroDone(true));
+          }
+        });
+      });
+    };
+
+    // HAVE_FUTURE_DATA: enough buffered that play() will not immediately stall.
+    if (el.readyState >= 3) startWhenPainted();
+    else el.addEventListener('canplay', startWhenPainted, { once: true });
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      el.removeEventListener('canplay', startWhenPainted);
+    };
+  }, [videoMounted, handedOff]);
 
   // Ceiling on the intro. Armed only while the video is actually the thing
   // being waited on, and cleared the moment it hands off.
@@ -924,17 +993,23 @@ export function Hero() {
                 fetching at parse time and would spend the bytes before the
                 reduced-motion check could run.
 
-                The poster is the plate itself, so the first painted frame is
-                already the image underneath — there is no black box while the
-                clip buffers, and nothing moves when it finally paints. */}
+                The poster is the START frame, not the plate. The plate is INZO
+                already at the desk, so posting it here painted him on top of
+                the empty office the moment the element mounted and before a
+                single video frame had decoded — a second source of exactly the
+                flash this layer exists to prevent. The start frame is frame 0
+                of this clip, so the poster, the image underneath and the first
+                decoded frame are all the same pixels. */}
             {videoMounted && (
               <video
+                ref={videoRef}
                 aria-hidden="true"
-                autoPlay
+                /* No autoPlay — see the effect above. Playback is started by
+                   hand once the element has actually been painted. */
                 muted
                 playsInline
                 preload="auto"
-                poster={PLATE_SRC}
+                poster={START_SRC}
                 onEnded={() => setIntroDone(true)}
                 // A clip that cannot play must not take the panes down with it.
                 onError={() => setIntroDone(true)}
@@ -942,7 +1017,11 @@ export function Hero() {
                 className="absolute inset-0 h-full w-full object-cover"
                 style={{
                   opacity: handedOff ? 0 : 1,
-                  transition: `opacity ${INTRO_FADE_MS}ms linear`,
+                  // Fade-out only. Absent on mount, so the clip appears at full
+                  // opacity in one frame rather than ghosting up from nothing.
+                  ...(fadeArmed
+                    ? { transition: `opacity ${INTRO_FADE_MS}ms linear` }
+                    : null),
                 }}
               >
                 <source src={INTRO_WEBM} type="video/webm" />
