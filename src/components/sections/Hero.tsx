@@ -5,6 +5,7 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from '@phosphor-icons/react';
+import { useReducedMotion, useIsClient } from '@/lib/use-reduced-motion';
 
 const rotatingWords = ['Voice', 'Internet', 'Redundancy'];
 const HOLD_DURATION = 2500;
@@ -32,22 +33,21 @@ const WORD_FADE_IN_DELAY_MS = SWIPE_DURATION - WORD_FADE_MS;
 const SWIPE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
 /**
- * Where the glass pane sits on the base plate, as percentages of the plate
- * wrapper. Percentage-based on purpose: the wrapper always holds the plate's
- * native aspect ratio, so the pane keeps the same spot relative to INZO at
- * every size — full-bleed on desktop, container-width on mobile.
+ * Where things sit on the 1920x1080 base plate, as fractions of its width and
+ * height. Measured off the asset, not eyeballed, and recorded here because the
+ * mobile crop below is derived from them and would otherwise be unauditable.
  *
- * Tuned to sit just left of INZO's raised hand while clearing the right edge
- * of the one-line headline. Nudge these four values to move it; nothing else
- * needs to change. Raising `left` moves the pane toward the hand and buys
- * clearance from the headline.
+ *   INZO           x 0.330 - 0.610   y 0.155 - ~1.0  (halo cubes down to wheels)
+ *   green glass    x 0.653 - 0.872   y 0.254 - 0.626
+ *   overlay ink    x 0.497 - 0.899   y 0.182 - 0.677 (hologram + its light rays)
+ *
+ * The overlays are full-frame 1920x1080 RGBA registered to the plate, so they
+ * are drawn at inset-0 over it rather than positioned into a box. The old
+ * PANE_BOX, which placed a small cropped pane image at 38%/9%, is gone: there
+ * is nothing left to position.
  */
-const PANE_BOX = {
-  left: '38%',
-  top: '9%',
-  width: '22%',
-  height: '30%',
-} as const;
+const CONTENT_LEFT = 0.33;
+const CONTENT_TOP = 0.155;
 
 /**
  * Gap between the top of the section and the top of the plate, in px, at lg and
@@ -60,34 +60,76 @@ const PLATE_TOP_OFFSET = 88;
 
 /**
  * The plate's true intrinsic size, measured off the file. The wrapper is locked
- * to this ratio so object-cover never actually crops: PANE_BOX percentages are
- * relative to the wrapper, so a wrapper that drifted from the image's own ratio
- * would slide the panes off INZO's hand.
+ * to this ratio so object-cover never actually crops — which matters more now
+ * than it did: the overlays are registered to the plate pixel for pixel, so a
+ * wrapper that drifted from the image's own ratio would have the plate and its
+ * hologram cropping differently and slide them apart.
  */
-const PLATE_ASPECT = '1712 / 1152';
+const PLATE_ASPECT = '1920 / 1080';
+/** The same ratio as a number, for the mobile-crop derivation below. */
+const PLATE_RATIO = 1920 / 1080;
 
 /**
  * Mobile zoom-crop. Below lg the full landscape plate at container width leaves
  * INZO tiny inside empty loft, so a crop frame shows only part of an oversized
- * plate: the plate is MOBILE_PLATE_WIDTH of the frame, pinned right and bottom,
- * and the frame's own aspect decides how much height survives.
+ * plate: the plate is MOBILE_PLATE_WIDTH (k) of the frame, pinned right and
+ * bottom, and the frame's own aspect (A) decides how much height survives.
  *
- * The two numbers are locked together tighter than they look. Anchored right,
- * the frame shows the rightmost 1/k of the plate, so the leftmost visible point
- * is at (1 - 1/k) of plate width; the pane starts at PANE_BOX.left (38%), so
- * k must stay under ~1.54 or the pane's left edge falls outside the frame.
- * Anchored bottom, the frame shows the bottom (1.4861 / (A*k)) of plate height,
- * and the pane's top sits at 9%, so A*k must stay under ~1.58 or the pane is
- * cut off the top. A also cannot go below 1.4861/k, or the plate is shorter
- * than the frame and a blank band opens above it.
+ * Re-derived for the 16:9 plate. Writing R for PLATE_RATIO, anchored right the
+ * frame shows the rightmost 1/k of the plate, so the leftmost visible point is
+ * at (1 - 1/k); anchored bottom it shows the bottom R/(A*k) of plate height, so
+ * the topmost visible point is at 1 - R/(A*k). Three constraints:
  *
- * 150% + 1/1 sits inside all three: the pane clears the left edge by ~4.7% of
- * plate width, the top crop is under 1%, and INZO is whole from halo to tracks.
- * A more aggressive zoom is not available at PANE_BOX.left = 38% — raising k
- * pushes the pane out of frame on the left before it buys any useful size.
+ *   1 - 1/k     <= CONTENT_LEFT   ->  k   <= 1.493   (INZO's wheels stay in)
+ *   1 - R/(A*k) <= CONTENT_TOP    ->  A*k <= 2.104   (his halo stays in)
+ *   R/(A*k)     <= 1              ->  A*k >= 1.778   (no blank band above)
+ *
+ * 4/3 + 140% sits inside all three with room to spare: visible from 28.6% of
+ * plate width against the 33.0% needed, and from 4.8% of plate height against
+ * the 15.5% needed. INZO comes out 39% of the frame's width.
+ *
+ * The old 1/1 + 150% is not merely suboptimal here, it fails twice: it clips
+ * INZO's left edge (visible from 33.33% against 33.0%) and, because 1*1.5 is
+ * below the 1.778 floor, it leaves the plate shorter than the frame and opens a
+ * blank band above it. The 16:9 plate is wider than the 1712x1152 one these
+ * numbers were tuned for, so less height arrives for the same width.
  */
-const MOBILE_CROP_ASPECT = '1 / 1';
-const MOBILE_PLATE_WIDTH = '150%';
+const MOBILE_CROP_ASPECT = '4 / 3';
+const MOBILE_PLATE_WIDTH = '140%';
+
+// Guard on the derivation above. The three constraints are easy to state and
+// easy to violate by nudging one of the two constants, and every violation is
+// silent at lg — the crop frame is display:contents there — so it would only
+// ever be caught by someone opening the site on a phone. Dev only; the numbers
+// are static, so this proves the shipped pair once per bundle load.
+if (process.env.NODE_ENV !== 'production') {
+  const k = parseFloat(MOBILE_PLATE_WIDTH) / 100;
+  const [aw, ah] = MOBILE_CROP_ASPECT.split('/').map((n) => parseFloat(n));
+  const A = aw / ah;
+  const leftVisible = 1 - 1 / k;
+  const visibleHeight = PLATE_RATIO / (A * k);
+  const topVisible = 1 - visibleHeight;
+  if (leftVisible > CONTENT_LEFT) {
+    console.error(
+      `[Hero] mobile crop shows from ${(leftVisible * 100).toFixed(2)}% of plate width, ` +
+        `past INZO's left edge at ${(CONTENT_LEFT * 100).toFixed(1)}%. He will be cut. ` +
+        'Lower MOBILE_PLATE_WIDTH.',
+    );
+  }
+  if (topVisible > CONTENT_TOP) {
+    console.error(
+      `[Hero] mobile crop shows from ${(topVisible * 100).toFixed(2)}% of plate height, ` +
+        `past INZO's halo at ${(CONTENT_TOP * 100).toFixed(1)}%. It will be cut. ` +
+        'Lower MOBILE_CROP_ASPECT or MOBILE_PLATE_WIDTH.',
+    );
+  }
+  if (visibleHeight > 1) {
+    console.error(
+      `[Hero] mobile crop frame is taller than the plate (${(visibleHeight * 100).toFixed(1)}% ` +
+        'of it), so a blank band opens above. Raise MOBILE_PLATE_WIDTH or MOBILE_CROP_ASPECT.',
+    );
+  }
+}
 
 /**
  * Index-aligned with rotatingWords, so the word takes the colour of the pane it
@@ -106,10 +148,39 @@ const WORD_COLORS = ['#008838', '#F97316', '#008838'];
 
 /** Index-aligned with rotatingWords — 0 Voice, 1 Internet, 2 Redundancy. */
 const PANE_SRCS = [
-  '/hero/pane-voice.png',
-  '/hero/pane-internet.png',
-  '/hero/pane-redundancy.png',
+  '/hero-video/pane-voice-1920.webp',
+  '/hero-video/pane-internet-1920.webp',
+  '/hero-video/pane-redundancy-1920.webp',
 ];
+
+/** Base plate — the video's own final frame, so the handoff is a pure fade. */
+const PLATE_SRC = '/hero-video/inzo-hero-base-plate-1920.webp';
+
+/** Intro clip. webm first: same picture as the mp4 at 65% of the bytes. */
+const INTRO_WEBM = '/hero-video/inzo-hero-intro-1080.webm';
+const INTRO_MP4 = '/hero-video/inzo-hero-intro-1080.mp4';
+
+/** Crossfade from the clip's last frame to the plate underneath it. */
+const INTRO_FADE_MS = 300;
+
+/**
+ * Grace period after the fade before the element is dropped. Slightly longer
+ * than the fade so a transitionend that never arrives — a backgrounded tab
+ * skips them — still releases the video.
+ */
+const INTRO_UNMOUNT_MS = 350;
+
+/**
+ * Hard ceiling on the intro, measured from mount. The clip runs 5.04s; this
+ * allows a little over that for a slow start, then hands off regardless.
+ *
+ * Without it a failure to reach `ended` is unrecoverable: the panes are gated
+ * on the handoff, so they would never appear and the rotation would never
+ * start, leaving the hero frozen on a still. `ended` not firing is not
+ * hypothetical — autoplay can be refused (iOS Low Power Mode), a decode can
+ * stall, and a tab backgrounded through the whole clip may never progress.
+ */
+const INTRO_CEILING_MS = 6500;
 
 /**
  * Minimum gap between the type column's right edge and the pane's left edge, in
@@ -125,12 +196,18 @@ const GAP_TO_PANE = 44;
 const MIN_EDGE_GAP = 32;
 
 /**
- * The pane's left edge as a fraction of the plate's width, derived from
- * PANE_BOX rather than restated. Where the copy sits depends on where the pane
- * is, so a second hardcoded 0.38 here would silently drift out of agreement the
- * first time PANE_BOX is tuned.
+ * Where the free zone for the copy ends, as a fraction of the plate's width.
+ *
+ * SPECIFIED, NOT MEASURED. The brief sets this to 0.45 as "the glass left
+ * edge"; the glass on this plate actually begins at 0.653, and the nearest
+ * artwork to the copy is INZO, whose leftmost pixel (his halo cubes) is at
+ * CONTENT_LEFT = 0.33. So 0.45 is neither of the two edges it could be, and it
+ * lets the column's right edge reach 12% of plate width past INZO's left edge
+ * before any floor complains. Whether that reads as a collision depends on how
+ * much slack the centring leaves — measured and reported rather than tuned
+ * here, because the value was given explicitly.
  */
-const PANE_LEFT_FRACTION = parseFloat(PANE_BOX.left) / 100;
+const PANE_LEFT_FRACTION = 0.45;
 
 /**
  * Middle term of the headline's fluid clamp, in vw, held in a CSS variable so
@@ -185,6 +262,20 @@ const HEADLINE_TYPE =
 type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
 export function Hero() {
+  const reducedMotion = useReducedMotion();
+  const isClient = useIsClient();
+  /**
+   * Has the intro handed off to the rotation?
+   *
+   * Gates three things at once: the panes' opacity, the rotation timer, and the
+   * video's own fade-out. Seeded from reducedMotion, which is false on the
+   * server and on the first client render — so the reduced-motion visitor gets
+   * plate + Voice on their first painted frame, with no video and no flash of
+   * an empty plate, while everyone else starts at false and waits for `ended`.
+   */
+  const [introDone, setIntroDone] = useState(reducedMotion);
+  /** Kept mounted through the fade, then released. */
+  const [introMounted, setIntroMounted] = useState(!reducedMotion);
   const [wordIndex, setWordIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>('visible');
   const [wordWidths, setWordWidths] = useState<number[]>([]);
@@ -372,14 +463,50 @@ export function Hero() {
     }, SWIPE_DURATION);
   }, []);
 
+  /**
+   * The OS setting can be turned on mid-visit, and useReducedMotion is live, so
+   * both flags are read through it rather than stored with it folded in.
+   * Derived at render rather than synced in an effect: an effect would need a
+   * setState in its body, which is a cascading render, and would briefly leave
+   * the video mounted after the visitor asked for less motion.
+   */
+  const handedOff = introDone || reducedMotion;
+  // isClient as well as !reducedMotion: both hooks report motion-allowed on the
+  // server, so without it the <video> ships in the SSR HTML and its <source>
+  // starts downloading at parse time — spending ~1.3 MB on the one visitor who
+  // asked for less motion, before hydration can unmount it.
+  const videoMounted = isClient && introMounted && !reducedMotion;
+
   // One timer, one index. wordIndex drives both the headline word and which
   // pane is opaque, so the two can never drift apart.
   useEffect(() => {
     // Reduced motion holds on index 0: Voice word, Voice pane, no rotation.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (reducedMotion) return;
+    // Nothing rotates until the intro has handed off. wordIndex is still 0 at
+    // that moment, so Voice is the word and the pane the rotation starts from —
+    // no seeding needed, and none wanted: setting it here would fight the
+    // accordion's own index swap.
+    if (!handedOff) return;
     const interval = setInterval(startTransition, HOLD_DURATION + SWIPE_DURATION * 2);
     return () => clearInterval(interval);
-  }, [startTransition]);
+  }, [startTransition, reducedMotion, handedOff]);
+
+  // Ceiling on the intro. Armed only while the video is actually the thing
+  // being waited on, and cleared the moment it hands off.
+  useEffect(() => {
+    if (!videoMounted || handedOff) return;
+    const t = setTimeout(() => setIntroDone(true), INTRO_CEILING_MS);
+    return () => clearTimeout(t);
+  }, [videoMounted, handedOff]);
+
+  // Release the element once its fade has run. transitionend is the accurate
+  // signal and this is the backstop, because a backgrounded tab does not fire
+  // transitions at all and the video would otherwise stay mounted forever.
+  useEffect(() => {
+    if (!handedOff || !videoMounted) return;
+    const t = setTimeout(() => setIntroMounted(false), INTRO_UNMOUNT_MS);
+    return () => clearTimeout(t);
+  }, [handedOff, videoMounted]);
 
   const currentWidth = wordWidths[wordIndex] || 0;
 
@@ -664,26 +791,74 @@ export function Hero() {
             style={{ aspectRatio: PLATE_ASPECT, ['--plate-w' as string]: MOBILE_PLATE_WIDTH } as React.CSSProperties}
           >
             <Image
-              src="/hero/inzo-hero-base-loft-fade.jpg"
+              src={PLATE_SRC}
               alt="INZO, the Insero robot, working at a desk in a loft office"
               fill
               priority
-              sizes="(min-width: 1024px) 128vh, 150vw"
+              sizes="(min-width: 1024px) 143vh, 140vw"
               className="object-cover"
             />
+
+            {/* ── Intro clip ────────────────────────────────────────
+                Sits between the plate and the panes, filling the same box, so
+                it inherits the plate's aspect ratio and the mobile crop for
+                free rather than carrying geometry of its own. object-cover to
+                match the Image above it — anything else and the two would crop
+                differently and the handoff would jump.
+
+                Only ever rendered on the client and only when motion is
+                allowed — see videoMounted. It is deliberately absent from the
+                SSR markup, because a <source> in the initial HTML starts
+                fetching at parse time and would spend the bytes before the
+                reduced-motion check could run.
+
+                The poster is the plate itself, so the first painted frame is
+                already the image underneath — there is no black box while the
+                clip buffers, and nothing moves when it finally paints. */}
+            {videoMounted && (
+              <video
+                aria-hidden="true"
+                autoPlay
+                muted
+                playsInline
+                preload="auto"
+                poster={PLATE_SRC}
+                onEnded={() => setIntroDone(true)}
+                // A clip that cannot play must not take the panes down with it.
+                onError={() => setIntroDone(true)}
+                onTransitionEnd={() => setIntroMounted(false)}
+                className="absolute inset-0 h-full w-full object-cover"
+                style={{
+                  opacity: handedOff ? 0 : 1,
+                  transition: `opacity ${INTRO_FADE_MS}ms linear`,
+                }}
+              >
+                <source src={INTRO_WEBM} type="video/webm" />
+                <source src={INTRO_MP4} type="video/mp4" />
+              </video>
+            )}
 
             {/* All three panes are mounted for the life of the component and
                 only ever cross-fade opacity — never unmount, never swap src,
                 never move. The base plate underneath is untouched by a word
-                change, so it never re-renders or re-decodes. */}
+                change, so it never re-renders or re-decodes.
+
+                Full-frame 1920x1080 overlays registered to the plate, so they
+                are drawn at inset-0 with the same object-cover: they are the
+                same picture as the plate, with only the hologram painted in.
+                Any other fit would scale them independently and slide the
+                hologram off the glass.
+
+                Held at 0 until the intro hands off. The clip ends on this same
+                frame without a hologram, so a pane appearing early would show
+                through the video. */}
             {PANE_SRCS.map((src, i) => (
               <div
                 key={src}
                 aria-hidden="true"
-                className="absolute"
+                className="absolute inset-0"
                 style={{
-                  ...PANE_BOX,
-                  opacity: i === wordIndex ? 1 : 0,
+                  opacity: handedOff && i === wordIndex ? 1 : 0,
                   // Same duration and easing as the word accordion, so the pane
                   // and the word resolve together.
                   transition: `opacity ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
@@ -693,8 +868,8 @@ export function Hero() {
                   src={src}
                   alt=""
                   fill
-                  sizes="(min-width: 1024px) 30vh, 33vw"
-                  className="object-contain"
+                  sizes="(min-width: 1024px) 143vh, 140vw"
+                  className="object-cover"
                 />
               </div>
             ))}

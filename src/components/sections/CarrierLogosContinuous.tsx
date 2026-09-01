@@ -1,8 +1,9 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef, useSyncExternalStore } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
+import { useReducedMotion } from '@/lib/use-reduced-motion';
 
 interface CarrierLogo {
   name: string;
@@ -15,32 +16,6 @@ const logoAdjustments: Record<string, { scale?: string; translateY?: string }> =
 };
 
 const SCROLL_DURATION = 30;
-
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
-
-/**
- * Live prefers-reduced-motion, safe to render on the server.
- *
- * useSyncExternalStore rather than framer-motion's useReducedMotion or an
- * effect, for two reasons it makes explicit. The server snapshot is pinned to
- * false, so the SSR markup is always the motion-allowed layout and hydration
- * has nothing to disagree about; React then re-renders with the real value once
- * mounted, which is the documented behaviour for a store whose server and
- * client snapshots differ, not a mismatch. And subscribing to the MediaQueryList
- * means toggling the OS setting re-renders live, where a one-shot read on mount
- * would leave the wrong layout until a refresh.
- */
-function useReducedMotion(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia(REDUCED_MOTION_QUERY);
-      mq.addEventListener('change', onChange);
-      return () => mq.removeEventListener('change', onChange);
-    },
-    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
-    () => false,
-  );
-}
 
 function LogoItem({ logo }: { logo: CarrierLogo }) {
   const adjustment = logoAdjustments[logo.name] || {};
