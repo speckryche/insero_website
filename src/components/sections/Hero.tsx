@@ -50,6 +50,21 @@ const CONTENT_LEFT = 0.33;
 const CONTENT_TOP = 0.155;
 
 /**
+ * White wash over the left of the artwork, so the copy never sits on the trees.
+ * Percentages are of the plate box's width — the same axis CONTENT_LEFT and the
+ * glass fractions use, so the three can be reasoned about together:
+ *
+ *   solid out to 20%   the tree line the copy overlaps is fully covered
+ *   clear by 50%       the green glass starts at 65.3% and is never touched
+ *   at CONTENT_LEFT    1 - (33 - 20) / (50 - 20) = 56.7% white over INZO's edge
+ *
+ * 18%/46% was specified first; that lands at 46.4% over INZO, under the 55-60%
+ * the wash is meant to give him, so the pair was opened to 20%/50%.
+ */
+const COPY_FADE_SOLID_PCT = 20;
+const COPY_FADE_CLEAR_PCT = 50;
+
+/**
  * Gap between the top of the section and the top of the plate, in px, at xl and
  * up. Without it the plate runs under the transparent header and INZO's halo
  * and the glass pane crowd the nav. The plate is pinned top/bottom, so raising
@@ -863,6 +878,25 @@ export function Hero() {
                 <source src={INTRO_MP4} type="video/mp4" />
               </video>
             )}
+
+            {/* ── Copy wash ─────────────────────────────────────────
+                Inside the plate box on purpose: it inherits the aspect ratio
+                and the mobile crop from its parent, so the wash slides with the
+                artwork instead of staying pinned to the viewport and washing
+                the wrong part of the frame once the plate is cropped.
+
+                Ordered after the video and before the panes so it covers both
+                the still plate and the intro clip — the clip ends on this same
+                frame, so washing only one of them would flash on handoff — and
+                leaves the holograms untouched, which sit right of the fade's
+                end anyway. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background: `linear-gradient(to right, #fff 0%, #fff ${COPY_FADE_SOLID_PCT}%, rgba(255,255,255,0) ${COPY_FADE_CLEAR_PCT}%)`,
+              }}
+            />
 
             {/* All three panes are mounted for the life of the component and
                 only ever cross-fade opacity — never unmount, never swap src,
