@@ -852,9 +852,30 @@ export function Hero() {
               src={PLATE_SRC}
               alt="INZO, the Insero robot, working at a desk in a loft office"
               fill
-              priority
+              /* NOT priority. The plate is INZO already at the desk, and while
+                 the intro is still to play it is the one thing that must not
+                 paint. It used to carry priority and therefore decoded first,
+                 beating the start frame that covers it — at 10fps that read as
+                 white, start frame, one frame of INZO, start frame again.
+
+                 loading="eager" keeps it fetching at parse time, so it is
+                 decoded long before the 5s handoff, without the preload and
+                 fetchpriority=high that priority couples together. Next ties
+                 the <head> preload to priority, so eager is how the plate gets
+                 an early fetch while the start frame keeps the high-priority
+                 slot it now needs as the real first-paint image. */
+              loading="eager"
               sizes="(min-width: 1280px) 143vh, 140vw"
-              className="object-cover"
+              /* The gate is CSS, not React, and that is the whole point: it
+                 holds on the very first painted frame, before hydration, so no
+                 decode order can expose INZO. motion-safe only, so a
+                 reduced-motion visitor — who never gets a start frame or a
+                 video — still has the plate as their first paint.
+
+                 Dropped the instant handedOff flips, which is the same instant
+                 the video begins its 300ms fade-out, so the surface the fade
+                 reveals is already opaque underneath it. */
+              className={`object-cover${handedOff ? '' : ' motion-safe:opacity-0'}`}
             />
 
             {/* ── Pre-intro start frame ─────────────────────────────
@@ -879,6 +900,12 @@ export function Hero() {
                 aria-hidden="true"
                 fill
                 priority
+                /* Explicit: this Next version emits neither fetchpriority nor a
+                   high-priority hint from `priority` alone, and the plate's
+                   preload still precedes this one in the head. Stating it here
+                   is what actually puts the first-paint image ahead of the
+                   image it is covering. */
+                fetchPriority="high"
                 sizes="(min-width: 1280px) 143vh, 140vw"
                 className="object-cover motion-reduce:hidden"
               />
