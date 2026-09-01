@@ -12,6 +12,17 @@ const HOLD_DURATION = 2500;
 const SWIPE_DURATION = 400;
 
 /**
+ * Hold before the FIRST swipe after the intro hands off.
+ *
+ * Shorter than the steady-state cycle because Voice has already been on screen
+ * throughout the clip — the visitor has read it long before the rotation owns
+ * the headline. A bare setInterval fires first at one full cycle, which gave
+ * Voice a 3300ms hold against every other word's 2500ms settled hold; this
+ * replaces that lead-in without touching the cadence that follows it.
+ */
+const FIRST_HOLD_MS = 1800;
+
+/**
  * The word's own fade, derived from SWIPE_DURATION rather than set beside it so
  * the two cannot drift.
  *
@@ -611,8 +622,24 @@ export function Hero() {
     // no seeding needed, and none wanted: setting it here would fight the
     // accordion's own index swap.
     if (!handedOff) return;
-    const interval = setInterval(startTransition, HOLD_DURATION + SWIPE_DURATION * 2);
-    return () => clearInterval(interval);
+
+    // The first swipe is scheduled on its own shorter hold; the steady interval
+    // is only created once that has run, so every later swipe is one full cycle
+    // after the one before it rather than after handoff. Both handles are
+    // cleaned up: the timeout may still be pending if the effect tears down
+    // inside FIRST_HOLD_MS — reduced motion switched on mid-visit does exactly
+    // that — and leaving it armed would fire a swipe after the rotation was
+    // meant to stop.
+    let interval: ReturnType<typeof setInterval> | undefined;
+    const firstHold = setTimeout(() => {
+      startTransition();
+      interval = setInterval(startTransition, HOLD_DURATION + SWIPE_DURATION * 2);
+    }, FIRST_HOLD_MS);
+
+    return () => {
+      clearTimeout(firstHold);
+      if (interval) clearInterval(interval);
+    };
   }, [startTransition, reducedMotion, handedOff]);
 
   /**
