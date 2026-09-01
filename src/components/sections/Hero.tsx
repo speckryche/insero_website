@@ -172,6 +172,17 @@ const PANE_SRCS = [
 
 /** Base plate — the video's own final frame, so the handoff is a pure fade. */
 const PLATE_SRC = '/hero-video/inzo-hero-base-plate-1920.webp';
+/**
+ * The intro's literal first frame — the empty office, before INZO rolls in.
+ * Verified against the clip at a mean absolute difference of 2.156/255.
+ *
+ * It exists to kill a flash. The plate is INZO already at the desk, and it is
+ * the only thing in the server markup, so first paint showed him seated; the
+ * video then mounts client-side, starts on an empty office, and he pops out of
+ * existence before rolling back in. This frame covers the plate until the intro
+ * hands off, so the first painted pixel already matches the clip's frame 0.
+ */
+const START_SRC = '/hero-video/inzo-hero-start-1920.webp';
 
 /** Intro clip. webm first: same picture as the mp4 at 65% of the bytes. */
 const INTRO_WEBM = '/hero-video/inzo-hero-intro-1080.webm';
@@ -554,7 +565,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-28 pb-16 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
+      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-20 pb-10 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
       /* Set here rather than on the h1 so the hidden measurement span inherits
          the same value — the two must resolve to identical type or the
          accordion animates to a width the word does not occupy. */
@@ -677,7 +688,7 @@ export function Hero() {
                inline-block inside a text-center column it would re-centre itself
                every time the accordion collapsed, and "Sourcing Experts" would
                breathe inward instead of sliding along the line. */
-            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block xl:block xl:text-left`}
+            className={`${HEADLINE_TYPE} text-[#1e293b] mb-5 xl:mb-8 leading-[1.1] inline-block xl:block xl:text-left`}
           >
             Your{' '}
             <span
@@ -754,7 +765,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl xl:mx-auto"
+            className="text-lg md:text-2xl text-[#1e293b] mb-3 xl:mb-6 leading-snug xl:leading-relaxed font-medium max-w-xl xl:mx-auto"
           >
             Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
             We&apos;re paid by carriers, not clients.
@@ -764,7 +775,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl xl:mx-auto"
+            className="text-base md:text-xl text-[#475569] mb-6 xl:mb-12 leading-snug xl:leading-normal max-w-xl xl:mx-auto"
           >
             Insero is your technology broker, advising you on solutions, services,
             and the right vendors to meet all your technology needs.
@@ -781,7 +792,7 @@ export function Hero() {
             className="flex justify-center xl:block"
           >
             <Link href="/contact">
-              <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
+              <button className="group inline-flex items-center gap-3 px-8 py-4 xl:px-10 xl:py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
                 <span>Get Started</span>
                 <ArrowRight
                   weight="bold"
@@ -803,7 +814,13 @@ export function Hero() {
           narrows the plate slightly, which is intended.
           `top` is inert below xl, where the wrapper is static. */}
       <div
-        className="mt-10 w-full mx-auto max-w-[1680px] px-6
+        /* mt-5, not mt-10: the gap above the crop frame is one of the levers
+               that lifts the artwork above the fold on a phone. No xl override
+               here — `xl:mt-0` below already owns that breakpoint, and adding a
+               second xl margin utility silently won over it, pushing the
+               absolutely-positioned plate 40px down (top 88 -> 128) and shrinking
+               it through the locked aspect ratio. */
+        className="mt-5 w-full mx-auto max-w-[1680px] px-6
                    xl:mt-0 xl:mx-0 xl:max-w-none xl:w-auto xl:px-0
                    xl:absolute xl:right-0 xl:bottom-0 xl:z-0"
         style={{ top: PLATE_TOP_OFFSET }}
@@ -839,6 +856,33 @@ export function Hero() {
               sizes="(min-width: 1280px) 143vh, 140vw"
               className="object-cover"
             />
+
+            {/* ── Pre-intro start frame ─────────────────────────────
+                Above the plate, below the clip, same box and same object-cover
+                so all three crop identically.
+
+                Rendered whenever the intro has not handed off — which includes
+                the server, where useReducedMotion reports motion-allowed. That
+                is deliberate: this has to be IN the server HTML or the
+                pre-hydration paint is the plate again and the flash survives.
+
+                `motion-reduce:hidden` is what keeps that honest. The markup
+                ships to everyone, but a reduced-motion browser applies the
+                media query before first paint, so it never renders there and
+                that visitor's first frame is still plate + Voice. A JS-only
+                gate could not do this: reducedMotion is false through
+                hydration, so the frame would paint and then vanish. */}
+            {!handedOff && (
+              <Image
+                src={START_SRC}
+                alt=""
+                aria-hidden="true"
+                fill
+                priority
+                sizes="(min-width: 1280px) 143vh, 140vw"
+                className="object-cover motion-reduce:hidden"
+              />
+            )}
 
             {/* ── Intro clip ────────────────────────────────────────
                 Sits between the plate and the panes, filling the same box, so
