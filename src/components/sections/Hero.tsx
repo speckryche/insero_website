@@ -54,15 +54,32 @@ const CONTENT_TOP = 0.155;
  * Percentages are of the plate box's width — the same axis CONTENT_LEFT and the
  * glass fractions use, so the three can be reasoned about together:
  *
- *   solid out to 20%   the tree line the copy overlaps is fully covered
- *   clear by 50%       the green glass starts at 65.3% and is never touched
- *   at CONTENT_LEFT    1 - (33 - 20) / (50 - 20) = 56.7% white over INZO's edge
+ *   solid out to 14%   the tree line behind the start of the copy is covered.
+ *                      14 is the ceiling agreed for this stop; it is not enough
+ *                      to carry the subcopy's right end — see the note below
+ *   clear by 31%       two points before CONTENT_LEFT, so the wash is fully
+ *                      gone by the time it reaches INZO
+ *   at CONTENT_LEFT    0% white — he is not washed at all
  *
- * 18%/46% was specified first; that lands at 46.4% over INZO, under the 55-60%
- * the wash is meant to give him, so the pair was opened to 20%/50%.
+ * Earlier pairs ran the fade past him: 20%/50% put his whole left side under
+ * ~57% white, which is what the grade made obvious. The end stop is the value
+ * that matters here and it must stay left of CONTENT_LEFT; if the copy ever
+ * needs more cover, raise the middle stop, never the end.
+ *
+ * KNOWN CONFLICT, measured, not theoretical. Ending the wash at 31% leaves the
+ * subcopy's right end on bare artwork at 1280, where the paragraph reaches
+ * 30.7% of the plate. #475569 over the trees there measures 2.3:1 against a
+ * 4.5:1 AA floor. The middle stop cannot rescue it: at 14% the wash is still
+ * ~1.6% white by 30.7%, because the failure sits at the end stop itself. With
+ * this ramp the subcopy only holds 4.5:1 out to ~17% of the plate.
+ *
+ * The fix is not in this constant. Either the subcopy stops short of ~18% of
+ * the plate at 1280, or the free zone is measured against COPY_FADE_CLEAR_PCT
+ * instead of CONTENT_LEFT so the copy is laid out inside the washed band
+ * rather than merely left of INZO.
  */
-const COPY_FADE_SOLID_PCT = 20;
-const COPY_FADE_CLEAR_PCT = 50;
+const COPY_FADE_SOLID_PCT = 14;
+const COPY_FADE_CLEAR_PCT = 31;
 
 /**
  * Gap between the top of the section and the top of the plate, in px, at xl and
