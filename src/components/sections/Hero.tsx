@@ -50,11 +50,11 @@ const CONTENT_LEFT = 0.33;
 const CONTENT_TOP = 0.155;
 
 /**
- * Gap between the top of the section and the top of the plate, in px, at lg and
+ * Gap between the top of the section and the top of the plate, in px, at xl and
  * up. Without it the plate runs under the transparent header and INZO's halo
  * and the glass pane crowd the nav. The plate is pinned top/bottom, so raising
  * this shortens the plate and — because PLATE_ASPECT is preserved — narrows it
- * slightly too. Below lg the wrapper is static and this is ignored.
+ * slightly too. Below xl the wrapper is static and this is ignored.
  */
 const PLATE_TOP_OFFSET = 88;
 
@@ -70,7 +70,7 @@ const PLATE_ASPECT = '1920 / 1080';
 const PLATE_RATIO = 1920 / 1080;
 
 /**
- * Mobile zoom-crop. Below lg the full landscape plate at container width leaves
+ * Mobile zoom-crop. Below xl the full landscape plate at container width leaves
  * INZO tiny inside empty loft, so a crop frame shows only part of an oversized
  * plate: the plate is MOBILE_PLATE_WIDTH (k) of the frame, pinned right and
  * bottom, and the frame's own aspect (A) decides how much height survives.
@@ -99,8 +99,10 @@ const MOBILE_PLATE_WIDTH = '140%';
 
 // Guard on the derivation above. The three constraints are easy to state and
 // easy to violate by nudging one of the two constants, and every violation is
-// silent at lg — the crop frame is display:contents there — so it would only
-// ever be caught by someone opening the site on a phone. Dev only; the numbers
+// silent at xl and up — the crop frame is display:contents there — so it would
+// only be caught by someone opening the site below 1280. That is now a much
+// wider range than it was: since the hero stacks below xl rather than below lg,
+// this crop is what 1024-1279 sees too, not just phones. Dev only; the numbers
 // are static, so this proves the shipped pair once per bundle load.
 if (process.env.NODE_ENV !== 'production') {
   const k = parseFloat(MOBILE_PLATE_WIDTH) / 100;
@@ -198,16 +200,19 @@ const MIN_EDGE_GAP = 32;
 /**
  * Where the free zone for the copy ends, as a fraction of the plate's width.
  *
- * SPECIFIED, NOT MEASURED. The brief sets this to 0.45 as "the glass left
- * edge"; the glass on this plate actually begins at 0.653, and the nearest
- * artwork to the copy is INZO, whose leftmost pixel (his halo cubes) is at
- * CONTENT_LEFT = 0.33. So 0.45 is neither of the two edges it could be, and it
- * lets the column's right edge reach 12% of plate width past INZO's left edge
- * before any floor complains. Whether that reads as a collision depends on how
- * much slack the centring leaves — measured and reported rather than tuned
- * here, because the value was given explicitly.
+ * INZO's left edge, not the glass pane's. On this plate he sits LEFT of the
+ * glass (he spans 0.33-0.61, the glass 0.653-0.872), so he — not the pane — is
+ * the nearest artwork to the copy, and stopping the free zone at the glass
+ * would run the headline straight over his halo cubes. That is a reversal from
+ * the 1712x1152 plate, where the pane was the leftmost element and this
+ * constant tracked it.
+ *
+ * Deliberately the same number as CONTENT_LEFT, and for the same reason: it is
+ * the leftmost pixel of the artwork. They are kept separate because they are
+ * read for different jobs — CONTENT_LEFT bounds the mobile crop, this bounds
+ * the desktop copy — and a future plate could move one without the other.
  */
-const PANE_LEFT_FRACTION = 0.45;
+const PANE_LEFT_FRACTION = CONTENT_LEFT;
 
 /**
  * Middle term of the headline's fluid clamp, in vw, held in a CSS variable so
@@ -235,8 +240,8 @@ const HEADLINE_VW_MIN = 1.8;
  */
 const WORD_WIDTH_BUFFER = 3;
 
-/** lg breakpoint, matching the Tailwind utilities used throughout this file. */
-const LG = 1024;
+/** xl breakpoint, matching the Tailwind utilities used throughout this file. */
+const XL = 1280;
 
 /**
  * useLayoutEffect on the client, useEffect on the server. The layout pass has to
@@ -251,13 +256,15 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
  * the accordion animates to a width measured off that span, so any type change
  * applied to one and not the other silently mis-sizes the word.
  *
- * The lg+ size is fluid, which is what keeps "Your [WORD] Sourcing Experts" on
- * one line from 1024px up to very wide screens without ever breaking. Because
+ * The xl+ size is fluid, which is what keeps "Your [WORD] Sourcing Experts" on
+ * one line from 1280px up to very wide screens without ever breaking. Below xl
+ * the hero stacks, so the headline gets the full container width and the fixed
+ * md:text-5xl step carries it instead. Because
  * the size now depends on the viewport, the measurement has to re-run on
  * resize — see the effect below.
  */
 const HEADLINE_TYPE =
-  'text-3xl sm:text-4xl md:text-5xl lg:text-[clamp(2.25rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
+  'text-3xl sm:text-4xl md:text-5xl xl:text-[clamp(2.25rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
 
 type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
@@ -289,8 +296,8 @@ export function Hero() {
    */
   const [headlineMaxWidth, setHeadlineMaxWidth] = useState<number | null>(null);
   /**
-   * lg+ placement of the type column, measured rather than assumed. Null until
-   * the first measurement and below lg, where the mobile layout is untouched.
+   * xl+ placement of the type column, measured rather than assumed. Null until
+   * the first measurement and below xl, where the mobile layout is untouched.
    *
    * `zone` is the width from the viewport's left edge to the pane's left edge.
    * The column is centred in it, which is the whole point: the
@@ -377,7 +384,7 @@ export function Hero() {
       );
 
       // Measured off the out-of-flow clone below, never off the h1. The h1 is
-      // lg:block inside a column this value then sizes, so reading its
+      // xl:block inside a column this value then sizes, so reading its
       // offsetWidth reports the column's width back — fine on the first pass
       // while the column is still fit-content, a feedback loop on every pass
       // after. It pinned the column at 2044px at 1280x800 and drove the clamp
@@ -391,9 +398,9 @@ export function Hero() {
       const colWidth = Math.ceil(full.getBoundingClientRect().width) + WORD_WIDTH_BUFFER;
       setHeadlineMaxWidth((prev) => (prev === colWidth ? prev : colWidth));
 
-      // Below lg the plate is a static block under the copy and none of this
+      // Below xl the plate is a static block under the copy and none of this
       // applies.
-      if (window.innerWidth < LG) {
+      if (window.innerWidth < XL) {
         setLayout((prev) => (prev === null ? prev : null));
         return;
       }
@@ -513,7 +520,7 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white overflow-hidden min-h-hero lg:min-h-[85vh]! pt-28 pb-16 lg:pt-0 lg:pb-0 lg:flex lg:items-center"
+      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-28 pb-16 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
       /* Set here rather than on the h1 so the hidden measurement span inherits
          the same value — the two must resolve to identical type or the
          accordion animates to a width the word does not occupy. */
@@ -530,11 +537,11 @@ export function Hero() {
            a layout effect, so it lands before paint and there is no jump to
            transition away.
 
-           Once measured, at lg this stops being a centred container and spans
+           Once measured, at xl this stops being a centred container and spans
            from the viewport's left edge to the pane's left edge, with the column
            centred inside it — so the copy sits the same distance from the pane
-           as from the edge. Below lg every one of those overrides is inert. */
-        /* lg:pt-24 lg:pb-11 is the vertical balance, and it is on the flex item
+           as from the edge. Below xl every one of those overrides is inert. */
+        /* xl:pt-24 xl:pb-11 is the vertical balance, and it is on the flex item
            rather than the section because the section's padding box is what the
            plate's `top` is measured from — padding there would move the plate.
 
@@ -548,15 +555,15 @@ export function Hero() {
            pb-11 then biases it up. An item padded top-only lands on 51/49, and
            the eye reads dead centre as slightly low, so 44px of bottom padding
            shifts the content up by half that — 22px — to the 45/55 the design
-           calls for. Both are inert below lg. */
-        className={`relative z-10 w-full mx-auto max-w-[1680px] px-6 lg:pt-24 lg:pb-11 ${
+           calls for. Both are inert below xl. */
+        className={`relative z-10 w-full mx-auto max-w-[1680px] px-6 xl:pt-24 xl:pb-11 ${
           layout
-            ? `lg:mx-0 lg:max-w-none lg:w-[var(--hero-zone)] lg:flex ${
+            ? `xl:mx-0 xl:max-w-none xl:w-[var(--hero-zone)] xl:flex ${
                 layout.mode === 'center'
-                  ? 'lg:justify-center lg:px-0'
-                  : 'lg:justify-start lg:pl-8 lg:pr-0'
+                  ? 'xl:justify-center xl:px-0'
+                  : 'xl:justify-start xl:pl-8 xl:pr-0'
               }`
-            : 'lg:px-8'
+            : 'xl:px-8'
         }`}
         style={
           layout
@@ -564,12 +571,12 @@ export function Hero() {
             : undefined
         }
       >
-        {/* lg+: the column is pinned to the headline's widest state and its
-            contents centred on that axis. Below lg nothing here applies and the
+        {/* xl+: the column is pinned to the headline's widest state and its
+            contents centred on that axis. Below xl nothing here applies and the
             mobile layout is untouched. The var falls back to fit-content for the
             pre-hydration frame, before the measurement has run. */}
         <div
-          className="lg:w-[var(--hero-col)] lg:text-center"
+          className="xl:w-[var(--hero-col)] xl:text-center"
           style={{ '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content' } as React.CSSProperties}
         >
           {/* Hidden measurement container — same type classes as the h1 */}
@@ -618,9 +625,9 @@ export function Hero() {
             />
             {/* The h1's forced break, mirrored. The clone is only useful while
                 it matches the h1 exactly, and without this it measures one
-                unbroken line at every width — right at lg, but far too wide
+                unbroken line at every width — right at xl, but far too wide
                 below sm where the headline really is two lines. `sm:hidden`
-                means lg is measured exactly as it was before this was added,
+                means xl is measured exactly as it was before this was added,
                 which the A/B confirmed. */}
             <br aria-hidden="true" className="sm:hidden" />{' '}
             Sourcing Experts
@@ -631,12 +638,12 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             ref={headlineRef}
-            /* lg:block + lg:text-left keeps the headline's LEFT edge pinned to
+            /* xl:block + xl:text-left keeps the headline's LEFT edge pinned to
                the column while the block below it centres. If the h1 stayed
                inline-block inside a text-center column it would re-centre itself
                every time the accordion collapsed, and "Sourcing Experts" would
                breathe inward instead of sliding along the line. */
-            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block lg:block lg:text-left`}
+            className={`${HEADLINE_TYPE} text-[#1e293b] mb-8 leading-[1.1] inline-block xl:block xl:text-left`}
           >
             Your{' '}
             <span
@@ -713,7 +720,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl lg:mx-auto"
+            className="text-xl md:text-2xl text-[#1e293b] mb-6 leading-relaxed font-medium max-w-xl xl:mx-auto"
           >
             Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
             We&apos;re paid by carriers, not clients.
@@ -723,7 +730,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl lg:mx-auto"
+            className="text-lg md:text-xl text-[#475569] mb-12 max-w-xl xl:mx-auto"
           >
             Insero is your technology broker, advising you on solutions, services,
             and the right vendors to meet all your technology needs.
@@ -733,11 +740,11 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            /* The one centred thing below lg. Everything above stays on the
-               container's left padding edge. lg:block drops the flex context
-               entirely, so at lg the link is an inline-block centred by the
-               column's lg:text-center exactly as before. */
-            className="flex justify-center lg:block"
+            /* The one centred thing below xl. Everything above stays on the
+               container's left padding edge. xl:block drops the flex context
+               entirely, so at xl the link is an inline-block centred by the
+               column's xl:text-center exactly as before. */
+            className="flex justify-center xl:block"
           >
             <Link href="/contact">
               <button className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
@@ -753,41 +760,41 @@ export function Hero() {
       </div>
 
       {/* ── INZO plate ────────────────────────────────────────────────
-          Below lg: a normal block after the type column, held to the hero
+          Below xl: a normal block after the type column, held to the hero
           wrapper's width and padding so it lines up with the copy.
-          At lg and up: breaks out of the wrapper and pins to the section's
+          At xl and up: breaks out of the wrapper and pins to the section's
           right edge, from PLATE_TOP_OFFSET down to the bottom. Height comes
           from that top/bottom pair rather than height:100%, and the width
           falls out of the locked aspect ratio — so clearing the nav also
           narrows the plate slightly, which is intended.
-          `top` is inert below lg, where the wrapper is static. */}
+          `top` is inert below xl, where the wrapper is static. */}
       <div
         className="mt-10 w-full mx-auto max-w-[1680px] px-6
-                   lg:mt-0 lg:mx-0 lg:max-w-none lg:w-auto lg:px-0
-                   lg:absolute lg:right-0 lg:bottom-0 lg:z-0"
+                   xl:mt-0 xl:mx-0 xl:max-w-none xl:w-auto xl:px-0
+                   xl:absolute xl:right-0 xl:bottom-0 xl:z-0"
         style={{ top: PLATE_TOP_OFFSET }}
       >
-        {/* Crop frame — below lg only. `lg:contents` makes it generate no box
-            at all at lg and up, so the plate box below becomes a direct child
+        {/* Crop frame — below xl only. `xl:contents` makes it generate no box
+            at all at xl and up, so the plate box below becomes a direct child
             of the wrapper again and desktop layout is untouched, not merely
             restored. aspect-ratio and overflow are both inert under
-            display:contents, so neither needs an lg reset. */}
+            display:contents, so neither needs an xl reset. */}
         <div
-          className="relative w-full overflow-hidden rounded-2xl lg:contents"
+          className="relative w-full overflow-hidden rounded-2xl xl:contents"
           style={{ aspectRatio: MOBILE_CROP_ASPECT }}
         >
           <div
             /* The panes are positioned against this box, so this is the box the
                free-zone maths has to measure — not the wrapper around it.
-               Below lg it is oversized and pinned to the crop frame's right and
+               Below xl it is oversized and pinned to the crop frame's right and
                bottom; the panes ride along untouched because they are
                positioned as percentages OF this box. */
             ref={plateRef}
             /* The mobile width rides in on a CSS variable rather than the
                style attribute: an inline `width` outranks every class, so
-               `lg:w-auto` could not override it and the 150% leaked into the
+               `xl:w-auto` could not override it and the 150% leaked into the
                desktop layout — measured as a 1.5x wider plate at 1718. */
-            className="absolute right-0 bottom-0 w-[var(--plate-w)] lg:relative lg:right-auto lg:bottom-auto lg:w-auto lg:h-full"
+            className="absolute right-0 bottom-0 w-[var(--plate-w)] xl:relative xl:right-auto xl:bottom-auto xl:w-auto xl:h-full"
             style={{ aspectRatio: PLATE_ASPECT, ['--plate-w' as string]: MOBILE_PLATE_WIDTH } as React.CSSProperties}
           >
             <Image
@@ -795,7 +802,7 @@ export function Hero() {
               alt="INZO, the Insero robot, working at a desk in a loft office"
               fill
               priority
-              sizes="(min-width: 1024px) 143vh, 140vw"
+              sizes="(min-width: 1280px) 143vh, 140vw"
               className="object-cover"
             />
 
@@ -868,7 +875,7 @@ export function Hero() {
                   src={src}
                   alt=""
                   fill
-                  sizes="(min-width: 1024px) 143vh, 140vw"
+                  sizes="(min-width: 1280px) 143vh, 140vw"
                   className="object-cover"
                 />
               </div>
