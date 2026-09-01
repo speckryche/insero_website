@@ -23,6 +23,25 @@ const SWIPE_DURATION = 400;
 const FIRST_HOLD_MS = 1800;
 
 /**
+ * Point in the intro clip where the Voice pane is revealed, in seconds.
+ *
+ * INZO's hands land on the keyboard at ~3.75s of the 5.042s clip, and the
+ * hologram reading as a response to that beat is the whole reason it appears
+ * before the handoff rather than after it.
+ *
+ * Safe to draw over the clip because the clip's own frames carry no hologram —
+ * the glass is empty in every one of them, including the last, which is why the
+ * plate and the panes can be separate layers at all.
+ *
+ * Watched via `timeupdate`, which fires ~4x/second, so the reveal lands within
+ * about 250ms of this mark. That is inside the beat. If it ever needs to be
+ * frame-exact, requestVideoFrameCallback is the tool; it is not used here
+ * because nothing else in this component runs per-frame and the precision is
+ * not needed.
+ */
+const PANE_REVEAL_VIDEO_S = 3.75;
+
+/**
  * The word's own fade, derived from SWIPE_DURATION rather than set beside it so
  * the two cannot drift.
  *
@@ -611,6 +630,15 @@ export function Hero() {
    * while still having it in place for the fade-out at handoff.
    */
   const [fadeArmed, setFadeArmed] = useState(false);
+  /**
+   * Has the Voice pane been revealed by the clip reaching its cue?
+   *
+   * Only ever set true, and only by the clip. Every path that skips or kills
+   * the clip — onError, a refused play(), the ceiling, reduced motion — reveals
+   * the pane through handedOff instead, so there is no route where the hologram
+   * fails to appear.
+   */
+  const [paneRevealed, setPaneRevealed] = useState(false);
 
   // One timer, one index. wordIndex drives both the headline word and which
   // pane is opaque, so the two can never drift apart.
@@ -1133,6 +1161,14 @@ export function Hero() {
                 playsInline
                 preload="auto"
                 poster={START_SRC}
+                onTimeUpdate={(e) => {
+                  // Cheap and idempotent: React keeps the handler attached, and
+                  // the state setter no-ops once it is already true, so there is
+                  // nothing to tear down and no way to fire the reveal twice.
+                  if (!paneRevealed && e.currentTarget.currentTime >= PANE_REVEAL_VIDEO_S) {
+                    setPaneRevealed(true);
+                  }
+                }}
                 onEnded={() => setIntroDone(true)}
                 // A clip that cannot play must not take the panes down with it.
                 onError={() => setIntroDone(true)}
@@ -1182,16 +1218,23 @@ export function Hero() {
                 Any other fit would scale them independently and slide the
                 hologram off the glass.
 
-                Held at 0 until the intro hands off. The clip ends on this same
-                frame without a hologram, so a pane appearing early would show
-                through the video. */}
+                The active pane is revealed at PANE_REVEAL_VIDEO_S, part way
+                through the clip, and by handedOff on every path that does not
+                play it. wordIndex is still 0 while the intro runs, so the pane
+                that appears early is always Voice; the rotation does not start
+                until handedOff and is not affected by this.
+
+                Drawing over the still-playing clip is sound because the clip
+                carries no hologram in any frame, so there is nothing underneath
+                for the pane to disagree with — and the frame it ends on is the
+                plate, which does not either. */}
             {PANE_SRCS.map((src, i) => (
               <div
                 key={src}
                 aria-hidden="true"
                 className="absolute inset-0"
                 style={{
-                  opacity: handedOff && i === wordIndex ? 1 : 0,
+                  opacity: (paneRevealed || handedOff) && i === wordIndex ? 1 : 0,
                   // Same duration and easing as the word accordion, so the pane
                   // and the word resolve together.
                   transition: `opacity ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
