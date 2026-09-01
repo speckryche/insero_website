@@ -228,6 +228,22 @@ const HEADLINE_VW_STEP = 0.1;
 const HEADLINE_VW_MIN = 1.8;
 
 /**
+ * Note which floor actually binds at the narrow end. HEADLINE_VW_MIN is not it:
+ * 1.8vw is 23px at 1280, well under the clamp's own literal minimum, so at the
+ * bottom of the side-by-side range it is that literal — now 2rem — that sets
+ * the size, and the vw walk has no further effect once it is reached. Lowering
+ * HEADLINE_VW_MIN alone would therefore change nothing at 1280; the literal is
+ * the lever.
+ *
+ * 2rem clears INZO from 1440 up (-49.6px there, -47.4 at 1920, -59.4 at 2560),
+ * but NOT at 1280, where the widest state still overhangs his left edge by
+ * 9.1px. Measured crossover at 1280 is around 31px: 31.2px still overhangs by
+ * 1.1px, 31px clears by 3.9px. So a floor near 1.94rem would clear the whole
+ * range. Left at 2rem as specified — the remaining overhang at 1280 is
+ * recorded here rather than fixed by a value nobody asked for.
+ */
+
+/**
  * Padding added to every measured word width, in px.
  *
  * The accordion is overflow-hidden and its width is set from these numbers, so
@@ -264,7 +280,7 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
  * resize — see the effect below.
  */
 const HEADLINE_TYPE =
-  'text-3xl sm:text-4xl md:text-5xl xl:text-[clamp(2.25rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
+  'text-3xl sm:text-4xl md:text-5xl xl:text-[clamp(2rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
 
 type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
