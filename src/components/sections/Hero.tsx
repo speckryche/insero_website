@@ -235,12 +235,15 @@ const HEADLINE_VW_MIN = 1.8;
  * HEADLINE_VW_MIN alone would therefore change nothing at 1280; the literal is
  * the lever.
  *
- * 2rem clears INZO from 1440 up (-49.6px there, -47.4 at 1920, -59.4 at 2560),
- * but NOT at 1280, where the widest state still overhangs his left edge by
- * 9.1px. Measured crossover at 1280 is around 31px: 31.2px still overhangs by
- * 1.1px, 31px clears by 3.9px. So a floor near 1.94rem would clear the whole
- * range. Left at 2rem as specified — the remaining overhang at 1280 is
- * recorded here rather than fixed by a value nobody asked for.
+ * 1.875rem is set from the narrowest side-by-side viewport, which is the only
+ * one the literal still binds at. At 1280x800 it renders 30px, putting the
+ * widest headline state at 509px and its right edge 23.9px clear of INZO's left
+ * edge — where 2.25rem overhung him by 76.1px and 2rem by 9.1px. The literal
+ * only binds at the very bottom of the range: by 1320 the vw walk has already
+ * overtaken it (30.36px off 2.3vw) and sets the size from there up, so this
+ * value stops mattering almost immediately. The column also stops overhanging
+ * its own free zone, so the flex shrink that used to absorb the overrun — and
+ * hide it from a naive measurement of the column box — is gone.
  */
 
 /**
@@ -280,7 +283,7 @@ const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffec
  * resize — see the effect below.
  */
 const HEADLINE_TYPE =
-  'text-3xl sm:text-4xl md:text-5xl xl:text-[clamp(2rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
+  'text-3xl sm:text-4xl md:text-5xl xl:text-[clamp(1.875rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
 
 type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
