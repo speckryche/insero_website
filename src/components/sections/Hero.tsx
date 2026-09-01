@@ -212,6 +212,22 @@ const INTRO_MP4 = '/hero-video/inzo-hero-intro-1080.mp4';
 const INTRO_FADE_MS = 300;
 
 /**
+ * How far the type column is nudged right of where the free-zone solve puts it,
+ * at xl and up. Purely optical — the solve still centres or left-pins the column
+ * inside the zone, and this rides on top as a single transform on the column, so
+ * the block's internal alignment is untouched and the backdrop glow, being a
+ * child of the column, travels with it.
+ *
+ * Capped by measured slack rather than taken on faith. The shift spends
+ * clearance between the copy and INZO, so at a width where the headline already
+ * fills the zone there is nothing to spend and the shift shrinks to what is
+ * actually there. Capping here is deliberate in preference to walking the
+ * headline clamp down again: the clamp has a floor for legibility reasons, and
+ * an optical nudge is not a good enough reason to approach it.
+ */
+const COLUMN_SHIFT_VW = 2.2;
+
+/**
  * Grace period after the fade before the element is dropped. Slightly longer
  * than the fade so a transitionend that never arrives — a backgrounded tab
  * skips them — still releases the video.
@@ -374,6 +390,8 @@ export function Hero() {
   const [layout, setLayout] = useState<{
     zone: number;
     mode: 'center' | 'left';
+    /** Applied shift in px — COLUMN_SHIFT_VW, or the slack, whichever is less. */
+    shift: number;
   } | null>(null);
   /** Middle term of the headline clamp. Only lowered, and only if it overruns. */
   const [headlineVw, setHeadlineVw] = useState(HEADLINE_VW_DEFAULT);
@@ -502,8 +520,30 @@ export function Hero() {
       // is a bug someone can see, where reverting to the unmeasured layout would
       // hide it.
       const mode = canCentre ? 'center' : 'left';
+
+      // Clearance the column has left over between its right edge and INZO, in
+      // the mode it just resolved to. Centred, the gap either side is equal;
+      // left-pinned, everything not spent on the column or its edge gap is it.
+      // Measured against paneLeft, not zone. zone is paneLeft ROUNDED, so at a
+      // width where it rounds up the slack comes out a fraction too generous
+      // and the shift lands the column a hair past INZO — it measured -0.1px at
+      // 1280 before this. Floored for the same reason: spend whole pixels only.
+      const clearance = Math.floor(
+        mode === 'center'
+          ? paneLeft - (zone + colWidth) / 2
+          : paneLeft - MIN_EDGE_GAP - colWidth,
+      );
+      // Spend at most what is there. Never negative: at a width where the
+      // headline already fills the zone the column simply does not move.
+      const shift = Math.max(
+        0,
+        Math.min((COLUMN_SHIFT_VW / 100) * window.innerWidth, clearance),
+      );
+
       setLayout((prev) =>
-        prev && prev.zone === zone && prev.mode === mode ? prev : { zone, mode },
+        prev && prev.zone === zone && prev.mode === mode && prev.shift === shift
+          ? prev
+          : { zone, mode, shift },
       );
     };
     measure();
@@ -710,8 +750,16 @@ export function Hero() {
             mobile layout is untouched. The var falls back to fit-content for the
             pre-hydration frame, before the measurement has run. */}
         <div
-          className="relative xl:w-[var(--hero-col)] xl:text-center"
-          style={{ '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content' } as React.CSSProperties}
+          /* One transform, not per-element margins: the shift moves the column
+             box and everything in it — copy and backdrop alike — so nothing
+             inside re-aligns relative to anything else. A transform rather than
+             a margin because it is exact in both modes; a margin on a
+             justify-center flex item only moves it half as far. */
+          className="relative xl:translate-x-[var(--hero-shift)] xl:w-[var(--hero-col)] xl:text-center"
+          style={{
+            '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content',
+            '--hero-shift': layout ? `${layout.shift}px` : '0px',
+          } as React.CSSProperties}
         >
           {/* ── Copy backdrop ─────────────────────────────────────────
               Soft light behind the copy, not a card. This is what makes the
