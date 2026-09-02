@@ -5,7 +5,7 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from '@phosphor-icons/react';
-import { useReducedMotion, useIsClient } from '@/lib/use-reduced-motion';
+import { useReducedMotion, useIsClient, useHiDpiWide } from '@/lib/use-reduced-motion';
 
 const rotatingWords = ['Voice', 'Internet', 'Redundancy'];
 const HOLD_DURATION = 2500;
@@ -234,9 +234,29 @@ const PLATE_SRC = '/hero-video/inzo-hero-base-plate-1920.webp';
  */
 const START_SRC = '/hero-video/inzo-hero-start-1920.webp';
 
+/**
+ * The same frame at 2560x1440, for the screens that can resolve it.
+ *
+ * Frame-identical to START_SRC, so it is a straight resolution swap: it stays
+ * registered to the plate and to the clip's frame 0 the way the 1920 version
+ * is, and it is rendered through the same object-cover box with no styling of
+ * its own. Anything else here and the start frame would crop differently from
+ * the layer it exists to match, which is the one thing it must never do.
+ */
+const START_SRC_2K = '/hero-video/inzo-hero-start-2k.webp';
+
 /** Intro clip. webm first: same picture as the mp4 at 65% of the bytes. */
 const INTRO_WEBM = '/hero-video/inzo-hero-intro-1080.webm';
 const INTRO_MP4 = '/hero-video/inzo-hero-intro-1080.mp4';
+/**
+ * The intro at 2560x1440. Same 121 frames at 24fps, same 5.042s runtime, so
+ * PANE_REVEAL_VIDEO_S and every other timing constant read the same clock
+ * whichever file is playing — this is a resolution swap and nothing else.
+ *
+ * mp4 only: there is no 2K webm, which is why the retina branch below replaces
+ * the source list rather than prepending to it.
+ */
+const INTRO_MP4_2K = '/hero-video/inzo-hero-intro-2k.mp4';
 
 /** Crossfade from the clip's last frame to the plate underneath it. */
 const INTRO_FADE_MS = 300;
@@ -382,6 +402,24 @@ type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 export function Hero() {
   const reducedMotion = useReducedMotion();
   const isClient = useIsClient();
+  /**
+   * Wide viewport AND more than one device pixel per CSS pixel — the only
+   * screens a 2560x1440 source is worth its bytes on. False on the server and
+   * through hydration, so every branch below defaults to the 1080p files and
+   * upgrades on the first post-hydration render.
+   */
+  const hiDpiWide = useHiDpiWide();
+  /**
+   * One src for both the start-frame Image and the clip's poster, so the two
+   * cannot drift onto different resolutions of the same frame.
+   *
+   * The Image ships in the SSR markup at 1920 and swaps here after hydration,
+   * which costs no second request on the screens that take the swap: the video
+   * mounts in that same render with this exact URL as its poster, so the 2K
+   * frame is fetched once and shared. Browsers hold the previously decoded
+   * image on an in-place src change, so the swap is not a repaint gap either.
+   */
+  const startSrc = hiDpiWide ? START_SRC_2K : START_SRC;
   /**
    * Has the intro handed off to the rotation?
    *
@@ -1115,7 +1153,7 @@ export function Hero() {
                 hydration, so the frame would paint and then vanish. */}
             {!handedOff && (
               <Image
-                src={START_SRC}
+                src={startSrc}
                 alt=""
                 aria-hidden="true"
                 fill
@@ -1160,7 +1198,7 @@ export function Hero() {
                 muted
                 playsInline
                 preload="auto"
-                poster={START_SRC}
+                poster={startSrc}
                 onTimeUpdate={(e) => {
                   // Cheap and idempotent: React keeps the handler attached, and
                   // the state setter no-ops once it is already true, so there is
@@ -1183,8 +1221,27 @@ export function Hero() {
                     : null),
                 }}
               >
-                <source src={INTRO_WEBM} type="video/webm" />
-                <source src={INTRO_MP4} type="video/mp4" />
+                {/* Replaces the list rather than extending it. There is no 2K
+                    webm, and a 1080 webm left ahead of the 2K mp4 would win on
+                    every browser that can decode webm — which is the browsers
+                    this branch exists for. Picking here rather than with a
+                    <source media> query is deliberate: media on <source> is
+                    matched against width honestly enough, but DPR and
+                    resolution conditions there are inconsistently implemented,
+                    and a wrong match is a silently wrong download.
+
+                    Safe to swap on a mid-intro resize: changing <source>
+                    children does not reselect a resource without an explicit
+                    load(), so a clip already playing keeps playing the file it
+                    started, and only a later mount would see the new list. */}
+                {hiDpiWide ? (
+                  <source src={INTRO_MP4_2K} type="video/mp4" />
+                ) : (
+                  <>
+                    <source src={INTRO_WEBM} type="video/webm" />
+                    <source src={INTRO_MP4} type="video/mp4" />
+                  </>
+                )}
               </video>
             )}
 

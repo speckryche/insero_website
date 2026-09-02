@@ -55,4 +55,46 @@ export function useIsClient(): boolean {
   );
 }
 
+/**
+ * The viewport half of the 2K hero gate. Width only — the DPR half is read
+ * straight off `window` in the snapshot below, because a media query for
+ * "more than 1 device pixel per CSS pixel" has no honest spelling: dppx
+ * thresholds have to be picked as a magic number just above 1, and the older
+ * `-webkit-min-device-pixel-ratio` fallback is not something to depend on when
+ * `devicePixelRatio` answers the same question exactly.
+ */
+const WIDE_VIEWPORT_QUERY = '(min-width: 1280px)';
+
+/**
+ * True only on a wide viewport that is also higher than 1 device pixel per CSS
+ * pixel — the screens where a 2K source resolves to visibly more detail than a
+ * 1080p one, and nowhere else.
+ *
+ * False on the server and through hydration, like useIsClient and for the same
+ * reason: the caller uses this to pick a src, and anything it resolves to in
+ * the server HTML starts fetching at parse time, before the real answer is
+ * known. Pinning the server snapshot to the 1080p branch means the visitor who
+ * should get the smaller file has already started it, and the visitor who
+ * should get the larger one is choosing it on the first post-hydration render.
+ *
+ * Live on width, one-shot on DPR. The width half is subscribed, so a resize
+ * across 1280 re-renders; devicePixelRatio is only re-read when that
+ * subscription fires, so dragging a window between displays of different
+ * densities at a fixed width will not re-render on its own. That is the whole
+ * of the gap, and it is deliberate — the only consumers pick a source for
+ * media that has already begun loading, so a later answer would change nothing
+ * they could act on.
+ */
+export function useHiDpiWide(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(WIDE_VIEWPORT_QUERY);
+      mq.addEventListener('change', onChange);
+      return () => mq.removeEventListener('change', onChange);
+    },
+    () => window.matchMedia(WIDE_VIEWPORT_QUERY).matches && window.devicePixelRatio > 1,
+    () => false,
+  );
+}
+
 export default useReducedMotion;
