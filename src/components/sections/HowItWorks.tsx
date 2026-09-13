@@ -9,7 +9,7 @@ import { ArrowRight, CheckCircle } from '@phosphor-icons/react';
 const steps = [
   {
     image: '/how-it-works/inzo-step-01.webp',
-    alt: 'INZO reviewing a checklist of your current setup',
+    alt: 'INZO on a phone call',
     step: '01',
     title: 'Get in Touch',
     description:
@@ -18,7 +18,7 @@ const steps = [
   },
   {
     image: '/how-it-works/inzo-step-02.webp',
-    alt: 'INZO comparing carrier options',
+    alt: 'INZO reviewing carrier pricing',
     step: '02',
     title: 'Get Recommendations',
     description:
@@ -27,7 +27,7 @@ const steps = [
   },
   {
     image: '/how-it-works/inzo-step-03.webp',
-    alt: 'INZO with a completed installation',
+    alt: 'INZO celebrating the savings',
     step: '03',
     title: 'Save Money',
     description:
