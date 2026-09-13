@@ -3,17 +3,58 @@
 import { carrierAccessPhrase } from '@/data/carrier-access';
 import { motion, useInView } from 'framer-motion';
 import { trackContactClick } from '@/lib/analytics';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { ArrowRight } from '@phosphor-icons/react';
 import { company } from '@/config/company';
 
-export function FinalCTA() {
+interface FinalCTAProps {
+  /** INZO peeking over the top edge. Homepage only — he is rationed, so the
+      other pages that render this CTA leave it off. */
+  inzoPeek?: boolean;
+}
+
+export function FinalCTA({ inzoPeek = false }: FinalCTAProps) {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
   return (
-    <section ref={sectionRef} className="pt-32 lg:pt-40 pb-16 lg:pb-20 bg-[#E6F5EC]">
+    <section
+      ref={sectionRef}
+      data-inzo-peek={inzoPeek || undefined}
+      /* With INZO peeking, half the top padding brings the eyebrow up to meet
+         his downward gaze instead of leaving it on empty green. */
+      className={`relative ${inzoPeek ? 'pt-16 lg:pt-20' : 'pt-32 lg:pt-40'} pb-16 lg:pb-20 bg-[#E6F5EC]`}
+    >
+      {inzoPeek && (
+        /* The ledge line (the flat bottom of his head) sits 84.1% of the way
+           down the art. His wrench hands make up the 15.9% below it and hook
+           over the edge. bottom-full seats the image's bottom on this section's
+           top edge. translate-y-[15.9%] then drops him by that overhang, so the
+           ledge line sits on the edge and his hands paint over the green. z-10
+           keeps them above this section's background. The element before this
+           section grows by part of his height (see [data-inzo-peek] in
+           globals.css), so he runs into that section's empty bottom padding,
+           never its content. Keep the widths and ratio here in step with the
+           heights there. */
+        <div
+          aria-hidden="true"
+          className="hidden md:block absolute bottom-full left-[62%] -translate-x-1/2 translate-y-[15.9%] z-10 md:w-[190px] lg:w-[260px] pointer-events-none"
+        >
+          {/* block: an inline img leaves a descender gap under it, which would
+              throw off the ledge alignment. */}
+          <Image
+            src="/cta/inzo-cta-peek.png"
+            alt=""
+            width={900}
+            height={649}
+            sizes="(min-width: 1024px) 260px, 190px"
+            className="block w-full h-auto"
+          />
+        </div>
+      )}
+
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center">
           {/* Eyebrow */}

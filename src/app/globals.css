@@ -579,3 +579,34 @@ h1, h2, h3, h4, h5, h6 {
   border-top: 1px solid var(--color-gray-200);
   margin: 2.5rem 0;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   INZO CTA PEEK
+   ═══════════════════════════════════════════════════════════ */
+
+/* Room for INZO above the final CTA. Only the part of him above the ledge
+   (84.1% of his rendered height) sits over the element before the CTA. His
+   hands hang below the ledge onto the CTA itself. That element grows by 60% of
+   the above-ledge height. Reserving all of it left him hovering in a white
+   band. The other 40% (about 46px at md, 63px at lg) runs into that element's
+   own bottom padding, which reads as peeking. This only stays clear of content
+   while that padding is at least as deep. Testimonials and ResourcesHighlight
+   both have 64px (96px at lg). The rule is keyed to the CTA, not to a named
+   section, so it still works when Testimonials renders nothing and a different
+   section comes first. ::after adds the height inside that section, so the gap
+   shows its own background instead of a white strip.
+   Height = FinalCTA width (md:w-[190px] lg:w-[260px]) x 649/900 art ratio
+   x 0.841 above the ledge x 0.6. */
+@media (width >= 48rem) {
+  :has(+ [data-inzo-peek])::after {
+    content: '';
+    display: block;
+    height: calc(190px * 649 / 900 * 0.841 * 0.6);
+  }
+}
+
+@media (width >= 64rem) {
+  :has(+ [data-inzo-peek])::after {
+    height: calc(260px * 649 / 900 * 0.841 * 0.6);
+  }
+}
