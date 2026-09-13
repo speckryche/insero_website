@@ -941,12 +941,15 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             ref={headlineRef}
-            /* xl:block + xl:text-left keeps the headline's LEFT edge pinned to
-               the column while the block below it centres. If the h1 stayed
-               inline-block inside a text-center column it would re-centre itself
-               every time the accordion collapsed, and "Sourcing Experts" would
-               breathe inward instead of sliding along the line. */
-            className={`${HEADLINE_TYPE} text-[#1e293b] mb-5 xl:mb-8 leading-[1.1] inline-block xl:block xl:text-left`}
+            /* xl:block + xl:text-center centres the line on the column's axis,
+               so as the accordion collapses and expands "Your" and "Sourcing
+               Experts" move toward and away from each other by half the width
+               change each, matching the live site. xl:block rather than
+               inline-block: the column is pinned to the widest headline state,
+               so the block has a fixed width to centre in, and no inline
+               line box is added under the h1. Below xl the h1 stays inline-block
+               and left-aligned with the paragraphs, so "Your" is fixed there. */
+            className={`${HEADLINE_TYPE} text-[#1e293b] mb-5 xl:mb-8 leading-[1.1] inline-block xl:block xl:text-center`}
           >
             Your{' '}
             <span
