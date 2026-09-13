@@ -1,19 +1,15 @@
 'use client';
 
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import {
-  ChatCircleText,
-  MagnifyingGlass,
-  PiggyBank,
-  ArrowRight,
-  CheckCircle
-} from '@phosphor-icons/react';
+import { ArrowRight, CheckCircle } from '@phosphor-icons/react';
 
 const steps = [
   {
-    icon: ChatCircleText,
+    image: '/how-it-works/inzo-step-01.webp',
+    alt: 'INZO reviewing a checklist of your current setup',
     step: '01',
     title: 'Get in Touch',
     description:
@@ -21,7 +17,8 @@ const steps = [
     details: ['Email or phone, your choice', 'No commitment required', 'A short first conversation']
   },
   {
-    icon: MagnifyingGlass,
+    image: '/how-it-works/inzo-step-02.webp',
+    alt: 'INZO comparing carrier options',
     step: '02',
     title: 'Get Recommendations',
     description:
@@ -29,7 +26,8 @@ const steps = [
     details: ['Multi-carrier comparison', 'Custom analysis', 'Transparent pricing']
   },
   {
-    icon: PiggyBank,
+    image: '/how-it-works/inzo-step-03.webp',
+    alt: 'INZO with a completed installation',
     step: '03',
     title: 'Save Money',
     description:
@@ -41,13 +39,6 @@ const steps = [
 export function HowItWorks() {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start']
-  });
-
-  const lineProgress = useTransform(scrollYProgress, [0.2, 0.8], ['0%', '100%']);
 
   return (
     <section
@@ -72,42 +63,40 @@ export function HowItWorks() {
         </motion.div>
 
         {/* Steps */}
-        <div className="relative">
-          {/* Connection line — desktop */}
-          <div className="hidden lg:block absolute top-[100px] left-[calc(16.666%+48px)] right-[calc(16.666%+48px)] h-0.5 bg-gray-200 rounded-full overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6">
+          {steps.map((step, index) => (
             <motion.div
-              className="h-full bg-[#008838] rounded-full"
-              style={{ width: lineProgress }}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6">
-            {steps.map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 16 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.15 }}
-                className="relative h-full"
-              >
-                <div className="h-full bg-white rounded-2xl p-8 lg:p-10 text-center border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
-                  {/* Step number */}
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                    <div className="w-10 h-10 bg-[#008838] rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
-                      {step.step}
-                    </div>
+              key={index}
+              initial={{ opacity: 0, y: 16 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.1 + index * 0.15 }}
+              className="relative h-full"
+            >
+              {/* overflow-hidden rounds the image band to the card radius. The
+                 numeral still hangs above the edge: its containing block is
+                 the relative wrapper above, outside this clip. */}
+              <div className="h-full bg-white rounded-2xl overflow-hidden text-center border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300">
+                {/* Step number */}
+                <div className="absolute -top-5 left-1/2 -translate-x-1/2">
+                  <div className="w-10 h-10 bg-[#008838] rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
+                    {step.step}
                   </div>
+                </div>
 
-                  {/* Icon */}
-                  <div className="inline-flex mb-6 mt-4">
-                    <div
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                      style={{ backgroundColor: 'rgba(0, 136, 56, 0.08)' }}
-                    >
-                      <step.icon weight="fill" className="w-8 h-8 text-[#008838]" />
-                    </div>
-                  </div>
+                {/* Step art — below the fold, so lazy: the hero owns the
+                   early-fetch slots. */}
+                <div className="aspect-[4/3]">
+                  <Image
+                    src={step.image}
+                    alt={step.alt}
+                    width={1600}
+                    height={1194}
+                    sizes="(min-width: 1280px) 395px, (min-width: 1024px) 31vw, 100vw"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
+                <div className="p-8 lg:p-10">
                   {/* Content */}
                   <h3 className="text-xl font-bold text-[#1e293b] mb-3">
                     {step.title}
@@ -126,16 +115,16 @@ export function HowItWorks() {
                     ))}
                   </ul>
                 </div>
+              </div>
 
-                {/* Mobile arrow */}
-                {index < steps.length - 1 && (
-                  <div className="lg:hidden flex justify-center my-4">
-                    <ArrowRight weight="bold" className="w-5 h-5 text-[#008838] rotate-90" />
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
+              {/* Mobile arrow */}
+              {index < steps.length - 1 && (
+                <div className="lg:hidden flex justify-center my-4">
+                  <ArrowRight weight="bold" className="w-5 h-5 text-[#008838] rotate-90" />
+                </div>
+              )}
+            </motion.div>
+          ))}
         </div>
 
         {/* CTA */}
