@@ -866,13 +866,12 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            /* Centred at every width, as the button alone was. The phone link
-               sits to the right of the button from sm up and stacks under it
-               below sm. Neither child may shrink: squeezed into the 389px
-               column at 1280 the button wrapped "Get Started" onto two lines.
-               Where the pair is wider than the column the row wraps instead, so
-               the phone link drops under the button there. */
-            className="flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-6"
+            /* A vertical stack at every width: the button, then the phone link
+               on its own line, both centred on the column's axis. At xl that
+               axis is --hero-col's centre. Neither child may shrink: squeezed
+               into the 389px column at 1280 the button once wrapped "Get
+               Started" onto two lines. */
+            className="flex flex-col items-center gap-3"
           >
             <Link href="/contact" className="shrink-0">
               <button className="group inline-flex items-center gap-3 px-8 py-4 xl:px-10 xl:py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
