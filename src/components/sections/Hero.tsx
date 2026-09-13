@@ -859,7 +859,12 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg md:text-2xl text-[#1e293b] mb-6 xl:mb-12 leading-snug xl:leading-relaxed font-medium max-w-xl xl:mx-auto"
           >
-            Insero compares {carrierAccessPhrase} on your behalf. Providers pay us, so you don&apos;t.
+            {/* From xl up each sentence gets its own line; the column is never
+                narrower than either sentence there. Below xl the break is
+                display:none and the paragraph wraps naturally. */}
+            We compare {carrierAccessPhrase}.{' '}
+            <br className="hidden xl:inline" />
+            Providers pay us, not you.
           </motion.p>
 
           <motion.div
