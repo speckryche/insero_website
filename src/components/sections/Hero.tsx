@@ -6,6 +6,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useReducedMotion, useIsClient, useHiDpiWide } from '@/lib/use-reduced-motion';
+import { carrierAccessPhrase } from '@/data/carrier-access';
+import { trackContactClick } from '@/lib/analytics';
+import { company } from '@/config/company';
 
 const rotatingWords = ['Voice', 'Internet', 'Redundancy'];
 const HOLD_DURATION = 2500;
@@ -41,25 +44,7 @@ const FIRST_HOLD_MS = 1800;
  */
 const PANE_REVEAL_VIDEO_S = 3.75;
 
-/**
- * The word's own fade, derived from SWIPE_DURATION rather than set beside it so
- * the two cannot drift.
- *
- * The accordion collapses by animating width against overflow:hidden, which
- * slices the word down its right edge — at full opacity that reads as a chopped
- * glyph ("Your Intern|") rather than as motion. The fade hides the cut: the word
- * is gone before enough of it has been eaten to notice, and the swap at the
- * midpoint happens at opacity 0.
- *
- * 60% of the swipe, so the fade finishes at 240ms of the 400ms collapse, well
- * before the text changes. On the way back it is delayed by the remaining 40%,
- * starting at 160ms and landing exactly as the width finishes — the word arrives
- * with the box rather than ahead of it.
- */
-const WORD_FADE_MS = Math.round(SWIPE_DURATION * 0.6);
-const WORD_FADE_IN_DELAY_MS = SWIPE_DURATION - WORD_FADE_MS;
-
-/** Same curve the width animation uses, so the two read as one movement. */
+/** Same curve the pane cross-fade uses, so the eyebrow highlight and the pane read as one movement. */
 const SWIPE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
 
 /**
@@ -199,10 +184,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /**
- * Index-aligned with rotatingWords, so the word takes the colour of the pane it
- * appears with. Driven by the same wordIndex as PANE_SRCS below, which means the
- * colour swaps at the accordion's midpoint — the moment the width is 0 and the
- * word is not on screen — so no transition is needed and none would be visible.
+ * Index-aligned with rotatingWords, so the highlighted eyebrow word takes the
+ * colour of the pane it appears with — Internet is orange because its pane is.
+ * Driven by the same wordIndex as PANE_SRCS below, and transitioned over the same
+ * duration as the pane cross-fade, so the highlight and the pane change together.
  *
  * ACCESSIBILITY: #F97316 measures 2.80:1 on white. That is below AA for large
  * text (3.0:1), not only below the 4.5:1 normal-text bar, so "Internet" does not
@@ -328,8 +313,9 @@ const PANE_LEFT_FRACTION = CONTENT_LEFT;
 
 /**
  * Middle term of the headline's fluid clamp, in vw, held in a CSS variable so
- * the measurement pass can lower it. It only ever moves if the widest headline
- * state ("Redundancy") would otherwise overrun the free zone, which is a real
+ * the measurement pass can lower it. It only ever moves if the column — the
+ * headline's widest line or the eyebrow, whichever is wider — would otherwise
+ * overrun the free zone, which is a real
  * possibility on a wide-but-short viewport where the plate is narrow and the
  * free zone is therefore large but the headline is sized off vw regardless.
  * Steps down 0.1vw at a time and stops at the floor rather than shrinking
@@ -347,29 +333,11 @@ const HEADLINE_VW_MIN = 1.8;
  * HEADLINE_VW_MIN alone would therefore change nothing at 1280; the literal is
  * the lever.
  *
- * 1.875rem is set from the narrowest side-by-side viewport, which is the only
- * one the literal still binds at. At 1280x800 it renders 30px, putting the
- * widest headline state at 509px and its right edge 23.9px clear of INZO's left
- * edge — where 2.25rem overhung him by 76.1px and 2rem by 9.1px. The literal
- * only binds at the very bottom of the range: by 1320 the vw walk has already
- * overtaken it (30.36px off 2.3vw) and sets the size from there up, so this
- * value stops mattering almost immediately. The column also stops overhanging
- * its own free zone, so the flex shrink that used to absorb the overrun — and
- * hide it from a naive measurement of the column box — is gone.
+ * 1.875rem was set from the narrowest side-by-side viewport, when the headline
+ * was the single-line accordion ("Your Redundancy Sourcing Experts" at 509px on
+ * 1280x800). The static two-line headline is far narrower, so the walk now
+ * rarely needs to reach it, but it is kept as the legibility floor.
  */
-
-/**
- * Padding added to every measured word width, in px.
- *
- * The accordion is overflow-hidden and its width is set from these numbers, so
- * a word measured even a fraction of a pixel short has its last letter sliced —
- * which is what was cutting the y in "Redundancy". Two separate causes:
- * offsetWidth rounds to whole pixels and can round DOWN past the true extent,
- * and a glyph's ink can reach past the advance width the box reports anyway.
- * getBoundingClientRect fixes the first by measuring sub-pixel; this covers the
- * second. The cursor's 4px left margin absorbs it, so nothing shifts visibly.
- */
-const WORD_WIDTH_BUFFER = 3;
 
 /** xl breakpoint, matching the Tailwind utilities used throughout this file. */
 const XL = 1280;
@@ -383,21 +351,17 @@ const XL = 1280;
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 /**
- * Shared by the h1 and the hidden measurement span. They MUST stay identical:
- * the accordion animates to a width measured off that span, so any type change
- * applied to one and not the other silently mis-sizes the word.
+ * The headline's type. Two fixed lines, broken by a <br>; whitespace-nowrap stops
+ * either line wrapping on its own, which is what makes the widest line a stable
+ * width the layout pass can measure.
  *
- * The xl+ size is fluid, which is what keeps "Your [WORD] Sourcing Experts" on
- * one line from 1280px up to very wide screens without ever breaking. Below xl
- * the hero stacks, so the headline gets the full container width and the fixed
- * md:text-5xl step carries it instead. Because
- * the size now depends on the viewport, the measurement has to re-run on
- * resize — see the effect below.
+ * The xl+ size is fluid. Below xl the hero stacks, so the headline gets the full
+ * container width and the fixed md:text-5xl step carries it instead. Because the
+ * size depends on the viewport, the measurement has to re-run on resize — see
+ * the effect below.
  */
 const HEADLINE_TYPE =
   'text-3xl sm:text-4xl md:text-5xl xl:text-[clamp(1.875rem,var(--hero-headline-vw,3vw),4rem)] font-display font-extrabold tracking-tight whitespace-nowrap';
-
-type Phase = 'visible' | 'swipe-left' | 'swipe-right';
 
 export function Hero() {
   const reducedMotion = useReducedMotion();
@@ -433,17 +397,13 @@ export function Hero() {
   /** Kept mounted through the fade, then released. */
   const [introMounted, setIntroMounted] = useState(!reducedMotion);
   const [wordIndex, setWordIndex] = useState(0);
-  const [phase, setPhase] = useState<Phase>('visible');
-  const [wordWidths, setWordWidths] = useState<number[]>([]);
   /**
-   * Width of the headline in its widest ("Redundancy") state. The copy block is
-   * centred on the headline's axis, so the column has to be pinned to this.
-   * w-fit would not do: the h1 is inline-block, so its shrink-to-fit width
-   * INCLUDES the accordion span, which animates to 0 and back on every rotation
-   * — a fit-content column would breathe with it and the centred subcopy would
-   * drift left and right forever.
+   * Width the type column is pinned to at xl: the headline's widest line or the
+   * eyebrow, whichever is wider. Pinned rather than left fit-content so the
+   * subcopy wraps inside the headline's measure instead of running out to its own
+   * max-width — at 1280x900 that max-width is wider than the whole free zone.
    */
-  const [headlineMaxWidth, setHeadlineMaxWidth] = useState<number | null>(null);
+  const [columnWidth, setColumnWidth] = useState<number | null>(null);
   /**
    * xl+ placement of the type column, measured rather than assumed. Null until
    * the first measurement and below xl, where the mobile layout is untouched.
@@ -463,17 +423,14 @@ export function Hero() {
   } | null>(null);
   /** Middle term of the headline clamp. Only lowered, and only if it overruns. */
   const [headlineVw, setHeadlineVw] = useState(HEADLINE_VW_DEFAULT);
-  const measureRef = useRef<HTMLSpanElement>(null);
-  const fullMeasureRef = useRef<HTMLSpanElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const accordionRef = useRef<HTMLSpanElement>(null);
+  /** Shrink-to-fit wrapper around the headline's two lines; its width is the widest line. */
+  const headlineLinesRef = useRef<HTMLSpanElement>(null);
+  const eyebrowRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const plateRef = useRef<HTMLDivElement>(null);
-  /** Reused across measurement passes; the guard below is the only consumer. */
-  const inkCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Measures the words, the headline's widest state, and the free zone the
-  // column is centred in. All three go stale on resize — the widths because the
+  // Measures the column (the headline's widest line or the eyebrow) and the free
+  // zone it is centred in. Both go stale on resize — the column because the
   // clamp is fluid, the free zone because the plate is sized off section height
   // — so this re-runs from a ResizeObserver on the section as well as the
   // debounced window handler. The observer is what catches height-only changes,
@@ -484,70 +441,19 @@ export function Hero() {
   // would risk an observe -> render -> observe loop.
   useIsomorphicLayoutEffect(() => {
     const measure = () => {
-      if (!measureRef.current) return;
-      const spans = measureRef.current.querySelectorAll('span');
-      const widths = Array.from(spans).map(
-        (span) => Math.ceil(span.getBoundingClientRect().width) + WORD_WIDTH_BUFFER,
+      // Both are w-max, so their widths are their own content — two nowrap lines,
+      // one nowrap row — and never whatever the column they sit in is pinned to.
+      // Measuring the h1 box instead would read the column's width back, a
+      // feedback loop, because the h1 is xl:block inside it. Nothing in either
+      // changes width as wordIndex rotates: the headline is static and the
+      // eyebrow only recolours.
+      const lines = headlineLinesRef.current;
+      const eyebrow = eyebrowRef.current;
+      if (!lines || !eyebrow) return;
+      const colWidth = Math.ceil(
+        Math.max(lines.getBoundingClientRect().width, eyebrow.getBoundingClientRect().width),
       );
-
-      // Regression guard. The stored width is what the accordion's box becomes,
-      // and the box clips at its right edge, so a width that does not clear the
-      // word's INK — not its advance width, which is a different number for
-      // glyphs like y — slices the last letter flat. That failure is silent:
-      // the layout stays correct and only the glyph looks wrong, which is how it
-      // survived a review pass before. One canvas measure per word per
-      // measurement pass, and it says which word and by how much.
-      if (typeof document !== 'undefined') {
-        const canvas =
-          inkCanvasRef.current ?? (inkCanvasRef.current = document.createElement('canvas'));
-        const ctx = canvas.getContext('2d');
-        // Measured off the h1, not off the measurement clone. They do not
-        // resolve to the same type: an unlayered `h1` rule wins over the
-        // font-extrabold utility, so the h1 computes 700 where the clone
-        // computes 800. The clone is therefore the heavier, wider face, and a
-        // guard reading it would be checking a font nothing renders in.
-        const probe = headlineRef.current;
-        if (ctx && probe) {
-          const cs = window.getComputedStyle(probe);
-          ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-          // Chrome-only, and it matters: the headline is tracking-tight, so
-          // ignoring it would under-measure every word.
-          try {
-            (ctx as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing =
-              cs.letterSpacing;
-          } catch {
-            /* not supported — the measurement is still close enough to catch a real slice */
-          }
-          rotatingWords.forEach((word, i) => {
-            const ink = ctx.measureText(word).actualBoundingBoxRight;
-            if (widths[i] < ink + 1) {
-              console.error(
-                `[Hero] "${word}" box is ${widths[i]}px against ${ink.toFixed(2)}px of ink at ` +
-                  `${cs.fontSize} — short by ${(ink + 1 - widths[i]).toFixed(2)}px. ` +
-                  'The last glyph will render sliced. Raise WORD_WIDTH_BUFFER.',
-              );
-            }
-          });
-        }
-      }
-      setWordWidths((prev) =>
-        prev.length === widths.length && prev.every((w, i) => w === widths[i]) ? prev : widths,
-      );
-
-      // Measured off the out-of-flow clone below, never off the h1. The h1 is
-      // xl:block inside a column this value then sizes, so reading its
-      // offsetWidth reports the column's width back — fine on the first pass
-      // while the column is still fit-content, a feedback loop on every pass
-      // after. It pinned the column at 2044px at 1280x800 and drove the clamp
-      // to its floor before this was measured from a box nothing else sizes.
-      const full = fullMeasureRef.current;
-      if (!full || !widths.length) return;
-      // Same buffer as the words above. The clone renders its word inline at the
-      // natural width, but the live accordion renders it buffered — so without
-      // this the column would be pinned 2px narrower than the headline it has to
-      // hold, and a whitespace-nowrap h1 would overhang it.
-      const colWidth = Math.ceil(full.getBoundingClientRect().width) + WORD_WIDTH_BUFFER;
-      setHeadlineMaxWidth((prev) => (prev === colWidth ? prev : colWidth));
+      setColumnWidth((prev) => (prev === colWidth ? prev : colWidth));
 
       // Below xl the plate is a static block under the copy and none of this
       // applies.
@@ -566,7 +472,7 @@ export function Hero() {
       const zone = Math.round(paneLeft);
 
       // Guard rail, unchanged: left-pinned at MIN_EDGE_GAP, the column still has
-      // to clear the pane by GAP_TO_PANE. If the widest headline state cannot,
+      // to clear the pane by GAP_TO_PANE. If the column cannot,
       // take the clamp down a step and let the re-render measure again.
       const overruns = colWidth > zone - GAP_TO_PANE - MIN_EDGE_GAP;
       if (overruns && headlineVw > HEADLINE_VW_MIN) {
@@ -632,14 +538,12 @@ export function Hero() {
     };
   }, [headlineVw]);
 
+  // The index still advances SWIPE_DURATION after each transition starts, as it
+  // did when a word accordion collapsed first. Nothing collapses now, but keeping
+  // the delay keeps every pane change at exactly the moment it has always landed.
   const startTransition = useCallback(() => {
-    setPhase('swipe-left');
     setTimeout(() => {
       setWordIndex((prev) => (prev + 1) % rotatingWords.length);
-      setPhase('swipe-right');
-      setTimeout(() => {
-        setPhase('visible');
-      }, SWIPE_DURATION);
     }, SWIPE_DURATION);
   }, []);
 
@@ -678,15 +582,15 @@ export function Hero() {
    */
   const [paneRevealed, setPaneRevealed] = useState(false);
 
-  // One timer, one index. wordIndex drives both the headline word and which
+  // One timer, one index. wordIndex drives both the eyebrow highlight and which
   // pane is opaque, so the two can never drift apart.
   useEffect(() => {
-    // Reduced motion holds on index 0: Voice word, Voice pane, no rotation.
+    // Reduced motion holds on index 0: Voice highlighted, Voice pane, no rotation.
     if (reducedMotion) return;
     // Nothing rotates until the intro has handed off. wordIndex is still 0 at
     // that moment, so Voice is the word and the pane the rotation starts from —
     // no seeding needed, and none wanted: setting it here would fight the
-    // accordion's own index swap.
+    // transition's own index swap.
     if (!handedOff) return;
 
     // The first swipe is scheduled on its own shorter hold; the steady interval
@@ -782,15 +686,16 @@ export function Hero() {
     return () => clearTimeout(t);
   }, [handedOff, videoMounted]);
 
-  const currentWidth = wordWidths[wordIndex] || 0;
-
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-20 pb-10 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
-      /* Set here rather than on the h1 so the hidden measurement span inherits
-         the same value — the two must resolve to identical type or the
-         accordion animates to a width the word does not occupy. */
+      /* pt-20 lg:pt-24 is the fixed header's height at each breakpoint (h-20
+         lg:h-24), so the stacked copy starts where the header ends. At lg a
+         flat pt-20 left the first 16px under the header, which put the eyebrow
+         on top of the logo's tagline. */
+      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-20 lg:pt-24 pb-10 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
+      /* Set on the section so the headline and anything measured off it
+         resolve the same fluid size from one place. */
       style={{ '--hero-headline-vw': `${headlineVw}vw` } as React.CSSProperties}
     >
       {/* ── Type column ───────────────────────────────────────────────
@@ -850,7 +755,7 @@ export function Hero() {
              justify-center flex item only moves it half as far. */
           className="relative xl:translate-x-[var(--hero-shift)] xl:w-[var(--hero-col)] xl:text-center"
           style={{
-            '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content',
+            '--hero-col': columnWidth ? `${columnWidth}px` : 'fit-content',
             '--hero-shift': layout ? `${layout.shift}px` : '0px',
           } as React.CSSProperties}
         >
@@ -882,177 +787,94 @@ export function Hero() {
             }}
           />
 
-          {/* Hidden measurement container — same type classes as the h1 */}
-          <span
-            ref={measureRef}
-            aria-hidden="true"
-            className={`absolute opacity-0 pointer-events-none ${HEADLINE_TYPE}`}
+          {/* ── Eyebrow ────────────────────────────────────────────────
+              All three words are always rendered, at full width, in one nowrap
+              row. The word matching wordIndex takes its pane's colour and full
+              opacity; the other two stay muted. Only colour and opacity
+              transition, so nothing in the row moves or reflows as the
+              highlight travels — and the row's width is stable enough to feed
+              the column measurement.
+
+              Muted is #475569 at 0.8, which blends to ~#6c7787 on white: still
+              clearly secondary to the highlight, and 4.6:1 so the words stay
+              readable. w-max keeps the row its own width inside a pinned
+              column. flex, not inline-flex: below xl the h1 after it is
+              inline-block, and an inline row would sit beside it on one line
+              wherever there is room (it did at 1024). xl:mx-auto centres the
+              block on the column's axis. */}
+          <motion.div
+            ref={eyebrowRef}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="flex w-max items-center gap-3 whitespace-nowrap text-sm font-semibold tracking-widest uppercase mb-4 xl:mb-6 xl:mx-auto"
           >
-            {rotatingWords.map((word) => (
-              <span key={word} className="inline-block">{word}</span>
+            {rotatingWords.map((word, i) => (
+              <span key={word} className="inline-flex items-center gap-3">
+                {i > 0 && (
+                  <span aria-hidden="true" className="text-[#475569] opacity-50">
+                    ·
+                  </span>
+                )}
+                <span
+                  style={{
+                    color: i === wordIndex ? WORD_COLORS[i] : '#475569',
+                    opacity: i === wordIndex ? 1 : 0.8,
+                    transition: `color ${SWIPE_DURATION}ms ${SWIPE_EASING}, opacity ${SWIPE_DURATION}ms ${SWIPE_EASING}`,
+                  }}
+                >
+                  {word}
+                </span>
+              </span>
             ))}
-          </span>
-
-          {/* The headline in its widest state, out of flow so its width is its
-              own and not whatever box it sits in. This is what the column is
-              sized from.
-
-              It mirrors the h1's inline content exactly — same type classes,
-              same widest word, same cursor with the same margins. Change one
-              and you must change the other, the same rule the word-measurement
-              span above already carries. */}
-          <span
-            ref={fullMeasureRef}
-            aria-hidden="true"
-            className={`absolute opacity-0 pointer-events-none ${HEADLINE_TYPE}`}
-          >
-            Your{' '}
-            <span className="whitespace-nowrap">
-              {rotatingWords.reduce((a, b) => (b.length > a.length ? b : a))}
-            </span>
-            <span
-              className="inline-block w-[3px]"
-              style={{
-                height: '1.2em',
-                verticalAlign: 'middle',
-                // em, not px: these resolve against the headline's own font
-                // size, so the gap tracks the fluid clamp instead of staying at
-                // a value tuned for small type. At 4px the rule sat on top of
-                // ink that reaches right at 51-64px — the e in Voice and the y
-                // in Redundancy, whose tail measures 0.73px past its advance
-                // width. Internet only escaped because the t curves away.
-                // Asymmetric on purpose: the left side carries the overhang.
-                marginLeft: '0.22em',
-                marginRight: '0.18em',
-              }}
-            />
-            {/* The h1's forced break, mirrored. The clone is only useful while
-                it matches the h1 exactly, and without this it measures one
-                unbroken line at every width — right at xl, but far too wide
-                below sm where the headline really is two lines. `sm:hidden`
-                means xl is measured exactly as it was before this was added,
-                which the A/B confirmed. */}
-            <br aria-hidden="true" className="sm:hidden" />{' '}
-            Sourcing Experts
-          </span>
+          </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            ref={headlineRef}
-            /* xl:block + xl:text-center centres the line on the column's axis,
-               so as the accordion collapses and expands "Your" and "Sourcing
-               Experts" move toward and away from each other by half the width
-               change each, matching the live site. xl:block rather than
-               inline-block: the column is pinned to the widest headline state,
-               so the block has a fixed width to centre in, and no inline
-               line box is added under the h1. Below xl the h1 stays inline-block
-               and left-aligned with the paragraphs, so "Your" is fixed there. */
+            /* xl:block + xl:text-center centres the headline on the column's
+               axis. Below xl the h1 stays inline-block and left-aligned with
+               the copy under it. The text never changes, so nothing here moves
+               once it has laid out. */
             className={`${HEADLINE_TYPE} text-[#1e293b] mb-5 xl:mb-8 leading-[1.1] inline-block xl:block xl:text-center`}
           >
-            Your{' '}
-            <span
-              ref={accordionRef}
-              /* overflow-hidden is what makes the collapse read as a wipe, and
-                 it is also what clips a glyph whose ink reaches past its
-                 advance width. That is safe once a measured width is applied,
-                 because the measurement carries WORD_WIDTH_BUFFER. It is NOT
-                 safe on the `auto` fallback below, where the box shrink-wraps
-                 to the advance exactly and the buffer does not exist — so the
-                 clipping is turned off for precisely that case. */
-              className={`inline-flex items-baseline ${
-                currentWidth > 0 || phase === 'swipe-left'
-                  ? 'overflow-hidden'
-                  : 'overflow-visible'
-              }`}
-              style={{
-                width: phase === 'swipe-left'
-                  ? '0px'
-                  : currentWidth > 0 ? `${currentWidth}px` : 'auto',
-                transition: `width ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-                verticalAlign: 'baseline',
-                lineHeight: 'inherit',
-              }}
-            >
-              <span
-                className="whitespace-nowrap leading-[inherit]"
-                style={{
-                  color: WORD_COLORS[wordIndex],
-                  // Driven off the same phase as the width, so there is no
-                  // second timer and nothing new to keep in step with the
-                  // shared index.
-                  opacity: phase === 'swipe-left' ? 0 : 1,
-                  // Out immediately on the collapse; back in on a delay so it
-                  // completes with the expansion rather than ahead of it.
-                  transition: `opacity ${WORD_FADE_MS}ms ${SWIPE_EASING} ${
-                    phase === 'swipe-right' ? WORD_FADE_IN_DELAY_MS : 0
-                  }ms`,
-                }}
-              >
-                {rotatingWords[wordIndex]}
-              </span>
+            {/* w-max, so this box is exactly the widest line whatever the h1
+                around it is sized to. That width is what the layout pass pins
+                the column to. The <br> is the break at every width; nowrap on
+                the type keeps either line from wrapping on its own. */}
+            <span ref={headlineLinesRef} className="inline-block w-max">
+              Sourcing experts who
+              <br />
+              <span className="text-[#008838]">cost you nothing</span>
             </span>
-            <span
-              className="inline-block w-[3px] relative"
-              style={{
-                height: '1.2em',
-                backgroundColor: '#1e293b',
-                verticalAlign: 'middle',
-                // em, not px: these resolve against the headline's own font
-                // size, so the gap tracks the fluid clamp instead of staying at
-                // a value tuned for small type. At 4px the rule sat on top of
-                // ink that reaches right at 51-64px — the e in Voice and the y
-                // in Redundancy, whose tail measures 0.73px past its advance
-                // width. Internet only escaped because the t curves away.
-                // Asymmetric on purpose: the left side carries the overhang.
-                marginLeft: '0.22em',
-                marginRight: '0.18em',
-              }}
-            />
-            {/* Break below sm only — a 390px viewport clips the single line.
-                From sm up the headline is ONE line at every width: the
-                accordion reads as "Sourcing Experts" sliding along the same
-                line as the collapsing word, which a break would destroy. The
-                fluid clamp above is what keeps that line fitting. */}
-            <br aria-hidden="true" className="sm:hidden" />{' '}
-            Sourcing Experts
           </motion.h1>
 
-          {/* Paragraphs keep their own measure. The column is now up to 64vw
-              wide for the headline's benefit; letting body copy run that far
-              would push line length well past readable. */}
+          {/* Keeps its own max-w-xl below xl. At xl the column is pinned to the
+              headline's width, so this wraps inside that measure rather than
+              running out to 36rem. */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-2xl text-[#1e293b] mb-3 xl:mb-6 leading-snug xl:leading-relaxed font-medium max-w-xl xl:mx-auto"
+            className="text-lg md:text-2xl text-[#1e293b] mb-6 xl:mb-12 leading-snug xl:leading-relaxed font-medium max-w-xl xl:mx-auto"
           >
-            Expert guidance at <span className="text-[#008838] font-bold">zero cost</span> to you.
-            We&apos;re paid by carriers, not clients.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="text-base md:text-xl text-[#1e293b] mb-6 xl:mb-12 leading-snug xl:leading-normal max-w-xl xl:mx-auto"
-          >
-            Insero is your technology broker, advising you on solutions, services,
-            and the right vendors to meet all your technology needs.
+            Insero compares {carrierAccessPhrase} on your behalf. Providers pay us, so you don&apos;t.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            /* The one centred thing below xl. Everything above stays on the
-               container's left padding edge. xl:block drops the flex context
-               entirely, so at xl the link is an inline-block centred by the
-               column's xl:text-center exactly as before. */
-            className="flex justify-center xl:block"
+            /* Centred at every width, as the button alone was. The phone link
+               sits to the right of the button from sm up and stacks under it
+               below sm. Neither child may shrink: squeezed into the 389px
+               column at 1280 the button wrapped "Get Started" onto two lines.
+               Where the pair is wider than the column the row wraps instead, so
+               the phone link drops under the button there. */
+            className="flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-6"
           >
-            <Link href="/contact">
+            <Link href="/contact" className="shrink-0">
               <button className="group inline-flex items-center gap-3 px-8 py-4 xl:px-10 xl:py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20">
                 <span>Get Started</span>
                 <ArrowRight
@@ -1061,6 +883,14 @@ export function Hero() {
                 />
               </button>
             </Link>
+            {/* Same link and tracking as the phone link in FinalCTA. */}
+            <a
+              href={company.phoneLink}
+              onClick={() => trackContactClick({ method: 'phone' })}
+              className="shrink-0 text-lg text-[var(--color-gray-600)] hover:text-[#1e293b] transition-colors whitespace-nowrap"
+            >
+              or call <span className="font-bold text-[#1e293b]">{company.phoneFormatted}</span>
+            </a>
           </motion.div>
         </div>
       </div>
@@ -1295,8 +1125,8 @@ export function Hero() {
                 className="absolute inset-0"
                 style={{
                   opacity: (paneRevealed || handedOff) && i === wordIndex ? 1 : 0,
-                  // Same duration and easing as the word accordion, so the pane
-                  // and the word resolve together.
+                  // Same duration and easing as the eyebrow highlight, so the pane
+                  // and the highlighted word resolve together.
                   transition: `opacity ${SWIPE_DURATION}ms cubic-bezier(0.4, 0, 0.2, 1)`,
                 }}
               >
