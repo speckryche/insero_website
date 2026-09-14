@@ -191,12 +191,18 @@ export function WhyInsero() {
             misses it. #005C28 measures 6.63:1 and is the same hue family.
             The arrow is aria-hidden — it is punctuation for the eye, and a
             screen reader announcing "right arrow" after the link text is
-            noise. */}
+            noise.
+
+            Spacing here is the stat strip's, value for value — mt-10/lg:mt-12
+            above the rule and pt-8/lg:pt-10 below it. The two rules are drawn
+            identically and sit within a few hundred pixels of each other, so
+            any difference in the air around them reads as a mistake rather
+            than as hierarchy. If one of them is ever retuned, retune both. */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className={`mt-12 lg:mt-16 border-t ${HAIRLINE} pt-8 text-center`}
+          className={`mt-10 lg:mt-12 border-t ${HAIRLINE} pt-8 lg:pt-10 text-center`}
         >
           <p className="text-base text-[#475569]">
             Still skeptical?{' '}
