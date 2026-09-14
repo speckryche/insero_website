@@ -214,11 +214,15 @@ export function Testimonials() {
             and nothing centring the final row. A quote stretched to twice the
             width of its neighbours reads as the important one. */}
         {/* No max-width. The grid fills .container-custom, which is exactly how
-            the green stats panel in WhyInsero gets its width — a plain child of
+            the stat strip in WhyInsero gets its width — a plain child of
             container-custom with nothing constraining it. Measured at 1280:
             both span 1222px from x=24 to x=1246. Matching the mechanism rather
             than the number means the two stay locked together if
-            --container-max or --container-padding is ever retuned. */}
+            --container-max or --container-padding is ever retuned.
+
+            (That strip replaced a green gradient panel; the mechanism it is
+            cited for is unchanged, since the replacement is a plain child of
+            the same container.) */}
         <div className="grid gap-6 md:grid-cols-2 items-stretch">
           {visible.map((testimonial) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
