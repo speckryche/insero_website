@@ -463,6 +463,12 @@ export function Hero() {
   } | null>(null);
   /** Middle term of the headline clamp. Only lowered, and only if it overruns. */
   const [headlineVw, setHeadlineVw] = useState(HEADLINE_VW_DEFAULT);
+  /**
+   * Distance from the section's top to the plate's top, in px. PLATE_TOP_OFFSET
+   * until the measurement pass finds the artwork starving the column, then
+   * raised to shorten it — see the solve below for why this is the lever.
+   */
+  const [plateTop, setPlateTop] = useState(PLATE_TOP_OFFSET);
   const measureRef = useRef<HTMLSpanElement>(null);
   const fullMeasureRef = useRef<HTMLSpanElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -574,6 +580,72 @@ export function Hero() {
         return;
       }
 
+      // Past this point the clamp walk is spent: either it never had to run, or
+      // it has reached HEADLINE_VW_MIN and the headline is as small as it is
+      // allowed to get. If the column STILL does not fit, the headline is not
+      // the thing that is too big — the artwork is, and it is taking space the
+      // copy needs.
+      //
+      // The plate's width is not set anywhere; it falls out of its height,
+      // because the box is locked to PLATE_ASPECT and pinned top-to-bottom. So
+      // a taller viewport makes a taller plate, a taller plate makes a WIDER
+      // one, and a wider one pushes INZO left until he is standing where the
+      // headline has to go. Shortening the plate is therefore the only lever
+      // that moves him back, and raising its top offset is how this file
+      // already shortens it — the note on PLATE_TOP_OFFSET says as much.
+      //
+      // Not a crop, deliberately. Clipping the plate would change which pixels
+      // are visible and not where they sit: the box is anchored to the
+      // viewport's right edge and still has to cover the section's height, so
+      // its rendered width — and with it INZO's position — would come out
+      // exactly the same. Measured: a 1037px crop frame at 1280x900 leaves his
+      // left edge at 473.6px, to the pixel where it already was. Only a smaller
+      // plate moves him. Nothing is cropped here, so all five layers over the
+      // plate — video, three panes, wash — keep sharing its box untouched.
+      //
+      // Derived, never typed in. The requirement is the same inequality the
+      // guard rail above applies, solved for the plate instead of the headline:
+      //
+      //   zone       = plateRight - (1 - PANE_LEFT_FRACTION) * plateWidth
+      //   zone       >= colWidth + GAP_TO_PANE + MIN_EDGE_GAP
+      //   plateWidth <= (plateRight - required) / (1 - PANE_LEFT_FRACTION)
+      //
+      // and the height follows from PLATE_RATIO. Retune a gap or reshape the
+      // headline and this tracks it; there is no 583 or 1037 written down.
+      //
+      // Gated on the walk being SPENT rather than on `overruns` alone, and both
+      // halves of that matter. Gating on overruns would oscillate: the cap makes
+      // the zone big enough, the next pass sees no overrun, clears the cap, and
+      // the pass after that sees the overrun again. Gating before the walk would
+      // spend the artwork instead of the type at viewports where lowering the
+      // clamp still has somewhere to go — at 1920 it would settle at 3vw with a
+      // plate 12% smaller than today rather than walking the type down to 2.6vw
+      // as it does now. The walk only ever reaches its floor where the clamp's
+      // literal minimum has taken over, which is the bottom of the xl range; at
+      // 1440 it stops at 2.2vw and at 1920 at 2.6vw, so this is inert there.
+      const required = colWidth + GAP_TO_PANE + MIN_EDGE_GAP;
+      const maxPlateWidth = (rect.right - required) / (1 - PANE_LEFT_FRACTION);
+      const maxPlateHeight = maxPlateWidth / PLATE_RATIO;
+      // The plate fills the wrapper, and the wrapper runs from `plateTop` to the
+      // section's bottom edge, so the section's height minus the height we are
+      // willing to allow IS the offset. Measured off the section rather than the
+      // viewport: the plate is out of flow and cannot feed back into it, which is
+      // what keeps this from being circular.
+      const sectionHeight = sectionRef.current?.getBoundingClientRect().height ?? 0;
+      // Ceil, so a rounding error lands on the side of a slightly shorter plate
+      // rather than a zone a fraction short of what the column was promised.
+      const nextPlateTop =
+        headlineVw <= HEADLINE_VW_MIN && sectionHeight > 0
+          ? Math.max(PLATE_TOP_OFFSET, Math.ceil(sectionHeight - maxPlateHeight))
+          : PLATE_TOP_OFFSET;
+      if (nextPlateTop !== plateTop) {
+        // Return rather than carry on: `zone` above was measured off the plate
+        // this pass is about to resize, so everything downstream of it would be
+        // stale. The re-render re-runs this effect and measures the new one.
+        setPlateTop(nextPlateTop);
+        return;
+      }
+
       // Centred on the pane's edge, so the gap to the pane and the gap to the
       // viewport edge come out the same number. Both minimums are checked
       // explicitly even though the two gaps are equal here and GAP_TO_PANE is
@@ -630,7 +702,7 @@ export function Hero() {
       clearTimeout(timer);
       window.removeEventListener('resize', onResize);
     };
-  }, [headlineVw]);
+  }, [headlineVw, plateTop]);
 
   const startTransition = useCallback(() => {
     setPhase('swipe-left');
@@ -847,8 +919,37 @@ export function Hero() {
              box and everything in it — copy and backdrop alike — so nothing
              inside re-aligns relative to anything else. A transform rather than
              a margin because it is exact in both modes; a margin on a
-             justify-center flex item only moves it half as far. */
-          className="relative xl:translate-x-[var(--hero-shift)] xl:w-[var(--hero-col)] xl:text-center"
+             justify-center flex item only moves it half as far.
+
+             shrink-0 and min-w are what make --hero-col actually bind, and both
+             are load-bearing. This div is a flex item of the wrapper above, so
+             `width` alone is only a FLEX BASIS: with the default shrink of 1 the
+             column is compressed to whatever the wrapper's content box is, and
+             the solved width is honoured only at viewports where it happens to
+             be smaller than that box — which is exactly where it was not needed.
+
+             What that compression did is worse than losing the width. A flex
+             item's default `min-width: auto` floors it at its min-content size,
+             and the h1 inside is whitespace-nowrap, so min-content IS the
+             headline line — a number that CHANGES WITH THE ROTATING WORD. The
+             column therefore came out at the wrapper's width for the narrow
+             words and at the headline's width for the wide one, resizing on
+             every rotation. The subtitle, paragraph and CTA are mx-auto inside
+             it and narrower than their own max-w, so they took that width and
+             re-centred their text on each swing — copy that must never move,
+             moving, because of a word two lines above it.
+
+             shrink-0 stops the compression; min-w states the floor outright
+             rather than leaving it to `auto`, so the width survives anyone
+             re-enabling shrink later. Both are xl-only: below xl this is not a
+             flex item and none of it applies.
+
+             This only pins the column; it does not decide whether the solved
+             width FITS. That is the plate cap's job — see the solve, which
+             shortens the artwork once the clamp walk is spent. The two are
+             independent on purpose: this one guarantees the copy never moves
+             between words, the cap guarantees there is room for it. */
+          className="relative xl:translate-x-[var(--hero-shift)] xl:w-[var(--hero-col)] xl:min-w-[var(--hero-col)] xl:shrink-0 xl:text-center"
           style={{
             '--hero-col': headlineMaxWidth ? `${headlineMaxWidth}px` : 'fit-content',
             '--hero-shift': layout ? `${layout.shift}px` : '0px',
@@ -1084,7 +1185,7 @@ export function Hero() {
         className="mt-5 w-full mx-auto max-w-[1680px] px-6
                    xl:mt-0 xl:mx-0 xl:max-w-none xl:w-auto xl:px-0
                    xl:absolute xl:right-0 xl:bottom-0 xl:z-0"
-        style={{ top: PLATE_TOP_OFFSET }}
+        style={{ top: plateTop }}
       >
         {/* Crop frame — below xl only. `xl:contents` makes it generate no box
             at all at xl and up, so the plate box below becomes a direct child
