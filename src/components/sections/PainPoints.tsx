@@ -2,29 +2,35 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import {
-  UsersThree,
-  CreditCard,
-  Question
-} from '@phosphor-icons/react';
 
+/**
+ * Problem on the left, answer on the right, a hairline between each.
+ *
+ * Deliberately not a card grid. Three of the four sections that run
+ * consecutively here were rows of bordered cards with tinted icon tiles, and
+ * that repetition is what made the page read as templated. HowItWorks keeps its
+ * cards because each one carries an image and earns the box; this section and
+ * Services now take their structure from rules and whitespace instead, which is
+ * the vocabulary WhyInsero already established further down the page.
+ *
+ * The icons went with the tiles. A tinted square holding a generic glyph
+ * labelled nothing the heading beside it did not already say, so nothing is
+ * lost by dropping it and a whole column of vertical space is gained.
+ */
 const painPoints = [
   {
-    icon: UsersThree,
     title: 'Too many vendors, too much confusion',
     description:
       'Juggling multiple carriers and providers creates complexity that wastes your time and money.',
     insight: 'Most businesses overpay because they don\'t have time to compare options.'
   },
   {
-    icon: CreditCard,
     title: 'Paying for features you don\'t need',
     description:
       'Complex pricing structures and unnecessary add-ons mean you\'re likely overpaying every month.',
     insight: 'Independent comparison usually finds meaningful savings.'
   },
   {
-    icon: Question,
     title: 'No one explains what\'s best for YOUR business',
     description:
       'Generic solutions don\'t fit unique needs. You deserve advice tailored to your specific situation.',
@@ -39,7 +45,7 @@ export function PainPoints() {
   return (
     <section ref={sectionRef} className="py-24 lg:py-32 bg-white">
       <div className="container-custom">
-        {/* Section header */}
+        {/* Section header — unchanged */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -56,56 +62,54 @@ export function PainPoints() {
           </p>
         </motion.div>
 
-        {/* Pain points grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* The rows are the only children here, so last:border-b reliably closes
+            the run rather than needing a rule on the wrapper. */}
+        <div>
           {painPoints.map((point, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+              /* 1.05fr / 1fr: the problem carries two lines of prose and the
+                 answer one, so an even split would leave the right column
+                 short. The hairline is --color-secondary at 15%, the same
+                 value WhyInsero divides its stat strip with. */
+              className="grid grid-cols-1 gap-x-12 gap-y-3 py-9 border-t border-[#1a2530]/15 last:border-b lg:grid-cols-[1.05fr_1fr] lg:py-11"
             >
-              <div className="bg-white rounded-2xl p-8 lg:p-10 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 h-full">
-                {/* Icon */}
-                <div className="mb-6">
-                  <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0, 136, 56, 0.1)' }}>
-                    <point.icon weight="fill" className="w-7 h-7 text-[#008838]" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-bold text-[#1e293b] mb-3 leading-tight">
+              <div>
+                <h3 className="text-[1.375rem] font-display font-bold text-[#1e293b] leading-snug mb-2.5 text-balance">
                   {point.title}
                 </h3>
-                <p className="text-[#64748b] leading-relaxed mb-6">
+                <p className="text-[#64748b] leading-relaxed max-w-[52ch]">
                   {point.description}
                 </p>
-
-                {/* Insight */}
-                <div className="pt-6 border-t border-gray-100">
-                  <p className="text-base font-semibold text-[#008838] leading-relaxed">
-                    {point.insight}
-                  </p>
-                </div>
               </div>
+
+              {/* #005C28 rather than the #008838 this used to be. At 17px in a
+                  semibold weight it is body copy, not a heading, so it takes
+                  the 4.5:1 bar: the brand green is 4.58:1 on white and scrapes
+                  it, primary-dark is 8.20:1 and reads as the deliberate reply
+                  it is. Centred against the problem on desktop, stacked under
+                  it below lg where there is no second column to align to. */}
+              <p className="text-[17px] font-semibold text-[#005C28] leading-relaxed max-w-[42ch] lg:self-center">
+                {point.insight}
+              </p>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom connector */}
+        {/* Closing line. The flanking gradient rules are gone with the rest of
+            that treatment; the sentence carries itself at this size. */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-16 text-center"
+          className="mt-14 text-center"
         >
-          <div className="inline-flex items-center gap-6">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[#008838]" />
-            <span className="text-2xl md:text-3xl font-bold text-[#1e293b]">
-              There&apos;s a better way
-            </span>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[#008838]" />
-          </div>
+          <span className="text-2xl md:text-3xl font-display font-bold text-[#1e293b]">
+            There&apos;s a better way
+          </span>
         </motion.div>
       </div>
     </section>

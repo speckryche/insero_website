@@ -3,46 +3,47 @@
 import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
 import { useRef } from 'react';
-import {
-  Microphone,
-  Globe,
-  GitBranch,
-  ShieldCheck,
-  ArrowRight
-} from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 
+/**
+ * The four pillars, divided by the vertical rules the heading names.
+ *
+ * Not a card grid, and the change is more than cosmetic: four bordered boxes
+ * with tinted icon tiles was the third consecutive section on this page built
+ * that way. The columns here are separated by hairlines at
+ * --color-secondary/15, the same device WhyInsero divides its stat strip with,
+ * so the rules ARE the pillars rather than decoration around them.
+ *
+ * The per-service colours are gone with the tiles — voice blue, internet teal,
+ * sdwan violet, security red. They were the strongest per-service signal on the
+ * page and this is a real loss, taken deliberately: the section now reads in
+ * brand colours only, and the coding returns with the services-page work rather
+ * than surviving here as four tinted squares.
+ */
 const services = [
   {
-    icon: Microphone,
     title: 'Voice Connectivity',
     description: 'Modern phone systems that scale with your business and reduce costs.',
     features: ['VoIP Solutions', 'Unified Communications', 'Call Analytics'],
     href: '/services/voice',
-    color: 'var(--color-voice)',
   },
   {
-    icon: Globe,
     title: 'Internet Connectivity',
     description: 'Speed and reliability optimized for your specific needs and budget.',
     features: ['Fiber & Broadband', 'Dedicated Internet', 'Multi-carrier Options'],
     href: '/services/internet',
-    color: 'var(--color-internet)',
   },
   {
-    icon: GitBranch,
     title: 'SD-WAN & Redundancy',
     description: 'Never lose connection again with intelligent network management.',
     features: ['Failover Protection', 'Traffic Optimization', 'Multi-site Connectivity'],
     href: '/services/sdwan',
-    color: 'var(--color-sdwan)',
   },
   {
-    icon: ShieldCheck,
     title: 'Security',
     description: 'Protection without complexity. Enterprise security made accessible.',
     features: ['Firewall Solutions', 'Threat Detection', 'Compliance Support'],
     href: '/services/security',
-    color: 'var(--color-security)',
   },
 ];
 
@@ -53,7 +54,7 @@ export function Services() {
   return (
     <section ref={sectionRef} className="py-24 lg:py-32 bg-[#e2e8ec]">
       <div className="container-custom">
-        {/* Section header */}
+        {/* Section header — unchanged */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -69,64 +70,64 @@ export function Services() {
           </p>
         </motion.div>
 
-        {/* Services grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* The negative margin is what lets the outer columns carry the same
+            padding as the inner ones without their text sitting inset from the
+            heading above. -mx-6 is exactly --container-padding (1.5rem), so the
+            grid's edges land on the container's content edge and nothing
+            overflows; -mx-5 does the same job inside the 24px at sm. The
+            alternative — first:pl-0 / last:pr-0 — collides with the nth-child
+            rules below at equal specificity and resolves on stylesheet order,
+            which is not something to leave to chance. */}
+        <div className="grid grid-cols-1 border-t border-[#1a2530]/15 sm:grid-cols-2 sm:-mx-5 lg:grid-cols-4 lg:-mx-6 lg:border-b">
           {services.map((service, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + index * 0.08 }}
+              /* Which edge carries the rule changes with the column count. At
+                 two across, only the even children start a second column, so
+                 only they take a left border — an unconditional one would draw
+                 a stray rule down the left edge of every row start. At four
+                 across every child but the first does. The two rules union
+                 correctly where they overlap. */
+              className="flex flex-col py-8 border-b border-[#1a2530]/15 sm:px-5 sm:[&:nth-child(even)]:border-l lg:px-6 lg:py-10 lg:border-b-0 lg:[&:nth-child(n+2)]:border-l"
             >
-              <Link href={service.href} className="block group h-full">
-                <div className="bg-white rounded-2xl p-6 lg:p-8 h-full border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex flex-col">
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center"
-                      style={{
-                        // color-mix, not `${service.color}12`: these are var()
-                        // references now, and a var() with two hex digits stuck on
-                        // the end is invalid CSS that computes to transparent. 7%
-                        // reproduces what the old `12` suffix resolved to.
-                        backgroundColor: `color-mix(in srgb, ${service.color} 7%, transparent)`,
-                        color: service.color,
-                      }}
+              <Link href={service.href} className="group flex flex-col h-full">
+                <h3 className="text-xl font-display font-bold text-[#1e293b] leading-snug mb-2.5 text-balance group-hover:text-[#008838] transition-colors duration-200">
+                  {service.title}
+                </h3>
+                <p className="text-[15px] text-[#475569] leading-relaxed mb-6">
+                  {service.description}
+                </p>
+
+                {/* A short green rule per feature rather than a grey dot. The
+                    dot was decoration; at this size the rule reads as the same
+                    hairline the columns are built from, one scale down. */}
+                <ul className="flex flex-col gap-2.5 mb-7 flex-grow">
+                  {service.features.map((feature, i) => (
+                    <li
+                      key={i}
+                      className="grid grid-cols-[14px_1fr] gap-2.5 items-baseline text-sm text-[#64748b]"
                     >
-                      <service.icon weight="fill" className="w-6 h-6" />
-                    </div>
-                  </div>
+                      <span aria-hidden="true" className="block h-px bg-[#008838] -translate-y-1" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
 
-                  {/* Content */}
-                  <h3 className="text-lg font-bold text-[#1e293b] mb-2 group-hover:text-[#008838] transition-colors duration-200">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm text-[#475569] leading-relaxed mb-5">
-                    {service.description}
-                  </p>
-
-                  {/* Features */}
-                  <ul className="space-y-2 flex-grow">
-                    {service.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-[#64748b]">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gray-300" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* CTA */}
-                  <div className="flex items-center gap-2 text-sm font-semibold text-[#008838] mt-6">
-                    <span>Learn More</span>
-                    <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-                  </div>
-                </div>
+                <span className="inline-flex items-center gap-2 self-start text-[15px] font-semibold text-[#005C28]">
+                  <span className="border-b border-[#005C28]/30 pb-0.5 group-hover:border-[#005C28] transition-colors duration-200">
+                    Learn More
+                  </span>
+                  <ArrowRight weight="bold" className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+                </span>
               </Link>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom CTA */}
+        {/* Bottom CTA — unchanged */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
