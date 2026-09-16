@@ -79,8 +79,14 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
         </motion.div>
       </div>
 
-      {/* Logos carousel — outside container, full width */}
-      <div className="max-w-[1400px] mx-auto px-6">
+      {/* Logos carousel — outside container, and deliberately wider than the
+          heading above it. --container-max is 1280 and the copy sits in it; the
+          card runs past that so the marquee reads as a band rather than another
+          column. 1750 over the previous 1400 is +175px a side, which only bites
+          above a ~1400px viewport — at 1280 and below the card is already
+          capped by the viewport, not by this. The green stat bar below keeps
+          --container-max and is unaffected. */}
+      <div className="max-w-[1750px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
