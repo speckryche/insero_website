@@ -56,21 +56,11 @@ export function FinalCTA({ inzoPeek = false }: FinalCTAProps) {
       )}
 
       <div className="container-custom">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="mb-8"
-          >
-            <span className="inline-flex items-center gap-2 text-[#005C28] text-sm font-semibold tracking-widest uppercase">
-              <span className="w-8 h-px bg-[#008838]" />
-              Let&apos;s Talk
-              <span className="w-8 h-px bg-[#008838]" />
-            </span>
-          </motion.div>
-
+        {/* pt-2 replaces the eyebrow's leading, not its height. The eyebrow was an
+             inline-flex on its own line, and the line box around it opened 9px above
+             the box itself — so deleting it dropped the heading 9px PAST where the
+             eyebrow had started, not just to it. 8px is that gap to the nearest step. */}
+        <div className="max-w-3xl mx-auto text-center pt-2">
           {/* Headline */}
           <motion.h2
             initial={{ opacity: 0, y: 16 }}

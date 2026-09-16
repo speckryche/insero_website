@@ -36,17 +36,11 @@ function Hero() {
     >
       <div className="absolute inset-0 bg-grid-pattern opacity-30" />
       <Container>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 text-[#1FA855] text-sm font-semibold tracking-widest uppercase mb-6"
-          >
-            <span className="w-8 h-px bg-[#1FA855]" />
-            About Insero
-            <span className="w-8 h-px bg-[#1FA855]" />
-          </motion.span>
+        {/* pt-2 replaces the eyebrow's leading, not its height. The eyebrow was an
+             inline-flex on its own line, and the line box around it opened 9px above
+             the box itself — so deleting it dropped the heading 9px PAST where the
+             eyebrow had started, not just to it. 8px is that gap to the nearest step. */}
+        <div className="relative max-w-4xl mx-auto text-center pt-2">
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}

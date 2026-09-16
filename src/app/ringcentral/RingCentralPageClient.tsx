@@ -801,12 +801,11 @@ export function RingCentralPageClient() {
       {/* ===================== FINAL CTA — LEAD FORM ===================== */}
       <section id="get-a-quote" className="scroll-mt-24 lg:scroll-mt-28 pt-24 lg:pt-28 pb-20 lg:pb-24 bg-white">
         <Container size="md">
-          <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12">
-            <span className="inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase mb-8" style={{ color: PRIMARY_DARK }}>
-              <span className="w-8 h-px" style={{ backgroundColor: PRIMARY_DARK }} />
-              Let&apos;s Talk
-              <span className="w-8 h-px" style={{ backgroundColor: PRIMARY_DARK }} />
-            </span>
+          {/* pt-2 replaces the eyebrow's leading, not its height. The eyebrow was an
+               inline-flex on its own line, and the line box around it opened 9px above
+               the box itself — so deleting it dropped the heading 9px PAST where the
+               eyebrow had started, not just to it. 8px is that gap to the nearest step. */}
+          <motion.div {...fadeUp} className="text-center max-w-xl mx-auto mb-12 pt-2">
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight" style={{ color: INK }}>
               Talk to a RingCentral expert
             </h2>

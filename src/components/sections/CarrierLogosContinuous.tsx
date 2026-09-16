@@ -64,17 +64,12 @@ export function CarrierLogosContinuousClient({ logos }: CarrierLogosContinuousCl
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          /* pt-2 replaces the eyebrow's leading, not its height. The eyebrow was an
+           inline-flex on its own line, and the line box around it opened 9px above
+           the box itself — so deleting it dropped the heading 9px PAST where the
+           eyebrow had started, not just to it. 8px is that gap to the nearest step. */
+          className="text-center mb-12 pt-2"
         >
-          {/* Eyebrow */}
-          <div className="mb-5">
-            <span className="inline-flex items-center gap-3 text-[#005C28] text-sm font-semibold tracking-widest uppercase">
-              <span className="w-8 h-px bg-[#008838]" />
-              Our Partners
-              <span className="w-8 h-px bg-[#008838]" />
-            </span>
-          </div>
-
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-5 leading-tight">
             Trusted Carrier Network
           </h2>

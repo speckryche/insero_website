@@ -192,12 +192,11 @@ export function Testimonials() {
   return (
     <section className="py-16 lg:py-24 bg-[#f8fafb]" aria-labelledby="testimonials-heading">
       <div className="container-custom">
-        <div className="max-w-2xl mx-auto text-center mb-12">
-          <span className="inline-flex items-center gap-2 text-[#005C28] text-sm font-semibold tracking-widest uppercase mb-4">
-            <span className="w-8 h-px bg-[#008838]" />
-            Customers
-            <span className="w-8 h-px bg-[#008838]" />
-          </span>
+        {/* pt-2 replaces the eyebrow's leading, not its height. The eyebrow was an
+           inline-flex on its own line, and the line box around it opened 9px above
+           the box itself — so deleting it dropped the heading 9px PAST where the
+           eyebrow had started, not just to it. 8px is that gap to the nearest step. */}
+        <div className="max-w-2xl mx-auto text-center mb-12 pt-2">
           <h2
             id="testimonials-heading"
             className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-4"
