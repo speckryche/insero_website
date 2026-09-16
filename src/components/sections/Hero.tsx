@@ -859,7 +859,20 @@ export function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-20 pb-10 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
+      /* pt-20 / lg:pt-24 / xl:pt-0 tracks the fixed header's own height at each
+         breakpoint: h-20 below lg, h-24 from lg up. Without the middle step the
+         1024-1279 band padded the copy by 80px against a 96px bar and the
+         headline came to rest exactly on its bottom edge — 0px of clearance,
+         invisible while the bar was transparent and obvious once it was not.
+
+         Safe on the section here, unlike at xl. The plate's `top` is measured
+         from the section's padding box, so padding at xl would drag the artwork
+         down with it — which is why the xl offset lives on the flex item
+         instead, see the note on the type column. Below xl none of that applies:
+         the plate is a static block in normal flow under the copy, so section
+         padding simply moves the whole stack down, and xl:pt-0 puts this back to
+         zero before the absolute plate ever exists. */
+      className="relative bg-white overflow-hidden min-h-hero xl:min-h-[85vh]! pt-20 lg:pt-24 pb-10 xl:pt-0 xl:pb-0 xl:flex xl:items-center"
       /* Set here rather than on the h1 so the hidden measurement span inherits
          the same value — the two must resolve to identical type or the
          accordion animates to a width the word does not occupy. */

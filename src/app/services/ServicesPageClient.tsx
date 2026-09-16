@@ -114,7 +114,6 @@ export function ServicesPageClient() {
       {/* Hero Section - Deep Blue Gradient */}
       <section
         ref={heroRef}
-        data-dark-hero="true"
         className="relative pt-32 pb-24 overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, #0a1628 0%, #1e3a5f 40%, #0f2d3d 100%)',

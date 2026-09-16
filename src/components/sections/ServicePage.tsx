@@ -73,7 +73,12 @@ export function ServicePage({
   return (
     <>
       {/* Hero Section */}
-      <section data-dark-hero="true" data-header-cta-color={headerCtaColor || undefined} className={`relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-br ${gradient} overflow-hidden`}>
+      {/* data-header-cta-color is the whole of what this section still tells
+          the header: which colour to paint Get Started. The data-dark-hero
+          marker that used to sit beside it is gone — the header paints its own
+          background at every scroll position now, so there is nothing for a
+          page to announce about it. */}
+      <section data-header-cta-color={headerCtaColor || undefined} className={`relative pt-32 lg:pt-40 pb-20 lg:pb-28 bg-gradient-to-br ${gradient} overflow-hidden`}>
         {/* Background decorations */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-grid-pattern opacity-10" />

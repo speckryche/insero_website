@@ -82,7 +82,6 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const [hasDarkHero, setHasDarkHero] = useState(false);
   const [headerCtaColor, setHeaderCtaColor] = useState<string | null>(null);
   const pathname = usePathname();
 
@@ -94,28 +93,32 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Detect if the page has a dark hero background
-  // Re-runs on every route change via pathname dependency
-  const checkDarkHero = useCallback(() => {
-    const darkHero = document.querySelector('[data-dark-hero="true"]');
-    setHasDarkHero(!!darkHero);
-    const ctaColor = darkHero?.getAttribute('data-header-cta-color') || null;
-    setHeaderCtaColor(ctaColor);
+  /**
+   * The one thing a page still tells the header: which colour its Get Started
+   * button should take. /services/internet is the only caller today.
+   *
+   * Read off the attribute that carries the colour, not off a dark-hero marker.
+   * The marker is gone along with the transparent bar that needed it: the header
+   * paints its own #1a2530 at every scroll position now, so a page has nothing
+   * left to say about the header's background and no reason to announce that it
+   * is dark.
+   */
+  const readCtaColor = useCallback(() => {
+    const el = document.querySelector('[data-header-cta-color]');
+    setHeaderCtaColor(el?.getAttribute('data-header-cta-color') || null);
   }, []);
 
   useEffect(() => {
-    // Check immediately
-    checkDarkHero();
-    // Also check after a short delay to handle async rendering
-    const timer = setTimeout(checkDarkHero, 100);
-    // Watch for DOM changes in case content renders after mount
-    const observer = new MutationObserver(checkDarkHero);
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, [pathname, checkDarkHero]);
+    readCtaColor();
+    // One deferred re-read, and deliberately no MutationObserver. React commits
+    // children before parents, so by the time this layout-level effect runs the
+    // page below it is already in the DOM and the immediate call has the answer;
+    // the timer only covers a hero that streams in late. What this replaces
+    // watched the ENTIRE body subtree, on every route, to find one attribute
+    // that changes at most once per navigation.
+    const timer = setTimeout(readCtaColor, 100);
+    return () => clearTimeout(timer);
+  }, [pathname, readCtaColor]);
 
   // Lock body scroll while the mobile panel is open, and restore whatever was
   // there before rather than assuming ''. Paired with overscroll-contain on the
@@ -172,10 +175,14 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-[#1a2530] shadow-[0_4px_20px_rgba(0,0,0,0.3)]'
-          : 'bg-transparent'
+      /* The bar is #1a2530 at every scroll position — --color-secondary, the
+         same value the footer is painted in. Scroll no longer changes the
+         colour, only whether the bar casts a shadow, which is the half of the
+         old behaviour that still means something: it separates the header from
+         content passing underneath it. transition-shadow rather than
+         transition-all now that the shadow is the only animated property. */
+      className={`fixed top-0 left-0 right-0 z-50 bg-[#1a2530] transition-shadow duration-300 ${
+        isScrolled ? 'shadow-[0_4px_20px_rgba(0,0,0,0.3)]' : 'shadow-none'
       }`}
     >
       <div className="container-custom">
@@ -189,27 +196,20 @@ export function Header() {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Both variants are `priority`. Neither is decorative: on a
-                  light hero the first is the visible mark, on a dark hero the
-                  second is, and either way the other has to be decoded before
-                  the crossfade runs or the swap flashes an empty box. Lazy
-                  loading the pair would defer the site's own logo below the
-                  fold logic and leave the header blank on first paint. */}
-              <Logo
-                variant="light"
-                alt="Insero - light bg"
-                priority
-                className={`h-16 lg:h-[80px] w-auto transition-all duration-300 ${
-                  !isScrolled && !hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                }`}
-              />
+              {/* One mark, not a cross-faded pair. The bar is dark at every
+                  scroll position, so the dark-ink variant this used to show over
+                  a light page top can never be legible here and is no longer
+                  rendered — which also stops the header preloading a second
+                  logo it would only ever hold at opacity 0. `priority` stays:
+                  this is the site's own mark, above the fold on every route.
+
+                  "dark" names the BACKGROUND the asset is cut for, not its ink
+                  — it is the reversed, white version. See LOGO_SOURCES. */}
               <Logo
                 variant="dark"
-                alt="Insero - dark bg"
+                alt="Insero"
                 priority
-                className={`h-16 lg:h-[80px] w-auto absolute left-0 top-0 transition-all duration-300 ${
-                  isScrolled || hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                }`}
+                className="h-16 lg:h-[80px] w-auto"
               />
             </motion.div>
           </Link>
@@ -225,13 +225,11 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`group flex items-center gap-1.5 px-4 py-2 rounded-lg font-extrabold text-[20px] transition-all duration-300 ${
-                    isScrolled
-                      ? 'text-white hover:text-[#1FA855]'
-                      : hasDarkHero
-                        ? 'text-white/90 hover:text-white'
-                        : 'text-[#1e293b] hover:text-[#008838]'
-                  }`}
+                  /* White at 15.54:1 on the bar, hovering to --color-primary-light
+                     at 5.03:1. The light-background pair this replaces hovered to
+                     #008838, which is 3.39:1 on #1a2530 and would have failed AA
+                     the moment the bar stopped being transparent. */
+                  className="group flex items-center gap-1.5 px-4 py-2 rounded-lg font-extrabold text-[20px] transition-colors duration-300 text-white hover:text-[#1FA855]"
                 >
                   <span className="relative">
                     {link.name}
@@ -339,13 +337,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <motion.button
             whileTap={{ scale: 0.95 }}
-            className={`lg:hidden p-2.5 rounded-xl transition-colors duration-300 ${
-              isScrolled
-                ? 'text-white hover:bg-white/10'
-                : hasDarkHero
-                  ? 'text-white hover:bg-white/10'
-                  : 'text-[#1e293b] hover:bg-gray-100'
-            }`}
+            className="lg:hidden p-2.5 rounded-xl transition-colors duration-300 text-white hover:bg-white/10"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >

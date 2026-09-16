@@ -32,7 +32,6 @@ function Hero() {
   return (
     <section
       ref={ref}
-      data-dark-hero="true"
       className="relative pt-32 lg:pt-40 pb-20 lg:pb-28 hero-gradient overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid-pattern opacity-30" />

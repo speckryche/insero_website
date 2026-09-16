@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
           below, not by this section, so the header has nothing to detect unless
           the marker is declared here. Without it Header.tsx renders the
           light-background wordmark — black on dark navy. */}
-      <section data-dark-hero="true" className="relative py-20 lg:py-28 overflow-hidden">
+      <section className="relative py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
 

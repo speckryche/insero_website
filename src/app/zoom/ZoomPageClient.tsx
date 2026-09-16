@@ -221,11 +221,13 @@ export function ZoomPageClient() {
   return (
     <>
       {/* ============================ HERO ============================ */}
-      {/* PALE page. The standard Insero light header sits above; the Zoom
-          treatment begins here. No dark-hero attribute, and none is wanted —
-          the header flips to its light-on-dark variant only for a section
-          carrying data-dark-hero, and every stop in this gradient is within
-          dE 8.6 of white. The dark header on it would be unreadable.
+      {/* PALE page. The Zoom treatment begins here, below the header.
+          The gradient's every stop is within dE 8.6 of white, which used to
+          matter a great deal: the header was transparent at the top of the page
+          and took its text colour from whatever sat under it, so a page this
+          pale could not be allowed to ask for the light-on-dark treatment. The
+          header now paints its own #1a2530 bar and reads nothing from the page,
+          so the gradient's lightness no longer has any bearing on it.
 
           Same two-brand structure as /ringcentral's hero: full-bleed, so the
           background is on the section and only the Container constrains the
