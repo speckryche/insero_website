@@ -9,23 +9,26 @@ import Image from 'next/image';
  * every device on every page, 378 KB of it, for a mark that never renders wider
  * than 194 CSS px.
  *
- * The rendered assets are 583x240 WebP, which is that 194px cap at 3x DPR. The
- * PNGs stay in public/ and are still the canonical source — the OG/JSON-LD
- * `logo` in app/layout.tsx points at one, and the lead-magnet PDF reads the
- * other off disk as base64. Neither of those can consume WebP, so deleting the
- * PNGs would break both.
+ * The rendered asset is 583x240 WebP, which is that 194px cap at 3x DPR. The
+ * dark PNG stays in public/ and is still the canonical source — the OG/JSON-LD
+ * `logo` in app/layout.tsx points at it and cannot consume WebP, so deleting it
+ * would break that.
  *
- * A vector version is being commissioned. When it lands, changing the two
- * strings in LOGO_SOURCES is the whole migration: `unoptimized` derives from the
- * extension below, because /_next/image refuses to process SVG unless
+ * ONE variant, since the header stopped being transparent. Both call sites —
+ * the header and the footer — now sit on #1a2530, so the reversed mark is the
+ * only one anything asks for; the dark-ink variant and its WebP went with the
+ * header change rather than staying as a source nothing reads. Restoring it is
+ * adding the key back and the file with it.
+ *
+ * A vector version is being commissioned. When it lands, changing the string in
+ * LOGO_SOURCES is the whole migration: `unoptimized` derives from the extension
+ * below, because /_next/image refuses to process SVG unless
  * `dangerouslyAllowSVG` is set, and would answer 400 rather than pass it
- * through. Do not drop that check when the paths change.
+ * through. Do not drop that check when the path changes.
  */
 
 export const LOGO_SOURCES = {
-  /** For light backgrounds — dark ink. */
-  light: '/insero-logo-light-with-tagline-retina.webp',
-  /** For dark backgrounds — reversed to white. */
+  /** For dark backgrounds — reversed to white. The only one in use. */
   dark: '/insero-logo-dark-with-tagline-retina.webp',
 } as const;
 
