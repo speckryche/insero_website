@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: ['next-mdx-remote'],
+  images: {
+    // Next 16 rejects any quality not listed here with a 400, so a `quality`
+    // prop without a matching entry does not degrade to the default — it
+    // fails the request outright. 75 stays first because it is the default
+    // every image on the site still uses; 90 is here for the hero's start
+    // frame alone, which is the LCP image and is judged against the video
+    // that replaces it. Adding a value here does not change any existing
+    // image: nothing else passes a quality prop.
+    qualities: [75, 90],
+  },
   trailingSlash: false,
   // Gated lead-magnet PDFs live outside public/ so they cannot be fetched
   // directly, and the route reads them via a process.cwd() path that

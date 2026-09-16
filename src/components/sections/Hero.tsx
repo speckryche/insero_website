@@ -1281,6 +1281,29 @@ export function Hero() {
                    is what actually puts the first-paint image ahead of the
                    image it is covering. */
                 fetchPriority="high"
+                /* 90, against the default 75 every other image on this page
+                   keeps. This is the LCP image and the last still on screen
+                   before the clip takes over, so it is the one frame whose
+                   compression is directly compared against video a moment
+                   later — and next/image re-encodes rather than passing the
+                   file through. On a 5K display the layout asks for 3840px,
+                   past the 2560px source, so Next caps the width and the only
+                   thing the request still varies is how hard it squeezes: the
+                   244KB 2K source came back as 189KB of softer pixels.
+
+                   Measured cost, at 90 against 75: the 2K source goes 189KB ->
+                   336KB at that top width, the 1920 one 118KB -> 205KB, and
+                   1200px 63KB -> 109KB. It is not free at any width. What buys
+                   it is that 205KB is within a kilobyte of the 1920 file's own
+                   206KB on disk — at 90 the re-encode is effectively returning
+                   the source rather than a reduction of it, which is the point
+                   for the one image the eye compares against video.
+
+                   Requires `qualities` in next.config: Next 16 allows only 75
+                   unless a value is declared there, and answers 400 otherwise
+                   — which on this element would be a broken LCP image, not a
+                   soft one. */
+                quality={90}
                 sizes="(min-width: 1280px) 143vh, 140vw"
                 className="object-cover motion-reduce:hidden"
               />
