@@ -71,28 +71,35 @@ export function PainPoints() {
               initial={{ opacity: 0, y: 16 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-              /* 1.05fr / 1fr: the problem carries two lines of prose and the
-                 answer one, so an even split would leave the right column
-                 short. The hairline is --color-secondary at 15%, the same
-                 value WhyInsero divides its stat strip with. */
-              className="grid grid-cols-1 gap-x-12 gap-y-3 py-9 border-t border-[#1a2530]/15 last:border-b lg:grid-cols-[1.05fr_1fr] lg:py-11"
+              /* Even columns, and the two sides meet on a shared baseline.
+                 The earlier 1.05fr/1fr split plus a vertically centred answer
+                 tipped every row left: the problem block was wider AND denser,
+                 and the answer floated at the midpoint of it, which reads as a
+                 trailing note rather than a reply. items-baseline lands the
+                 answer's first line on the problem title's, so the two are
+                 speaking to each other across the row.
+
+                 The hairline is --color-secondary at 15%, the same value
+                 WhyInsero divides its stat strip with. Unchanged here — only
+                 the Four Pillars rules go orange. */
+              className="grid grid-cols-1 gap-x-16 gap-y-4 py-9 border-t border-[#1a2530]/15 last:border-b lg:grid-cols-2 lg:items-baseline lg:py-11"
             >
               <div>
                 <h3 className="text-[1.375rem] font-display font-bold text-[#1e293b] leading-snug mb-2.5 text-balance">
                   {point.title}
                 </h3>
-                <p className="text-[#64748b] leading-relaxed max-w-[52ch]">
+                <p className="text-[#64748b] leading-relaxed max-w-[50ch]">
                   {point.description}
                 </p>
               </div>
 
-              {/* #005C28 rather than the #008838 this used to be. At 17px in a
-                  semibold weight it is body copy, not a heading, so it takes
-                  the 4.5:1 bar: the brand green is 4.58:1 on white and scrapes
-                  it, primary-dark is 8.20:1 and reads as the deliberate reply
-                  it is. Centred against the problem on desktop, stacked under
-                  it below lg where there is no second column to align to. */}
-              <p className="text-[17px] font-semibold text-[#005C28] leading-relaxed max-w-[42ch] lg:self-center">
+              {/* 20px against the problem title's 22px — near enough to read
+                  as a peer rather than a caption, which is what carries the
+                  right half of the row. #005C28 rather than the #008838 this
+                  used to be: at this size in a semibold weight it is still body
+                  copy, so it takes the 4.5:1 bar, and the brand green scrapes
+                  that at 4.58 where primary-dark clears at 8.20. */}
+              <p className="text-xl font-semibold text-[#005C28] leading-snug max-w-[44ch]">
                 {point.insight}
               </p>
             </motion.div>
