@@ -45,5 +45,6 @@ next-env.d.ts
 
 # local tooling (Claude Code, SEOmator)
 .agents/
-.claude/
+.claude/*
+!.claude/rules/
 seomator.toml
