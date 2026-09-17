@@ -119,19 +119,31 @@ export function Services() {
                   </div>
 
                   <div className="flex flex-col flex-grow px-6 pt-6 pb-7 lg:px-7 lg:pt-7 lg:pb-8">
-                    <p className="text-[15px] text-white/70 leading-relaxed mb-6">
+                    {/* Full white, up from white/70. On this navy the tinted
+                        whites read as grey rather than as quiet text —
+                        white/70 resolves to #BABEC1, which is a colour, not a
+                        dimmed version of the one above it. 15.54:1. */}
+                    <p className="text-[15px] text-white leading-relaxed mb-6">
                       {service.description}
                     </p>
 
                     {/* A short green rule per feature rather than a grey dot.
                         The dot was decoration; at this size the rule reads as
                         the same divider the columns are built from, one scale
-                        down. */}
+                        down. The rule keeps --color-primary-light at 5.03:1.
+
+                        The labels go to white/80 (#D1D3D6, 10.36:1) from
+                        white/60 (#A3A8AC, 6.48:1). Not pure white: the
+                        description above them is, and holding the list one step
+                        back is what keeps the column reading in order rather
+                        than as one flat block. Both cleared 4.5:1 before — this
+                        was never a contrast failure, it was a hue one, the
+                        tinted whites sitting on the navy as grey. */}
                     <ul className="flex flex-col gap-2.5 mb-7 flex-grow">
                       {service.features.map((feature, i) => (
                         <li
                           key={i}
-                          className="grid grid-cols-[14px_1fr] gap-2.5 items-baseline text-sm text-white/60"
+                          className="grid grid-cols-[14px_1fr] gap-2.5 items-baseline text-sm text-white/80"
                         >
                           <span aria-hidden="true" className="block h-px bg-[#1FA855] -translate-y-1" />
                           <span>{feature}</span>
