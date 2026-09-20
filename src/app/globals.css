@@ -68,32 +68,36 @@
   --color-gray-900: #0d1419;
 
   /* Service Colors */
-  /* DECORATIVE USE ONLY — icon fills, badge backgrounds, borders, glows.
-     None of these four clears AA as small text: against --color-gray-50, the
-     harder of the two backgrounds they sit on, they measure 2.98 / 3.15 / 3.43
-     / 3.04. Anything a user reads takes the -text variant below. */
-  --color-voice: #3b82f6;
-  --color-internet: #0B9182;
-  --color-sdwan: #8b5cf6;
-  --color-security: #ef4444;
+  /* ONE TOKEN PER SERVICE, for fills AND for text. There is no -text variant:
+     these four clear AA as small text on every background the service pages
+     put them on, which is what the old decorative/readable split existed to
+     work around.
 
-  /* The same four, dark enough to read. Derived the way --color-accent-cta was:
-     lock the hue in OKLCH, hold chroma at the in-gamut maximum, and lower
-     lightness until the colour clears 4.5:1 against --color-gray-50 (#e2e8ec).
-     Targeting the darker background means white is cleared automatically —
-     each lands at 5.57-5.63 there. Hue is preserved to within a degree, so the
-     four stay as distinguishable from each other as the originals were: the
-     closest pair, voice and sdwan, remain 32.9 deg apart in OKLCH.
+     GRAY-50 IS THE BINDING CASE, not white. The Related Reading cards on every
+     service page are bg-[var(--color-gray-50)] (#e2e8ec), and the category
+     label and "Read more" link inside them are small text in the service
+     colour. A value checked only against white passes at a number it never
+     actually renders at — which is how the first pass at this palette shipped
+     an Internet that measured 5.24 on white and 4.24 on the cards.
 
-                       on #e2e8ec   on #fff
-       voice-text         4.55         5.63
-       internet-text      4.53         5.60
-       sdwan-text         4.51         5.58
-       security-text      4.50         5.57 */
-  --color-voice-text: #1A62D3;
-  --color-internet-text: #007569;
-  --color-sdwan-text: #7946E0;
-  --color-security-text: #CD1A27;
+                    on #fff   on gray-50
+       voice          6.45        5.21
+       internet       6.68        5.41
+       sdwan          6.58        5.32
+       security       6.50        5.26
+
+     White and gray-50 are the only two backgrounds these actually render on.
+     ServicePage passes the token as `var(--color-x)`, so its tint fills —
+     `${color}15` at lines 159/174/204/211/303/348, and the same pattern in
+     Header — concatenate to `var(--color-voice)15`, which is not a colour and
+     is dropped: those boxes compute to rgba(0,0,0,0) today. If that is ever
+     fixed, the text on a 15-alpha tint of its own colour measures 4.66-4.82,
+     so it stays AA either way. Any change to these four gets re-measured on
+     gray-50 before it lands. */
+  --color-voice: #1E5FA8;
+  --color-internet: #09685B;
+  --color-sdwan: #6B46B8;
+  --color-security: #A33464;
 
   /* ═══════════════════════════════════════════════════════════
      TYPOGRAPHY
