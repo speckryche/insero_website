@@ -155,7 +155,7 @@ export function ServicePage({
       {/* Features Section */}
       <section ref={featuresRef} className="relative py-24 lg:py-32 bg-white overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full blur-[120px]" style={{ backgroundColor: `${color}10` }} />
+          <div className="absolute top-0 left-1/3 w-96 h-96 rounded-full blur-[120px]" style={{ backgroundColor: `color-mix(in srgb, ${color} 6%, transparent)` }} />
         </div>
 
         <div className="container-custom relative">
@@ -170,7 +170,7 @@ export function ServicePage({
               animate={featuresInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-              style={{ backgroundColor: `${color}15`, color }}
+              style={{ backgroundColor: `color-mix(in srgb, ${color} 8%, transparent)`, color }}
             >
               <Sparkle weight="fill" className="w-4 h-4" />
               <span className="text-sm font-semibold">Our Solutions</span>
@@ -200,14 +200,14 @@ export function ServicePage({
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       style={{
-                        background: `linear-gradient(135deg, ${color}05 0%, transparent 100%)`
+                        background: `linear-gradient(135deg, color-mix(in srgb, ${color} 2%, transparent) 0%, transparent 100%)`
                       }}
                     />
 
                     {/* Icon */}
                     <div
                       className="relative w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
-                      style={{ backgroundColor: `${color}15`, color }}
+                      style={{ backgroundColor: `color-mix(in srgb, ${color} 8%, transparent)`, color }}
                     >
                       <FeatureIcon weight="fill" className="w-7 h-7" />
                     </div>
@@ -299,7 +299,7 @@ export function ServicePage({
                       >
                         <div
                           className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center"
-                          style={{ backgroundColor: `${color}40` }}
+                          style={{ backgroundColor: `color-mix(in srgb, ${color} 25%, transparent)` }}
                         >
                           <CheckCircle weight="fill" className="w-3.5 h-3.5 text-white" />
                         </div>

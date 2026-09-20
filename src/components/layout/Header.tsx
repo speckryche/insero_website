@@ -278,7 +278,7 @@ export function Header() {
                                   <div
                                     className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 group-hover/item:scale-110"
                                     style={{
-                                      backgroundColor: `${service.color}15`,
+                                      backgroundColor: `color-mix(in srgb, ${service.color} 8%, transparent)`,
                                       color: service.color
                                     }}
                                   >

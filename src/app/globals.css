@@ -86,14 +86,14 @@
        sdwan          6.58        5.32
        security       6.50        5.26
 
-     White and gray-50 are the only two backgrounds these actually render on.
-     ServicePage passes the token as `var(--color-x)`, so its tint fills —
-     `${color}15` at lines 159/174/204/211/303/348, and the same pattern in
-     Header — concatenate to `var(--color-voice)15`, which is not a colour and
-     is dropped: those boxes compute to rgba(0,0,0,0) today. If that is ever
-     fixed, the text on a 15-alpha tint of its own colour measures 4.66-4.82,
-     so it stays AA either way. Any change to these four gets re-measured on
-     gray-50 before it lands. */
+     The third background is the tint: ServicePage and the Header dropdown fill
+     pills and icon tiles with the colour itself at 8% via color-mix, and set
+     the colour on the text and icon inside. Measured on the rendered page, the
+     colour on its own 8% tint over white holds 5.73 / 5.93 / 5.85 / 5.75; over
+     gray-50 the same pairing is 4.66-4.82. Every combination the components
+     produce is therefore AA.
+
+     Any change to these four gets re-measured on gray-50 before it lands. */
   --color-voice: #1E5FA8;
   --color-internet: #09685B;
   --color-sdwan: #6B46B8;
