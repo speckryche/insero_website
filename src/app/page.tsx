@@ -1,20 +1,24 @@
 import type { Metadata } from 'next';
-import { Hero } from '@/components/sections/Hero';
-import { carrierAccessPhrase } from '@/data/carrier-access';
-import { PainPoints } from '@/components/sections/PainPoints';
-import { Services } from '@/components/sections/Services';
-import { HowItWorks } from '@/components/sections/HowItWorks';
-import { WhyInsero } from '@/components/sections/WhyInsero';
-import { CarrierLogosContinuous } from '@/components/sections/CarrierLogosContinuousServer';
-import { ResourcesHighlight } from '@/components/sections/ResourcesHighlight';
+import { HomeHero } from '@/components/home/HomeHero';
+import { CityBlockScroll } from '@/components/home/CityBlockScroll';
+import { ProposalReveal } from '@/components/home/ProposalReveal';
+import { PickOneLine } from '@/components/home/PickOneLine';
+import { IntakeSection } from '@/components/home/IntakeSection';
+import { HowWeGetPaid } from '@/components/home/HowWeGetPaid';
+import { ServicesGrid } from '@/components/home/ServicesGrid';
+import { HomeFAQ, type FAQItem } from '@/components/home/HomeFAQ';
+import { LearnTeaser } from '@/components/home/LearnTeaser';
+import { FinalCTABand } from '@/components/home/FinalCTABand';
 import { Testimonials } from '@/components/sections/Testimonials';
-import { FinalCTA } from '@/components/sections/FinalCTA';
-import { FAQ } from '@/components/sections/FAQ';
+import '@/components/home/home.css';
+
+// The hero subtitle, verbatim, so the search snippet says what the page says.
+const description =
+  'Internet, voice and the rest of your tech. We get quotes from every carrier and line them up side by side. Free to you, because the carriers pay us.';
 
 export const metadata: Metadata = {
   title: 'Insero — Independent Telecom & Technology Advisors | Zero Cost',
-  description:
-    `Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, ${carrierAccessPhrase}, honest guidance. Based in Oregon, serving the US.`,
+  description,
   keywords: [
     'telecom broker',
     'telecom consultant',
@@ -29,8 +33,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'Insero — Independent Telecom & Technology Advisors',
-    description:
-      `Insero, LLC helps businesses source voice, internet, SD-WAN, and cybersecurity — at zero cost. Independent advisors, ${carrierAccessPhrase}, honest guidance. Based in Oregon, serving the US.`,
+    description,
     url: 'https://insero.cloud',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
@@ -39,32 +42,36 @@ export const metadata: Metadata = {
   },
 };
 
-// FAQ data
-const faqItems = [
+// FAQ data. Rendered by HomeFAQ and serialised into the FAQPage schema below,
+// so what Google reads is exactly what is on screen.
+const faqItems: FAQItem[] = [
   {
     question: 'What does Insero cost?',
-    answer:
-      'Our consulting services are completely free to you. Carriers pay us directly when we help you find the right solution, so you get expert guidance at zero cost.',
+    answer: 'Nothing. Carriers pay us when you sign up. No fees, no retainer, no obligation.',
   },
   {
-    question: 'How do you help my business save money?',
+    question: 'Will I pay more than going direct?',
     answer:
-      'We compare solutions from multiple carriers to find the best fit for your needs. Our carrier-agnostic approach means we recommend based on your requirements, not commission rates, often uncovering savings on voice, internet, and network services.',
+      "No. The carrier's price is the same either way. We often know about promotions you wouldn't hear about on your own.",
   },
   {
-    question: 'What types of businesses do you work with?',
+    question: 'What size businesses do you work with?',
     answer:
-      'We work with businesses of all sizes, from small businesses with a single location to large enterprises with multiple sites across the country. Our solutions scale to match your needs.',
+      'One location to hundreds. Small and mid-size businesses are our sweet spot, and we bring in carrier specialists for bigger projects.',
   },
   {
-    question: 'How long does implementation take?',
+    question: 'How long does it take?',
     answer:
-      'Implementation timelines vary by service. Simple voice solutions can be up and running in days, while complex SD-WAN deployments may take a few weeks. We provide realistic timelines upfront and manage the entire process for you.',
+      'Your side-by-side usually takes a few business days. Install depends on the service: days for voice, longer if new fiber has to be built.',
   },
   {
-    question: 'Do I have to switch all my services at once?',
+    question: 'Do I have to switch everything at once?',
+    answer: 'No. Plenty of customers start with one service and add more later.',
+  },
+  {
+    question: 'What happens after install?',
     answer:
-      "Not at all. We work at your pace. Many clients start with one service to experience our process, then expand to other solutions over time. There's no pressure to change everything at once.",
+      "You work directly with the carrier you picked. They handle your service and support. When your contract comes up for renewal, we'll compare the market again so you're not stuck auto-renewing.",
   },
 ];
 
@@ -147,22 +154,28 @@ export default function HomePage() {
           __html: JSON.stringify(faqSchema),
         }}
       />
-      <Hero />
-      <CarrierLogosContinuous />
-      <PainPoints />
-      <Services />
-      <HowItWorks />
-      <WhyInsero />
-
-      <div className="[&>section]:!bg-[#f8fafb] [&>section]:!pt-12 [&>section]:lg:!pt-16">
-        <FAQ items={faqItems} />
+      <div className="hm">
+        <HomeHero />
+        <CityBlockScroll />
+        <ProposalReveal />
+        <PickOneLine />
+        <IntakeSection />
+        <HowWeGetPaid />
+        <ServicesGrid />
       </div>
-
-      <ResourcesHighlight />
-
-      <Testimonials />
-
-      <FinalCTA />
+      {/* Outside the .hm wrapper on purpose: home.css styles bare h2/h3 under
+          .hm, and unlayered rules there would override this component's
+          Tailwind spacing. Approved quotes only, in review as well as
+          production. Scott Anderson's approved quote is left off this page
+          because it names the founder, which the homepage brand rules forbid;
+          it is not edited, because a testimonial is the customer's verbatim
+          words. */}
+      <Testimonials approvedOnly excludeIds={['scott-anderson']} />
+      <div className="hm">
+        <HomeFAQ items={faqItems} />
+        <LearnTeaser />
+        <FinalCTABand />
+      </div>
     </>
   );
 }

@@ -151,17 +151,13 @@ const organizationSchema = {
   ],
 };
 
-// JSON-LD WebSite Schema for sitelinks search
+// JSON-LD WebSite Schema. No SearchAction: the site has no /search page, and
+// advertising one points Google's sitelinks search box at a 404.
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Insero',
   url: baseUrl,
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: `${baseUrl}/search?q={search_term_string}`,
-    'query-input': 'required name=search_term_string',
-  },
 };
 
 export default function RootLayout({

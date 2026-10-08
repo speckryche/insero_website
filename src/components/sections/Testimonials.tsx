@@ -173,17 +173,28 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
-export function Testimonials() {
+interface TestimonialsProps {
+  /**
+   * Drop unapproved entries in development too, so a page that must only ever
+   * show approved quotes looks the same in review as in production.
+   */
+  approvedOnly?: boolean;
+  /** Entry ids to leave out of this placement (see the homepage for why). */
+  excludeIds?: readonly string[];
+}
+
+export function Testimonials({ approvedOnly = false, excludeIds = [] }: TestimonialsProps = {}) {
   // Filtered per render, not at build time. Verified against a production
   // build: the homepage HTML contains none of these strings, and no client
   // chunk under .next/static does either. The full array does sit in the
   // server chunk, because this module is imported server-side — so an
   // unapproved quote is never sent to a browser, but it is not absent from the
   // deployment. Treat this gate as "cannot be seen", not "cannot be found".
-  const visible =
-    process.env.NODE_ENV === 'production'
+  const visible = (
+    process.env.NODE_ENV === 'production' || approvedOnly
       ? testimonials.filter((t) => t.approved)
-      : testimonials;
+      : testimonials
+  ).filter((t) => !excludeIds.includes(t.id));
 
   // No approved quotes means no section at all, rather than a heading over an
   // empty grid.

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Logo } from '@/components/ui/Logo';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -71,51 +70,27 @@ const services = [
 
 const navLinks = [
   { name: 'Services', href: '/services', hasDropdown: true },
-  { name: 'Resources', href: '/resources' },
-  { name: 'Tools', href: '/tools' },
-  { name: 'Guides', href: '/guides' },
+  { name: 'How It Works', href: '/#how-it-works' },
+  { name: 'Learn', href: '/resources' },
   { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
 ];
+
+/** The one header CTA, desktop and mobile alike. */
+const CTA = { label: 'Get My Side-by-Side', href: '/#get-started' };
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const [hasDarkHero, setHasDarkHero] = useState(false);
-  const [headerCtaColor, setHeaderCtaColor] = useState<string | null>(null);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Detect if the page has a dark hero background
-  // Re-runs on every route change via pathname dependency
-  const checkDarkHero = useCallback(() => {
-    const darkHero = document.querySelector('[data-dark-hero="true"]');
-    setHasDarkHero(!!darkHero);
-    const ctaColor = darkHero?.getAttribute('data-header-cta-color') || null;
-    setHeaderCtaColor(ctaColor);
-  }, []);
-
-  useEffect(() => {
-    // Check immediately
-    checkDarkHero();
-    // Also check after a short delay to handle async rendering
-    const timer = setTimeout(checkDarkHero, 100);
-    // Watch for DOM changes in case content renders after mount
-    const observer = new MutationObserver(checkDarkHero);
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
-  }, [pathname, checkDarkHero]);
 
   // Lock body scroll while the mobile panel is open, and restore whatever was
   // there before rather than assuming ''. Paired with overscroll-contain on the
@@ -172,44 +147,28 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-[#1a2530] shadow-[0_4px_20px_rgba(0,0,0,0.3)]'
-          : 'bg-transparent'
+      // White on every page. Height comes from --header-h (globals.css), which
+      // the homepage's pinned scroll stages also read, so the two cannot drift.
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#DDE4E8] transition-shadow duration-300 ${
+        isScrolled ? 'shadow-[0_4px_20px_rgba(13,20,25,0.08)]' : ''
       }`}
     >
       <div className="container-custom">
-        <nav className="flex items-center justify-between h-20 lg:h-24">
+        <nav className="flex items-center justify-between gap-3 h-[var(--header-h)]">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center relative group"
+            className="flex items-center relative group shrink-0"
           >
             <motion.div
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             >
-              {/* Both variants are `priority`. Neither is decorative: on a
-                  light hero the first is the visible mark, on a dark hero the
-                  second is, and either way the other has to be decoded before
-                  the crossfade runs or the swap flashes an empty box. Lazy
-                  loading the pair would defer the site's own logo below the
-                  fold logic and leave the header blank on first paint. */}
               <Logo
                 variant="light"
-                alt="Insero - light bg"
+                alt="Insero home"
                 priority
-                className={`h-16 lg:h-[80px] w-auto transition-all duration-300 ${
-                  !isScrolled && !hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                }`}
-              />
-              <Logo
-                variant="dark"
-                alt="Insero - dark bg"
-                priority
-                className={`h-16 lg:h-[80px] w-auto absolute left-0 top-0 transition-all duration-300 ${
-                  isScrolled || hasDarkHero ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                }`}
+                className="h-[46px] lg:h-[60px] w-auto max-w-none"
               />
             </motion.div>
           </Link>
@@ -225,13 +184,7 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className={`group flex items-center gap-1.5 px-4 py-2 rounded-lg font-extrabold text-[20px] transition-all duration-300 ${
-                    isScrolled
-                      ? 'text-white hover:text-[#1FA855]'
-                      : hasDarkHero
-                        ? 'text-white/90 hover:text-white'
-                        : 'text-[#1e293b] hover:text-[#008838]'
-                  }`}
+                  className="group flex items-center gap-1.5 px-3 xl:px-4 py-2 rounded-lg font-display font-bold text-[16px] text-[#1A2530] hover:text-[#008838] transition-colors duration-300"
                 >
                   <span className="relative">
                     {link.name}
@@ -318,36 +271,29 @@ export function Header() {
             ))}
 
             {/* CTA Button */}
-            <Link href="/contact" className="ml-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[16px] transition-all duration-300 text-white shadow-lg"
-                style={{
-                  backgroundColor: headerCtaColor || 'var(--color-primary)',
-                  // color-mix rather than appending "40" for the alpha: that
-                  // string trick only works on a literal hex, and pages now
-                  // hand this a var() so the colour has one definition.
-                  boxShadow: `0 10px 15px -3px color-mix(in srgb, ${headerCtaColor || 'var(--color-primary)'} 25%, transparent)`,
-                }}
-              >
-                <span>Get Started</span>
-              </motion.button>
+            <Link
+              href={CTA.href}
+              className="ml-4 inline-flex items-center px-5 py-3 rounded-[10px] font-display font-bold text-[15px] text-white bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] shadow-[0_10px_15px_-3px_rgba(201,80,0,0.25)] transition-colors whitespace-nowrap"
+            >
+              {CTA.label}
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile: the CTA stays in the bar wherever it fits, beside the
+              menu toggle. Below 390px it lives in the menu panel only. */}
+          <div className="flex items-center gap-1 lg:hidden">
+          <Link
+            href={CTA.href}
+            className="hidden min-[390px]:inline-flex items-center px-3 py-2.5 rounded-[10px] font-display font-bold text-[13px] sm:text-[14px] text-white bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] whitespace-nowrap"
+          >
+            {CTA.label}
+          </Link>
           <motion.button
             whileTap={{ scale: 0.95 }}
-            className={`lg:hidden p-2.5 rounded-xl transition-colors duration-300 ${
-              isScrolled
-                ? 'text-white hover:bg-white/10'
-                : hasDarkHero
-                  ? 'text-white hover:bg-white/10'
-                  : 'text-[#1e293b] hover:bg-gray-100'
-            }`}
+            className="p-2.5 rounded-xl text-[#1A2530] hover:bg-gray-100 transition-colors duration-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
           >
             <AnimatePresence mode="wait">
               {isMobileMenuOpen ? (
@@ -373,6 +319,7 @@ export function Header() {
               )}
             </AnimatePresence>
           </motion.button>
+          </div>
         </nav>
       </div>
 
@@ -442,11 +389,11 @@ export function Header() {
                   transition={{ delay: 0.3 }}
                 >
                   <Link
-                    href="/contact"
+                    href={CTA.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--color-accent-cta)] text-white font-semibold rounded-xl shadow-lg shadow-[var(--color-accent-cta)]/25"
+                    className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] text-white font-display font-bold rounded-xl shadow-lg shadow-[var(--color-accent-cta)]/25"
                   >
-                    <span>Get Started</span>
+                    <span>{CTA.label}</span>
                   </Link>
                 </motion.div>
               </div>
