@@ -165,12 +165,10 @@ export default function HomePage() {
       </div>
       {/* Outside the .hm wrapper on purpose: home.css styles bare h2/h3 under
           .hm, and unlayered rules there would override this component's
-          Tailwind spacing. Approved quotes only, in review as well as
-          production. Scott Anderson's approved quote is left off this page
-          because it names the founder, which the homepage brand rules forbid;
-          it is not edited, because a testimonial is the customer's verbatim
-          words. */}
-      <Testimonials approvedOnly excludeIds={['scott-anderson']} />
+          Tailwind spacing. Same three approved testimonials as main, verbatim
+          and in the same order; approvedOnly just keeps the unapproved
+          placeholder out of development review too. */}
+      <Testimonials approvedOnly />
       <div className="hm">
         <HomeFAQ items={faqItems} />
         <LearnTeaser />
