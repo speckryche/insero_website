@@ -79,18 +79,8 @@ const navLinks = [
 const CTA = { label: 'Get My Side-by-Side', href: '/#get-started' };
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Lock body scroll while the mobile panel is open, and restore whatever was
   // there before rather than assuming ''. Paired with overscroll-contain on the
@@ -147,14 +137,13 @@ export function Header() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-      // White on every page. Height comes from --header-h (globals.css), which
-      // the homepage's pinned scroll stages also read, so the two cannot drift.
-      className={`fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#DDE4E8] transition-shadow duration-300 ${
-        isScrolled ? 'shadow-[0_4px_20px_rgba(13,20,25,0.08)]' : ''
-      }`}
+      // Full-width white bar on every page. Height comes from --header-h
+      // (globals.css: the logo plus 14px padding top and bottom), which the
+      // homepage's pinned scroll stages also read, so the two cannot drift.
+      className="fixed top-0 left-0 right-0 z-50 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.10)]"
     >
-      <div className="container-custom">
-        <nav className="flex items-center justify-between gap-3 h-[var(--header-h)]">
+      <div className="px-[4.5%] py-[14px]">
+        <nav className="flex items-center justify-between gap-3 h-[calc(var(--header-h)-28px)]">
           {/* Logo */}
           <Link
             href="/"
@@ -168,13 +157,13 @@ export function Header() {
                 variant="light"
                 alt="Insero home"
                 priority
-                className="h-[46px] lg:h-[60px] w-auto max-w-none"
+                className="h-[40px] min-[761px]:h-[56px] w-auto max-w-none"
               />
             </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-10">
             {navLinks.map((link) => (
               <div
                 key={link.name}
@@ -184,7 +173,7 @@ export function Header() {
               >
                 <Link
                   href={link.href}
-                  className="group flex items-center gap-1.5 px-3 xl:px-4 py-2 rounded-lg font-display font-bold text-[16px] text-[#1A2530] hover:text-[#008838] transition-colors duration-300"
+                  className="group flex items-center gap-1.5 py-2 rounded-lg font-display font-semibold text-[19px] text-[#1A2530] hover:text-[#008838] transition-colors duration-300"
                 >
                   <span className="relative">
                     {link.name}
@@ -273,7 +262,7 @@ export function Header() {
             {/* CTA Button */}
             <Link
               href={CTA.href}
-              className="ml-4 inline-flex items-center px-5 py-3 rounded-[10px] font-display font-bold text-[15px] text-white bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] shadow-[0_10px_15px_-3px_rgba(201,80,0,0.25)] transition-colors whitespace-nowrap"
+              className="inline-flex items-center px-[22px] py-[13px] rounded-[10px] font-display font-bold text-[17px] text-white bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] shadow-[0_10px_15px_-3px_rgba(201,80,0,0.25)] transition-colors whitespace-nowrap"
             >
               {CTA.label}
             </Link>
@@ -284,7 +273,7 @@ export function Header() {
           <div className="flex items-center gap-1 lg:hidden">
           <Link
             href={CTA.href}
-            className="hidden min-[390px]:inline-flex items-center px-3 py-2.5 rounded-[10px] font-display font-bold text-[13px] sm:text-[14px] text-white bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] whitespace-nowrap"
+            className="hidden min-[390px]:inline-flex items-center px-[14px] py-[10px] rounded-[10px] font-display font-bold text-[14px] text-white bg-[var(--color-accent-cta)] hover:bg-[var(--color-accent-cta-hover)] whitespace-nowrap"
           >
             {CTA.label}
           </Link>

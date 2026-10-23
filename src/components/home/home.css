@@ -135,39 +135,58 @@
 /* ═══════════════ Hero ═══════════════ */
 
 .hm .hm-hero {
-  padding-top: calc(var(--header-h) + 72px);
-  padding-bottom: 40px;
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 24px;
-  align-items: center;
+  position: relative;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
 }
 
+.hm .hm-hero .hm-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+
+/* Soft white wash on the left so the copy reads over the footage. */
+.hm .hm-hero .hm-hero-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.25) 38%,
+    rgba(255, 255, 255, 0) 55%
+  );
+}
+
+.hm .hm-hero .hm-hero-copy {
+  position: absolute;
+  left: 6%;
+  top: 19%;
+  z-index: 2;
+}
+
+/* max-width 8.6em holds the h1 to four lines at every width. */
 .hm .hm-hero h1 {
-  font-size: clamp(38px, 6.4vw, 76px);
-  line-height: 1.02;
+  font-size: clamp(38px, 5.2vw, 96px);
   font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: #14202c;
+  max-width: 8.6em;
 }
 
 .hm .hm-hero .hm-lead {
-  font-size: clamp(17px, 2vw, 21px);
-  max-width: 620px;
-  margin: 20px 0 28px;
-  color: var(--hm-body);
-}
-
-.hm .hm-hero .hm-inzo {
-  justify-self: center;
-  max-height: 550px;
-  width: auto;
-  height: auto;
-  animation: hm-bob 3.4s ease-in-out infinite;
-}
-
-@keyframes hm-bob {
-  50% {
-    transform: translateY(-10px);
-  }
+  font-size: clamp(16px, 1.4vw, 24px);
+  line-height: 1.5;
+  margin: 18px 0 26px;
+  max-width: 27em;
+  color: #26323f;
 }
 
 .hm .hm-scrollcue {
@@ -214,13 +233,17 @@
   }
 }
 
-@media (max-width: 819px) {
-  .hm .hm-hero {
-    grid-template-columns: 1fr;
-    padding-top: calc(var(--header-h) + 40px);
+@media (max-width: 760px) {
+  .hm .hm-hero .hm-hero-copy {
+    left: 6%;
+    right: 6%;
+    top: 15%;
   }
-  .hm .hm-hero .hm-inzo {
-    max-height: 275px;
+  .hm .hm-hero .hm-lead {
+    max-width: none;
+  }
+  .hm .hm-hero .hm-hero-video {
+    object-position: 42% center;
   }
 }
 
@@ -1269,6 +1292,17 @@
    No pinning and no animation: every scene renders in its final state, and the
    tall scroll wrappers collapse to the height of their stage. */
 @media (prefers-reduced-motion: reduce) {
+  .hm .hm-hero {
+    background: url('/hero/hero-poster.jpg') center 40% / cover no-repeat;
+  }
+  .hm .hm-hero .hm-hero-video {
+    display: none;
+  }
+  @media (max-width: 760px) {
+    .hm .hm-hero {
+      background-position: 42% center;
+    }
+  }
   .hm .hm-pin-city,
   .hm .hm-pin-prop,
   .hm .hm-pin-line {
@@ -1299,7 +1333,6 @@
   .hm .hm-pin-line .hm-word {
     padding: 80px 24px;
   }
-  .hm .hm-hero .hm-inzo,
   .hm .hm-scrollcue i::after,
   .hm .hm-city .flow {
     animation: none;

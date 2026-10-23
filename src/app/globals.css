@@ -127,7 +127,7 @@
 
   /* Fixed header height. Header.tsx sizes itself from this, and the homepage's
      pinned scroll stages sit directly under it, so it is the one definition. */
-  --header-h: 72px;
+  --header-h: 68px;
   --section-padding: 6rem;
   --section-padding-lg: 8rem;
 
@@ -156,9 +156,9 @@
   --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 761px) {
   :root {
-    --header-h: 88px;
+    --header-h: 84px;
   }
 }
 
