@@ -4,7 +4,7 @@
  */
 export function HomeHero() {
   return (
-    <section className="hm-hero" aria-labelledby="hm-hero-title">
+    <section className="hm-hero" data-line="start" aria-labelledby="hm-hero-title">
       <video
         className="hm-hero-video"
         autoPlay

@@ -10,6 +10,7 @@ import { HomeFAQ, type FAQItem } from '@/components/home/HomeFAQ';
 import { LearnTeaser } from '@/components/home/LearnTeaser';
 import { FinalCTABand } from '@/components/home/FinalCTABand';
 import { Testimonials } from '@/components/sections/Testimonials';
+import { GreenLine } from '@/components/home/GreenLine';
 import '@/components/home/home.css';
 
 // The hero subtitle, verbatim, so the search snippet says what the page says.
@@ -154,25 +155,52 @@ export default function HomePage() {
           __html: JSON.stringify(faqSchema),
         }}
       />
-      <div className="hm">
-        <HomeHero />
-        <CityBlockScroll />
-        <ProposalReveal />
-        <PickOneLine />
-        <IntakeSection />
-        <HowWeGetPaid />
-        <ServicesGrid />
-      </div>
-      {/* Outside the .hm wrapper on purpose: home.css styles bare h2/h3 under
-          .hm, and unlayered rules there would override this component's
-          Tailwind spacing. Same three approved testimonials as main, verbatim
-          and in the same order; approvedOnly just keeps the unapproved
-          placeholder out of development review too. */}
-      <Testimonials approvedOnly />
-      <div className="hm">
-        <HomeFAQ items={faqItems} />
-        <LearnTeaser />
-        <FinalCTABand />
+      {/* The page container for the green line (GreenLine.tsx). The data-line
+          wrappers below are temporary gutter anchors so the line threads the
+          whole page; they get replaced by per-element anchors section by
+          section. */}
+      <div className="hm-page">
+        <GreenLine />
+        <div className="hm">
+          <HomeHero />
+          <div data-line="gutter-left">
+            <CityBlockScroll />
+          </div>
+          <div data-line="gutter-right">
+            <ProposalReveal />
+            <PickOneLine />
+          </div>
+          <div data-line="gutter-left">
+            <IntakeSection />
+          </div>
+          <div data-line="gutter-right">
+            <HowWeGetPaid />
+          </div>
+          <div data-line="gutter-left">
+            <ServicesGrid />
+          </div>
+        </div>
+        {/* Outside the .hm wrapper on purpose: home.css styles bare h2/h3 under
+            .hm, and unlayered rules there would override this component's
+            Tailwind spacing. Same three approved testimonials as main, verbatim
+            and in the same order; approvedOnly just keeps the unapproved
+            placeholder out of development review too. */}
+        <div data-line="gutter-right">
+          <Testimonials approvedOnly />
+        </div>
+        <div className="hm">
+          <div data-line="gutter-left">
+            <HomeFAQ items={faqItems} />
+          </div>
+          <div data-line="gutter-right">
+            <LearnTeaser />
+          </div>
+          {/* Placeholder for the final CTA video (854:480). The line ends on
+              its top edge where the video's cable enters. */}
+          <div className="hm-final" data-line="end" data-line-x="0.557">
+            <FinalCTABand />
+          </div>
+        </div>
       </div>
     </>
   );

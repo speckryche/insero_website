@@ -1246,10 +1246,63 @@
   background: var(--hm-green-50);
 }
 
+/* ═══════════════ Final CTA ═══════════════ */
+
+/* Placeholder at the final CTA video's 854:480 frame. */
+.hm .hm-final {
+  aspect-ratio: 854 / 480;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--hm-green);
+}
+
+/* ═══════════════ Green line ═══════════════
+   .hm-page wraps the whole homepage and is outside .hm, because the line also
+   passes the Testimonials section. overflow-x: clip, not hidden: hidden would
+   make this an ancestor scroll container and silently kill every sticky stage
+   inside it. The line paints above section backgrounds; anything tagged
+   data-line-above paints over the line. */
+.hm-page {
+  position: relative;
+  overflow-x: clip;
+}
+
+.hm-page .hm-gl {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.hm-page .hm-gl-dot {
+  position: absolute;
+  z-index: 3;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #7cf55a;
+  box-shadow: 0 0 14px #7cf55a;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hm-page [data-line-above] {
+  position: relative;
+  z-index: 4;
+}
+
 /* ═══════════════ Reduced motion ═══════════════
    No pinning and no animation: every scene renders in its final state, and the
    tall scroll wrappers collapse to the height of their stage. */
 @media (prefers-reduced-motion: reduce) {
+  .hm-page .hm-gl-dot {
+    display: none;
+  }
   .hm .hm-hero {
     background: url('/hero/hero-poster.jpg') center 40% / cover no-repeat;
   }
