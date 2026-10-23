@@ -30,12 +30,8 @@ export function HomeHero() {
           side by side. Free to you, because the carriers pay us.
         </p>
         <a className="hm-btn" href="#get-started">
-          Get my side-by-side →
+          Get My Free Quotes
         </a>
-        <div className="hm-scrollcue" aria-hidden="true">
-          <i />
-          Scroll
-        </div>
       </div>
     </section>
   );
