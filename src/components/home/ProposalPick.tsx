@@ -10,6 +10,9 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform 
  * picked. Under prefers-reduced-motion the card is flat from the start and
  * the swap is instant.
  *
+ * This is #how-it-works, the header and footer "How It Works" target. Its
+ * scroll margin lands the section top just under the fixed header.
+ *
  * Deviation from the spec: at 640px and below the TERM and INSTALL columns are
  * hidden and cells are tighter, so the table fits the card instead of being
  * clipped, and the headline box grows to hold two lines.
@@ -46,7 +49,11 @@ export function ProposalPick() {
   const sm = 'max-[640px]:hidden';
 
   return (
-    <section ref={ref} aria-label="Sample proposal" className="relative h-[300vh] bg-[#f6f8f9] font-display text-[#14202c]">
+    <section
+      ref={ref}
+      id="how-it-works"
+      aria-label="Sample proposal"
+      className="relative h-[300vh] scroll-mt-(--header-h) bg-[#f6f8f9] font-display text-[#14202c]">
       <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden px-[4vw] [perspective:1400px]">
         <div className="relative mb-[3vh] h-[clamp(56px,6vw,96px)] w-full text-center max-[640px]:h-[80px]">
           <h2
