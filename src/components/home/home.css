@@ -136,8 +136,9 @@
 
 .hm .hm-hero {
   position: relative;
-  height: 100svh;
-  min-height: 640px;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
   overflow: hidden;
 }
 
@@ -150,17 +151,18 @@
   object-position: center 40%;
 }
 
-/* Soft white wash on the left so the copy reads over the footage. */
+/* Soft white wash over the left 45% so the copy reads over the footage
+   (spec .hero::after). */
 .hm .hm-hero .hm-hero-wash {
   position: absolute;
-  inset: 0;
+  inset: 0 55% 0 0;
   z-index: 1;
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.25) 38%,
-    rgba(255, 255, 255, 0) 55%
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.25) 45%,
+    rgba(255, 255, 255, 0)
   );
 }
 
@@ -179,6 +181,9 @@
   letter-spacing: -0.02em;
   color: #14202c;
   max-width: 8.6em;
+  text-shadow:
+    0 0 28px rgba(255, 255, 255, 0.75),
+    0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .hm .hm-hero .hm-lead {
@@ -1350,5 +1355,13 @@
   .hm .hm-reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Carrier band marquee (CarrierBand.tsx). Global name, used via Tailwind's
+   animate-[hm-mq_...] arbitrary value. */
+@keyframes hm-mq {
+  to {
+    transform: translateX(-50%);
   }
 }

@@ -1,16 +1,10 @@
 import type { Metadata } from 'next';
 import { HomeHero } from '@/components/home/HomeHero';
-import { CityBlockScroll } from '@/components/home/CityBlockScroll';
-import { ProposalReveal } from '@/components/home/ProposalReveal';
-import { PickOneLine } from '@/components/home/PickOneLine';
-import { IntakeSection } from '@/components/home/IntakeSection';
-import { HowWeGetPaid } from '@/components/home/HowWeGetPaid';
-import { ServicesGrid } from '@/components/home/ServicesGrid';
-import { HomeFAQ, type FAQItem } from '@/components/home/HomeFAQ';
-import { LearnTeaser } from '@/components/home/LearnTeaser';
-import { FinalCTABand } from '@/components/home/FinalCTABand';
-import { Testimonials } from '@/components/sections/Testimonials';
-import { GreenLine } from '@/components/home/GreenLine';
+import { CarrierBand } from '@/components/home/CarrierBand';
+import { HomeIntro } from '@/components/home/HomeIntro';
+import { PillarStack } from '@/components/home/PillarStack';
+import { ProposalPick } from '@/components/home/ProposalPick';
+import type { FAQItem } from '@/components/home/HomeFAQ';
 import '@/components/home/home.css';
 
 // The hero subtitle, verbatim, so the search snippet says what the page says.
@@ -155,52 +149,22 @@ export default function HomePage() {
           __html: JSON.stringify(faqSchema),
         }}
       />
-      {/* The page container for the green line (GreenLine.tsx). The data-line
-          wrappers below are temporary gutter anchors so the line threads the
-          whole page; they get replaced by per-element anchors section by
-          section. */}
-      <div className="hm-page">
-        <GreenLine />
+      {/* Homepage v3, part 1 of 3: hero through the proposal. The green line
+          (GreenLine.tsx) is parked and not rendered. The new sections sit
+          outside .hm on purpose: home.css styles bare h2/h3 under .hm, and
+          unlayered rules there would override their Tailwind utilities.
+          overflow-x: clip, not hidden, so the sticky cards and the pinned
+          proposal still stick. */}
+      <div className="overflow-x-clip">
         <div className="hm">
           <HomeHero />
-          <div data-line="gutter-left">
-            <CityBlockScroll />
-          </div>
-          <div data-line="gutter-right">
-            <ProposalReveal />
-            <PickOneLine />
-          </div>
-          <div data-line="gutter-left">
-            <IntakeSection />
-          </div>
-          <div data-line="gutter-right">
-            <HowWeGetPaid />
-          </div>
-          <div data-line="gutter-left">
-            <ServicesGrid />
-          </div>
         </div>
-        {/* Outside the .hm wrapper on purpose: home.css styles bare h2/h3 under
-            .hm, and unlayered rules there would override this component's
-            Tailwind spacing. Same three approved testimonials as main, verbatim
-            and in the same order; approvedOnly just keeps the unapproved
-            placeholder out of development review too. */}
-        <div data-line="gutter-right">
-          <Testimonials approvedOnly />
-        </div>
-        <div className="hm">
-          <div data-line="gutter-left">
-            <HomeFAQ items={faqItems} />
-          </div>
-          <div data-line="gutter-right">
-            <LearnTeaser />
-          </div>
-          {/* Placeholder for the final CTA video (854:480). The line ends on
-              its top edge where the video's cable enters. */}
-          <div className="hm-final" data-line="end" data-line-x="0.557">
-            <FinalCTABand />
-          </div>
-        </div>
+        <CarrierBand />
+        <HomeIntro />
+        <PillarStack />
+        <ProposalPick />
+        {/* Temporary target for the card buttons; parts 2 and 3 replace it. */}
+        <div id="get-started" />
       </div>
     </>
   );
