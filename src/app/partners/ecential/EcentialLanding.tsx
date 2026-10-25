@@ -26,6 +26,7 @@ import {
   WifiHigh,
 } from '@phosphor-icons/react';
 import { submitEcentialForm, EcentialFormData } from './actions';
+import { useFormTimer } from '@/lib/use-form-timer';
 
 // ── Data ──────────────────────────────────────────────
 
@@ -196,7 +197,7 @@ export function EcentialLanding() {
   const pathname = usePathname();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [headerScrolled, setHeaderScrolled] = useState(false);
-  const [formLoadedAt] = useState(() => Date.now());
+  const formElapsed = useFormTimer();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const heroRef = useRef(null);
@@ -240,7 +241,7 @@ export function EcentialLanding() {
       staffCount: data.staffCount,
       challenge: data.challenge || undefined,
       _hp: data._hp,
-      _t: formLoadedAt,
+      _elapsed: formElapsed(),
     };
     const result = await submitEcentialForm(payload);
     if (result.success) {

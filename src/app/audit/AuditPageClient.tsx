@@ -21,6 +21,7 @@ import {
 import { company } from '@/config/company';
 import { FAQ } from '@/components/sections/FAQ';
 import { submitAuditForm, AuditFormData } from './actions';
+import { useFormTimer } from '@/lib/use-form-timer';
 
 // ── Data ──────────────────────────────────────────────
 
@@ -128,7 +129,7 @@ export function AuditPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const pathname = usePathname();
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formLoadedAt] = useState(() => Date.now());
+  const formElapsed = useFormTimer();
 
   const heroRef = useRef(null);
   const painRef = useRef(null);
@@ -159,7 +160,7 @@ export function AuditPageClient() {
       telecomSpend: data.telecomSpend,
       frustration: data.frustration || undefined,
       _hp: data._hp,
-      _t: formLoadedAt,
+      _elapsed: formElapsed(),
     };
     const result = await submitAuditForm(payload);
     if (result.success) {

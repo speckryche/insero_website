@@ -16,8 +16,8 @@ export type ContactFormData = {
   message?: string;
   /** Hidden honeypot field — should be empty for real users */
   _hp?: string;
-  /** Timestamp when the form was rendered (ms) */
-  _t?: number;
+  /** Milliseconds the visitor spent on the form, measured in the browser */
+  _elapsed?: number;
 };
 
 export type SubmitResult = {
@@ -39,7 +39,7 @@ export async function submitContactForm(data: ContactFormData): Promise<SubmitRe
     // Spam detection
     const spamCheck = checkForSpam({
       honeypot: data._hp,
-      formLoadedAt: data._t,
+      formElapsedMs: data._elapsed,
       textFields: [
         data.firstName,
         data.lastName,

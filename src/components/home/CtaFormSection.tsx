@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { submitContactForm } from '@/app/contact/actions';
 import { trackLead } from '@/lib/analytics';
+import { useFormTimer } from '@/lib/use-form-timer';
 
 /*
  * "How can we help?" with the lead form (spec section.cta3). This is the
@@ -67,7 +68,7 @@ export function CtaFormSection() {
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
   const [failed, setFailed] = useState<string | null>(null);
-  const [loadedAt] = useState(() => Date.now());
+  const formElapsed = useFormTimer();
 
   const set = (k: keyof Fields) => (e: { target: { value: string } }) => {
     setF((prev) => ({ ...prev, [k]: e.target.value }));
@@ -94,7 +95,7 @@ export function CtaFormSection() {
         phone: f.phone.trim() || undefined,
         message: f.message.trim() || undefined,
         _hp: f._hp,
-        _t: loadedAt,
+        _elapsed: formElapsed(),
       });
       if (result.success) {
         // `ref`, not `success`: blocked spam also answers success without a lead.

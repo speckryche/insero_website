@@ -16,6 +16,7 @@ import {
 } from '@phosphor-icons/react';
 import { company } from '@/config/company';
 import { submitContactForm, ContactFormData } from './actions';
+import { useFormTimer } from '@/lib/use-form-timer';
 
 interface FormData {
   firstName: string;
@@ -47,7 +48,7 @@ export function ContactPageClient() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const pathname = usePathname();
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formLoadedAt] = useState(() => Date.now());
+  const formElapsed = useFormTimer();
   const heroRef = useRef(null);
   const formRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true });
@@ -62,7 +63,9 @@ export function ContactPageClient() {
 
   const onSubmit = async (data: FormData) => {
     setSubmitError(null);
-    const selectedServices = data.services?.filter(Boolean) || [];
+    // react-hook-form reports an unticked checkbox group as `false`, not [],
+    // so guard the type: calling .filter on it threw and the form never sent.
+    const selectedServices = Array.isArray(data.services) ? data.services.filter(Boolean) : [];
     const formData: ContactFormData = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -72,7 +75,7 @@ export function ContactPageClient() {
       services: selectedServices.length > 0 ? selectedServices : undefined,
       message: data.message || undefined,
       _hp: data._hp,
-      _t: formLoadedAt,
+      _elapsed: formElapsed(),
     };
     const result = await submitContactForm(formData);
     if (result.success) {

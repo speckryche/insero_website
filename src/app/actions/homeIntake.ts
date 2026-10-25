@@ -25,8 +25,8 @@ export type HomeIntakeFormData = {
   businessName?: string;
   /** Hidden honeypot field — should be empty for real users */
   _hp?: string;
-  /** Timestamp when the form was rendered (ms) */
-  _t?: number;
+  /** Milliseconds the visitor spent on the form, measured in the browser */
+  _elapsed?: number;
 };
 
 export type SubmitResult = {
@@ -68,7 +68,7 @@ export async function submitHomeIntake(data: HomeIntakeFormData): Promise<Submit
   try {
     const spamCheck = checkForSpam({
       honeypot: data._hp,
-      formLoadedAt: data._t,
+      formElapsedMs: data._elapsed,
       textFields: [name, businessName],
       email,
     });

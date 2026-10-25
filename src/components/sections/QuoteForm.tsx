@@ -7,6 +7,7 @@ import { CheckCircle, PaperPlaneRight, WarningCircle } from '@phosphor-icons/rea
 import { submitContactForm, type ContactFormData } from '@/app/contact/actions';
 import { trackLead, trackContactClick } from '@/lib/analytics';
 import { company } from '@/config/company';
+import { useFormTimer } from '@/lib/use-form-timer';
 
 // --- Shared on-page quote form --------------------------------------------
 //
@@ -71,7 +72,7 @@ export function QuoteForm({
 }: QuoteFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [formLoadedAt] = useState(() => Date.now());
+  const formElapsed = useFormTimer();
   const pathname = usePathname();
 
   const {
@@ -98,7 +99,7 @@ export function QuoteForm({
       services: [serviceTag],
       message: data.message || undefined,
       _hp: data._hp,
-      _t: formLoadedAt,
+      _elapsed: formElapsed(),
     };
 
     const result = await submitContactForm(formData);

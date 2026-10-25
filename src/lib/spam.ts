@@ -3,7 +3,9 @@
  *
  * Layers:
  * 1. Honeypot — hidden field that bots fill but humans leave empty
- * 2. Timing — bots submit in < 3 seconds; humans rarely do
+ * 2. Timing — bots submit in < 3 seconds; humans rarely do. The form reports
+ *    its own fill time, measured in the browser (src/lib/use-form-timer.ts),
+ *    so no server clock is compared with a browser clock.
  * 3. Gibberish detection — random mixed-case letter strings
  * 4. Suspicious email patterns — Gmail dot-stuffing, disposable domains
  */
@@ -11,8 +13,12 @@
 export type SpamCheckInput = {
   /** Hidden honeypot field value — should be empty */
   honeypot?: string;
-  /** Timestamp (ms) when the form was rendered */
-  formLoadedAt?: number;
+  /**
+   * Milliseconds from the form mounting to it being submitted, measured in the
+   * browser. Untrusted: anything that is not a plausible duration is treated
+   * as suspicious.
+   */
+  formElapsedMs?: unknown;
   /** Fields to check for gibberish (name, company, etc.) */
   textFields: string[];
   /** Email address */
@@ -24,8 +30,15 @@ export type SpamCheckResult = {
   reasons: string[];
 };
 
-/** Minimum seconds a human would take to fill the form */
-const MIN_SUBMIT_SECONDS = 3;
+/** Minimum time a human would take to fill the form */
+export const MIN_SUBMIT_MS = 3000;
+
+/**
+ * Longest fill time accepted as genuine. A tab left open over a long weekend
+ * is still a person; a value past a week is not a duration a real browser
+ * reports, so it is treated like a missing one.
+ */
+export const MAX_SUBMIT_MS = 7 * 24 * 60 * 60 * 1000;
 
 /**
  * Returns true if a string looks like random gibberish.
@@ -146,12 +159,14 @@ export function checkForSpam(input: SpamCheckInput): SpamCheckResult {
     reasons.push('honeypot_filled');
   }
 
-  // 2. Timing check
-  if (input.formLoadedAt) {
-    const elapsedSeconds = (Date.now() - input.formLoadedAt) / 1000;
-    if (elapsedSeconds < MIN_SUBMIT_SECONDS) {
-      reasons.push('submitted_too_fast');
-    }
+  // 2. Timing check. A missing, non-numeric, negative or implausibly large
+  //    duration means the request did not come from our form as served (or
+  //    was tampered with), so it is flagged the same way as a fast one.
+  const elapsed = input.formElapsedMs;
+  if (typeof elapsed !== 'number' || !Number.isFinite(elapsed) || elapsed < 0 || elapsed > MAX_SUBMIT_MS) {
+    reasons.push('invalid_timing');
+  } else if (elapsed < MIN_SUBMIT_MS) {
+    reasons.push('submitted_too_fast');
   }
 
   // 3. Gibberish detection on text fields

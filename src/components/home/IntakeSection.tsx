@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { submitHomeIntake } from '@/app/actions/homeIntake';
 import { HOME_INTAKE_SERVICES, type HomeIntakeService } from '@/data/home-intake';
 import { trackLead } from '@/lib/analytics';
+import { useFormTimer } from '@/lib/use-form-timer';
 
 type FormValues = {
   address: string;
@@ -38,7 +39,7 @@ function Check() {
 /** #get-started: address-first intake that becomes a portal opportunity. */
 export function IntakeSection() {
   const pathname = usePathname();
-  const [formLoadedAt] = useState(() => Date.now());
+  const formElapsed = useFormTimer();
   const [services, setServices] = useState<HomeIntakeService[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -61,7 +62,7 @@ export function IntakeSection() {
       email: data.email,
       businessName: data.businessName || undefined,
       _hp: data._hp,
-      _t: formLoadedAt,
+      _elapsed: formElapsed(),
     });
     if (result.success) {
       // `ref`, not `success`: spam is answered with success on purpose and
