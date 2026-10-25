@@ -1,6 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { JetBrains_Mono } from 'next/font/google';
+
+// The receipt's typewriter face. Loaded here so only this section pays for it.
+const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['500', '700'], display: 'swap' });
 
 /*
  * "How do you get paid?" with the $0 receipt (spec section.paid). The line
@@ -50,7 +54,7 @@ export function ReceiptSection() {
           id="hm-paid-h"
           className="text-[clamp(34px,3.8vw,62px)] font-extrabold! leading-[1.05]! tracking-[-.025em] text-white!"
         >
-          &quot;If I&apos;m not paying you, how do you get <em className="text-green-bright not-italic">paid?</em>&quot;
+          &quot;If I&apos;m not paying you, how do you get <em className="text-[#5cf774] not-italic">paid?</em>&quot;
         </h2>
         <p className="mt-[20px] max-w-[28em] text-[clamp(16px,1.25vw,20px)] leading-[1.55] text-[#b8c4ce]">
           The carriers pay us a commission, the same way they pay their own sales team. You get the research, quotes
@@ -64,7 +68,7 @@ export function ReceiptSection() {
       <div
         role="img"
         aria-label="A receipt from Insero: research every carrier, quotes side by side, recommendation, contract help and install coordination, each $0.00. Total $0.00, stamped paid by the carrier."
-        className="relative w-[min(440px,100%)] rotate-[2.5deg] justify-self-center bg-white px-[30px] pt-[34px] pb-[40px] font-['JetBrains_Mono',ui-monospace,SFMono-Regular,Menlo,monospace] text-[#14202c] shadow-[0_30px_70px_rgba(0,0,0,.45)] [mask:conic-gradient(from_-45deg_at_bottom,#0000,#000_1deg_89deg,#0000_90deg)_50%/22px_100%]"
+        className={`relative w-[min(440px,100%)] rotate-[2.5deg] justify-self-center bg-white px-[30px] pt-[34px] pb-[40px] ${mono.className} text-[#14202c] shadow-[0_30px_70px_rgba(0,0,0,.45)] [mask:conic-gradient(from_-45deg_at_bottom,#0000,#000_1deg_89deg,#0000_90deg)_50%/22px_100%]`}
       >
         <div aria-hidden="true">
           <div className="text-center text-[15px] font-bold tracking-[.12em]">

@@ -9,6 +9,8 @@ import { ServicesSquares } from '@/components/home/ServicesSquares';
 import { TestimonialRotator } from '@/components/home/TestimonialRotator';
 import { FaqAccordion } from '@/components/home/FaqAccordion';
 import { LearnBooklets } from '@/components/home/LearnBooklets';
+import { CtaFormSection } from '@/components/home/CtaFormSection';
+import { FinalScene } from '@/components/home/FinalScene';
 import '@/components/home/home.css';
 
 // The hero subtitle, verbatim, so the search snippet says what the page says.
@@ -100,7 +102,7 @@ export default function HomePage() {
           __html: JSON.stringify(homepageSchema),
         }}
       />
-      {/* Homepage v3, parts 1-2 of 3: hero through Learn. The green line
+      {/* Homepage v3. The green line
           (GreenLine.tsx) is parked and not rendered. The new sections sit
           outside .hm on purpose: home.css styles bare h2/h3 under .hm, and
           unlayered rules there would override their Tailwind utilities.
@@ -119,9 +121,10 @@ export default function HomePage() {
         <TestimonialRotator />
         <FaqAccordion />
         <LearnBooklets />
-        {/* Temporary target for every #get-started link; part 3 replaces it
-            with the real form. */}
-        <div id="get-started" />
+        {/* Holds #get-started, the target of every Let's Connect / Let's talk
+            / Ask us anything link on the page. */}
+        <CtaFormSection />
+        <FinalScene />
       </div>
     </>
   );

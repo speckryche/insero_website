@@ -193,6 +193,9 @@
 .hm .hm-hero .hm-btn {
   margin-top: 28px;
   background: var(--color-green-bright);
+  /* 19px bold counts as large text, which white on green-bright passes. */
+  font-size: 19px;
+  font-weight: 700;
 }
 
 .hm .hm-hero .hm-btn:hover {
@@ -1392,5 +1395,23 @@
   to {
     opacity: 1;
     transform: rotate(-12deg) scale(1);
+  }
+}
+
+/* CTA logo chips (CtaFormSection.tsx): a slow bob and sway around each chip's
+   own tilt, --r. */
+@keyframes hm-bob {
+  0%,
+  100% {
+    transform: rotate(var(--r)) translate(0, 0);
+  }
+  25% {
+    transform: rotate(calc(var(--r) + 3deg)) translate(6px, -14px);
+  }
+  50% {
+    transform: rotate(var(--r)) translate(0, -26px);
+  }
+  75% {
+    transform: rotate(calc(var(--r) - 3deg)) translate(-6px, -12px);
   }
 }

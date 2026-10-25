@@ -24,7 +24,9 @@ type Pillar = {
   videoLabel: string;
   // `more` overrides the colour of the small "and more" label. Only the green
   // card needs it: small green text takes green-text, per the homepage rule.
-  colors: { bg: string; ac: string; c1: string; more?: string };
+  // `acSm` is the accent for the small headline below 1200px, where it drops
+  // under 24px; the green card switches to green-text there.
+  colors: { bg: string; ac: string; c1: string; more?: string; acSm?: string };
   top: number;
 };
 
@@ -44,7 +46,7 @@ const PILLARS: Pillar[] = [
     href: '/services/internet',
     video: 'inet',
     videoLabel: 'A small office on a floating grass island, wired to the internet by a glowing green cable.',
-    colors: { bg: '#ecf8ef', ac: 'var(--color-green-bright)', c1: '#0f3b22', more: 'var(--color-green-text)' },
+    colors: { bg: '#ecf8ef', ac: 'var(--color-green-bright)', c1: '#0f3b22', more: 'var(--color-green-text)', acSm: 'var(--color-green-text)' },
     top: 88,
   },
   {
@@ -118,6 +120,7 @@ export function PillarStack() {
                 '--ac': p.colors.ac,
                 '--c1': p.colors.c1,
                 '--more': p.colors.more ?? p.colors.c1,
+                '--ac-sm': p.colors.acSm ?? p.colors.ac,
               } as CSSProperties
             }
             className="sticky mb-[8vh] max-[860px]:static grid min-h-[min(78vh,640px)] grid-cols-2 gap-[clamp(20px,2.4vw,36px)] rounded-[32px] bg-(--bg) p-[clamp(22px,2vw,30px)] shadow-[0_-6px_30px_rgba(20,32,44,.05)] max-[860px]:min-h-0 max-[860px]:grid-cols-1"
@@ -129,7 +132,7 @@ export function PillarStack() {
               <h3 className="mt-[14px] text-[clamp(22px,2vw,32px)] font-bold! leading-[1.06]! tracking-[-.025em] text-(--c1)!">
                 {p.lead}
                 <br />
-                <em className="text-(--ac) not-italic">{p.leadEm}</em>
+                <em className="text-(--ac) not-italic max-[1199px]:text-(--ac-sm)">{p.leadEm}</em>
               </h3>
               <p className="mt-[20px] max-w-[30em] text-[clamp(15px,1.1vw,18px)] leading-[1.55] text-[#2c3a47]">
                 {p.body}
@@ -158,7 +161,7 @@ export function PillarStack() {
                 <div className="mt-[28px] flex flex-wrap gap-[10px]">
                   <a
                     href="#get-started"
-                    className="inline-flex h-[48px] items-center gap-[8px] rounded-[12px] bg-(--ac) px-[20px] text-[16px] font-bold text-white no-underline"
+                    className="inline-flex h-[48px] items-center gap-[8px] rounded-[12px] bg-(--ac) px-[20px] text-[19px] font-bold text-white no-underline"
                   >
                     {p.talk} <span aria-hidden="true">→</span>
                   </a>
