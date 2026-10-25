@@ -5,13 +5,19 @@ import { testimonials } from '@/data/testimonials';
 
 /*
  * "Don't take our word for it" (spec section.tst). Logo row on top, one
- * testimonial at a time below, advancing every 6s. Hover or keyboard focus
- * pauses it; clicking a logo or dot jumps there and restarts the timer.
- * The quotes come from data/testimonials.ts so the approval gate still
- * applies; only approved entries render.
+ * testimonial at a time below, advancing every 6s. It pauses only while the
+ * pointer is over the quote card and while the tab is hidden; clicking a
+ * logo or dot jumps there and restarts the 6s. The active dot fills in step
+ * with the timer. The quotes come from data/testimonials.ts so the approval
+ * gate still applies; only approved entries render.
  *
- * Under prefers-reduced-motion it does not auto-advance and slides swap
- * without the sideways move.
+ * "Over the card" means the pointer has moved there. Content scrolling under
+ * a resting pointer fires mouseenter but not pointermove, and the old
+ * section-wide mouseenter pause is what left the rotation frozen for anyone
+ * who scrolled here with the pointer parked mid-screen.
+ *
+ * Under prefers-reduced-motion it still advances every 6s; slides swap and
+ * the dot fills without animating.
  *
  * Deviation from the spec: below 600px the logo row is drawn at 60% height
  * so the three logos fit a phone without horizontal scroll.
@@ -31,37 +37,42 @@ const ITEMS = testimonials.filter((t) => t.approved);
 export function TestimonialRotator() {
   const [cur, setCur] = useState(0);
   const [prev, setPrev] = useState<number | null>(null);
-  // Hover and keyboard focus pause separately, so moving the mouse away does
-  // not restart the rotation under someone who is tabbing through it.
+  const curRef = useRef(0);
+  const elapsed = useRef(0);
   const hovered = useRef(false);
-  const focused = useRef(false);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const fill = useRef<HTMLSpanElement>(null);
 
-  const show = useCallback(
-    (i: number) => {
-      if (i === cur) return;
-      setPrev(cur);
-      setCur(i);
-    },
-    [cur],
-  );
+  // Jump to a slide and give it a full 6s, whether a click or the clock moved it.
+  const show = useCallback((i: number) => {
+    elapsed.current = 0;
+    if (i === curRef.current) return;
+    setPrev(curRef.current);
+    curRef.current = i;
+    setCur(i);
+  }, []);
 
-  const start = useCallback(() => {
-    if (timer.current) clearInterval(timer.current);
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    timer.current = setInterval(() => {
-      if (!hovered.current && !focused.current) show((cur + 1) % ITEMS.length);
-    }, DUR);
-  }, [cur, show]);
-
-  // Re-armed on every change so the next tick advances from the current slide
-  // and a click gets a full 6s before the next move.
+  // One clock drives both the advance and the dot, so they cannot drift. It
+  // only counts frame time while visible and not hovered; frames stop in a
+  // hidden tab anyway, and the 100ms cap keeps the return from jumping ahead.
   useEffect(() => {
-    start();
-    return () => {
-      if (timer.current) clearInterval(timer.current);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let raf = 0;
+    let last = performance.now();
+    const frame = (now: number) => {
+      const dt = Math.min(now - last, 100);
+      last = now;
+      if (!hovered.current && document.visibilityState === 'visible') {
+        elapsed.current += dt;
+        if (elapsed.current >= DUR) show((curRef.current + 1) % ITEMS.length);
+      }
+      if (fill.current) {
+        fill.current.style.transform = `scaleX(${reduce.matches ? 1 : Math.min(1, elapsed.current / DUR)})`;
+      }
+      raf = requestAnimationFrame(frame);
     };
-  }, [start]);
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, [show]);
 
 
   return (
@@ -81,15 +92,7 @@ export function TestimonialRotator() {
         </p>
       </div>
 
-      <div
-        className="relative z-[5] mx-auto max-w-[1040px]"
-        onMouseEnter={() => (hovered.current = true)}
-        onMouseLeave={() => (hovered.current = false)}
-        onFocus={(e) => (focused.current = e.target.matches(':focus-visible'))}
-        onBlur={(e) => {
-          if (!e.currentTarget.contains(e.relatedTarget)) focused.current = false;
-        }}
-      >
+      <div className="relative z-[5] mx-auto max-w-[1040px]">
         <div className="flex items-center justify-center gap-[clamp(28px,5vw,80px)] pb-[30px]">
           {ITEMS.map((t, i) => (
             <button
@@ -111,7 +114,12 @@ export function TestimonialRotator() {
           ))}
         </div>
 
-        <div className="relative grid min-h-[clamp(340px,27vw,420px)] grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] overflow-hidden rounded-[24px] bg-white shadow-[0_18px_44px_rgba(20,32,44,.08)] max-[820px]:grid-cols-1">
+        <div
+          onPointerMove={(e) => {
+            if (e.pointerType !== 'touch') hovered.current = true;
+          }}
+          onPointerLeave={() => (hovered.current = false)}
+          className="relative grid min-h-[clamp(340px,27vw,420px)] grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] overflow-hidden rounded-[24px] bg-white shadow-[0_18px_44px_rgba(20,32,44,.08)] max-[820px]:grid-cols-1">
           {ITEMS.map((t, i) => {
             const on = i === cur;
             const out = i === prev && !on;
@@ -159,8 +167,17 @@ export function TestimonialRotator() {
               aria-label={`Testimonial ${i + 1}`}
               aria-pressed={i === cur}
               onClick={() => show(i)}
-              className={`h-[10px] cursor-pointer rounded-full border-0 p-0 transition-[width,background-color] duration-[350ms] motion-reduce:transition-none ${i === cur ? 'w-[30px] bg-green-bright' : 'w-[10px] bg-[#cfd6dc]'}`}
-            />
+              className={`relative h-[10px] cursor-pointer overflow-hidden rounded-full border-0 bg-[#cfd6dc] p-0 transition-[width] duration-[350ms] motion-reduce:transition-none ${i === cur ? 'w-[30px]' : 'w-[10px]'}`}
+            >
+              {i === cur && (
+                <span
+                  ref={fill}
+                  aria-hidden="true"
+                  style={{ transform: 'scaleX(0)' }}
+                  className="absolute inset-0 origin-left rounded-full bg-green-bright"
+                />
+              )}
+            </button>
           ))}
         </div>
       </div>

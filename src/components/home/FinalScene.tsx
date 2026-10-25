@@ -1,13 +1,18 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /*
  * Final scene (spec section.final). The main clip plays once when the scene
  * is half way up the screen and holds its last frame; when it ends the living
  * loop crossfades in over it and light packets start running down the cable.
- * Under prefers-reduced-motion it stays on the poster: no autoplay, no
- * packets.
+ *
+ * Replayable without a refresh: once the scene has fully left the viewport,
+ * coming back to 50% visible plays the main clip again from the start, and a
+ * small Replay button appears whenever the main clip has finished.
+ *
+ * Under prefers-reduced-motion nothing plays by itself: the poster stays up,
+ * and the Replay button (shown from the start) plays it on request.
  */
 
 // The cable from the top edge of the clip down to the building, in the
@@ -24,6 +29,10 @@ export function FinalScene() {
   const loopRef = useRef<HTMLVideoElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const dotsRef = useRef<SVGGElement>(null);
+  const playRef = useRef<() => void>(() => {});
+  // Replay shows once the main clip has finished (or, under reduced motion,
+  // from the start, since nothing plays until it is asked to).
+  const [canReplay, setCanReplay] = useState(false);
 
   useEffect(() => {
     const scene = sceneRef.current;
@@ -32,9 +41,14 @@ export function FinalScene() {
     const path = pathRef.current;
     const dots = dotsRef.current;
     if (!scene || !main || !loop || !path || !dots) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Reduced motion: offering Replay from the start is the only way in. Set
+    // from a frame callback rather than inline, so the effect itself never
+    // sets state.
+    const showReplay = reduce ? requestAnimationFrame(() => setCanReplay(true)) : 0;
 
     let played = false;
+    let left = false;
     let raf = 0;
 
     const tick = (t0: number) => (now: number) => {
@@ -42,7 +56,7 @@ export function FinalScene() {
       const len = path.getTotalLength();
       const total = len * scale;
       [...dots.children].forEach((c, i) => {
-        const s = ((((now - t0) / 1000) * SPEED + (i * total) / PACKETS) % total + total) % total;
+        const s = (((((now - t0) / 1000) * SPEED + (i * total) / PACKETS) % total) + total) % total;
         const q = path.getPointAtLength(s / scale);
         c.setAttribute('cx', String(q.x));
         c.setAttribute('cy', String(q.y));
@@ -51,31 +65,71 @@ export function FinalScene() {
       raf = requestAnimationFrame(tick(t0));
     };
 
+    const stopPackets = () => {
+      cancelAnimationFrame(raf);
+      [...dots.children].forEach((c) => ((c as SVGElement).style.opacity = '0'));
+    };
+
+    // From the top: hide the loop and the packets, rewind, play.
+    const play = () => {
+      played = true;
+      left = false;
+      setCanReplay(false);
+      stopPackets();
+      loop.style.opacity = '0';
+      loop.pause();
+      main.currentTime = 0;
+      main.play().catch(() => {
+        played = false;
+        setCanReplay(true);
+      });
+    };
+    playRef.current = play;
+
     const onEnded = () => {
       loop.currentTime = 0;
       loop.play().catch(() => {});
       loop.style.opacity = '1';
       raf = requestAnimationFrame((now) => tick(now)(now));
+      setCanReplay(true);
     };
     main.addEventListener('ended', onEnded);
 
-    // Plays once, when the scene's top passes the middle of the screen.
+    if (reduce) {
+      return () => {
+        cancelAnimationFrame(showReplay);
+        main.removeEventListener('ended', onEnded);
+        stopPackets();
+      };
+    }
+
+    // First play: when the scene's top passes the middle of the screen.
     const check = () => {
       const r = main.getBoundingClientRect();
-      if (!played && r.top < innerHeight * 0.5 && r.bottom > 0) {
-        played = true;
-        main.play().catch(() => {
-          played = false;
-        });
-      }
+      if (!played && r.top < innerHeight * 0.5 && r.bottom > 0) play();
     };
     window.addEventListener('scroll', check, { passive: true });
     check();
 
+    // Replay: after the scene has fully left the viewport, coming back to 50%
+    // visible plays it again.
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) {
+          if (played) left = true;
+        } else if (left && e.intersectionRatio >= 0.5) {
+          play();
+        }
+      },
+      { threshold: [0, 0.5] },
+    );
+    io.observe(scene);
+
     return () => {
       main.removeEventListener('ended', onEnded);
       window.removeEventListener('scroll', check);
-      cancelAnimationFrame(raf);
+      io.disconnect();
+      stopPackets();
     };
   }, []);
 
@@ -137,6 +191,16 @@ export function FinalScene() {
           Let&apos;s find yours.
         </h2>
       </div>
+      {canReplay && (
+        <button
+          type="button"
+          aria-label="Replay video"
+          onClick={() => playRef.current()}
+          className="absolute right-[clamp(12px,2vw,28px)] bottom-[clamp(12px,2vw,28px)] z-[4] cursor-pointer rounded-full border-0 bg-white/70 px-[14px] py-[7px] font-[inherit] text-[14px] font-bold text-[#14202c] shadow-[0_4px_14px_rgba(20,32,44,.12)] backdrop-blur-[6px] transition-colors hover:bg-white/90 focus-visible:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-bright"
+        >
+          <span aria-hidden="true">↺</span> Replay
+        </button>
+      )}
     </section>
   );
 }
