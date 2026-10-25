@@ -5,10 +5,12 @@ import { testimonials } from '@/data/testimonials';
 
 /*
  * "Don't take our word for it" (spec section.tst). Logo row on top, one
- * testimonial at a time below, advancing every 6s. It pauses only while the
+ * testimonial at a time below, advancing every 6s. It pauses while the
  * pointer is over the quote card and while the tab is hidden; clicking a
  * logo or dot jumps there and restarts the 6s. The active dot fills in step
- * with the timer. The quotes come from data/testimonials.ts so the approval
+ * with the timer. The pause/play button after the dots stops it outright
+ * until it is pressed again: hover, tab visibility and logo/dot clicks never
+ * resume a manual pause. The quotes come from data/testimonials.ts so the approval
  * gate still applies; only approved entries render.
  *
  * "Over the card" means the pointer has moved there. Content scrolling under
@@ -16,8 +18,8 @@ import { testimonials } from '@/data/testimonials';
  * section-wide mouseenter pause is what left the rotation frozen for anyone
  * who scrolled here with the pointer parked mid-screen.
  *
- * Under prefers-reduced-motion it still advances every 6s; slides swap and
- * the dot fills without animating.
+ * Under prefers-reduced-motion it still advances every 6s, and the pause
+ * button works the same; slides swap and the dot fills without animating.
  *
  * Deviation from the spec: below 600px the logo row is drawn at 60% height
  * so the three logos fit a phone without horizontal scroll.
@@ -40,6 +42,13 @@ export function TestimonialRotator() {
   const curRef = useRef(0);
   const elapsed = useRef(0);
   const hovered = useRef(false);
+  // The manual pause, in state for the button and mirrored in a ref for the clock.
+  const [paused, setPaused] = useState(false);
+  const pausedRef = useRef(false);
+  const togglePaused = () => {
+    pausedRef.current = !pausedRef.current;
+    setPaused(pausedRef.current);
+  };
   const fill = useRef<HTMLSpanElement>(null);
 
   // Jump to a slide and give it a full 6s, whether a click or the clock moved it.
@@ -61,7 +70,7 @@ export function TestimonialRotator() {
     const frame = (now: number) => {
       const dt = Math.min(now - last, 100);
       last = now;
-      if (!hovered.current && document.visibilityState === 'visible') {
+      if (!pausedRef.current && !hovered.current && document.visibilityState === 'visible') {
         elapsed.current += dt;
         if (elapsed.current >= DUR) show((curRef.current + 1) % ITEMS.length);
       }
@@ -159,7 +168,7 @@ export function TestimonialRotator() {
           })}
         </div>
 
-        <div className="mt-[22px] flex justify-center gap-[10px]">
+        <div className="mt-[22px] flex items-center justify-center gap-[10px]">
           {ITEMS.map((t, i) => (
             <button
               key={t.id}
@@ -179,6 +188,24 @@ export function TestimonialRotator() {
               )}
             </button>
           ))}
+          <button
+            type="button"
+            aria-label={paused ? 'Play testimonials' : 'Pause testimonials'}
+            aria-pressed={paused}
+            onClick={togglePaused}
+            className="ml-[6px] grid h-[28px] w-[28px] cursor-pointer place-items-center rounded-full border-[1.5px] border-[#cfd6dc] bg-transparent p-0 text-[#8a97a3] transition-colors duration-200 hover:border-[#8a97a3] hover:text-[#5b6875] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-bright motion-reduce:transition-none"
+          >
+            {paused ? (
+              <svg viewBox="0 0 12 12" aria-hidden="true" className="ml-[2px] h-[11px] w-[11px] fill-current">
+                <path d="M2.5 1.2v9.6a.6.6 0 0 0 .92.5l7.3-4.8a.6.6 0 0 0 0-1L3.42.7a.6.6 0 0 0-.92.5z" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 12 12" aria-hidden="true" className="h-[11px] w-[11px] fill-current">
+                <rect x="2" y="1.5" width="2.8" height="9" rx="0.8" />
+                <rect x="7.2" y="1.5" width="2.8" height="9" rx="0.8" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
     </section>
