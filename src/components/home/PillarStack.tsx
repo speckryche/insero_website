@@ -22,7 +22,9 @@ type Pillar = {
   href: string;
   video: string;
   videoLabel: string;
-  colors: { bg: string; ac: string; c1: string };
+  // `more` overrides the colour of the small "and more" label. Only the green
+  // card needs it: small green text takes green-text, per the homepage rule.
+  colors: { bg: string; ac: string; c1: string; more?: string };
   top: number;
 };
 
@@ -42,7 +44,7 @@ const PILLARS: Pillar[] = [
     href: '/services/internet',
     video: 'inet',
     videoLabel: 'A small office on a floating grass island, wired to the internet by a glowing green cable.',
-    colors: { bg: '#ecf8ef', ac: '#1a9a49', c1: '#0f3b22' },
+    colors: { bg: '#ecf8ef', ac: 'var(--color-green-bright)', c1: '#0f3b22', more: 'var(--color-green-text)' },
     top: 88,
   },
   {
@@ -115,6 +117,7 @@ export function PillarStack() {
                 '--bg': p.colors.bg,
                 '--ac': p.colors.ac,
                 '--c1': p.colors.c1,
+                '--more': p.colors.more ?? p.colors.c1,
               } as CSSProperties
             }
             className="sticky mb-[8vh] max-[860px]:static grid min-h-[min(78vh,640px)] grid-cols-2 gap-[clamp(20px,2.4vw,36px)] rounded-[32px] bg-(--bg) p-[clamp(22px,2vw,30px)] shadow-[0_-6px_30px_rgba(20,32,44,.05)] max-[860px]:min-h-0 max-[860px]:grid-cols-1"
@@ -150,7 +153,7 @@ export function PillarStack() {
                       />
                     </span>
                   ))}
-                  <span className="ml-[4px] text-[15px] font-bold text-(--c1) opacity-75">and more</span>
+                  <span className="ml-[4px] text-[15px] font-bold text-(--more) opacity-75">and more</span>
                 </div>
                 <div className="mt-[28px] flex flex-wrap gap-[10px]">
                   <a

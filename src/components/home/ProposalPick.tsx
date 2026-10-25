@@ -53,13 +53,13 @@ export function ProposalPick() {
             aria-hidden={pick}
             className={`absolute inset-0 text-[clamp(34px,4.4vw,72px)] font-extrabold! leading-[1.1]! tracking-[-.025em] text-[#14202c]! ${fade} ${pick ? '-translate-y-[14px] opacity-0' : ''}`}
           >
-            No more <em className="text-[#1fa64a] not-italic">chasing quotes.</em>
+            No more <em className="text-green-bright not-italic">chasing quotes.</em>
           </h2>
           <h2
             aria-hidden={!pick}
             className={`absolute inset-0 text-[clamp(34px,4.4vw,72px)] font-extrabold! leading-[1.1]! tracking-[-.025em] text-[#14202c]! ${fade} ${pick ? '' : 'translate-y-[14px] opacity-0'}`}
           >
-            Just pick <em className="text-[#1fa64a] not-italic">what fits.</em>
+            Just pick <em className="text-green-bright not-italic">what fits.</em>
           </h2>
         </div>
 
@@ -69,11 +69,11 @@ export function ProposalPick() {
         >
           <div className="flex items-center justify-between text-[13px] font-semibold text-[#5b6875]">
             <b className="text-[20px] font-extrabold text-[#14202c]">
-              insero <span className="text-[#1fa64a]">×</span> Your Business
+              insero <span className="text-green-text">×</span> Your Business
             </b>
             <span>Example proposal</span>
           </div>
-          <div className="mt-[16px] text-[12px] font-extrabold tracking-[.08em] text-[#1fa64a]">
+          <div className="mt-[16px] text-[12px] font-extrabold tracking-[.08em] text-green-text">
             INTERNET · 5 QUOTES · SAMPLE DATA
           </div>
           <h3 className="mt-[4px] text-[clamp(22px,2.4vw,36px)] font-extrabold! tracking-[-.02em] text-[#14202c]!">
@@ -102,7 +102,7 @@ export function ProposalPick() {
                 return (
                   <tr
                     key={r.name}
-                    className={`${rowFx} ${pick && !r.win ? 'opacity-[.32]' : ''} ${won ? 'scale-[1.03] rounded-[10px] shadow-[0_10px_24px_rgba(31,166,74,.18)] outline-2 -outline-offset-1 outline-[#1fa64a]' : ''}`}
+                    className={`${rowFx} ${pick && !r.win ? 'opacity-[.32]' : ''} ${won ? 'scale-[1.03] rounded-[10px] shadow-[0_10px_24px_rgba(31,166,74,.18)] outline-2 -outline-offset-1 outline-green-bright' : ''}`}
                   >
                     <td className={`${base} rounded-l-[10px] py-[10px] font-extrabold`}>
                       {/* Plain <img>: several of these are SVG, which next/image won't optimise. */}
@@ -124,7 +124,7 @@ export function ProposalPick() {
                     <td className={`${cell} rounded-r-[10px] text-right`}>
                       <span
                         aria-hidden={!won}
-                        className={`inline-grid h-[24px] w-[24px] place-items-center rounded-full bg-[#1fa64a] text-[14px] text-white ${reduce ? '' : 'transition-all duration-[350ms]'} ${won ? 'scale-100 opacity-100' : 'scale-[.4] opacity-0'}`}
+                        className={`inline-grid h-[24px] w-[24px] place-items-center rounded-full bg-green-bright text-[14px] text-white ${reduce ? '' : 'transition-all duration-[350ms]'} ${won ? 'scale-100 opacity-100' : 'scale-[.4] opacity-0'}`}
                       >
                         ✓<span className="sr-only"> Picked</span>
                       </span>

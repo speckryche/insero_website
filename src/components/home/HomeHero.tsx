@@ -25,12 +25,8 @@ export function HomeHero() {
           <br />
           <em>We chase the carriers.</em>
         </h1>
-        <p className="hm-lead">
-          Internet, voice and the rest of your tech. We get quotes from every carrier and line them up
-          side by side. Free to you, because the carriers pay us.
-        </p>
         <a className="hm-btn" href="#get-started">
-          Get My Free Quotes
+          Let&apos;s Connect <span aria-hidden="true">→</span>
         </a>
       </div>
     </section>

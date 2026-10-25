@@ -4,7 +4,11 @@ import { CarrierBand } from '@/components/home/CarrierBand';
 import { HomeIntro } from '@/components/home/HomeIntro';
 import { PillarStack } from '@/components/home/PillarStack';
 import { ProposalPick } from '@/components/home/ProposalPick';
-import type { FAQItem } from '@/components/home/HomeFAQ';
+import { ReceiptSection } from '@/components/home/ReceiptSection';
+import { ServicesSquares } from '@/components/home/ServicesSquares';
+import { TestimonialRotator } from '@/components/home/TestimonialRotator';
+import { FaqAccordion } from '@/components/home/FaqAccordion';
+import { LearnBooklets } from '@/components/home/LearnBooklets';
 import '@/components/home/home.css';
 
 // The hero subtitle, verbatim, so the search snippet says what the page says.
@@ -35,53 +39,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://insero.cloud',
   },
-};
-
-// FAQ data. Rendered by HomeFAQ and serialised into the FAQPage schema below,
-// so what Google reads is exactly what is on screen.
-const faqItems: FAQItem[] = [
-  {
-    question: 'What does Insero cost?',
-    answer: 'Nothing. Carriers pay us when you sign up. No fees, no retainer, no obligation.',
-  },
-  {
-    question: 'Will I pay more than going direct?',
-    answer:
-      "No. The carrier's price is the same either way. We often know about promotions you wouldn't hear about on your own.",
-  },
-  {
-    question: 'What size businesses do you work with?',
-    answer:
-      'One location to hundreds. Small and mid-size businesses are our sweet spot, and we bring in carrier specialists for bigger projects.',
-  },
-  {
-    question: 'How long does it take?',
-    answer:
-      'Your side-by-side usually takes a few business days. Install depends on the service: days for voice, longer if new fiber has to be built.',
-  },
-  {
-    question: 'Do I have to switch everything at once?',
-    answer: 'No. Plenty of customers start with one service and add more later.',
-  },
-  {
-    question: 'What happens after install?',
-    answer:
-      "You work directly with the carrier you picked. They handle your service and support. When your contract comes up for renewal, we'll compare the market again so you're not stuck auto-renewing.",
-  },
-];
-
-// FAQ Schema for Google featured snippets
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqItems.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    },
-  })),
 };
 
 // JSON-LD for homepage
@@ -143,13 +100,7 @@ export default function HomePage() {
           __html: JSON.stringify(homepageSchema),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqSchema),
-        }}
-      />
-      {/* Homepage v3, part 1 of 3: hero through the proposal. The green line
+      {/* Homepage v3, parts 1-2 of 3: hero through Learn. The green line
           (GreenLine.tsx) is parked and not rendered. The new sections sit
           outside .hm on purpose: home.css styles bare h2/h3 under .hm, and
           unlayered rules there would override their Tailwind utilities.
@@ -163,7 +114,13 @@ export default function HomePage() {
         <HomeIntro />
         <PillarStack />
         <ProposalPick />
-        {/* Temporary target for the card buttons; parts 2 and 3 replace it. */}
+        <ReceiptSection />
+        <ServicesSquares />
+        <TestimonialRotator />
+        <FaqAccordion />
+        <LearnBooklets />
+        {/* Temporary target for every #get-started link; part 3 replaces it
+            with the real form. */}
         <div id="get-started" />
       </div>
     </>

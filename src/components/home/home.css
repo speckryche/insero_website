@@ -186,6 +186,19 @@
     0 0 10px rgba(255, 255, 255, 0.5);
 }
 
+.hm .hm-hero h1 em {
+  color: var(--color-green-bright);
+}
+
+.hm .hm-hero .hm-btn {
+  margin-top: 28px;
+  background: var(--color-green-bright);
+}
+
+.hm .hm-hero .hm-btn:hover {
+  background: var(--color-green-text);
+}
+
 .hm .hm-hero .hm-lead {
   font-size: clamp(16px, 1.4vw, 24px);
   line-height: 1.5;
@@ -1363,5 +1376,21 @@
 @keyframes hm-mq {
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* $0 receipt (ReceiptSection.tsx): line items print in, then the stamp lands.
+   Both stay paused until the section first scrolls into view. */
+@keyframes hm-li {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hm-stamp {
+  to {
+    opacity: 1;
+    transform: rotate(-12deg) scale(1);
   }
 }

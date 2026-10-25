@@ -53,6 +53,12 @@
   --color-accent-cta: #C95000;
   --color-accent-cta-hover: #9A3412;
 
+  /* Homepage greens. Bright is for display text 24px and up, button fills,
+     icons and outlines; it is too light for small text on white (3.1:1), so
+     any green text under 24px takes the darker green-text (4.9:1). */
+  --color-green-bright: #1fa64a;
+  --color-green-text: #008838;
+
   /* Neutrals */
   --color-white: #ffffff;
   --color-off-white: #fafcfc;
@@ -171,6 +177,8 @@
   --color-accent: var(--color-accent);
   --color-accent-cta: var(--color-accent-cta);
   --color-accent-cta-hover: var(--color-accent-cta-hover);
+  --color-green-bright: var(--color-green-bright);
+  --color-green-text: var(--color-green-text);
   --font-display: var(--font-display);
   --font-body: var(--font-body);
 }
