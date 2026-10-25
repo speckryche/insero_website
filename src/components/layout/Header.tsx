@@ -76,7 +76,7 @@ const navLinks = [
 ];
 
 /** The one header CTA, desktop and mobile alike. */
-const CTA = { label: 'Get My Free Quotes', href: '/#get-started' };
+const CTA = { label: "Let's Connect", href: '/#get-started' };
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

@@ -4,7 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import { JetBrains_Mono } from 'next/font/google';
 
 // The receipt's typewriter face. Loaded here so only this section pays for it.
-const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['500', '700'], display: 'swap' });
+// Falls back to a system monospace, not next/font's default size-adjusted
+// Arial: a proportional stand-in wrapped the receipt lines differently until
+// the real face arrived, and on phones (where the receipt stacks) that 18px
+// shift threw off the scroll to #get-started after a cross-page link.
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['500', '700'],
+  display: 'swap',
+  adjustFontFallback: false,
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+});
 
 /*
  * "How do you get paid?" with the $0 receipt (spec section.paid). The line
