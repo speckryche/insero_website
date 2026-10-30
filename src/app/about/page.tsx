@@ -46,7 +46,7 @@ const personSchema = {
     url: 'https://insero.cloud',
   },
   description:
-    '25+ year telecom industry veteran. Previously built and sold InfoStructure, a Pacific Northwest CLEC, to Hunter Communications. Founder of Insero.',
+    '25+ year telecom industry veteran. Previously built and sold infoStructure, a Pacific Northwest CLEC, to Hunter Communications. Founder of Insero.',
   knowsAbout: [
     'Telecom Brokerage',
     'CLEC Operations',

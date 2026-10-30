@@ -113,9 +113,9 @@ function WhyExists() {
 
 const backgroundItems = [
   'Founder of Insero',
-  'Previously built and sold InfoStructure, a CLEC (Competitive Local Exchange Carrier) in the Pacific Northwest, to Hunter Communications',
+  'Previously built and sold infoStructure, a CLEC (Competitive Local Exchange Carrier) in the Pacific Northwest, to Hunter Communications',
   '25+ years in the industry — sales, ops, infrastructure, ownership',
-  'Insero has an exclusive PNW agent agreement with Hunter as a result, giving customers access most TAs don\'t have',
+  'Insero has a direct PNW agent agreement with Hunter as a result, giving customers access most TAs don\'t have',
 ];
 
 function Background() {
@@ -140,7 +140,7 @@ function Background() {
             Speck&apos;s background
           </h2>
           <p className="text-lg text-[#475569] max-w-2xl mx-auto">
-            Three decades on the carrier side &mdash; not just selling them.
+            25+ years on the carrier side &mdash; not just selling them.
           </p>
         </motion.div>
         <motion.div

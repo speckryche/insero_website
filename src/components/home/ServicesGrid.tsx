@@ -93,7 +93,7 @@ export function ServicesGrid() {
     <section className="hm-svc" aria-labelledby="hm-svc-title">
       <Reveal className="hm-wrap">
         <div className="hm-eyebrow">What we find for you</div>
-        <h2 id="hm-svc-title">One advisor for all of it.</h2>
+        <h2 id="hm-svc-title">Independent advice. Every carrier.</h2>
         <div className="hm-g4">
           {SERVICES.map((s) => (
             <Link href={s.href} key={s.title}>

@@ -23,7 +23,7 @@ export function LearnTeaser() {
     <section className="hm-learn" aria-labelledby="hm-learn-title">
       <Reveal className="hm-wrap">
         <div className="hm-eyebrow">Learn</div>
-        <h2 id="hm-learn-title">Free guides and tools</h2>
+        <h2 id="hm-learn-title">Guides and tools</h2>
         <div className="hm-g">
           {GUIDES.map((g) => (
             <Link className="hm-card" href={g.href} key={g.href}>

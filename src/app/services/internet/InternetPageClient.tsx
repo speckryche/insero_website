@@ -40,7 +40,7 @@ const benefits = [
   'Compare options from all carriers available to your location',
   'Find the best price for your speed needs',
   'Professional installation coordination',
-  'Single point of contact for support',
+  'Escalation help when a carrier isn\'t resolving an issue',
   'No carrier bias - we recommend what\'s best',
   'Ongoing account management',
 ];

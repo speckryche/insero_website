@@ -4,7 +4,7 @@ export function FinalCTABand() {
       <div className="hm-wrap">
         <h2 id="hm-endcta-title">Ready to see every option?</h2>
         <a className="hm-btn" href="#get-started">
-          Get My Free Quotes
+          Let&apos;s Connect
         </a>
       </div>
     </section>

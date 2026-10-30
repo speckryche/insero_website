@@ -224,7 +224,7 @@ export function IntakeSection() {
               <input id="hm-business" autoComplete="organization" {...register('businessName')} />
 
               <button className="hm-btn" type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Sending…' : 'Get My Free Quotes'}
+                {isSubmitting ? 'Sending…' : "Let's Connect"}
               </button>
               {submitError && (
                 <div className="hm-submit-err" role="alert">

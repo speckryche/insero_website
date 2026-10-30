@@ -95,7 +95,7 @@ const SERVICES: Service[] = [
     name: 'Other Technologies',
     cap: (
       <>
-        Other technologies: <em>one advisor</em> for all of it.
+        Other technologies: <em>independent advice</em>. Every carrier.
       </>
     ),
     sub: 'Same deal: we compare the options, you pick one',

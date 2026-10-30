@@ -59,6 +59,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: '/resources/multi-location-telecom-sourcing',
+        destination: '/resources/multi-location-quotes-without-the-legwork',
+        permanent: true,
+      },
+      {
         source: '/solutions',
         destination: '/services',
         permanent: true,

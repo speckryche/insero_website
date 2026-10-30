@@ -120,15 +120,6 @@ export const testimonials = [
     approved: true,
     approvedOn: '2026-08-23',
   },
-  // One placeholder left, sized to the length a real testimonial runs to rather
-  // than a one-liner, so the card height and the divider position in review
-  // match what the finished section will do. A two-line stub made the row look
-  // shorter than it will ever actually be.
-  //
-  // approved stays false, so it exists for layout review and cannot reach
-  // production. Anything real replaces the whole entry, name and title
-  // included; do not edit the quote and leave "Placeholder Four" attached to
-  // it.
   {
     id: 'james-sandberg',
     quote:
@@ -144,6 +135,15 @@ export const testimonials = [
     approved: true,
     approvedOn: '2026-08-28',
   },
+  // One placeholder left, sized to the length a real testimonial runs to rather
+  // than a one-liner, so the card height and the divider position in review
+  // match what the finished section will do. A two-line stub made the row look
+  // shorter than it will ever actually be.
+  //
+  // approved stays false, so it exists for layout review and cannot reach
+  // production. Anything real replaces the whole entry, name and title
+  // included; do not edit the quote and leave "Placeholder Four" attached to
+  // it.
   {
     id: 'placeholder-4',
     quote:
