@@ -115,7 +115,7 @@ const backgroundItems = [
   'Founder of Insero',
   'Previously built and sold InfoStructure, a CLEC (Competitive Local Exchange Carrier) in the Pacific Northwest, to Hunter Communications',
   '25+ years in the industry — sales, ops, infrastructure, ownership',
-  'Insero has an exclusive PNW agent agreement with Hunter as a result, giving customers access most TAs don\'t have',
+  'Insero has a direct PNW agent agreement with Hunter as a result, giving customers access most TAs don\'t have',
 ];
 
 function Background() {
