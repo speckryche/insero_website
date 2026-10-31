@@ -53,7 +53,7 @@ export function PotsCostEstimator() {
   }, [lines, costPerLine]);
 
   const urgencyCta: Record<UrgencyId, string> = {
-    researching: "Want real numbers for your specific situation? Tell us your setup and we'll pull pricing from compliant replacement options. Free, no commitment.",
+    researching: "Want real numbers for your specific situation? Tell us your setup and we'll pull pricing from compliant replacement options. No cost, no commitment.",
     sixMonths: "Pricing is rising fast on POTS lines. Let's get ahead of it before your next carrier price hike.",
     ninetyDays: 'Time to move. We can have replacement options for you within a week.',
     rightNow: "Let's go. We can have replacement options for you within 48 hours.",

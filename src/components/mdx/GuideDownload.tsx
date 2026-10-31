@@ -31,7 +31,7 @@ export function GuideDownload({ guide }: { guide: string }) {
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#008838] text-white font-semibold text-sm rounded-xl hover:bg-[#005C28] transition-colors"
             >
               <DownloadSimple weight="bold" className="w-4 h-4" />
-              Download Free Field Guide
+              Download the Field Guide
             </button>
           </div>
         </div>

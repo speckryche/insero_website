@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     'connectivity consulting',
     'telecom brokerage services',
     'carrier comparison',
-    'free telecom consultation',
+    'no-cost telecom consultation',
   ],
   openGraph: {
     title: 'Insero — Independent Telecom & Technology Advisors',
@@ -51,7 +51,7 @@ const homepageSchema = {
   description:
     'Expert cloud and connectivity consulting at zero cost. We help businesses find the best voice, internet, SD-WAN, and security solutions.',
   url: 'https://insero.cloud',
-  priceRange: 'Free',
+  priceRange: '$0',
   areaServed: 'US',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',

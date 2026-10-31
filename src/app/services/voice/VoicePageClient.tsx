@@ -76,7 +76,7 @@ const relatedReading = [
   },
   {
     href: '/tools/pots-cost-estimator',
-    label: 'Free Tool',
+    label: 'Tool',
     title: 'POTS Replacement Cost Estimator',
     description:
       'See what you’re really paying for POTS lines and how much you could save by migrating.',
@@ -97,7 +97,7 @@ export function VoicePageClient() {
       relatedReading={relatedReading}
       image="/images/services/voice_service_page.png"
       ctaTitle="Ready to Modernize Your Phone System?"
-      ctaDescription="Get a free assessment and discover how much you could save with modern voice solutions."
+      ctaDescription="Get a no-cost assessment and discover how much you could save with modern voice solutions."
     />
   );
 }

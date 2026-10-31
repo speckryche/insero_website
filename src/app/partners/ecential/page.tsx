@@ -6,7 +6,7 @@ const pageUrl = 'https://insero.cloud/partners/ecential';
 export const metadata: Metadata = {
   title: 'Childcare Phone Systems | Ecential x Insero',
   description:
-    'Modern cloud phone systems built for childcare centers. Stop missing enrollment calls. Auto-attendant, mobile app, after-hours routing — free assessment, no obligation.',
+    'Modern cloud phone systems built for childcare centers. Stop missing enrollment calls. Auto-attendant, mobile app, after-hours routing — no-cost assessment, no obligation.',
   keywords: [
     'childcare phone system',
     'daycare phone system',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     url: pageUrl,
     title: 'Stop Losing Enrollment Calls | Ecential x Insero',
     description:
-      'A modern phone system built for childcare centers. Every parent inquiry gets answered, even when your hands are full. Free assessment.',
+      'A modern phone system built for childcare centers. Every parent inquiry gets answered, even when your hands are full. No-cost assessment.',
     siteName: 'Ecential x Insero',
     images: [
       {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Childcare Phone Systems | Ecential x Insero',
     description:
-      'Modern cloud phone systems built for childcare centers. Stop missing enrollment calls. Free assessment.',
+      'Modern cloud phone systems built for childcare centers. Stop missing enrollment calls. No-cost assessment.',
   },
   alternates: {
     canonical: pageUrl,
@@ -66,7 +66,7 @@ const jsonLd = {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    description: 'Free phone system assessment for childcare centers',
+    description: 'No-cost phone system assessment for childcare centers',
   },
 };
 

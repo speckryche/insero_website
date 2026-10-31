@@ -4,7 +4,7 @@ import { SecurityPageClient } from './SecurityPageClient';
 export const metadata: Metadata = {
   title: 'Managed Cybersecurity & Firewall Solutions for Business',
   description:
-    'Enterprise-grade managed cybersecurity, firewall, and threat protection. Compare security providers with free expert guidance.',
+    'Enterprise-grade managed cybersecurity, firewall, and threat protection. Compare security providers with no-cost expert guidance.',
   keywords: [
     'managed cybersecurity services for business',
     'managed firewall services',

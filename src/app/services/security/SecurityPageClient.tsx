@@ -76,7 +76,7 @@ export function SecurityPageClient() {
       relatedReading={relatedReading}
       image="/images/services/security_service_page.png"
       ctaTitle="Ready to Protect Your Business?"
-      ctaDescription="Get a free security assessment and discover your vulnerabilities before attackers do."
+      ctaDescription="Get a no-cost security assessment and discover your vulnerabilities before attackers do."
     />
   );
 }

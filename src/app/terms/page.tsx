@@ -70,7 +70,7 @@ export default function TermsOfServicePage() {
                 <li>Internet connectivity consulting and carrier sourcing</li>
                 <li>SD-WAN and network redundancy solutions</li>
                 <li>Security consulting and solutions</li>
-                <li>Technology audits and assessments</li>
+                <li>Technology reviews and assessments</li>
               </ul>
               <p className="mb-8 text-[var(--color-secondary)]/80">
                 Our consulting services are provided at no cost to the client. We are compensated by our

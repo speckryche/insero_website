@@ -82,7 +82,7 @@ export function SDWANPageClient() {
       relatedReading={relatedReading}
       image="/images/services/sdwan_service_page.png"
       ctaTitle="Ready for a More Resilient Network?"
-      ctaDescription="Get a free network assessment and discover how SD-WAN can improve your reliability and reduce costs."
+      ctaDescription="Get a no-cost network assessment and discover how SD-WAN can improve your reliability and reduce costs."
     />
   );
 }

@@ -63,7 +63,7 @@ export function ServicePage({
   headerCtaColor,
   relatedReading,
   ctaTitle = `Ready to Optimize Your ${title}?`,
-  ctaDescription = 'Get a free assessment and discover how much you could save.'
+  ctaDescription = 'Get a no-cost assessment and discover how much you could save.'
 }: ServicePageProps) {
   const featuresRef = useRef(null);
   const benefitsRef = useRef(null);
@@ -137,7 +137,7 @@ export function ServicePage({
                 whileTap={{ scale: 0.98 }}
                 className="group inline-flex items-center gap-3 px-8 py-4 text-white font-semibold text-lg rounded-xl shadow-2xl transition-all duration-300" style={{ backgroundColor: ctaColor || "var(--color-primary)" }}
               >
-                <span>Get a Free Assessment</span>
+                <span>Let&apos;s Connect</span>
                 <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>

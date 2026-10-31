@@ -99,7 +99,7 @@ const SERVICES: Service[] = [
       </>
     ),
     sub: 'Same deal: we compare the options, you pick one',
-    list: ['SD-WAN', 'Security', 'Colocation', 'Mobility'],
+    list: ['SD-WAN', 'Security', 'Colocation', 'Mobility', 'SaaS'],
     logos: [],
     icon: (
       <>

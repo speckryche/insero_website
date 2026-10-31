@@ -28,7 +28,7 @@ const ITEMS = [
   'Quotes, side by side',
   'Recommendation',
   'Contract help',
-  'Install coordination',
+  'Rollout coordination',
 ];
 
 export function ReceiptSection() {
@@ -77,7 +77,7 @@ export function ReceiptSection() {
 
       <div
         role="img"
-        aria-label="A receipt from Insero: research every carrier, quotes side by side, recommendation, contract help and install coordination, each $0.00. Total $0.00, stamped paid by the carrier."
+        aria-label="A receipt from Insero: research every carrier, quotes side by side, recommendation, contract help and rollout coordination, each $0.00. Total $0.00, stamped paid by the carrier."
         className={`relative w-[min(440px,100%)] rotate-[2.5deg] justify-self-center bg-white px-[30px] pt-[34px] pb-[40px] ${mono.className} text-[#14202c] shadow-[0_30px_70px_rgba(0,0,0,.45)] [mask:conic-gradient(from_-45deg_at_bottom,#0000,#000_1deg_89deg,#0000_90deg)_50%/22px_100%]`}
       >
         <div aria-hidden="true">

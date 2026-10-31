@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { WifiHigh, ArrowRight, PhoneDisconnect } from '@phosphor-icons/react/dist/ssr';
 
 export const metadata: Metadata = {
-  title: 'Free Business Tools',
+  title: 'Tools',
   description:
-    'Free tools to help you make better technology decisions. Bandwidth calculators, comparison guides, and more from Insero.',
+    'Tools to help you make better technology decisions. Bandwidth calculators, comparison guides, and more from Insero.',
   alternates: { canonical: 'https://insero.cloud/tools' },
 };
 
@@ -32,10 +32,10 @@ export default function ToolsPage() {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-[#1e293b] mb-4">
-            Free <span className="text-[#008838]">Tools</span>
+            <span className="text-[#008838]">Tools</span>
           </h1>
           <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto">
-            Quick, free tools to help you make better technology decisions for your business.
+            Quick tools to help you make better technology decisions for your business.
           </p>
         </div>
 

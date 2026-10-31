@@ -122,7 +122,7 @@ const serviceSchema = {
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Business phone sourcing and advisory' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Voice AI evaluation and advisory' } },
       { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Contact center sourcing and advisory' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Quoting, contract, and implementation support' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Quoting, contract, and rollout coordination' } },
     ],
   },
 };

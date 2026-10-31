@@ -6,12 +6,12 @@ import { RelatedArticles } from '@/components/tools/RelatedArticles';
 export const metadata: Metadata = {
   title: 'POTS Replacement Cost Estimator',
   description:
-    "Estimate what it costs to replace your POTS lines — and how much you're overpaying now. Free tool. Get a personalized estimate in under two minutes.",
+    "Estimate what it costs to replace your POTS lines — and how much you're overpaying now. No-cost tool. Get a personalized estimate in under two minutes.",
   alternates: { canonical: 'https://insero.cloud/tools/pots-cost-estimator' },
   openGraph: {
     title: 'POTS Replacement Cost Estimator | Insero',
     description:
-      "Estimate what it costs to replace your POTS lines — and how much you're overpaying now. Free tool.",
+      "Estimate what it costs to replace your POTS lines — and how much you're overpaying now. No-cost tool.",
     url: 'https://insero.cloud/tools/pots-cost-estimator',
     images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Insero POTS Cost Estimator' }],
   },

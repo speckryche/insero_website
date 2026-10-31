@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // keeps its own suffix.
   title: { absolute: 'Business Internet: Compare Fiber, DIA & Broadband' },
   description:
-    `Compare business internet providers across fiber, DIA, broadband, and 5G. See pricing from ${carrierAccessPhrase} — free consultation.`,
+    `Compare business internet providers across fiber, DIA, broadband, and 5G. See pricing from ${carrierAccessPhrase} — no-cost consultation.`,
   keywords: [
     'business internet provider comparison',
     'dedicated internet access for business',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Business Internet Provider Comparison | Insero',
     description:
-      `Compare business internet providers across fiber, dedicated internet, broadband, and 5G from ${carrierAccessPhrase}. Free consultation.`,
+      `Compare business internet providers across fiber, dedicated internet, broadband, and 5G from ${carrierAccessPhrase}. No-cost consultation.`,
     url: 'https://insero.cloud/services/internet',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },

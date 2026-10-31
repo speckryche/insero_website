@@ -75,7 +75,7 @@ const SERVICES: { title: string; body: string; href: string; icon: ReactNode }[]
   },
   {
     title: 'Other Technology',
-    body: 'Mobility and more. If your business needs it, ask us.',
+    body: 'Mobility, SaaS and more. If your business needs it, ask us.',
     href: '/services',
     icon: (
       <>

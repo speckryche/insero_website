@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Free Telecom Guides',
-  description: 'Practical guides for business telecom decisions. Free downloads, no fluff.',
+  title: 'Guides',
+  description: 'Practical guides for business telecom decisions. No-cost downloads, no fluff.',
   alternates: { canonical: 'https://insero.cloud/guides' },
 };
 

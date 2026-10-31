@@ -131,12 +131,12 @@ const faqItems = [
   {
     question: 'What other services can you help with?',
     answer:
-      'Beyond phone systems, Insero also helps childcare centers with business internet and network redundancy — making sure you\'re never without connectivity. Same free, unbiased approach.',
+      'Beyond phone systems, Insero also helps childcare centers with business internet and network redundancy — making sure you\'re never without connectivity. Same no-cost, unbiased approach.',
   },
   {
     question: 'How is Ecential involved?',
     answer:
-      'Ecential has partnered with Insero to bring this exclusive telecom consulting service to the childcare community. Ecential identified the need; Insero provides the expertise and carrier relationships to deliver solutions.',
+      'Ecential has partnered with Insero to bring this telecom consulting service to the childcare community. Ecential identified the need; Insero provides the expertise and carrier relationships to deliver solutions.',
   },
 ];
 
@@ -541,7 +541,7 @@ export function EcentialLanding() {
                 />
               </div>
               <p className="text-[var(--ec-gray-400)] text-base leading-relaxed">
-                Ecential has partnered with Insero, a telecom consultancy trusted by 500+ businesses with 25+ years of experience, to bring this exclusive service to childcare center owners.
+                Ecential has partnered with Insero, a telecom consultancy with 25+ years of experience, to bring this service to childcare center owners.
               </p>
             </motion.div>
           </div>
@@ -562,7 +562,7 @@ export function EcentialLanding() {
             className="text-center mb-10"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
-              Get Your Free{' '}
+              Get Your No-Cost{' '}
               <span className="ec-text-gradient">Phone System Assessment</span>
             </h2>
             <p className="text-lg md:text-xl text-[var(--ec-gray-400)] max-w-xl mx-auto">
@@ -758,7 +758,7 @@ export function EcentialLanding() {
                     whileTap={{ scale: 0.99 }}
                     className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-[var(--ec-blue)] text-white font-semibold text-lg rounded-xl shadow-lg shadow-[var(--ec-blue)]/25 hover:bg-[var(--ec-blue-dark)] hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmitting ? <span>Submitting...</span> : <span>Get My Free Assessment</span>}
+                    {isSubmitting ? <span>Submitting...</span> : <span>Let&apos;s Connect</span>}
                   </motion.button>
 
                   <p className="text-xs text-[var(--ec-gray-300)] text-center">
@@ -830,7 +830,7 @@ export function EcentialLanding() {
               <span className="ec-text-gradient">You Didn&apos;t Enroll</span>
             </h2>
             <p className="text-lg md:text-xl text-[var(--ec-gray-400)] mb-10 max-w-xl mx-auto">
-              Get your free phone system assessment today. It takes 2 minutes and could transform how families experience your center.
+              Get your no-cost phone system assessment today. It takes 2 minutes and could transform how families experience your center.
             </p>
             <motion.button
               onClick={scrollToForm}
@@ -838,7 +838,7 @@ export function EcentialLanding() {
               whileTap={{ scale: 0.98 }}
               className="group inline-flex items-center gap-3 px-10 py-5 bg-[var(--ec-blue)] text-white font-semibold text-lg rounded-xl shadow-lg shadow-[var(--ec-blue)]/25 hover:shadow-xl hover:shadow-[var(--ec-blue)]/35 transition-all duration-300"
             >
-              <span>Get My Free Assessment</span>
+              <span>Let&apos;s Connect</span>
               <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
           </motion.div>

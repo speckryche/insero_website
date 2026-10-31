@@ -524,7 +524,7 @@ export function ServicesPageClient() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-400/20 mb-8"
             >
               <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-blue-300">Free Consultation</span>
+              <span className="text-sm font-medium text-blue-300">No-Cost Consultation</span>
             </motion.div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight">

@@ -85,7 +85,7 @@ export function ResourcesHighlight() {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-300 text-[#1e293b] font-semibold hover:border-[#008838] hover:text-[#008838] transition-colors"
           >
             <Wrench weight="fill" className="w-5 h-5" />
-            Try our free tools
+            Try our tools
           </Link>
         </div>
       </div>

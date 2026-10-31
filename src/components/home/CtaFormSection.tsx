@@ -140,7 +140,7 @@ export function CtaFormSection() {
           <em className="text-green-bright not-italic">We&apos;ll do the legwork.</em>
         </h2>
         <p className="mt-[14px] text-[clamp(16px,1.25vw,19px)] leading-[1.5] text-[#33475b]">
-          We find all carrier options, negotiate the quotes, and help you decide what meets your needs the best. Free
+          We find all carrier options, negotiate the quotes, and help you decide what meets your needs the best. No cost
           to you, no commitment.
         </p>
 

@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { ContactPageClient } from './ContactPageClient';
 
 export const metadata: Metadata = {
-  title: 'Contact Insero — Free Telecom Advice, No Obligation',
+  title: 'Contact Insero — No-Cost Telecom Advice, No Obligation',
   description:
-    'Tell us about your setup and get free, vendor-agnostic advice on voice, internet, SD-WAN, and security. Email or phone, your choice.',
+    'Tell us about your setup and get no-cost, vendor-agnostic advice on voice, internet, SD-WAN, and security. Email or phone, your choice.',
   keywords: [
-    'free telecom consultation',
+    'no-cost telecom consultation',
     'telecom consultant',
     'telecom broker consultation',
     'cloud consulting',
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     'telecom cost reduction',
   ],
   openGraph: {
-    title: 'Contact Insero — Free Telecom Advice, No Obligation | Insero',
+    title: 'Contact Insero — No-Cost Telecom Advice, No Obligation | Insero',
     description:
-      'Tell us about your setup and get free, vendor-agnostic advice at zero cost to you.',
+      'Tell us about your setup and get vendor-agnostic advice at zero cost to you.',
     url: 'https://insero.cloud/contact',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Insero - Cloud & Connectivity Consulting' }],
   },
@@ -31,7 +31,7 @@ const contactPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
   name: 'Contact Insero',
-  description: 'Get in touch with Insero for free cloud and connectivity advice.',
+  description: 'Get in touch with Insero for no-cost cloud and connectivity advice.',
   url: 'https://insero.cloud/contact',
   mainEntity: {
     '@type': 'Organization',

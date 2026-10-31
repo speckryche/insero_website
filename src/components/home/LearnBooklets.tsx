@@ -85,7 +85,7 @@ export function LearnBooklets() {
                   />
                 </div>
                 <span className="absolute bottom-[18px] left-[40px] z-[3] rounded-full bg-[rgba(255,255,255,.92)] px-[12px] py-[6px] text-[13px] font-extrabold text-(--bg)">
-                  insero · free guide
+                  insero · guide
                 </span>
               </div>
               <p className="mt-[22px] px-[6px] text-[16px] leading-[1.5] text-[#33475b]">{g.blurb}</p>

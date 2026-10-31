@@ -19,7 +19,7 @@ const benefits = [
     title: 'Zero Cost',
     description:
       'Carriers compensate us directly. You get expert guidance without paying a dime.',
-    highlight: 'Free',
+    highlight: '$0 to you',
     // primary-dark, not emerald: white on #10b981 is 2.54:1, and this badge
     // is 12px w700 so it needs 4.5:1. #005C28 gives 8.20:1.
     color: '#005C28',

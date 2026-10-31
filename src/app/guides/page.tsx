@@ -23,10 +23,10 @@ export default function GuidesPage() {
         <div className="container-custom">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-[#1e293b] mb-4">
-              Free <span className="text-[#008838]">Guides</span>
+              <span className="text-[#008838]">Guides</span>
             </h1>
             <p className="text-lg md:text-xl text-[#475569] max-w-2xl mx-auto">
-              Practical guides for business telecom decisions. Free downloads, no fluff.
+              Practical guides for business telecom decisions. No-cost downloads, no fluff.
             </p>
           </div>
 
@@ -49,7 +49,7 @@ export default function GuidesPage() {
                     <p className="text-sm text-[#475569] leading-relaxed">{guide.description}</p>
                     <span className="inline-flex items-center gap-1.5 mt-3 text-sm font-semibold text-[#008838]">
                       <DownloadSimple weight="bold" className="w-4 h-4" />
-                      Download Free PDF
+                      Download PDF
                     </span>
                   </div>
                 </div>

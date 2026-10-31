@@ -193,7 +193,7 @@ export function AuditPageClient() {
               for Internet &amp; Phone Service?
             </h1>
             <p className="text-lg md:text-xl text-[#64748b] max-w-2xl mx-auto mb-10">
-              Find out in 15 minutes. Our free Telecom Cost &amp; Risk Assessment compares your
+              Find out in 15 minutes. Our no-cost Telecom Cost &amp; Risk Assessment compares your
               current setup across {carrierAccessPhrase} to find savings and eliminate risk.
             </p>
 
@@ -201,13 +201,13 @@ export function AuditPageClient() {
               onClick={scrollToForm}
               className="group inline-flex items-center gap-3 px-10 py-5 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20"
             >
-              <span>Request Your Free Assessment</span>
+              <span>Let&apos;s Connect</span>
               <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
 
             {/* Trust badges */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-[#64748b] text-sm">
-              {['Free', 'No Obligation', 'Carrier-Agnostic'].map((badge) => (
+              {['$0 to You', 'No Obligation', 'Carrier-Agnostic'].map((badge) => (
                 <div key={badge} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-[#008838] rounded-full" />
                   <span>{badge}</span>
@@ -267,7 +267,7 @@ export function AuditPageClient() {
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-6 leading-tight">
               What&apos;s Included in Your{' '}
-              <span className="text-[#008838]">Free Assessment</span>
+              <span className="text-[#008838]">No-Cost Assessment</span>
             </h2>
           </motion.div>
 
@@ -296,7 +296,7 @@ export function AuditPageClient() {
               onClick={scrollToForm}
               className="group inline-flex items-center gap-3 px-8 py-4 bg-[#008838] text-white font-semibold text-lg rounded-xl hover:bg-[#005C28] transition-colors duration-200 shadow-lg shadow-[#008838]/20"
             >
-              <span>Request Your Free Assessment</span>
+              <span>Let&apos;s Connect</span>
               <ArrowRight weight="bold" className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
@@ -366,7 +366,7 @@ export function AuditPageClient() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-[#1e293b] mb-4 leading-tight">
-              Request Your <span className="text-[#008838]">Free Assessment</span>
+              Request Your <span className="text-[#008838]">No-Cost Assessment</span>
             </h2>
             <p className="text-lg text-[#64748b] max-w-xl mx-auto">
               Fill out the form below and we&apos;ll be in touch within one business day.
@@ -514,7 +514,7 @@ export function AuditPageClient() {
                       <span>Submitting...</span>
                     ) : (
                       <>
-                        <span>Request Your Free Assessment</span>
+                        <span>Let&apos;s Connect</span>
                         <ArrowRight weight="bold" className="w-5 h-5" />
                       </>
                     )}

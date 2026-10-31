@@ -48,8 +48,8 @@ const columns = [
     title: 'Resources',
     links: [
       { name: 'All Resources', href: '/resources' },
-      { name: 'Free Tools', href: '/tools' },
-      { name: 'Free Guides', href: '/guides' },
+      { name: 'Tools', href: '/tools' },
+      { name: 'Guides', href: '/guides' },
       { name: 'POTS Replacement Options', href: '/resources/pots-line-replacement-options' },
       { name: 'Fiber vs Cable for Business', href: '/resources/fiber-vs-cable-business-internet' },
       { name: 'How a Telecom Broker Works', href: '/resources/how-a-telecom-broker-works' },

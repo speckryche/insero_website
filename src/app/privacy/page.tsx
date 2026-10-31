@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
               </p>
               <ul className="list-disc pl-6 mb-6 text-[var(--color-secondary)]/80 space-y-2">
                 <li>Fill out our contact form or request a consultation</li>
-                <li>Complete our technology audit assessment</li>
+                <li>Complete our technology review assessment</li>
                 <li>Subscribe to our newsletter or communications</li>
                 <li>Communicate with us via email, phone, or other means</li>
               </ul>

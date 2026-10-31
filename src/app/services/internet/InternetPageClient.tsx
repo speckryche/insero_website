@@ -39,7 +39,7 @@ const features = [
 const benefits = [
   'Compare options from all carriers available to your location',
   'Find the best price for your speed needs',
-  'Professional installation coordination',
+  'Professional rollout coordination',
   'Escalation help when a carrier isn\'t resolving an issue',
   'No carrier bias - we recommend what\'s best',
   'Ongoing account management',
@@ -62,7 +62,7 @@ const relatedReading = [
   },
   {
     href: '/tools/bandwidth-calculator',
-    label: 'Free Tool',
+    label: 'Tool',
     title: 'Business Internet Bandwidth Calculator',
     description:
       'Figure out how much bandwidth your team actually needs in under a minute.',
