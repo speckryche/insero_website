@@ -62,7 +62,9 @@ export function ContactPageClient() {
 
   const onSubmit = async (data: FormData) => {
     setSubmitError(null);
-    const selectedServices = data.services?.filter(Boolean) || [];
+    // react-hook-form reports an unticked checkbox group as `false`, not [],
+    // so guard the type: calling .filter on it threw and the form never sent.
+    const selectedServices = Array.isArray(data.services) ? data.services.filter(Boolean) : [];
     const formData: ContactFormData = {
       firstName: data.firstName,
       lastName: data.lastName,
